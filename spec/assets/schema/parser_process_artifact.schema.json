@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ParserProcessArtifact",
+  "type": "object",
+  "required": [
+    "artifact_version",
+    "source",
+    "artifact_policy",
+    "artifact_handle",
+    "result_path",
+    "materialize_event_stream",
+    "load_artifact",
+    "parse_seconds",
+    "align_events_seconds",
+    "rebuild_seconds",
+    "idx_build_seconds",
+    "load_seconds",
+    "index_build_mode",
+    "peak_rss_mb",
+    "trace_checksum",
+    "dictionary_checksum",
+    "parser_version",
+    "schema_version",
+    "cache_key",
+    "cache_hit",
+    "created_at"
+  ],
+  "properties": {
+    "artifact_version": {"type": "string"},
+    "source": {"type": "string"},
+    "artifact_policy": {
+      "type": "object",
+      "required": [
+        "artifact_dir",
+        "artifact_format",
+        "retain_artifact",
+        "load_artifact",
+        "materialize_event_stream",
+        "timeout_s",
+        "cancel_path",
+        "dictionary_path",
+        "index_build_mode",
+        "progress_path",
+        "parser_version",
+        "schema_version",
+        "cache_enabled",
+        "cache_root"
+      ],
+      "properties": {
+        "artifact_dir": {"type": "string"},
+        "artifact_format": {"type": "string"},
+        "retain_artifact": {"type": "boolean"},
+        "load_artifact": {"type": "boolean"},
+        "materialize_event_stream": {"type": "boolean"},
+        "timeout_s": {"type": ["number", "null"], "minimum": 0},
+        "cancel_path": {"type": ["string", "null"]},
+        "dictionary_path": {"type": "string"},
+        "index_build_mode": {"type": "string", "enum": ["full", "minimal", "deferred"]},
+        "progress_path": {"type": ["string", "null"]},
+        "parser_version": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "cache_enabled": {"type": "boolean"},
+        "cache_root": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "artifact_handle": {
+      "type": "object",
+      "required": ["path", "kind", "role"],
+      "properties": {
+        "path": {"type": "string"},
+        "kind": {"type": "string"},
+        "role": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "result_path": {"type": "string"},
+    "materialize_event_stream": {"type": "boolean"},
+    "load_artifact": {"type": "boolean"},
+    "parse_seconds": {"type": ["number", "null"], "minimum": 0},
+    "align_events_seconds": {"type": ["number", "null"], "minimum": 0},
+    "rebuild_seconds": {"type": ["number", "null"], "minimum": 0},
+    "idx_build_seconds": {"type": ["number", "null"], "minimum": 0},
+    "load_seconds": {"type": ["number", "null"], "minimum": 0},
+    "index_build_mode": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string", "enum": ["full", "minimal", "deferred"]}
+      ]
+    },
+    "peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
+    "trace_checksum": {"type": "string"},
+    "dictionary_checksum": {"type": "string"},
+    "parser_version": {"type": "string"},
+    "schema_version": {"type": "string"},
+    "cache_key": {"type": "string"},
+    "cache_hit": {"type": "boolean"},
+    "created_at": {"type": "string"}
+  },
+  "additionalProperties": false
+}

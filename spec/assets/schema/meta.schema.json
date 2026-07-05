@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExportMeta",
+  "type": "object",
+  "required": [
+    "dataset_id",
+    "time_unit",
+    "clock_source",
+    "align_policy",
+    "dict_ver",
+    "parser_ver",
+    "dict_ref",
+    "schema_ref",
+    "export_scope",
+    "export_time",
+    "snapshot_id",
+    "run_id",
+    "run_batch_id",
+    "version_id",
+    "experiment_params",
+    "time_window",
+    "filter",
+    "selection",
+    "zoom_level",
+    "analysis_context",
+    "compare_role",
+    "export_source",
+    "capability_flags",
+    "untrusted_windows"
+  ],
+  "properties": {
+    "dataset_id": {
+      "type": "string"
+    },
+    "time_unit": {
+      "type": "string"
+    },
+    "clock_source": {
+      "type": "string"
+    },
+    "align_policy": {
+      "type": "string"
+    },
+    "dict_ver": {
+      "type": "integer"
+    },
+    "parser_ver": {
+      "type": "string"
+    },
+    "dict_ref": {
+      "type": "object",
+      "required": ["path", "algo", "checksum", "dict_ver"],
+      "properties": {
+        "path": {"type": "string"},
+        "algo": {"type": "string"},
+        "checksum": {"type": "string"},
+        "dict_ver": {"type": "integer"}
+      },
+      "additionalProperties": true
+    },
+    "schema_ref": {
+      "type": "object",
+      "required": [
+        "package_schema",
+        "meta_schema",
+        "manifest_schema",
+        "analysis_context_schema",
+        "compare_scope_schema"
+      ],
+      "properties": {
+        "package_schema": {"type": "object"},
+        "meta_schema": {"type": "object"},
+        "manifest_schema": {"type": "object"},
+        "analysis_context_schema": {"type": "object"},
+        "compare_scope_schema": {"type": "object"},
+        "dependency_sidecar_schema": {"type": "object"},
+        "frontier_snapshot_schema": {"type": "object"},
+        "frontier_refs_schema": {"type": "object"},
+        "proof_digest_schema": {"type": "object"},
+        "sidecar_manifest_schema": {"type": "object"},
+        "sidecar_segment_manifest_schema": {"type": "object"},
+        "blocker_artifact_schema": {"type": "object"},
+        "result_validity_schema": {"type": "object"},
+        "sidecar_index_ticket_schema": {"type": "object"},
+        "telemetry_record_schema": {"type": "object"},
+        "telemetry_record_update_schema": {"type": "object"},
+        "advisor_decision_schema": {"type": "object"},
+        "advisor_trace_schema": {"type": "object"},
+        "advisor_report_schema": {"type": "object"},
+        "validation_gate_result_schema": {"type": "object"},
+        "agent_job_contract_schema": {"type": "object"},
+        "export_write_metric_schema": {"type": "object"},
+        "write_failure_blocker_schema": {"type": "object"},
+        "parser_process_artifact_schema": {"type": "object"},
+        "formal_schedule_plan_schema": {"type": "object"},
+        "benchmark_scenario_schema": {"type": "object"},
+        "benchmark_report_schema": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "export_scope": {
+      "type": "object"
+    },
+    "export_time": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "run_batch_id": {
+      "type": "string"
+    },
+    "version_id": {
+      "type": "string"
+    },
+    "experiment_params": {
+      "type": "object"
+    },
+    "export_family": {
+      "type": "string"
+    },
+    "export_mode": {
+      "type": "string"
+    },
+    "closure_mode": {
+      "type": ["string", "null"]
+    },
+    "budget_vector": {
+      "type": "object",
+      "required": ["D_max", "C_events", "S_bytes", "rho_max"],
+      "properties": {
+        "D_max": {"type": "integer"},
+        "C_events": {"type": "integer"},
+        "S_bytes": {"type": "integer"},
+        "rho_max": {"type": "number"}
+      },
+      "additionalProperties": true
+    },
+    "rule_family": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ]
+    },
+    "time_window": {
+      "type": "array",
+      "items": {"type": "number"}
+    },
+    "filter": {
+      "type": "object"
+    },
+    "selection": {
+      "type": "object"
+    },
+    "zoom_level": {
+      "type": "number"
+    },
+    "analysis_context": {
+      "type": "object"
+    },
+    "compare_scope": {
+      "type": ["object", "null"]
+    },
+    "evidence_anchor": {
+      "type": ["object", "null"]
+    },
+    "compare_role": {
+      "type": "string"
+    },
+    "control_refs": {
+      "type": "object",
+      "properties": {
+        "dependency_sidecar": {"type": "string"},
+        "frontier_snapshot": {"type": "string"},
+        "proof_digest": {"type": "string"},
+        "sidecar_manifest": {"type": "string"},
+        "frontier_refs": {"type": ["string", "null"]},
+        "blocker_artifact": {"type": ["string", "null"]},
+        "runtime_advisor_agent_contract": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "export_source": {
+      "type": "object"
+    },
+    "context_padding_rule": {
+      "type": ["object", "null"]
+    },
+    "capability_flags": {
+      "type": "object",
+      "additionalProperties": {"type": "boolean"}
+    },
+    "untrusted_windows": {
+      "type": "array",
+      "items": {"type": "object"}
+    }
+  },
+  "additionalProperties": true
+}

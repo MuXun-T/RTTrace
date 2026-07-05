@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Package",
+  "type": "object",
+  "required": ["meta", "manifest"],
+  "properties": {
+    "meta": {
+      "type": "object"
+    },
+    "manifest": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

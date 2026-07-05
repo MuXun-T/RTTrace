@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Manifest",
+  "type": "object",
+  "required": [
+    "package_version",
+    "created_at",
+    "snapshot_id",
+    "dict_ref",
+    "schema_ref",
+    "entries"
+  ],
+  "properties": {
+    "package_version": {
+      "type": "string",
+      "enum": ["rttrace-package-1", "rttrace-package-2"]
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "snapshot_id": {
+      "type": "string"
+    },
+    "dict_ref": {
+      "type": "object"
+    },
+    "schema_ref": {
+      "type": "object",
+      "required": [
+        "package_schema",
+        "meta_schema",
+        "manifest_schema",
+        "analysis_context_schema",
+        "compare_scope_schema"
+      ],
+      "properties": {
+        "package_schema": {"type": "object"},
+        "meta_schema": {"type": "object"},
+        "manifest_schema": {"type": "object"},
+        "analysis_context_schema": {"type": "object"},
+        "compare_scope_schema": {"type": "object"},
+        "dependency_sidecar_schema": {"type": "object"},
+        "frontier_snapshot_schema": {"type": "object"},
+        "frontier_refs_schema": {"type": "object"},
+        "proof_digest_schema": {"type": "object"},
+        "sidecar_manifest_schema": {"type": "object"},
+        "sidecar_segment_manifest_schema": {"type": "object"},
+        "blocker_artifact_schema": {"type": "object"},
+        "result_validity_schema": {"type": "object"},
+        "sidecar_index_ticket_schema": {"type": "object"},
+        "telemetry_record_schema": {"type": "object"},
+        "telemetry_record_update_schema": {"type": "object"},
+        "advisor_decision_schema": {"type": "object"},
+        "advisor_trace_schema": {"type": "object"},
+        "advisor_report_schema": {"type": "object"},
+        "validation_gate_result_schema": {"type": "object"},
+        "agent_job_contract_schema": {"type": "object"},
+        "export_write_metric_schema": {"type": "object"},
+        "write_failure_blocker_schema": {"type": "object"},
+        "parser_process_artifact_schema": {"type": "object"},
+        "formal_schedule_plan_schema": {"type": "object"},
+        "benchmark_scenario_schema": {"type": "object"},
+        "benchmark_report_schema": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "category",
+          "count",
+          "checksum",
+          "format"
+        ],
+        "properties": {
+          "path": {"type": "string"},
+          "category": {
+            "type": "string",
+            "enum": [
+              "meta",
+              "event",
+              "event_index",
+              "rebuild",
+              "result",
+              "context",
+              "reference",
+              "control"
+            ]
+          },
+          "count": {"type": "integer"},
+          "checksum": {"type": "string"},
+          "format": {"type": "string"},
+          "schema_ref": {"type": ["string", "null"]},
+          "producer": {"type": ["string", "null"]},
+          "ref_keys": {}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,55 @@
+{
+  "platform": {
+    "system": "Linux",
+    "release": "6.8.0-106-generic",
+    "version": "#106~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar  6 08:44:59 UTC ",
+    "machine": "x86_64"
+  },
+  "python": {
+    "version": "3.10.12",
+    "executable": "/home/mx/rttrace-desktop-venv/bin/python"
+  },
+  "packages": {
+    "PySide6": {
+      "available": true,
+      "version": "6.10.2"
+    },
+    "pyqtgraph": {
+      "available": true,
+      "version": "0.14.0"
+    }
+  },
+  "ready_for_runtime_smoke": true,
+  "large_input_preflight": {
+    "enabled": true,
+    "baseline_path": "/mnt/hgfs/share-document/sim tool/example/public-rtos-1gb-prevalidation/public_rtos_1gb_fast_baseline.trace",
+    "candidate_path": "/mnt/hgfs/share-document/sim tool/example/public-rtos-1gb-prevalidation/public_rtos_1gb_fast_candidate.trace",
+    "baseline_exists": true,
+    "candidate_exists": true,
+    "baseline_size_bytes": 1073741880,
+    "candidate_size_bytes": 1073741880,
+    "formal_size_ready": true,
+    "scratch_dir": "/mnt/hgfs/share-document/sim tool/example/public-rtos-1gb-prevalidation",
+    "scratch_dir_exists": true,
+    "scratch_dir_writable": true,
+    "scratch_mount_point": "/mnt/hgfs",
+    "scratch_fs_type": "fuse.vmhgfs-fuse",
+    "scratch_local_disk_hint": false,
+    "free_space_bytes": 115744018432,
+    "estimated_export_bytes": 2147483760,
+    "estimated_required_bytes": 5368709288,
+    "min_free_space_bytes": 5368709288,
+    "disk_ready": true,
+    "load_timeout_s": 600.0,
+    "load_timeout_ready": true,
+    "expected_export_multiplier": 2.0,
+    "ready_for_large_input_perf": false,
+    "blocking_reasons": [
+      "scratch_dir_not_local_disk"
+    ]
+  },
+  "next_steps": [
+    "Run `QT_QPA_PLATFORM=offscreen python3 tool/check_desktop_env.py --output <path>` to capture a GUI smoke report.",
+    "Resolve large-input preflight blocking_reasons before running formal 1GB perf acceptance."
+  ]
+}

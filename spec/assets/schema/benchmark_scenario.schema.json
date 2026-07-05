@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BenchmarkScenario",
+  "type": "object",
+  "required": [
+    "scenario_version",
+    "scenario_id",
+    "scenario_kind",
+    "advisor_enabled",
+    "advisor_mode",
+    "ticket_fast_path_enabled",
+    "streaming_write_enabled",
+    "optional_dependency",
+    "expected_execution_plan"
+  ],
+  "properties": {
+    "scenario_version": {"type": "string"},
+    "scenario_id": {
+      "type": "string",
+      "enum": [
+        "current_baseline",
+        "ticket_fast_path",
+        "advisor_heuristic",
+        "advisor_optional_sklearn",
+        "advisor_openai_structured"
+      ]
+    },
+    "scenario_kind": {
+      "type": "string",
+      "enum": [
+        "current_baseline",
+        "ticket_fast_path",
+        "advisor_heuristic",
+        "advisor_optional_sklearn",
+        "advisor_openai_structured"
+      ]
+    },
+    "advisor_enabled": {"type": "boolean"},
+    "advisor_mode": {
+      "type": "string",
+      "enum": ["disabled", "heuristic", "offline_coefficients", "openai_structured"]
+    },
+    "ticket_fast_path_enabled": {"type": "boolean"},
+    "streaming_write_enabled": {"type": "boolean"},
+    "optional_dependency": {"type": ["string", "null"]},
+    "expected_execution_plan": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

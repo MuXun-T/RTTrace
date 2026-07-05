@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FrontierRefRow",
+  "type": "object",
+  "required": [
+    "ref_key",
+    "ref_kind",
+    "priority",
+    "frontier_origin_rule",
+    "estimate_events",
+    "estimate_bytes",
+    "time_hint_begin_ns",
+    "time_hint_end_ns"
+  ],
+  "properties": {
+    "ref_key": {"type": "string"},
+    "ref_kind": {"type": "string"},
+    "priority": {"type": "integer", "minimum": 0, "maximum": 100},
+    "frontier_origin_rule": {"type": "string"},
+    "estimate_events": {"type": "integer", "minimum": 0},
+    "estimate_bytes": {"type": "integer", "minimum": 0},
+    "time_hint_begin_ns": {"type": "integer"},
+    "time_hint_end_ns": {"type": "integer"},
+    "core_hint": {"type": ["integer", "null"]},
+    "seq_hint_begin": {"type": ["integer", "null"]},
+    "seq_hint_end": {"type": ["integer", "null"]},
+    "segment_hint": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

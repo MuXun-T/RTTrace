@@ -1,0 +1,11 @@
+{
+  "sample_tier": "dense",
+  "seed_systrace": "example/public-rtos-1gb-prevalidation/nuttx_public_seed.systrace",
+  "target_size_bytes": 1073741824,
+  "real_seed_target_bytes": 134217728,
+  "candidate_mode": "timestamp_jitter",
+  "notes": [
+    "Dense sample is generated locally; the 1GB output files are not checked into the repository.",
+    "Use this template together with tool/build_public_rtos_large_input.py."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AdvisorTrace",
+  "type": "object",
+  "required": [
+    "trace_version",
+    "generated_at",
+    "request_id",
+    "telemetry_refs",
+    "feature_snapshot",
+    "decision",
+    "gate_result",
+    "advisor_overhead_seconds",
+    "agent_contract_ref"
+  ],
+  "properties": {
+    "trace_version": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "request_id": {"type": "string"},
+    "telemetry_refs": {"type": "array", "items": {"type": "string"}},
+    "feature_snapshot": {"type": "object"},
+    "decision": {"type": "object"},
+    "gate_result": {"type": ["object", "null"]},
+    "advisor_overhead_seconds": {"type": "number", "minimum": 0},
+    "agent_contract_ref": {
+      "type": ["object", "null"],
+      "required": ["path", "job_id"],
+      "properties": {
+        "path": {"type": "string"},
+        "job_id": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

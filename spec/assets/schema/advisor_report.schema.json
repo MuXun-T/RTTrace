@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AdvisorReport",
+  "type": "object",
+  "required": [
+    "report_version",
+    "generated_at",
+    "request_id",
+    "decision",
+    "gate_result",
+    "agent_contract_ref",
+    "pre_execution_decision",
+    "pre_execution_gate_result",
+    "pre_execution_advisor_overhead_seconds",
+    "effective_execution_plan",
+    "telemetry_record",
+    "write_metrics",
+    "proof_boundary"
+  ],
+  "properties": {
+    "report_version": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "request_id": {"type": "string"},
+    "decision": {
+      "type": "object",
+      "required": [
+        "decision_version",
+        "advisor_mode",
+        "model_ref",
+        "feature_snapshot_hash",
+        "recommend_index_prebuild",
+        "recommend_index_reuse_attempt",
+        "recommend_streaming_write",
+        "recommended_schedule",
+        "predicted_runtime_seconds",
+        "predicted_peak_rss_mb",
+        "risk_level",
+        "reasons"
+      ],
+      "properties": {
+        "decision_version": {"type": "string"},
+        "advisor_mode": {
+          "type": "string",
+          "enum": ["disabled", "heuristic", "offline_coefficients", "openai_structured"]
+        },
+        "model_ref": {"type": "string"},
+        "model_checksum": {"type": ["string", "null"]},
+        "feature_snapshot_hash": {"type": "string"},
+        "recommend_index_prebuild": {"type": "boolean"},
+        "recommend_index_reuse_attempt": {"type": "boolean"},
+        "recommend_streaming_write": {"type": "boolean"},
+        "recommended_schedule": {
+          "type": "string",
+          "enum": ["serial_safe", "sidecar_first", "bounded_parallel", "degraded_priority"]
+        },
+        "predicted_runtime_seconds": {"type": ["number", "null"], "minimum": 0},
+        "predicted_peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
+        "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+        "reasons": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "gate_result": {
+      "type": ["object", "null"],
+      "required": [
+        "gate_version",
+        "accepted",
+        "rejected_reason",
+        "checked_ticket",
+        "checked_schema",
+        "checked_checksum",
+        "checked_fingerprint",
+        "checked_policy",
+        "execution_plan"
+      ],
+      "properties": {
+        "gate_version": {"type": "string"},
+        "accepted": {"type": "boolean"},
+        "rejected_reason": {"type": ["string", "null"]},
+        "checked_ticket": {"type": "boolean"},
+        "checked_schema": {"type": "boolean"},
+        "checked_checksum": {"type": "boolean"},
+        "checked_fingerprint": {"type": "boolean"},
+        "checked_policy": {"type": "boolean"},
+        "execution_plan": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "agent_contract_ref": {
+      "type": ["object", "null"],
+      "required": ["path", "job_id"],
+      "properties": {
+        "path": {"type": "string"},
+        "job_id": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "pre_execution_agent_contract_ref": {
+      "type": ["object", "null"],
+      "required": ["path", "job_id"],
+      "properties": {
+        "path": {"type": "string"},
+        "job_id": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "pre_execution_advisor_trace_ref": {
+      "type": ["object", "null"],
+      "required": ["path", "job_id"],
+      "properties": {
+        "path": {"type": "string"},
+        "job_id": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "advisor_metadata": {
+      "type": "object",
+      "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+    },
+    "pre_execution_advisor_metadata": {
+      "type": "object",
+      "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+    },
+    "pre_execution_decision": {
+      "type": ["object", "null"],
+      "required": [
+        "decision_version",
+        "advisor_mode",
+        "model_ref",
+        "feature_snapshot_hash",
+        "recommend_index_prebuild",
+        "recommend_index_reuse_attempt",
+        "recommend_streaming_write",
+        "recommended_schedule",
+        "predicted_runtime_seconds",
+        "predicted_peak_rss_mb",
+        "risk_level",
+        "reasons"
+      ],
+      "properties": {
+        "decision_version": {"type": "string"},
+        "advisor_mode": {
+          "type": "string",
+          "enum": ["disabled", "heuristic", "offline_coefficients", "openai_structured"]
+        },
+        "model_ref": {"type": "string"},
+        "model_checksum": {"type": ["string", "null"]},
+        "feature_snapshot_hash": {"type": "string"},
+        "recommend_index_prebuild": {"type": "boolean"},
+        "recommend_index_reuse_attempt": {"type": "boolean"},
+        "recommend_streaming_write": {"type": "boolean"},
+        "recommended_schedule": {
+          "type": "string",
+          "enum": ["serial_safe", "sidecar_first", "bounded_parallel", "degraded_priority"]
+        },
+        "predicted_runtime_seconds": {"type": ["number", "null"], "minimum": 0},
+        "predicted_peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
+        "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+        "reasons": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "pre_execution_gate_result": {
+      "type": ["object", "null"],
+      "required": [
+        "gate_version",
+        "accepted",
+        "rejected_reason",
+        "checked_ticket",
+        "checked_schema",
+        "checked_checksum",
+        "checked_fingerprint",
+        "checked_policy",
+        "execution_plan"
+      ],
+      "properties": {
+        "gate_version": {"type": "string"},
+        "accepted": {"type": "boolean"},
+        "rejected_reason": {"type": ["string", "null"]},
+        "checked_ticket": {"type": "boolean"},
+        "checked_schema": {"type": "boolean"},
+        "checked_checksum": {"type": "boolean"},
+        "checked_fingerprint": {"type": "boolean"},
+        "checked_policy": {"type": "boolean"},
+        "execution_plan": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "pre_execution_advisor_overhead_seconds": {"type": "number", "minimum": 0},
+    "effective_execution_plan": {"type": "array", "items": {"type": "string"}},
+    "telemetry_record": {
+      "type": "object",
+      "required": [
+        "record_version",
+        "run_id",
+        "dataset_id",
+        "platform",
+        "export_family",
+        "embodiment_mode",
+        "input_bytes",
+        "sidecar_bytes",
+        "sidecar_row_count",
+        "sidecar_bytes_scanned",
+        "sidecar_validate_seconds",
+        "index_build_open_seconds",
+        "index_reused",
+        "index_rebuilt",
+        "closure_seconds",
+        "window_read_seconds",
+        "package_write_seconds",
+        "runtime_seconds",
+        "peak_rss_mb",
+        "proof_hash",
+        "closure_mode",
+        "advisor_overhead_seconds"
+      ],
+      "properties": {
+        "record_version": {"type": "string"},
+        "run_id": {"type": ["string", "null"]},
+        "dataset_id": {"type": ["string", "null"]},
+        "platform": {"type": "string"},
+        "export_family": {"type": ["string", "null"]},
+        "embodiment_mode": {"type": ["string", "null"]},
+        "input_bytes": {"type": ["integer", "null"], "minimum": 0},
+        "sidecar_bytes": {"type": ["integer", "null"], "minimum": 0},
+        "sidecar_row_count": {"type": ["integer", "null"], "minimum": 0},
+        "sidecar_bytes_scanned": {"type": ["integer", "null"], "minimum": 0},
+        "sidecar_validate_seconds": {"type": ["number", "null"], "minimum": 0},
+        "index_build_open_seconds": {"type": ["number", "null"], "minimum": 0},
+        "index_reused": {"type": ["boolean", "null"]},
+        "index_rebuilt": {"type": ["boolean", "null"]},
+        "closure_seconds": {"type": ["number", "null"], "minimum": 0},
+        "window_read_seconds": {"type": ["number", "null"], "minimum": 0},
+        "package_write_seconds": {"type": ["number", "null"], "minimum": 0},
+        "runtime_seconds": {"type": ["number", "null"], "minimum": 0},
+        "peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
+        "proof_hash": {"type": ["string", "null"]},
+        "closure_mode": {"type": ["string", "null"]},
+        "advisor_overhead_seconds": {"type": ["number", "null"], "minimum": 0},
+        "sidecar_lookup_count": {"type": ["integer", "null"], "minimum": 0},
+        "write_mode": {"type": ["string", "null"]},
+        "stage_timings": {"type": "object"},
+        "rss_snapshots": {"type": "array", "items": {"type": "object"}}
+      },
+      "additionalProperties": false
+    },
+    "write_metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "metric_version",
+          "path",
+          "label",
+          "write_mode",
+          "count",
+          "bytes_written",
+          "checksum",
+          "write_seconds",
+          "ok"
+        ],
+        "properties": {
+          "metric_version": {"type": "string"},
+          "path": {"type": "string"},
+          "label": {"type": "string"},
+          "write_mode": {
+            "type": "string",
+            "enum": ["standard_json", "stream_jsonl", "stream_json_array", "write_bytes", "copy_file", "binary_callback"]
+          },
+          "count": {"type": "integer", "minimum": 0},
+          "bytes_written": {"type": "integer", "minimum": 0},
+          "checksum": {"type": "string"},
+          "write_seconds": {"type": "number", "minimum": 0},
+          "ok": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "proof_boundary": {
+      "type": "object",
+      "required": ["proof_hash", "advisor_fields_in_proof_digest"],
+      "properties": {
+        "proof_hash": {"type": "string"},
+        "advisor_fields_in_proof_digest": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

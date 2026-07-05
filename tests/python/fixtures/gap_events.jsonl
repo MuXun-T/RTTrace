@@ -1,0 +1,4 @@
+{"core_id": 0, "event_name": "TASK_READY", "payload": {"prio": 1, "reason": "create", "task_id": 1}, "seq": 1, "timestamp": 0}
+{"core_id": 1, "event_name": "TASK_READY", "payload": {"prio": 2, "reason": "create", "task_id": 3}, "seq": 1, "timestamp": 0}
+{"core_id": 1, "event_name": "CTX_SWITCH", "payload": {"core_id": 1, "next_task_id": 3, "prev_task_id": 0, "reason": "dispatch"}, "seq": 2, "timestamp": 4}
+{"core_id": 0, "event_name": "CTX_SWITCH", "payload": {"core_id": 0, "next_task_id": 1, "prev_task_id": 0, "reason": "dispatch"}, "seq": 3, "timestamp": 5}

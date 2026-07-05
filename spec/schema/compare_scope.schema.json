@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CompareScope",
+  "type": "object",
+  "required": [
+    "baseline_id",
+    "candidate_id",
+    "aligned_time_window",
+    "filter",
+    "dimensions",
+    "metric_ids"
+  ],
+  "properties": {
+    "scope_id": {"type": ["string", "null"]},
+    "baseline_id": {"type": "string"},
+    "candidate_id": {"type": "string"},
+    "aligned_time_window": {"type": "array", "items": {"type": "number"}},
+    "filter": {"type": "object"},
+    "dimensions": {"type": "array", "items": {"type": "string"}},
+    "metric_ids": {"type": "array", "items": {"type": "string"}},
+    "bucket_size": {"type": ["number", "null"]},
+    "evidence_policy": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TelemetryRecordUpdate",
+  "type": "object",
+  "required": [
+    "update_version",
+    "job_id",
+    "phase_name",
+    "started_at",
+    "finished_at",
+    "recorded_at",
+    "metrics",
+    "phase_seconds",
+    "history_path"
+  ],
+  "properties": {
+    "update_version": {"type": "string"},
+    "job_id": {"type": "string"},
+    "phase_name": {"type": "string"},
+    "started_at": {"type": "string"},
+    "finished_at": {"type": "string"},
+    "recorded_at": {"type": "string"},
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+    },
+    "phase_seconds": {"type": ["number", "null"], "minimum": 0},
+    "history_path": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

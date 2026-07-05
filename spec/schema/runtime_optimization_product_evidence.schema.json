@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Runtime Optimization Product Evidence Report",
+  "type": "object",
+  "required": [
+    "report_version",
+    "generated_at",
+    "status",
+    "claimable_speedups",
+    "not_claimable",
+    "suites"
+  ],
+  "properties": {
+    "report_version": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "execution_status": {
+      "type": "string"
+    },
+    "trace": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "output_root": {
+      "type": "string"
+    },
+    "repeat_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "selected_suites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_segmented_sidecar": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claimable_speedups": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "not_claimable": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "suites": {
+      "type": "object",
+      "required": [
+        "load_cache",
+        "background_prebuild",
+        "segmented_sidecar"
+      ],
+      "properties": {
+        "load_cache": {
+          "type": "object"
+        },
+        "background_prebuild": {
+          "type": "object"
+        },
+        "segmented_sidecar": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BlockerArtifact",
+  "type": "object",
+  "required": [
+    "snapshot_id",
+    "round_id",
+    "closure_mode",
+    "halt_reason",
+    "candidate_edge_sample",
+    "window_plan_summary",
+    "partial_write_status",
+    "emitted_metrics"
+  ],
+  "properties": {
+    "snapshot_id": {"type": "string"},
+    "round_id": {"type": "integer", "minimum": 0},
+    "closure_mode": {"type": "string"},
+    "halt_reason": {"type": "string"},
+    "exception_code": {"type": ["string", "null"]},
+    "exception_message": {"type": ["string", "null"]},
+    "candidate_edge_sample": {"type": "array", "items": {"type": "object"}},
+    "window_plan_summary": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["planned_windows", "total_span_ns"],
+          "properties": {
+            "planned_windows": {"type": "integer", "minimum": 0},
+            "total_span_ns": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "required": [
+            "window_count",
+            "window_span_total",
+            "target_ref_count",
+            "matched_ref_count",
+            "missed_ref_count",
+            "window_hit_rate",
+            "failed_read_count"
+          ],
+          "properties": {
+            "window_count": {"type": "integer", "minimum": 0},
+            "window_span_total": {"type": "integer", "minimum": 0},
+            "target_refs": {"type": "array", "items": {"type": "string"}},
+            "target_ref_count": {"type": "integer", "minimum": 0},
+            "matched_refs": {"type": "array", "items": {"type": "string"}},
+            "matched_ref_count": {"type": "integer", "minimum": 0},
+            "missed_refs": {"type": "array", "items": {"type": "string"}},
+            "missed_ref_count": {"type": "integer", "minimum": 0},
+            "window_hit_rate": {"type": "number", "minimum": 0, "maximum": 1},
+            "selected_chunk_count": {"type": "integer", "minimum": 0},
+            "planned_span_count": {"type": "integer", "minimum": 0},
+            "selected_span_count": {"type": "integer", "minimum": 0},
+            "failed_read_count": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "partial_write_status": {"type": "object"},
+    "emitted_metrics": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["events_emitted", "bytes_emitted", "sidecar_lookup_count"],
+          "properties": {
+            "events_emitted": {"type": "integer", "minimum": 0},
+            "bytes_emitted": {"type": "integer", "minimum": 0},
+            "sidecar_lookup_count": {"type": "integer", "minimum": 0}
+          },
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "required": [
+            "scan_count",
+            "seek_count",
+            "window_span_total",
+            "sidecar_lookup_count",
+            "read_target_ref_count",
+            "read_matched_ref_count",
+            "read_missed_ref_count",
+            "read_window_hit_rate"
+          ],
+          "properties": {
+            "scan_count": {"type": "integer", "minimum": 0},
+            "seek_count": {"type": "integer", "minimum": 0},
+            "window_span_total": {"type": "integer", "minimum": 0},
+            "sidecar_lookup_count": {"type": "integer", "minimum": 0},
+            "selected_ref_count_from_window_read": {"type": "integer", "minimum": 0},
+            "selected_ref_count_from_seed_materialization": {"type": "integer", "minimum": 0},
+            "selected_ref_overlap_count": {"type": "integer", "minimum": 0},
+            "read_target_ref_count": {"type": "integer", "minimum": 0},
+            "read_matched_ref_count": {"type": "integer", "minimum": 0},
+            "read_missed_ref_count": {"type": "integer", "minimum": 0},
+            "read_window_hit_rate": {"type": "number", "minimum": 0, "maximum": 1}
+          },
+          "additionalProperties": true
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

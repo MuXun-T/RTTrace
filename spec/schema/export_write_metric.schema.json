@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExportWriteMetric",
+  "type": "object",
+  "required": [
+    "metric_version",
+    "path",
+    "label",
+    "write_mode",
+    "count",
+    "bytes_written",
+    "checksum",
+    "write_seconds",
+    "ok"
+  ],
+  "properties": {
+    "metric_version": {"type": "string"},
+    "path": {"type": "string"},
+    "label": {"type": "string"},
+    "write_mode": {"type": "string", "enum": ["standard_json", "stream_jsonl", "stream_json_array", "write_bytes", "copy_file", "binary_callback"]},
+    "count": {"type": "integer", "minimum": 0},
+    "bytes_written": {"type": "integer", "minimum": 0},
+    "checksum": {"type": "string"},
+    "write_seconds": {"type": "number", "minimum": 0},
+    "ok": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

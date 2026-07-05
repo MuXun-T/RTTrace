@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SidecarManifest",
+  "type": "object",
+  "required": [
+    "sidecar_version",
+    "generator_version",
+    "trace_checksum",
+    "dictionary_checksum",
+    "schema_checksums",
+    "relation_families",
+    "entry_paths",
+    "entry_checksums",
+    "created_at",
+    "snapshot_id"
+  ],
+  "properties": {
+    "sidecar_version": {"type": "string"},
+    "generator_version": {"type": "string"},
+    "trace_checksum": {"type": "string"},
+    "dictionary_checksum": {"type": "string"},
+    "schema_checksums": {
+      "type": "object",
+      "required": [
+        "dependency_sidecar_schema",
+        "frontier_snapshot_schema",
+        "frontier_refs_schema",
+        "proof_digest_schema",
+        "sidecar_manifest_schema",
+        "blocker_artifact_schema"
+      ],
+      "properties": {
+        "dependency_sidecar_schema": {
+          "type": "object",
+          "required": ["algo", "checksum"],
+          "properties": {
+            "algo": {"type": "string"},
+            "checksum": {"type": "string"},
+            "path": {"type": ["string", "null"]}
+          },
+          "additionalProperties": true
+        },
+        "frontier_snapshot_schema": {
+          "type": "object",
+          "required": ["algo", "checksum"],
+          "properties": {
+            "algo": {"type": "string"},
+            "checksum": {"type": "string"},
+            "path": {"type": ["string", "null"]}
+          },
+          "additionalProperties": true
+        },
+        "frontier_refs_schema": {
+          "type": "object",
+          "required": ["algo", "checksum"],
+          "properties": {
+            "algo": {"type": "string"},
+            "checksum": {"type": "string"},
+            "path": {"type": ["string", "null"]}
+          },
+          "additionalProperties": true
+        },
+        "proof_digest_schema": {
+          "type": "object",
+          "required": ["algo", "checksum"],
+          "properties": {
+            "algo": {"type": "string"},
+            "checksum": {"type": "string"},
+            "path": {"type": ["string", "null"]}
+          },
+          "additionalProperties": true
+        },
+        "sidecar_manifest_schema": {
+          "type": "object",
+          "required": ["algo", "checksum"],
+          "properties": {
+            "algo": {"type": "string"},
+            "checksum": {"type": "string"},
+            "path": {"type": ["string", "null"]}
+          },
+          "additionalProperties": true
+        },
+        "blocker_artifact_schema": {
+          "type": "object",
+          "required": ["algo", "checksum"],
+          "properties": {
+            "algo": {"type": "string"},
+            "checksum": {"type": "string"},
+            "path": {"type": ["string", "null"]}
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "relation_families": {"type": "array", "items": {"type": "string"}},
+    "entry_paths": {"type": "array", "items": {"type": "string"}},
+    "entry_checksums": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "layout_mode": {"type": "string"},
+    "segment_manifest_path": {"type": ["string", "null"]},
+    "segment_count": {"type": "integer", "minimum": 0},
+    "created_at": {"type": "string"},
+    "snapshot_id": {"type": "string"}
+  },
+  "additionalProperties": false
+}

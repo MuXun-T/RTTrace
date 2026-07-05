@@ -1,0 +1,16 @@
+{"core_id": 0, "event_name": "TASK_READY", "payload": {"prio": 5, "reason": "bootstrap", "task_id": 2}, "seq": 1, "timestamp": 0}
+{"core_id": 0, "event_name": "TASK_READY", "payload": {"prio": 1, "reason": "create", "task_id": 1}, "seq": 2, "timestamp": 1}
+{"core_id": 0, "event_name": "TASK_DISPATCH", "payload": {"core_id": 0, "prio": 1, "reason": "select", "task_id": 1}, "seq": 3, "timestamp": 2}
+{"core_id": 0, "event_name": "CTX_SWITCH", "payload": {"core_id": 0, "next_task_id": 1, "prev_task_id": 0, "reason": "dispatch"}, "seq": 4, "timestamp": 3}
+{"core_id": 0, "event_name": "SYNC_LOCK", "payload": {"obj_id": 100, "obj_type": "mutex", "task_id": 2}, "seq": 5, "timestamp": 4}
+{"core_id": 0, "event_name": "IRQ_ENTER", "payload": {"core_id": 0, "irq_id": 7, "nesting_depth": 1}, "seq": 6, "timestamp": 8}
+{"core_id": 0, "event_name": "IRQ_EXIT", "payload": {"core_id": 0, "irq_id": 7, "nesting_depth": 1}, "seq": 7, "timestamp": 12}
+{"core_id": 0, "event_name": "SYNC_TRY", "payload": {"obj_id": 100, "obj_type": "mutex", "task_id": 1}, "seq": 8, "timestamp": 13}
+{"core_id": 0, "event_name": "TASK_BLOCK", "payload": {"owner_task_id": 2, "reason": "mutex_wait", "task_id": 1, "wait_obj_id": 100}, "seq": 9, "timestamp": 14}
+{"core_id": 0, "event_name": "CTX_SWITCH", "payload": {"core_id": 0, "next_task_id": 2, "prev_task_id": 1, "reason": "block"}, "seq": 10, "timestamp": 14}
+{"core_id": 0, "event_name": "SYNC_UNLOCK", "payload": {"obj_id": 100, "obj_type": "mutex", "task_id": 2}, "seq": 11, "timestamp": 24}
+{"core_id": 0, "event_name": "TASK_WAKEUP", "payload": {"obj_id": 100, "task_id": 1, "wake_src": "resource_release"}, "seq": 12, "timestamp": 24}
+{"core_id": 0, "event_name": "TASK_DISPATCH", "payload": {"core_id": 0, "prio": 1, "reason": "wakeup", "task_id": 1}, "seq": 13, "timestamp": 25}
+{"core_id": 0, "event_name": "CTX_SWITCH", "payload": {"core_id": 0, "next_task_id": 1, "prev_task_id": 2, "reason": "preempt"}, "seq": 14, "timestamp": 26}
+{"core_id": 0, "event_name": "TASK_EXIT", "payload": {"exit_code": 0, "task_id": 1}, "seq": 15, "timestamp": 35}
+{"core_id": 0, "event_name": "CTX_SWITCH", "payload": {"core_id": 0, "next_task_id": 0, "prev_task_id": 1, "reason": "exit"}, "seq": 16, "timestamp": 35}

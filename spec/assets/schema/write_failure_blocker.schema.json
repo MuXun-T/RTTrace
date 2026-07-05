@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WriteFailureBlocker",
+  "type": "object",
+  "required": [
+    "blocker_version",
+    "snapshot_id",
+    "package_path",
+    "failed_path",
+    "error_code",
+    "error_message",
+    "partial_write_status",
+    "emitted_at",
+    "artifact_path",
+    "artifact_write_error"
+  ],
+  "properties": {
+    "blocker_version": {"type": "string"},
+    "snapshot_id": {"type": "string"},
+    "package_path": {"type": "string"},
+    "failed_path": {"type": "string"},
+    "error_code": {"type": "string"},
+    "error_message": {"type": "string"},
+    "partial_write_status": {
+      "type": "object",
+      "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+    },
+    "emitted_at": {"type": "string"},
+    "artifact_path": {"type": ["string", "null"]},
+    "artifact_write_error": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

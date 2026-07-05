@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FormalSchedulePlan",
+  "type": "object",
+  "required": [
+    "schedule_version",
+    "strategy",
+    "max_parallel",
+    "waves",
+    "reasons"
+  ],
+  "properties": {
+    "schedule_version": {"type": "string"},
+    "strategy": {"type": "string", "enum": ["serial_safe", "sidecar_first", "bounded_parallel", "degraded_priority"]},
+    "max_parallel": {"type": "integer", "minimum": 1},
+    "waves": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["task_id", "group", "command", "dependencies", "priority", "resource_class"],
+          "properties": {
+            "task_id": {"type": "string"},
+            "group": {"type": "string"},
+            "command": {"type": "array", "items": {"type": "string"}},
+            "dependencies": {"type": "array", "items": {"type": "string"}},
+            "priority": {"type": "integer"},
+            "resource_class": {"type": "string"}
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "reasons": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

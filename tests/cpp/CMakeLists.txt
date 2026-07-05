@@ -1,0 +1,9 @@
+add_executable(trace_collector_tests
+  test_collector.cpp
+)
+
+target_link_libraries(trace_collector_tests PRIVATE trace_collector)
+target_include_directories(trace_collector_tests PRIVATE ${PROJECT_SOURCE_DIR}/collector/include)
+target_compile_features(trace_collector_tests PRIVATE cxx_std_17)
+
+add_test(NAME trace_collector_tests COMMAND trace_collector_tests)

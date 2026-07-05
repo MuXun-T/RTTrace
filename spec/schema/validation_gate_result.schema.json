@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ValidationGateResult",
+  "type": "object",
+  "required": [
+    "gate_version",
+    "accepted",
+    "rejected_reason",
+    "checked_ticket",
+    "checked_schema",
+    "checked_checksum",
+    "checked_fingerprint",
+    "checked_policy",
+    "execution_plan"
+  ],
+  "properties": {
+    "gate_version": {"type": "string"},
+    "accepted": {"type": "boolean"},
+    "rejected_reason": {"type": ["string", "null"]},
+    "checked_ticket": {"type": "boolean"},
+    "checked_schema": {"type": "boolean"},
+    "checked_checksum": {"type": "boolean"},
+    "checked_fingerprint": {"type": "boolean"},
+    "checked_policy": {"type": "boolean"},
+    "execution_plan": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

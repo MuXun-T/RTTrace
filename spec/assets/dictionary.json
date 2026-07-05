@@ -1,0 +1,154 @@
+{
+  "dict_ver": 1,
+  "domains": {
+    "task": "task/schedule",
+    "sync": "synchronization",
+    "irq": "interrupt",
+    "integrity": "integrity",
+    "control": "control"
+  },
+  "enum_defs": {
+    "ready_reason": {
+      "1": "create",
+      "2": "resume",
+      "3": "preempt_return",
+      "4": "irq_return"
+    },
+    "block_reason": {
+      "1": "delay",
+      "2": "suspend",
+      "3": "mutex_wait",
+      "4": "sem_wait",
+      "5": "queue_wait",
+      "6": "flag_wait",
+      "7": "task_sem_wait",
+      "8": "task_msgq_wait"
+    },
+    "wake_source": {
+      "1": "resource_release",
+      "2": "timer",
+      "3": "task_resume",
+      "4": "irq"
+    },
+    "switch_reason": {
+      "1": "dispatch",
+      "2": "preempt",
+      "3": "block",
+      "4": "wakeup",
+      "5": "irq_return",
+      "6": "exit"
+    },
+    "integrity_reason": {
+      "1": "seq_gap",
+      "2": "buffer_overflow",
+      "3": "io_backpressure",
+      "4": "media_corruption"
+    },
+    "obj_type": {
+      "1": "mutex",
+      "2": "sem",
+      "3": "queue",
+      "4": "flag",
+      "5": "task_sem",
+      "6": "task_msgq"
+    }
+  },
+  "event_defs": {
+    "TASK_READY": {
+      "event_id": 1,
+      "domain": "task",
+      "required": ["task_id", "prio", "reason"],
+      "optional": ["core_hint"]
+    },
+    "TASK_BLOCK": {
+      "event_id": 2,
+      "domain": "task",
+      "required": ["task_id", "reason"],
+      "optional": ["wait_obj_id", "owner_task_id"]
+    },
+    "TASK_WAKEUP": {
+      "event_id": 3,
+      "domain": "task",
+      "required": ["task_id", "wake_src"],
+      "optional": ["obj_id"]
+    },
+    "TASK_DISPATCH": {
+      "event_id": 4,
+      "domain": "task",
+      "required": ["task_id", "core_id", "prio", "reason"],
+      "optional": []
+    },
+    "TASK_EXIT": {
+      "event_id": 5,
+      "domain": "task",
+      "required": ["task_id"],
+      "optional": ["exit_code"]
+    },
+    "CTX_SWITCH": {
+      "event_id": 6,
+      "domain": "task",
+      "required": ["core_id", "prev_task_id", "next_task_id", "reason"],
+      "optional": []
+    },
+    "SCHED_DECISION": {
+      "event_id": 7,
+      "domain": "task",
+      "required": ["core_id", "rq_len", "reason"],
+      "optional": ["selected_task_id"]
+    },
+    "SYNC_TRY": {
+      "event_id": 8,
+      "domain": "sync",
+      "required": ["task_id", "obj_id", "obj_type"],
+      "optional": ["timeout"]
+    },
+    "SYNC_LOCK": {
+      "event_id": 9,
+      "domain": "sync",
+      "required": ["task_id", "obj_id", "obj_type"],
+      "optional": []
+    },
+    "SYNC_UNLOCK": {
+      "event_id": 10,
+      "domain": "sync",
+      "required": ["task_id", "obj_id", "obj_type"],
+      "optional": []
+    },
+    "IRQ_ENTER": {
+      "event_id": 11,
+      "domain": "irq",
+      "required": ["irq_id", "core_id", "nesting_depth"],
+      "optional": []
+    },
+    "IRQ_EXIT": {
+      "event_id": 12,
+      "domain": "irq",
+      "required": ["irq_id", "core_id", "nesting_depth"],
+      "optional": []
+    },
+    "LOSS": {
+      "event_id": 13,
+      "domain": "integrity",
+      "required": ["core_id", "lost_count", "reason"],
+      "optional": []
+    },
+    "OVERFLOW": {
+      "event_id": 14,
+      "domain": "integrity",
+      "required": ["core_id", "overflow_count", "reason"],
+      "optional": []
+    },
+    "SYNC_CALIB": {
+      "event_id": 15,
+      "domain": "control",
+      "required": ["anchor_id", "core_id", "ref_ts"],
+      "optional": []
+    },
+    "TS_CALIB": {
+      "event_id": 16,
+      "domain": "control",
+      "required": ["anchor_id", "src_core", "dst_core", "raw_ts"],
+      "optional": []
+    }
+  }
+}

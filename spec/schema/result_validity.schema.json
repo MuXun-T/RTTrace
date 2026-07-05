@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResultValidity",
+  "type": "object",
+  "required": ["results"],
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "category",
+          "object_kind",
+          "object_id",
+          "validity_scope",
+          "derivation_mode"
+        ],
+        "properties": {
+          "path": {"type": "string"},
+          "category": {"type": "string"},
+          "object_kind": {
+            "type": "string",
+            "enum": ["alert", "diagnosis"]
+          },
+          "object_id": {"type": "string"},
+          "validity_scope": {
+            "type": "string",
+            "enum": ["source_snapshot", "evidence_subset"]
+          },
+          "derivation_mode": {
+            "type": "string",
+            "enum": ["reused_context", "recomputed_subset"]
+          },
+          "notes": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

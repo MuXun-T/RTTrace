@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProofDigest",
+  "type": "object",
+  "required": [
+    "snapshot_id",
+    "closure_mode",
+    "complete_wrt_rule_family",
+    "rule_family",
+    "budget_vector",
+    "closure_depth_reached",
+    "seed_ref_count",
+    "closed_ref_count",
+    "missing_required_refs",
+    "truncated_frontier_count",
+    "frontier_halt_reason",
+    "events_emitted",
+    "bytes_emitted",
+    "scan_count",
+    "seek_count",
+    "window_span_total",
+    "sidecar_lookup_count",
+    "proof_hash"
+  ],
+  "properties": {
+    "snapshot_id": {"type": "string"},
+    "closure_mode": {"type": "string"},
+    "complete_wrt_rule_family": {"type": "boolean"},
+    "rule_family": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}}
+      ]
+    },
+    "budget_vector": {
+      "type": "object",
+      "required": ["D_max", "C_events", "S_bytes", "rho_max"],
+      "properties": {
+        "D_max": {"type": "integer"},
+        "C_events": {"type": "integer"},
+        "S_bytes": {"type": "integer"},
+        "rho_max": {"type": "number"}
+      },
+      "additionalProperties": true
+    },
+    "closure_depth_reached": {"type": "integer", "minimum": 0},
+    "seed_ref_count": {"type": "integer", "minimum": 0},
+    "closed_ref_count": {"type": "integer", "minimum": 0},
+    "missing_required_refs": {"type": "integer", "minimum": 0},
+    "truncated_frontier_count": {"type": "integer", "minimum": 0},
+    "frontier_halt_reason": {"type": "string"},
+    "events_emitted": {"type": "integer", "minimum": 0},
+    "bytes_emitted": {"type": "integer", "minimum": 0},
+    "scan_count": {"type": "integer", "minimum": 0},
+    "seek_count": {"type": "integer", "minimum": 0},
+    "window_span_total": {"type": "integer", "minimum": 0},
+    "sidecar_lookup_count": {"type": "integer", "minimum": 0},
+    "round_count": {"type": "integer", "minimum": 0},
+    "window_hit_rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
+    "sidecar_bytes": {"type": ["integer", "null"], "minimum": 0},
+    "sidecar_selector_mode": {"type": ["string", "null"]},
+    "sidecar_selector_calls": {"type": "integer", "minimum": 0},
+    "sidecar_bytes_scanned": {"type": "integer", "minimum": 0},
+    "sidecar_index_build_seconds": {"type": ["number", "null"], "minimum": 0},
+    "proof_hash": {"type": "string"}
+  },
+  "additionalProperties": false
+}

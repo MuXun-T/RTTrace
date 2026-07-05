@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FrontierSnapshot",
+  "type": "object",
+  "required": [
+    "round_id",
+    "closure_mode",
+    "frontier_count",
+    "consumed_depth",
+    "consumed_events",
+    "consumed_bytes",
+    "projected_next_events",
+    "projected_next_bytes",
+    "expansion_ratio",
+    "halt_reason",
+    "frontier_refs_path",
+    "truncated_frontier_count"
+  ],
+  "properties": {
+    "round_id": {"type": "integer", "minimum": 0},
+    "closure_mode": {"type": "string"},
+    "frontier_count": {"type": "integer", "minimum": 0},
+    "consumed_depth": {"type": "integer", "minimum": 0},
+    "consumed_events": {"type": "integer", "minimum": 0},
+    "consumed_bytes": {"type": "integer", "minimum": 0},
+    "projected_next_events": {"type": "integer", "minimum": 0},
+    "projected_next_bytes": {"type": "integer", "minimum": 0},
+    "expansion_ratio": {"type": "number", "minimum": 0},
+    "halt_reason": {"type": "string"},
+    "frontier_refs_path": {"type": ["string", "null"]},
+    "truncated_frontier_count": {"type": "integer", "minimum": 0},
+    "freeze_round_id": {"type": ["integer", "null"], "minimum": 0},
+    "pre_read_reject": {"type": "boolean"},
+    "pre_read_reject_round_id": {"type": ["integer", "null"], "minimum": 0}
+  },
+  "additionalProperties": false
+}

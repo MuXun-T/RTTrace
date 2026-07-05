@@ -1,0 +1,170 @@
+{
+  "dict_ver": 1,
+  "domain_defs": {
+    "task": "task lifecycle and scheduler events",
+    "sync": "synchronization and resource events",
+    "irq": "interrupt events",
+    "integrity": "trace integrity events",
+    "align": "cross-core alignment events"
+  },
+  "enum_defs": {
+    "ready_reason": {
+      "1": "create",
+      "2": "resume",
+      "3": "preempt_return",
+      "4": "irq_return"
+    },
+    "block_reason": {
+      "1": "delay",
+      "2": "suspend",
+      "3": "mutex_wait",
+      "4": "sem_wait",
+      "5": "queue_wait",
+      "6": "flag_wait",
+      "7": "task_sem_wait",
+      "8": "task_msgq_wait"
+    },
+    "wake_source": {
+      "1": "resource_release",
+      "2": "timer",
+      "3": "task_resume",
+      "4": "irq"
+    },
+    "switch_reason": {
+      "1": "dispatch",
+      "2": "preempt",
+      "3": "block",
+      "4": "wakeup",
+      "5": "irq_return",
+      "6": "exit"
+    },
+    "integrity_reason": {
+      "1": "seq_gap",
+      "2": "buffer_overflow",
+      "3": "io_backpressure",
+      "4": "media_corruption"
+    },
+    "obj_type": {
+      "1": "mutex",
+      "2": "sem",
+      "3": "queue",
+      "4": "flag",
+      "5": "task_sem",
+      "6": "task_msgq"
+    }
+  },
+  "event_defs": [
+    {
+      "event_id": 4097,
+      "event_name": "TASK_READY",
+      "domain": "task",
+      "payload_fields": ["task_id", "prio", "core_hint", "reason"],
+      "p0_required": true
+    },
+    {
+      "event_id": 4098,
+      "event_name": "TASK_BLOCK",
+      "domain": "task",
+      "payload_fields": ["task_id", "wait_obj_id", "reason", "owner_task_id"],
+      "p0_required": true
+    },
+    {
+      "event_id": 4099,
+      "event_name": "TASK_WAKEUP",
+      "domain": "task",
+      "payload_fields": ["task_id", "wake_src", "obj_id"],
+      "p0_required": true
+    },
+    {
+      "event_id": 4100,
+      "event_name": "TASK_DISPATCH",
+      "domain": "task",
+      "payload_fields": ["task_id", "core_id", "prio", "reason"],
+      "p0_required": true
+    },
+    {
+      "event_id": 4101,
+      "event_name": "TASK_EXIT",
+      "domain": "task",
+      "payload_fields": ["task_id", "exit_code"],
+      "p0_required": true
+    },
+    {
+      "event_id": 4102,
+      "event_name": "CTX_SWITCH",
+      "domain": "task",
+      "payload_fields": ["core_id", "prev_task_id", "next_task_id", "reason"],
+      "p0_required": true
+    },
+    {
+      "event_id": 4103,
+      "event_name": "SCHED_DECISION",
+      "domain": "task",
+      "payload_fields": ["core_id", "selected_task_id", "rq_len", "reason"],
+      "p0_required": true
+    },
+    {
+      "event_id": 8193,
+      "event_name": "SYNC_TRY",
+      "domain": "sync",
+      "payload_fields": ["task_id", "obj_id", "obj_type", "timeout"],
+      "p0_required": true
+    },
+    {
+      "event_id": 8194,
+      "event_name": "SYNC_LOCK",
+      "domain": "sync",
+      "payload_fields": ["task_id", "obj_id", "obj_type"],
+      "p0_required": true
+    },
+    {
+      "event_id": 8195,
+      "event_name": "SYNC_UNLOCK",
+      "domain": "sync",
+      "payload_fields": ["task_id", "obj_id", "obj_type"],
+      "p0_required": true
+    },
+    {
+      "event_id": 12289,
+      "event_name": "IRQ_ENTER",
+      "domain": "irq",
+      "payload_fields": ["irq_id", "core_id", "nesting_depth"],
+      "p0_required": true
+    },
+    {
+      "event_id": 12290,
+      "event_name": "IRQ_EXIT",
+      "domain": "irq",
+      "payload_fields": ["irq_id", "core_id", "nesting_depth"],
+      "p0_required": true
+    },
+    {
+      "event_id": 16385,
+      "event_name": "LOSS",
+      "domain": "integrity",
+      "payload_fields": ["core_id", "lost_count", "reason"],
+      "p0_required": true
+    },
+    {
+      "event_id": 16386,
+      "event_name": "OVERFLOW",
+      "domain": "integrity",
+      "payload_fields": ["core_id", "overflow_count", "reason"],
+      "p0_required": true
+    },
+    {
+      "event_id": 16387,
+      "event_name": "SYNC_CALIB",
+      "domain": "align",
+      "payload_fields": ["anchor_id", "core_id", "ref_ts"],
+      "p0_required": false
+    },
+    {
+      "event_id": 16388,
+      "event_name": "TS_CALIB",
+      "domain": "align",
+      "payload_fields": ["anchor_id", "src_core", "dst_core", "raw_ts"],
+      "p0_required": false
+    }
+  ]
+}

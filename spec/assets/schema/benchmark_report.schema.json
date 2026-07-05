@@ -1,0 +1,349 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BenchmarkReport",
+  "type": "object",
+  "required": [
+    "report_version",
+    "generated_at",
+    "input_contract",
+    "scenario_order",
+    "scenarios",
+    "results",
+    "summary"
+  ],
+  "properties": {
+    "report_version": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "input_contract": {
+      "type": "object",
+      "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+    },
+    "scenario_order": {"type": "array", "items": {"type": "string"}},
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenario_version",
+          "scenario_id",
+          "scenario_kind",
+          "advisor_enabled",
+          "advisor_mode",
+          "ticket_fast_path_enabled",
+          "streaming_write_enabled",
+          "optional_dependency",
+          "expected_execution_plan"
+        ],
+        "properties": {
+          "scenario_version": {"type": "string"},
+          "scenario_id": {
+            "type": "string",
+            "enum": [
+              "current_baseline",
+              "ticket_fast_path",
+              "advisor_heuristic",
+              "advisor_optional_sklearn",
+              "advisor_openai_structured"
+            ]
+          },
+          "scenario_kind": {
+            "type": "string",
+            "enum": [
+              "current_baseline",
+              "ticket_fast_path",
+              "advisor_heuristic",
+              "advisor_optional_sklearn",
+              "advisor_openai_structured"
+            ]
+          },
+          "advisor_enabled": {"type": "boolean"},
+          "advisor_mode": {
+            "type": "string",
+            "enum": ["disabled", "heuristic", "offline_coefficients", "openai_structured"]
+          },
+          "ticket_fast_path_enabled": {"type": "boolean"},
+          "streaming_write_enabled": {"type": "boolean"},
+          "optional_dependency": {"type": ["string", "null"]},
+          "expected_execution_plan": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "status",
+          "runtime_seconds",
+          "sidecar_bytes_scanned",
+          "sidecar_validate_seconds",
+          "index_build_open_seconds",
+          "peak_rss_mb",
+          "package_write_seconds",
+          "advisor_overhead_seconds",
+          "proof_hash",
+          "parity_result",
+          "artifact_refs",
+          "summary_metrics"
+        ],
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "enum": [
+              "current_baseline",
+              "ticket_fast_path",
+              "advisor_heuristic",
+              "advisor_optional_sklearn",
+              "advisor_openai_structured"
+            ]
+          },
+          "status": {"type": "string", "enum": ["planned", "completed", "completed_with_fallback", "failed"]},
+          "runtime_seconds": {"type": ["number", "null"], "minimum": 0},
+          "sidecar_bytes_scanned": {"type": ["integer", "null"], "minimum": 0},
+          "sidecar_validate_seconds": {"type": ["number", "null"], "minimum": 0},
+          "index_build_open_seconds": {"type": ["number", "null"], "minimum": 0},
+          "peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
+          "package_write_seconds": {"type": ["number", "null"], "minimum": 0},
+          "advisor_overhead_seconds": {"type": ["number", "null"], "minimum": 0},
+          "proof_hash": {"type": ["string", "null"]},
+          "parity_result": {
+            "type": "object",
+            "required": ["proof_hash", "metric_diff_count", "mandatory_field_set"],
+            "properties": {
+              "proof_hash": {"type": ["string", "null"]},
+              "metric_diff_count": {"type": "integer", "minimum": 0},
+              "mandatory_field_set": {"type": "array", "items": {"type": "string"}},
+              "baseline_proof_hash": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+          },
+          "artifact_refs": {
+            "type": "object",
+            "additionalProperties": {"type": "string"}
+          },
+          "summary_metrics": {
+            "type": "object",
+            "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+          },
+          "telemetry_records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "scenario_count",
+        "runtime_seconds",
+        "sidecar_bytes_scanned",
+        "sidecar_validate_seconds",
+        "index_build_open_seconds",
+        "peak_rss_mb",
+        "package_write_seconds",
+        "advisor_overhead_seconds",
+        "status_by_scenario",
+        "required_metric_coverage",
+        "repeated_run_statistics",
+        "artifact_refs",
+        "parity"
+      ],
+      "properties": {
+        "scenario_count": {"type": "integer", "minimum": 0},
+        "runtime_seconds": {
+          "type": "object",
+          "additionalProperties": {"type": ["number", "null"]}
+        },
+        "sidecar_bytes_scanned": {
+          "type": "object",
+          "additionalProperties": {"type": ["number", "null"]}
+        },
+        "sidecar_validate_seconds": {
+          "type": "object",
+          "additionalProperties": {"type": ["number", "null"]}
+        },
+        "index_build_open_seconds": {
+          "type": "object",
+          "additionalProperties": {"type": ["number", "null"]}
+        },
+        "peak_rss_mb": {
+          "type": "object",
+          "additionalProperties": {"type": ["number", "null"]}
+        },
+        "package_write_seconds": {
+          "type": "object",
+          "additionalProperties": {"type": ["number", "null"]}
+        },
+        "advisor_overhead_seconds": {
+          "type": "object",
+          "additionalProperties": {"type": ["number", "null"]}
+        },
+        "status_by_scenario": {
+          "type": "object",
+          "additionalProperties": {"type": ["string", "null"]}
+        },
+        "required_metric_coverage": {
+          "type": "object",
+          "required": [
+            "runtime_seconds",
+            "sidecar_bytes_scanned",
+            "sidecar_validate_seconds",
+            "index_build_open_seconds",
+            "peak_rss_mb",
+            "package_write_seconds",
+            "advisor_overhead_seconds"
+          ],
+          "properties": {
+            "runtime_seconds": {
+              "type": "object",
+              "required": ["present_count", "scenario_count", "complete", "missing_scenarios"],
+              "properties": {
+                "present_count": {"type": "integer", "minimum": 0},
+                "scenario_count": {"type": "integer", "minimum": 0},
+                "complete": {"type": "boolean"},
+                "missing_scenarios": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            },
+            "sidecar_bytes_scanned": {
+              "type": "object",
+              "required": ["present_count", "scenario_count", "complete", "missing_scenarios"],
+              "properties": {
+                "present_count": {"type": "integer", "minimum": 0},
+                "scenario_count": {"type": "integer", "minimum": 0},
+                "complete": {"type": "boolean"},
+                "missing_scenarios": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            },
+            "sidecar_validate_seconds": {
+              "type": "object",
+              "required": ["present_count", "scenario_count", "complete", "missing_scenarios"],
+              "properties": {
+                "present_count": {"type": "integer", "minimum": 0},
+                "scenario_count": {"type": "integer", "minimum": 0},
+                "complete": {"type": "boolean"},
+                "missing_scenarios": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            },
+            "index_build_open_seconds": {
+              "type": "object",
+              "required": ["present_count", "scenario_count", "complete", "missing_scenarios"],
+              "properties": {
+                "present_count": {"type": "integer", "minimum": 0},
+                "scenario_count": {"type": "integer", "minimum": 0},
+                "complete": {"type": "boolean"},
+                "missing_scenarios": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            },
+            "peak_rss_mb": {
+              "type": "object",
+              "required": ["present_count", "scenario_count", "complete", "missing_scenarios"],
+              "properties": {
+                "present_count": {"type": "integer", "minimum": 0},
+                "scenario_count": {"type": "integer", "minimum": 0},
+                "complete": {"type": "boolean"},
+                "missing_scenarios": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            },
+            "package_write_seconds": {
+              "type": "object",
+              "required": ["present_count", "scenario_count", "complete", "missing_scenarios"],
+              "properties": {
+                "present_count": {"type": "integer", "minimum": 0},
+                "scenario_count": {"type": "integer", "minimum": 0},
+                "complete": {"type": "boolean"},
+                "missing_scenarios": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            },
+            "advisor_overhead_seconds": {
+              "type": "object",
+              "required": ["present_count", "scenario_count", "complete", "missing_scenarios"],
+              "properties": {
+                "present_count": {"type": "integer", "minimum": 0},
+                "scenario_count": {"type": "integer", "minimum": 0},
+                "complete": {"type": "boolean"},
+                "missing_scenarios": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "repeated_run_statistics": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["run_count", "completed_count", "metrics"],
+            "properties": {
+              "run_count": {"type": "integer", "minimum": 0},
+              "completed_count": {"type": "integer", "minimum": 0},
+              "metrics": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "required": ["count", "samples", "median", "p95", "min", "max"],
+                  "properties": {
+                    "count": {"type": "integer", "minimum": 0},
+                    "samples": {"type": "array", "items": {"type": "number"}},
+                    "median": {"type": ["number", "null"], "minimum": 0},
+                    "p95": {"type": ["number", "null"], "minimum": 0},
+                    "min": {"type": ["number", "null"], "minimum": 0},
+                    "max": {"type": ["number", "null"], "minimum": 0}
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "artifact_refs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {"type": "string"}
+          }
+        },
+        "parity": {
+          "type": "object",
+          "required": [
+            "proof_hash_consistent",
+            "metric_diff_count",
+            "mandatory_field_set_consistent",
+            "mandatory_field_sets",
+            "proof_hashes",
+            "parity_row_count",
+            "scenario_ids"
+          ],
+          "properties": {
+            "proof_hash_consistent": {"type": "boolean"},
+            "metric_diff_count": {"type": "integer", "minimum": 0},
+            "mandatory_field_set_consistent": {"type": "boolean"},
+            "mandatory_field_sets": {
+              "type": "array",
+              "items": {"type": "array", "items": {"type": "string"}}
+            },
+            "proof_hashes": {"type": "array", "items": {"type": "string"}},
+            "parity_row_count": {"type": "integer", "minimum": 0},
+            "scenario_ids": {"type": "array", "items": {"type": "string"}}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-03-21T03:28:33Z",
+  "sample_profile": "public_rtos_prevalidation_large_input",
+  "public_source": {
+    "seed_systrace": "/tmp/public-rtos-prevalidation/nuttx_public_seed.systrace",
+    "seed_systrace_sha256": "e2c4ed9ba56e47c5edcfbde225ded7b766848e8c2e953055d72fba51375967c0",
+    "trace_family": "Apache NuttX task trace / systrace",
+    "source_urls": [
+      "https://nuttx.apache.org/docs/latest/debugging/tasktrace.html",
+      "https://nuttx.apache.org/docs/latest/debugging/tasktraceuser.html",
+      "https://github.com/apache/nuttx/blob/master/tools/parsetrace.py"
+    ]
+  },
+  "derivation": {
+    "producer_ver": "public-rtos-derived-0.1",
+    "target_size_bytes": 1073741824,
+    "real_seed_target_bytes": 8388608,
+    "base_seed_trace_size_bytes": 774,
+    "expanded_seed_trace_size_bytes": 6437924,
+    "repeat": 10838,
+    "cycle_gap_ns": null,
+    "event_count": 130056,
+    "padding_mode": "seeded_zero_chunk_extension"
+  },
+  "conversion": {
+    "task_names": {
+      "0": "idle",
+      "7": "worker",
+      "9": "helper"
+    },
+    "event_count": 12,
+    "time_span_ns": 400000,
+    "event_breakdown": {
+      "task_ready": 1,
+      "task_block": 1,
+      "task_wakeup": 1,
+      "task_dispatch": 1,
+      "ctx_switch": 2,
+      "sync_try": 2,
+      "sync_lock": 1,
+      "sync_unlock": 1,
+      "irq_enter": 1,
+      "irq_exit": 1
+    }
+  },
+  "outputs": {
+    "baseline": {
+      "seed_input": "/tmp/public-rtos-seed-8flvns06.trace",
+      "output": "/tmp/public-rtos-prevalidation/public_rtos_1gb_fast_baseline.trace",
+      "target_size_bytes": 1073741824,
+      "output_size_bytes": 1073741880,
+      "filler_chunk_bytes": 67108864,
+      "appended_chunk_count": 16,
+      "dict_ver": 1,
+      "last_event_timestamp": 16172200000.0,
+      "sha256": "f445be02657c6d24ac8d419323d634ee226b751b855ff4a7b6155bc5156fd245",
+      "padding_applied": true
+    },
+    "candidate": {
+      "output": "/tmp/public-rtos-prevalidation/public_rtos_1gb_fast_candidate.trace",
+      "output_size_bytes": 1073741880,
+      "sha256": "f445be02657c6d24ac8d419323d634ee226b751b855ff4a7b6155bc5156fd245",
+      "mirrors_baseline": true
+    }
+  },
+  "limitations": [
+    "public_rtos_seeded_prevalidation_input",
+    "not_final_formal_external_evidence"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SidecarSegmentManifest",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "segment_dir",
+    "segment_count",
+    "segments",
+    "created_at",
+    "snapshot_id",
+    "trace_checksum",
+    "dictionary_checksum"
+  ],
+  "properties": {
+    "manifest_version": {"type": "string"},
+    "segment_dir": {"type": "string"},
+    "segment_count": {"type": "integer", "minimum": 0},
+    "created_at": {"type": "string"},
+    "snapshot_id": {"type": "string"},
+    "trace_checksum": {"type": "string"},
+    "dictionary_checksum": {"type": "string"},
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "segment_id",
+          "time_begin",
+          "time_end",
+          "core_ids",
+          "event_count",
+          "row_count",
+          "sidecar_path",
+          "index_path",
+          "checksum",
+          "schema_version"
+        ],
+        "properties": {
+          "segment_id": {"type": "string"},
+          "time_begin": {"type": "integer"},
+          "time_end": {"type": "integer"},
+          "core_ids": {
+            "type": "array",
+            "items": {"type": "integer"}
+          },
+          "event_count": {"type": "integer", "minimum": 0},
+          "row_count": {"type": "integer", "minimum": 0},
+          "sidecar_path": {"type": "string"},
+          "index_path": {"type": "string"},
+          "ticket_path": {"type": ["string", "null"]},
+          "checksum": {"type": "string"},
+          "schema_version": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

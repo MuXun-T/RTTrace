@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AdvisorDecision",
+  "type": "object",
+  "required": [
+    "decision_version",
+    "advisor_mode",
+    "model_ref",
+    "feature_snapshot_hash",
+    "recommend_index_prebuild",
+    "recommend_index_reuse_attempt",
+    "recommend_streaming_write",
+    "recommended_schedule",
+    "predicted_runtime_seconds",
+    "predicted_peak_rss_mb",
+    "risk_level",
+    "reasons"
+  ],
+  "properties": {
+    "decision_version": {"type": "string"},
+    "advisor_mode": {
+      "type": "string",
+      "enum": ["disabled", "heuristic", "offline_coefficients", "openai_structured"]
+    },
+    "model_ref": {"type": "string"},
+    "model_checksum": {"type": ["string", "null"]},
+    "feature_snapshot_hash": {"type": "string"},
+    "recommend_index_prebuild": {"type": "boolean"},
+    "recommend_index_reuse_attempt": {"type": "boolean"},
+    "recommend_streaming_write": {"type": "boolean"},
+    "recommended_schedule": {
+      "type": "string",
+      "enum": ["serial_safe", "sidecar_first", "bounded_parallel", "degraded_priority"]
+    },
+    "predicted_runtime_seconds": {"type": ["number", "null"], "minimum": 0},
+    "predicted_peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
+    "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+    "reasons": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

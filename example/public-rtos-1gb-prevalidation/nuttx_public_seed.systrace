@@ -1,0 +1,10 @@
+worker-7 [0] 1.000000000: sys_sem_wait()
+worker-7 [0] 1.000050000: sched_switch: prev_comm=worker prev_pid=7 prev_state=S ==> next_comm=idle next_pid=0
+idle-0 [0] 1.000060000: irq_handler_entry: irq=5
+idle-0 [0] 1.000090000: irq_handler_exit: irq=5
+worker-7 [0] 1.000120000: sched_waking: comm=worker pid=7 target_cpu=0
+idle-0 [0] 1.000140000: sched_switch: prev_comm=idle prev_pid=0 prev_state=R ==> next_comm=worker next_pid=7
+worker-7 [0] 1.000200000: sys_sem_wait -> 0
+worker-7 [0] 1.000300000: sys_sem_post()
+worker-7 [0] 1.000330000: sys_sem_post -> 0
+creator-9 [1] 1.000400000: sched_wakeup_new: comm=helper pid=9 target_cpu=1

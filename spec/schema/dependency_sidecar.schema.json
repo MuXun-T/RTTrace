@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DependencySidecarRow",
+  "type": "object",
+  "required": [
+    "snapshot_id",
+    "trace_checksum",
+    "src_ref",
+    "dst_ref",
+    "src_kind",
+    "dst_kind",
+    "relation_kind",
+    "rule_family",
+    "provenance",
+    "priority",
+    "time_hint_begin_ns",
+    "time_hint_end_ns",
+    "cycle_guard_token",
+    "estimate_events",
+    "estimate_bytes",
+    "edge_hash"
+  ],
+  "properties": {
+    "snapshot_id": {"type": "string"},
+    "trace_checksum": {"type": "string"},
+    "src_ref": {"type": "string"},
+    "dst_ref": {"type": "string"},
+    "src_kind": {
+      "type": "string",
+      "enum": ["ref", "object"]
+    },
+    "dst_kind": {
+      "type": "string",
+      "enum": ["ref", "object"]
+    },
+    "relation_kind": {
+      "type": "string",
+      "enum": [
+        "ref_index_next",
+        "ref_index_prev",
+        "slice_start",
+        "slice_end",
+        "slice_start_event",
+        "slice_end_event",
+        "state_cause",
+        "state_cause_event",
+        "resource_wait",
+        "resource_wait_event",
+        "resource_hold",
+        "resource_hold_event",
+        "alert_evidence",
+        "alert_event",
+        "diagnosis_evidence",
+        "diagnosis_event",
+        "anchor_evidence",
+        "anchor_event",
+        "context_anchor",
+        "context_anchor_event"
+      ]
+    },
+    "rule_family": {
+      "type": "string",
+      "enum": ["ref_ref", "ref_alert", "ref_diagnosis", "ref_anchor", "ref_object"]
+    },
+    "provenance": {"type": "string"},
+    "priority": {"type": "integer", "minimum": 0, "maximum": 100},
+    "time_hint_begin_ns": {"type": "integer"},
+    "time_hint_end_ns": {"type": "integer"},
+    "core_hint": {"type": ["integer", "null"]},
+    "seq_hint_begin": {"type": ["integer", "null"]},
+    "seq_hint_end": {"type": ["integer", "null"]},
+    "segment_hint": {"type": ["string", "null"]},
+    "cycle_guard_token": {"type": "string"},
+    "estimate_events": {"type": "integer", "minimum": 0},
+    "estimate_bytes": {"type": "integer", "minimum": 0},
+    "edge_hash": {"type": "string"}
+  },
+  "additionalProperties": false
+}

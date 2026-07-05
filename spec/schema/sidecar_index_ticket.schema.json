@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SidecarIndexTicket",
+  "type": "object",
+  "required": [
+    "ticket_version",
+    "index_backend",
+    "index_path",
+    "sidecar_path",
+    "sidecar_checksum",
+    "sidecar_bytes",
+    "file_fingerprint",
+    "row_count",
+    "snapshot_id",
+    "trace_checksum",
+    "dictionary_checksum",
+    "schema_version",
+    "created_at",
+    "index_build_seconds",
+    "build_host_platform",
+    "selector_mode"
+  ],
+  "properties": {
+    "ticket_version": {"type": "string"},
+    "index_backend": {"type": "string"},
+    "index_path": {"type": "string"},
+    "sidecar_path": {"type": "string"},
+    "sidecar_checksum": {"type": "string"},
+    "sidecar_bytes": {"type": "integer", "minimum": 0},
+    "file_fingerprint": {
+      "type": "array",
+      "items": {"type": "integer"},
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "row_count": {"type": "integer", "minimum": 0},
+    "snapshot_id": {"type": "string"},
+    "trace_checksum": {"type": "string"},
+    "dictionary_checksum": {"type": "string"},
+    "schema_version": {"type": "integer"},
+    "created_at": {"type": "string"},
+    "index_build_seconds": {"type": "number", "minimum": 0},
+    "build_host_platform": {"type": "string"},
+    "selector_mode": {"type": "string"}
+  },
+  "additionalProperties": false
+}

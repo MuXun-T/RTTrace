@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentJobContract",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "state_contract_version",
+    "agent_name",
+    "agent_kind",
+    "job_id",
+    "created_at",
+    "status",
+    "agent_state",
+    "started_at",
+    "completed_at",
+    "finished_at",
+    "error_code",
+    "error_message",
+    "failed_at_state",
+    "input_refs",
+    "output_refs",
+    "artifact_handles",
+    "telemetry",
+    "state_history"
+  ],
+  "properties": {
+    "contract_version": {"type": "string"},
+    "state_contract_version": {"type": "string"},
+    "agent_name": {"type": "string"},
+    "agent_kind": {"type": "string"},
+    "job_id": {"type": ["string", "null"]},
+    "created_at": {"type": "string"},
+    "status": {"type": "string", "enum": ["AGENT-queued", "AGENT-validating_input", "AGENT-running", "AGENT-artifact_written", "AGENT-completed", "AGENT-failed", "AGENT-cancelled", "AGENT-timeout"]},
+    "agent_state": {"type": "string", "enum": ["AGENT-queued", "AGENT-validating_input", "AGENT-running", "AGENT-artifact_written", "AGENT-completed", "AGENT-failed", "AGENT-cancelled", "AGENT-timeout"]},
+    "started_at": {"type": ["string", "null"]},
+    "completed_at": {"type": ["string", "null"]},
+    "finished_at": {"type": ["string", "null"]},
+    "error_code": {"type": ["string", "null"]},
+    "error_message": {"type": ["string", "null"]},
+    "failed_at_state": {"type": ["string", "null"]},
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "path"],
+        "properties": {
+          "kind": {"type": "string"},
+          "path": {"type": "string"},
+          "role": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "output_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "path"],
+        "properties": {
+          "kind": {"type": "string"},
+          "path": {"type": "string"},
+          "role": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "artifact_handles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "path"],
+        "properties": {
+          "kind": {"type": "string"},
+          "path": {"type": "string"},
+          "role": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+    },
+    "state_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["status", "updated_at"],
+        "properties": {
+          "status": {"type": "string", "enum": ["AGENT-queued", "AGENT-validating_input", "AGENT-running", "AGENT-artifact_written", "AGENT-completed", "AGENT-failed", "AGENT-cancelled", "AGENT-timeout"]},
+          "updated_at": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
