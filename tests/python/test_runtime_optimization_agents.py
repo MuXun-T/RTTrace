@@ -21,7 +21,7 @@ from parser.formal_scheduler import FormalSuiteSchedulerAgent, FormalTask
 from parser.parser_process_agent import ParserProcessAgent
 from parser.runtime_optimization_gate import DeterministicValidationGate
 from parser.telemetry import TelemetryHistoryStore, TelemetryReportAgent, record_telemetry_phase
-from parser.runtime_advisor import RuntimeOptimizationAdvisor, build_advisor_trace
+from parser.runtime_advisor import RuntimeAction, RuntimeOptimizationAdvisor, build_advisor_trace
 from spec.schema_loader import DICTIONARY_PATH, load_dictionary
 from spec.schema_loader import load_specs
 from spec.schema_validator import validate_schema
@@ -1888,6 +1888,50 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         self.assertEqual(fast_path_rows["ticket_fast_path"]["sidecar_bytes_scanned"], 0)
         self.assertTrue(all(set(row["proof_digests"]) == {"A", "B", "C"} for row in matrix_summary["scenarios"]))
 
+    def test_runtime_optimization_formal_matrix_refresh_keeps_proof_digest_facts_drift_zero_for_disabled_heuristic_and_openai_structured(self) -> None:
+        input_root = self._write_formal_matrix_fixture()
+        output_root = self.root / "formal-matrix-output-proof-drift-zero"
+
+        exit_code = run_runtime_optimization_formal_matrix_main([
+            "--output-root",
+            str(output_root),
+            "--refresh-only",
+            "--input-matrix-root",
+            str(input_root),
+        ])
+
+        self.assertEqual(exit_code, 0)
+        benchmark_report = json.loads((output_root / "benchmark_report.json").read_text(encoding="utf-8"))
+        parity_report = json.loads((output_root / "formal_parity_report.json").read_text(encoding="utf-8"))
+        rows = {row["scenario_id"]: row for row in benchmark_report["results"]}
+        expected_modes = {
+            "current_baseline": "disabled",
+            "advisor_heuristic": "heuristic",
+            "advisor_openai_structured": "openai_structured",
+        }
+        drift_by_scenario = {
+            scenario_id: int(dict(rows[scenario_id]["parity_result"]).get("metric_diff_count") or 0)
+            for scenario_id in expected_modes
+        }
+
+        self.assertEqual(
+            {scenario_id: rows[scenario_id]["summary_metrics"]["advisor_mode_effective"] for scenario_id in expected_modes},
+            expected_modes,
+        )
+        self.assertEqual(
+            drift_by_scenario,
+            {
+                "current_baseline": 0,
+                "advisor_heuristic": 0,
+                "advisor_openai_structured": 0,
+            },
+        )
+        for scenario_id in expected_modes:
+            row = rows[scenario_id]
+            self.assertTrue(row["summary_metrics"]["proof_digest_boundary_clean"], scenario_id)
+            self.assertEqual(row["proof_hash"], row["parity_result"]["baseline_proof_hash"], scenario_id)
+        self.assertTrue(parity_report["proof_hash_consistent"])
+
     def test_runtime_optimization_formal_matrix_refresh_only_allows_distinct_abc_group_hashes(self) -> None:
         input_root = self._write_formal_matrix_fixture(alternate_group_hash="C")
         output_root = self.root / "formal-matrix-output-distinct-c"
@@ -3476,10 +3520,82 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
 
     def test_new_runtime_schema_contracts_validate_representative_payloads(self) -> None:
         specs = load_specs()
+        action = RuntimeAction(
+            action_id="action:schema:cold_preview",
+            action_kind="cold_preview",
+            required_artifacts=[],
+            expected_benefit={
+                "runtime_seconds_delta": -1.25,
+                "peak_rss_mb_delta": -256.0,
+                "notes": ["large input prefers lazy load"],
+            },
+            risk_level="medium",
+            fallback_action=None,
+        )
+        self.assertIsNone(validate_schema(specs["runtime_action"], action.to_dict()))
+        self.assertIsNone(validate_schema(specs["runtime_action"], RuntimeAction(
+            action_id="action:schema:need_more_telemetry",
+            action_kind="need_more_telemetry",
+            required_artifacts=["control/telemetry_history.jsonl"],
+            expected_benefit={
+                "runtime_seconds_delta": None,
+                "peak_rss_mb_delta": None,
+                "notes": ["missing telemetry blocks a concrete recommendation"],
+            },
+            risk_level="high",
+            fallback_action=None,
+        ).to_dict()))
+        self.assertIsNone(validate_schema(specs["runtime_action_set"], {
+            "action_set_version": "runtime-action-set-v1",
+            "generated_at": "2026-05-04T00:00:00+00:00",
+            "proposed_actions": [action.to_dict()],
+            "abstained": False,
+            "abstain_reason": None,
+        }))
+        permissive_action = {
+            "action_id": "action:schema:unknown",
+            "action_kind": "hallucinated_action",
+            "required_artifacts": ["control/unknown.json"],
+            "expected_benefit": {
+                "runtime_seconds_delta": None,
+                "peak_rss_mb_delta": None,
+                "notes": ["schema should allow; gate rejects later"],
+            },
+            "risk_level": "high",
+            "proof_scope_impact": "touches_proof_scope",
+            "fallback_action": "another_unknown_action",
+        }
+        self.assertIsNone(validate_schema(specs["runtime_action"], permissive_action))
+        self.assertIsNone(validate_schema(specs["runtime_action_set"], {
+            "action_set_version": "runtime-action-set-v1",
+            "generated_at": "2026-05-04T00:00:00+00:00",
+            "proposed_actions": [permissive_action],
+            "abstained": False,
+            "abstain_reason": None,
+        }))
+        self.assertIsNone(validate_schema(specs["advisor_grounding_report"], {
+            "report_version": "advisor-grounding-report-v1",
+            "generated_at": "2026-05-04T00:00:00+00:00",
+            "grounding_basis": "telemetry_and_artifact",
+            "telemetry_refs": ["control/telemetry_history.jsonl"],
+            "artifact_refs": ["control/sidecar_manifest.json"],
+            "action_ids": [action.action_id],
+            "evidence_sufficient": True,
+            "notes": ["phase-1 schema hook only"],
+        }))
         decision = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"}).evaluate(
             current_request_features={"input_bytes": 1024}
         )
-        self.assertIsNone(validate_schema(specs["advisor_decision"], decision.to_dict()))
+        self.assertEqual(decision.proposed_actions, [])
+        self.assertFalse(decision.abstained)
+        self.assertIsNone(decision.abstain_reason)
+        decision_payload = decision.to_dict()
+        self.assertEqual(decision_payload["proposed_actions"], [])
+        self.assertFalse(decision_payload["abstained"])
+        self.assertIsNone(decision_payload["abstain_reason"])
+        decision_payload["proposed_actions"] = [permissive_action]
+        self.assertEqual(decision_payload["proposed_actions"], [permissive_action])
+        self.assertIsNone(validate_schema(specs["advisor_decision"], decision_payload))
         advisor_trace = build_advisor_trace(
             request_id="schema",
             feature_snapshot={"input_bytes": 1024},

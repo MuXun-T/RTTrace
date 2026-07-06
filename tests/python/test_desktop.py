@@ -4731,21 +4731,30 @@ class DesktopServiceTests(unittest.TestCase):
                 decision_version: str,
             ) -> OpenAIAdvisorClientResult:
                 phase = str(feature_payload.get("advisor_phase") or "")
-                recommend_reuse = phase == "pre_execution"
                 payload = {
-                    "decision_version": decision_version,
-                    "advisor_mode": "openai_structured",
-                    "model_ref": "gpt-test",
-                    "model_checksum": None,
-                    "feature_snapshot_hash": feature_snapshot_hash,
-                    "recommend_index_prebuild": False,
-                    "recommend_index_reuse_attempt": recommend_reuse,
-                    "recommend_streaming_write": False,
-                    "recommended_schedule": "sidecar_first" if recommend_reuse else "serial_safe",
-                    "predicted_runtime_seconds": 9.5,
-                    "predicted_peak_rss_mb": 192.0,
-                    "risk_level": "medium",
-                    "reasons": [f"mock openai advisor phase: {phase or 'unknown'}"],
+                    "action_set_version": decision_version,
+                    "generated_at": "2026-07-06T00:00:00+00:00",
+                    "proposed_actions": (
+                        [
+                            {
+                                "action_id": "action:mock:sidecar_index_reuse",
+                                "action_kind": "sidecar_index_reuse",
+                                "required_artifacts": ["sidecar_index_ticket"],
+                                "expected_benefit": {
+                                    "runtime_seconds_delta": None,
+                                    "peak_rss_mb_delta": None,
+                                    "notes": [f"mock openai advisor phase: {phase or 'unknown'}"],
+                                },
+                                "risk_level": "medium",
+                                "proof_scope_impact": "none",
+                                "fallback_action": None,
+                            }
+                        ]
+                        if phase == "pre_execution"
+                        else []
+                    ),
+                    "abstained": False,
+                    "abstain_reason": None,
                 }
                 return OpenAIAdvisorClientResult(
                     decision_payload=payload,
@@ -4818,8 +4827,12 @@ class DesktopServiceTests(unittest.TestCase):
         proof_digest = json.loads((package_dir / "control" / "proof_digest.json").read_text(encoding="utf-8"))
 
         self.assertEqual(pre_execution_advisor_trace["decision"]["advisor_mode"], "openai_structured")
+        self.assertEqual(
+            [item["action_kind"] for item in pre_execution_advisor_trace["decision"]["proposed_actions"]],
+            ["sidecar_index_reuse"],
+        )
         self.assertFalse(pre_execution_advisor_trace["gate_result"]["accepted"])
-        self.assertEqual(pre_execution_advisor_trace["gate_result"]["rejected_reason"], "ERR-SIDECAR_INDEX_MISSING")
+        self.assertEqual(pre_execution_advisor_trace["gate_result"]["rejected_reason"], "ERR-ACTION_MISSING_ARTIFACT")
         self.assertEqual(advisor_report["pre_execution_gate_result"], pre_execution_advisor_trace["gate_result"])
         self.assertEqual(advisor_trace["decision"]["advisor_mode"], "openai_structured")
         self.assertEqual(advisor_report["decision"]["advisor_mode"], "openai_structured")

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -30,6 +30,7 @@ from spec.io import json_dump
 ADVISOR_DECISION_VERSION = "runtime-advisor-decision-v1"
 ADVISOR_TRACE_VERSION = "runtime-advisor-trace-v1"
 RUNTIME_LOAD_PLAN_VERSION = "runtime-load-plan-v1"
+RUNTIME_ACTION_SET_VERSION = "runtime-action-set-v1"
 HEURISTIC_MODEL_REF = "heuristic-runtime-advisor-v1"
 ERR_ADVISOR_UNAVAILABLE = "ERR-ADVISOR_UNAVAILABLE"
 RISK_LEVELS = {"low", "medium", "high", "critical"}
@@ -37,6 +38,14 @@ SCHEDULES = {"serial_safe", "sidecar_first", "bounded_parallel", "degraded_prior
 ADVISOR_MODES = {"disabled", "heuristic", "offline_coefficients", "openai_structured"}
 RUNTIME_LOAD_MODES = {"full", "cold_preview", "warm_reuse", "hot_reuse"}
 RUNTIME_LOAD_INDEX_BUILD_MODES = {"full", "minimal", "deferred"}
+RUNTIME_ACTION_KINDS = {
+    "cold_preview",
+    "sidecar_index_prebuild",
+    "sidecar_index_reuse",
+    "streaming_package_write",
+    "need_more_telemetry",
+}
+RUNTIME_ACTION_PROOF_SCOPE_IMPACTS = {"none"}
 
 
 def _iso_now() -> str:
@@ -128,6 +137,103 @@ def _risk_history_summary(
 
 
 @dataclass(frozen=True)
+# ponytail: Phase 1 only defines the typed action payload shape; decision flow stays on legacy fields for now.
+class RuntimeAction:
+    action_id: str
+    action_kind: str
+    required_artifacts: list[str]
+    expected_benefit: dict[str, Any]
+    risk_level: str
+    proof_scope_impact: str = "none"
+    fallback_action: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "action_id": self.action_id,
+            "action_kind": self.action_kind,
+            "required_artifacts": list(self.required_artifacts),
+            "expected_benefit": dict(self.expected_benefit),
+            "risk_level": self.risk_level,
+            "proof_scope_impact": self.proof_scope_impact,
+            "fallback_action": self.fallback_action,
+        }
+
+
+def _serialize_runtime_action(value: RuntimeAction | dict[str, Any]) -> dict[str, Any]:
+    if hasattr(value, "to_dict"):
+        return dict(value.to_dict())
+    return dict(value)
+
+
+def _runtime_action_from_payload(value: RuntimeAction | dict[str, Any]) -> RuntimeAction:
+    if isinstance(value, RuntimeAction):
+        return value
+    payload = dict(value)
+    return RuntimeAction(
+        action_id=str(payload["action_id"]),
+        action_kind=str(payload["action_kind"]),
+        required_artifacts=[str(item) for item in list(payload.get("required_artifacts") or [])],
+        expected_benefit=dict(payload.get("expected_benefit") or {}),
+        risk_level=str(payload["risk_level"]),
+        proof_scope_impact=str(payload.get("proof_scope_impact") or "none"),
+        fallback_action=None if payload.get("fallback_action") is None else str(payload["fallback_action"]),
+    )
+
+
+def _runtime_actions_from_payload(value: Any) -> list[RuntimeAction]:
+    return [_runtime_action_from_payload(item) for item in list(value or [])]
+
+
+def _action_kinds(actions: Iterable[RuntimeAction]) -> list[str]:
+    return [str(action.action_kind) for action in list(actions)]
+
+
+def _derive_legacy_advisor_fields(actions: Iterable[RuntimeAction]) -> dict[str, Any]:
+    kinds = set(_action_kinds(actions))
+    recommend_index_prebuild = "sidecar_index_prebuild" in kinds
+    recommend_index_reuse_attempt = "sidecar_index_reuse" in kinds
+    recommend_streaming_write = "streaming_package_write" in kinds
+    recommended_schedule = (
+        "sidecar_first"
+        if recommend_index_prebuild or recommend_index_reuse_attempt
+        else "serial_safe"
+    )
+    return {
+        "recommend_index_prebuild": recommend_index_prebuild,
+        "recommend_index_reuse_attempt": recommend_index_reuse_attempt,
+        "recommend_streaming_write": recommend_streaming_write,
+        "recommended_schedule": recommended_schedule,
+    }
+
+
+def _append_runtime_action(
+    actions: list[RuntimeAction],
+    *,
+    action_kind: str,
+    risk_level: str,
+    required_artifacts: list[str] | None = None,
+    notes: list[str] | None = None,
+    fallback_action: str | None = None,
+) -> None:
+    if any(item.action_kind == action_kind for item in actions):
+        return
+    actions.append(
+        RuntimeAction(
+            action_id=f"runtime-action:{action_kind}",
+            action_kind=action_kind,
+            required_artifacts=list(required_artifacts or []),
+            expected_benefit={
+                "runtime_seconds_delta": None,
+                "peak_rss_mb_delta": None,
+                "notes": list(notes or []),
+            },
+            risk_level=risk_level if risk_level in RISK_LEVELS else "low",
+            fallback_action=fallback_action,
+        )
+    )
+
+
+@dataclass(frozen=True)
 class AdvisorDecision:
     decision_version: str
     advisor_mode: str
@@ -142,6 +248,9 @@ class AdvisorDecision:
     predicted_peak_rss_mb: float | None
     risk_level: str
     reasons: list[str]
+    proposed_actions: list[RuntimeAction] = field(default_factory=list)
+    abstained: bool = False
+    abstain_reason: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -158,6 +267,9 @@ class AdvisorDecision:
             "predicted_peak_rss_mb": self.predicted_peak_rss_mb,
             "risk_level": self.risk_level,
             "reasons": list(self.reasons),
+            "proposed_actions": [_serialize_runtime_action(item) for item in list(self.proposed_actions)],
+            "abstained": bool(self.abstained),
+            "abstain_reason": self.abstain_reason,
         }
 
 
@@ -336,6 +448,9 @@ class RuntimeOptimizationAdvisor:
                 predicted_peak_rss_mb=None,
                 risk_level="low",
                 reasons=["advisor disabled"],
+                proposed_actions=[],
+                abstained=False,
+                abstain_reason=None,
             )
         if mode == "offline_coefficients":
             return self._evaluate_offline_coefficients(features, snapshot_hash)
@@ -403,11 +518,17 @@ class RuntimeOptimizationAdvisor:
         previous_runtime = _optional_float(features.get("runtime_seconds"))
         previous_peak_rss = _optional_float(features.get("peak_rss_mb"))
         ticket_present = bool(features.get("ticket_present"))
+        telemetry_summary = _as_mapping(features.get("risk_history_summary"))
+        telemetry_missing = (_optional_int(telemetry_summary.get("row_count")) or 0) <= 0
 
+        large_input_threshold_bytes = _optional_int(self.config.get("runtime_load_large_input_threshold_bytes"))
+        if large_input_threshold_bytes is None:
+            large_input_threshold_bytes = 256 * 1024 * 1024
+        large_input = input_bytes >= max(0, large_input_threshold_bytes)
         large_sidecar = sidecar_bytes >= DEFAULT_SIDECAR_STREAM_SCAN_MAX_BYTES
         recommend_index_reuse = ticket_present
-        recommend_index_prebuild = (not ticket_present) and large_sidecar
-        recommend_streaming_write = input_bytes >= 256 * 1024 * 1024 or (previous_peak_rss is not None and previous_peak_rss >= 2048.0)
+        recommend_index_prebuild = (not ticket_present) and (large_sidecar or large_input)
+        recommend_streaming_write = large_input or (previous_peak_rss is not None and previous_peak_rss >= 2048.0)
         recommended_schedule = "sidecar_first" if recommend_index_prebuild or large_sidecar else "serial_safe"
 
         predicted_runtime = previous_runtime
@@ -444,6 +565,55 @@ class RuntimeOptimizationAdvisor:
         if not reasons:
             reasons.append("small deterministic baseline path")
 
+        proposed_actions: list[RuntimeAction] = []
+        if large_input and not ticket_present:
+            _append_runtime_action(
+                proposed_actions,
+                action_kind="cold_preview",
+                risk_level=risk_level,
+                notes=["large input without ticket prefers cold preview load"],
+            )
+        if recommend_index_prebuild:
+            _append_runtime_action(
+                proposed_actions,
+                action_kind="sidecar_index_prebuild",
+                risk_level=risk_level,
+                notes=["missing reusable ticket keeps sidecar prebuild on the critical path"],
+            )
+        if recommend_index_reuse:
+            _append_runtime_action(
+                proposed_actions,
+                action_kind="sidecar_index_reuse",
+                risk_level=risk_level,
+                required_artifacts=["sidecar_index_ticket"],
+                notes=["valid ticket can skip repeated sidecar validation work"],
+            )
+        if recommend_streaming_write:
+            _append_runtime_action(
+                proposed_actions,
+                action_kind="streaming_package_write",
+                risk_level=risk_level,
+                notes=["RSS pressure or large output suggests streaming package writes"],
+            )
+
+        concrete_confident_action_present = any(
+            item.action_kind in {"cold_preview", "sidecar_index_prebuild", "sidecar_index_reuse"}
+            for item in proposed_actions
+        )
+        abstained = False
+        abstain_reason: str | None = None
+        if telemetry_missing and (previous_peak_rss is not None and previous_peak_rss >= 2048.0) and not concrete_confident_action_present:
+            _append_runtime_action(
+                proposed_actions,
+                action_kind="need_more_telemetry",
+                risk_level="high",
+                required_artifacts=["telemetry_history"],
+                notes=["high-risk RSS path lacks telemetry history confidence"],
+            )
+            abstained = True
+            abstain_reason = "telemetry history is missing for a high-risk RSS-driven recommendation"
+            reasons.append("telemetry history is missing for the high-risk RSS path")
+
         return AdvisorDecision(
             decision_version=ADVISOR_DECISION_VERSION,
             advisor_mode="heuristic",
@@ -458,16 +628,14 @@ class RuntimeOptimizationAdvisor:
             predicted_peak_rss_mb=round(float(predicted_peak_rss), 3),
             risk_level=risk_level if risk_level in RISK_LEVELS else "low",
             reasons=reasons,
+            proposed_actions=proposed_actions,
+            abstained=abstained,
+            abstain_reason=abstain_reason,
         )
 
     def _evaluate_heuristic_fallback(self, features: dict[str, Any], snapshot_hash: str, reason: str) -> AdvisorDecision:
         base = self._evaluate_heuristic(features, snapshot_hash)
-        return AdvisorDecision(
-            **{
-                **base.to_dict(),
-                "reasons": [*base.reasons, reason],
-            }
-        )
+        return replace(base, reasons=[*base.reasons, reason])
 
     def _evaluate_offline_coefficients(self, features: dict[str, Any], snapshot_hash: str) -> AdvisorDecision:
         coefficients_path = self.config.get("coefficients_path")
@@ -518,20 +686,23 @@ class RuntimeOptimizationAdvisor:
             runtime += (_optional_float(features.get(name)) or 0.0) * (_optional_float(weight) or 0.0)
         runtime = runtime if runtime > 0 else base.predicted_runtime_seconds
         model_ref = str(coefficients.get("model_ref") or "offline-coefficients")
-        return AdvisorDecision(
-            **{
-                **base.to_dict(),
-                "advisor_mode": "offline_coefficients",
-                "model_ref": model_ref,
-                "model_checksum": model_checksum,
-                "predicted_runtime_seconds": None if runtime is None else round(float(runtime), 6),
-            }
+        return replace(
+            base,
+            advisor_mode="offline_coefficients",
+            model_ref=model_ref,
+            model_checksum=model_checksum,
+            predicted_runtime_seconds=None if runtime is None else round(float(runtime), 6),
         )
 
     def _evaluate_openai_structured(self, features: dict[str, Any], snapshot_hash: str) -> AdvisorDecision:
-        schema = dict(self.config.get("openai_decision_schema") or load_schema("advisor_decision.schema.json"))
+        schema = dict(
+            self.config.get("openai_action_set_schema")
+            or self.config.get("openai_decision_schema")
+            or load_schema("runtime_action_set.schema.json")
+        )
         client_for_metadata = None
         try:
+            heuristic_base = self._evaluate_heuristic(features, snapshot_hash)
             client = self.config.get("llm_client") or self.config.get("openai_client")
             if client is None:
                 client = LLMAdvisorClient.from_config(self.config)
@@ -540,13 +711,19 @@ class RuntimeOptimizationAdvisor:
                 feature_payload=features,
                 decision_schema=schema,
                 feature_snapshot_hash=snapshot_hash,
-                decision_version=ADVISOR_DECISION_VERSION,
+                decision_version=RUNTIME_ACTION_SET_VERSION,
             )
             payload = dict(result.decision_payload)
-            payload.setdefault("model_checksum", None)
             schema_reason = validate_schema(schema, payload)
             if schema_reason is not None:
                 raise LLMAdvisorClientError("openai_schema_invalid", schema_reason)
+            proposed_actions = _runtime_actions_from_payload(payload.get("proposed_actions"))
+            abstained = bool(payload.get("abstained"))
+            abstain_reason = None if payload.get("abstain_reason") is None else str(payload["abstain_reason"])
+            legacy_fields = _derive_legacy_advisor_fields(proposed_actions)
+            reasons = list(heuristic_base.reasons)
+            if abstained and abstain_reason and abstain_reason not in reasons:
+                reasons.append(abstain_reason)
             self.last_advisor_metadata = {
                 "openai_latency_seconds": result.latency_seconds,
                 "openai_tokens": _openai_usage_token_count(result.usage),
@@ -556,28 +733,19 @@ class RuntimeOptimizationAdvisor:
                 "llm_backend": getattr(result, "backend", None),
                 "llm_provider": getattr(client_for_metadata, "provider", None) or self.config.get("llm_provider"),
             }
-            return AdvisorDecision(
-                decision_version=str(payload["decision_version"]),
-                advisor_mode=str(payload["advisor_mode"]),
-                model_ref=str(payload["model_ref"]),
-                model_checksum=payload.get("model_checksum"),
-                feature_snapshot_hash=str(payload["feature_snapshot_hash"]),
-                recommend_index_prebuild=bool(payload["recommend_index_prebuild"]),
-                recommend_index_reuse_attempt=bool(payload["recommend_index_reuse_attempt"]),
-                recommend_streaming_write=bool(payload["recommend_streaming_write"]),
-                recommended_schedule=str(payload["recommended_schedule"]),
-                predicted_runtime_seconds=(
-                    None
-                    if payload.get("predicted_runtime_seconds") is None
-                    else round(float(payload["predicted_runtime_seconds"]), 6)
-                ),
-                predicted_peak_rss_mb=(
-                    None
-                    if payload.get("predicted_peak_rss_mb") is None
-                    else round(float(payload["predicted_peak_rss_mb"]), 3)
-                ),
-                risk_level=str(payload["risk_level"]),
-                reasons=[str(item) for item in list(payload.get("reasons") or [])],
+            return replace(
+                heuristic_base,
+                advisor_mode="openai_structured",
+                model_ref=str(result.model or self.config.get("llm_model") or self.config.get("openai_model") or "openai_structured"),
+                model_checksum=None,
+                recommend_index_prebuild=bool(legacy_fields["recommend_index_prebuild"]),
+                recommend_index_reuse_attempt=bool(legacy_fields["recommend_index_reuse_attempt"]),
+                recommend_streaming_write=bool(legacy_fields["recommend_streaming_write"]),
+                recommended_schedule=str(legacy_fields["recommended_schedule"]),
+                reasons=reasons,
+                proposed_actions=proposed_actions,
+                abstained=abstained,
+                abstain_reason=abstain_reason,
             )
         except LLMAdvisorClientError as exc:
             self.last_advisor_metadata = _fallback_llm_metadata(

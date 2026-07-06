@@ -89,6 +89,13 @@ _SENSITIVE_SUMMARY_KEY_TOKENS = {
 }
 _SUMMARY_PATH_RE = re.compile(r"(?:(?:[A-Za-z]:)?[\\/]|\.{1,2}[\\/])\S+")
 _SUMMARY_PROOF_HASH_RE = re.compile(r"sha256:[^\s,;]+")
+_TYPED_ACTION_KINDS = [
+    "cold_preview",
+    "sidecar_index_prebuild",
+    "sidecar_index_reuse",
+    "streaming_package_write",
+    "need_more_telemetry",
+]
 
 
 class LLMAdvisorClientError(RuntimeError):
@@ -383,7 +390,7 @@ class LLMAdvisorClient:
                 },
             ],
             "text": {
-                "format": advisor_decision_text_format(decision_schema),
+                "format": structured_output_text_format("RuntimeActionSet", decision_schema),
             },
             "max_output_tokens": self.max_output_tokens,
             "store": False,
@@ -436,9 +443,10 @@ OpenAIAdvisorClientResult = LLMAdvisorClientResult
 def _advisor_system_prompt() -> str:
     return (
         "You are the RuntimeOptimizationAdvisor for an RTOS trace evidence exporter. "
-        "Return JSON only. The decision is advisory, must not create proof facts, must not "
-        "change closure/frontier/proof digest semantics, and must choose conservative values "
-        "when information is insufficient."
+        "Return JSON only and no markdown. Output only a typed runtime action set, never a full legacy decision object. "
+        "The advisor is advisory, must not create proof facts, must not change closure/frontier/proof digest semantics, "
+        "must not propose shell commands, scripts, schema migrations, filesystem mutations, proof-path changes, or truth-path changes, "
+        "and must choose conservative actions when information is insufficient."
     )
 
 
@@ -452,35 +460,32 @@ def _advisor_user_payload(
     decision_schema: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     payload: dict[str, Any] = {
-        "decision_version": decision_version,
-        "advisor_mode": "openai_structured",
-        "model_ref": model,
+        "action_set_version": decision_version,
+        "output_kind": "runtime_action_set",
+        "model_hint": model,
         "feature_snapshot_hash": feature_snapshot_hash,
-        "allowed_schedules": ["serial_safe", "sidecar_first", "bounded_parallel", "degraded_priority"],
-        "allowed_risk_levels": ["low", "medium", "high", "critical"],
+        "allowed_action_kinds": list(_TYPED_ACTION_KINDS),
         "features": sanitized_features,
         "constraints": [
             "Do not include raw trace, sidecar rows, proof digest contents, filesystem paths, usernames, or secrets.",
-            "If ticket_present is false, recommend_index_reuse_attempt must normally be false.",
-            "If risk is unclear, prefer serial_safe and low or medium risk.",
+            "Return only fields required by the runtime_action_set schema.",
+            "Do not output a legacy AdvisorDecision object or any predicted runtime or RSS numbers.",
+            "Do not propose shell, script, schema migration, proof-path, or truth-path modifications.",
+            "Every proposed action should keep proof_scope_impact as 'none'.",
+            "If evidence is insufficient, set abstained=true and use abstain_reason; optionally include need_more_telemetry.",
             "Return exactly one JSON object and no markdown.",
         ],
     }
     if include_schema and decision_schema is not None:
-        payload["json_schema"] = advisor_decision_text_format(decision_schema)["schema"]
+        payload["json_schema"] = structured_output_text_format("RuntimeActionSet", decision_schema)["schema"]
     return payload
 
 
-def advisor_decision_text_format(decision_schema: dict[str, Any]) -> dict[str, Any]:
-    schema = json.loads(json.dumps(decision_schema))
-    properties = dict(schema.get("properties") or {})
-    required = list(schema.get("required") or [])
-    if "model_checksum" in properties and "model_checksum" not in required:
-        required.append("model_checksum")
-    schema["required"] = required
+def structured_output_text_format(schema_name: str, schema_payload: dict[str, Any]) -> dict[str, Any]:
+    schema = json.loads(json.dumps(schema_payload))
     return {
         "type": "json_schema",
-        "name": "AdvisorDecision",
+        "name": str(schema_name),
         "strict": True,
         "schema": schema,
     }
@@ -574,22 +579,25 @@ def _parse_decision_payload_from_text(
 ) -> dict[str, Any]:
     decision_payload = _load_json_value_from_text(output_text)
     if not isinstance(decision_payload, dict):
-        raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, "AdvisorDecision output must be an object")
-    decision_payload.setdefault("model_checksum", None)
+        raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, "structured output must be an object")
     schema_reason = validate_schema(decision_schema, decision_payload)
     if schema_reason is not None:
         raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, schema_reason)
-    if str(decision_payload.get("decision_version")) != str(decision_version):
-        raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, "decision_version mismatch")
-    if str(decision_payload.get("advisor_mode")) != "openai_structured":
-        raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, "advisor_mode mismatch")
-    if str(decision_payload.get("feature_snapshot_hash")) != str(feature_snapshot_hash):
-        raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, "feature_snapshot_hash mismatch")
-    for key in ("predicted_runtime_seconds", "predicted_peak_rss_mb"):
-        value = decision_payload.get(key)
-        if value is not None and (not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(float(value))):
-            raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, f"{key} must be finite")
+    version_key = _schema_version_key(decision_schema)
+    if version_key is not None and str(decision_payload.get(version_key)) != str(decision_version):
+        raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, f"{version_key} mismatch")
+    if "feature_snapshot_hash" in dict(decision_schema.get("properties") or {}):
+        if str(decision_payload.get("feature_snapshot_hash")) != str(feature_snapshot_hash):
+            raise OpenAIAdvisorClientError(OPENAI_FALLBACK_SCHEMA_INVALID, "feature_snapshot_hash mismatch")
     return decision_payload
+
+
+def _schema_version_key(schema: dict[str, Any]) -> str | None:
+    properties = dict(schema.get("properties") or {})
+    for candidate in ("action_set_version", "decision_version"):
+        if candidate in properties:
+            return candidate
+    return None
 
 
 def _load_json_value_from_text(value: str) -> Any:

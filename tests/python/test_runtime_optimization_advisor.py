@@ -84,6 +84,91 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         }
         return sidecar_path, manifest, sidecar_checksum
 
+    def _action_kinds(self, decision: AdvisorDecision) -> list[str]:
+        return [action.action_kind for action in decision.proposed_actions]
+
+    def _typed_action_set_payload(
+        self,
+        *,
+        actions: list[dict[str, object]] | None = None,
+        abstained: bool = False,
+        abstain_reason: str | None = None,
+    ) -> dict[str, object]:
+        return {
+            "action_set_version": "runtime-action-set-v1",
+            "generated_at": "2026-07-06T00:00:00+00:00",
+            "proposed_actions": list(actions or []),
+            "abstained": abstained,
+            "abstain_reason": abstain_reason,
+        }
+
+    def _runtime_action_payload(self, action_kind: str, **overrides: object) -> dict[str, object]:
+        payload: dict[str, object] = {
+            "action_id": f"action:test:{action_kind}",
+            "action_kind": action_kind,
+            "required_artifacts": ["sidecar_index_ticket"] if action_kind == "sidecar_index_reuse" else [],
+            "expected_benefit": {
+                "runtime_seconds_delta": None,
+                "peak_rss_mb_delta": None,
+                "notes": [f"unit test action: {action_kind}"],
+            },
+            "risk_level": "medium",
+            "proof_scope_impact": "none",
+            "fallback_action": None,
+        }
+        payload.update(overrides)
+        return payload
+
+    def _advisor_decision_payload(
+        self,
+        *,
+        actions: list[dict[str, object]] | None = None,
+        recommend_index_prebuild: bool | None = None,
+        recommend_index_reuse_attempt: bool | None = None,
+        recommend_streaming_write: bool | None = None,
+        recommended_schedule: str | None = None,
+        abstained: bool = False,
+        abstain_reason: str | None = None,
+    ) -> dict[str, object]:
+        action_payloads = list(actions or [])
+        action_kinds = {str(item.get("action_kind") or "") for item in action_payloads}
+        prebuild = (
+            bool(recommend_index_prebuild)
+            if recommend_index_prebuild is not None
+            else "sidecar_index_prebuild" in action_kinds
+        )
+        reuse = (
+            bool(recommend_index_reuse_attempt)
+            if recommend_index_reuse_attempt is not None
+            else "sidecar_index_reuse" in action_kinds
+        )
+        streaming = (
+            bool(recommend_streaming_write)
+            if recommend_streaming_write is not None
+            else "streaming_package_write" in action_kinds
+        )
+        schedule = recommended_schedule
+        if schedule is None:
+            schedule = "sidecar_first" if prebuild or reuse else "serial_safe"
+        return {
+            "decision_version": "runtime-advisor-decision-v1",
+            "advisor_mode": "openai_structured",
+            "model_ref": "gpt-test",
+            "model_checksum": None,
+            "feature_snapshot_hash": "sha256:test-feature",
+            "recommend_index_prebuild": prebuild,
+            "recommend_index_reuse_attempt": reuse,
+            "recommend_streaming_write": streaming,
+            "recommended_schedule": schedule,
+            "predicted_runtime_seconds": 1.0,
+            "predicted_peak_rss_mb": 128.0,
+            "risk_level": "medium",
+            "reasons": ["unit test gate payload"],
+            "proposed_actions": action_payloads,
+            "abstained": abstained,
+            "abstain_reason": abstain_reason,
+        }
+
     def test_heuristic_advisor_prefers_ticket_fast_path_for_large_sidecar(self) -> None:
         advisor = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"})
         decision = advisor.evaluate(
@@ -94,6 +179,58 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertTrue(decision.recommend_index_reuse_attempt)
         self.assertTrue(decision.recommend_streaming_write)
         self.assertEqual(decision.recommended_schedule, "sidecar_first")
+        self.assertEqual(self._action_kinds(decision), ["sidecar_index_reuse", "streaming_package_write"])
+        self.assertFalse(decision.abstained)
+        self.assertIsNone(decision.abstain_reason)
+
+    def test_heuristic_advisor_emits_cold_preview_and_prebuild_for_large_input_without_ticket(self) -> None:
+        decision = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"}).evaluate(
+            current_request_features={"input_bytes": 512 * 1024 * 1024, "sidecar_bytes": 1024},
+        )
+
+        self.assertEqual(
+            self._action_kinds(decision),
+            ["cold_preview", "sidecar_index_prebuild", "streaming_package_write"],
+        )
+        self.assertTrue(decision.recommend_index_prebuild)
+        self.assertFalse(decision.recommend_index_reuse_attempt)
+        self.assertTrue(decision.recommend_streaming_write)
+        self.assertEqual(decision.recommended_schedule, "sidecar_first")
+        self.assertFalse(decision.abstained)
+        self.assertIsNone(decision.abstain_reason)
+
+    def test_heuristic_advisor_emits_streaming_write_for_high_rss(self) -> None:
+        decision = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"}).evaluate(
+            telemetry_history=[{"peak_rss_mb": 3072.0, "runtime_seconds": 12.5}],
+            current_request_features={"input_bytes": 1024, "sidecar_bytes": 2048},
+        )
+
+        self.assertEqual(self._action_kinds(decision), ["streaming_package_write"])
+        self.assertFalse(decision.recommend_index_prebuild)
+        self.assertFalse(decision.recommend_index_reuse_attempt)
+        self.assertTrue(decision.recommend_streaming_write)
+        self.assertEqual(decision.recommended_schedule, "serial_safe")
+        self.assertFalse(decision.abstained)
+        self.assertIsNone(decision.abstain_reason)
+
+    def test_heuristic_advisor_requests_more_telemetry_for_high_risk_rss_without_history(self) -> None:
+        decision = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"}).evaluate(
+            current_request_features={"input_bytes": 1024, "peak_rss_mb": 3072.0},
+        )
+
+        self.assertEqual(
+            self._action_kinds(decision),
+            ["streaming_package_write", "need_more_telemetry"],
+        )
+        self.assertFalse(decision.recommend_index_prebuild)
+        self.assertFalse(decision.recommend_index_reuse_attempt)
+        self.assertTrue(decision.recommend_streaming_write)
+        self.assertEqual(decision.recommended_schedule, "serial_safe")
+        self.assertTrue(decision.abstained)
+        self.assertEqual(
+            decision.abstain_reason,
+            "telemetry history is missing for a high-risk RSS-driven recommendation",
+        )
 
     def test_runtime_load_plan_prefers_minimal_for_large_input(self) -> None:
         advisor = RuntimeOptimizationAdvisor()
@@ -294,21 +431,37 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
                 feature_snapshot_hash: str,
                 decision_version: str,
             ) -> OpenAIAdvisorClientResult:
-                payload = {
-                    "decision_version": decision_version,
-                    "advisor_mode": "openai_structured",
-                    "model_ref": "gpt-test",
-                    "model_checksum": None,
-                    "feature_snapshot_hash": feature_snapshot_hash,
-                    "recommend_index_prebuild": True,
-                    "recommend_index_reuse_attempt": False,
-                    "recommend_streaming_write": True,
-                    "recommended_schedule": "sidecar_first",
-                    "predicted_runtime_seconds": 12.0,
-                    "predicted_peak_rss_mb": 256.0,
-                    "risk_level": "medium",
-                    "reasons": ["mock structured advisor decision"],
-                }
+                payload = self_outer._typed_action_set_payload(
+                    actions=[
+                        {
+                            "action_id": "action:openai:cold_preview",
+                            "action_kind": "cold_preview",
+                            "required_artifacts": [],
+                            "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["mock action"]},
+                            "risk_level": "medium",
+                            "proof_scope_impact": "none",
+                            "fallback_action": None,
+                        },
+                        {
+                            "action_id": "action:openai:sidecar_index_prebuild",
+                            "action_kind": "sidecar_index_prebuild",
+                            "required_artifacts": [],
+                            "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["mock action"]},
+                            "risk_level": "medium",
+                            "proof_scope_impact": "none",
+                            "fallback_action": None,
+                        },
+                        {
+                            "action_id": "action:openai:streaming_package_write",
+                            "action_kind": "streaming_package_write",
+                            "required_artifacts": [],
+                            "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["mock action"]},
+                            "risk_level": "medium",
+                            "proof_scope_impact": "none",
+                            "fallback_action": None,
+                        },
+                    ],
+                )
                 return OpenAIAdvisorClientResult(
                     decision_payload=payload,
                     response_id="resp-test",
@@ -318,6 +471,7 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
                     request_payload={},
                 )
 
+        self_outer = self
         decision = RuntimeOptimizationAdvisor(
             {"advisor_mode": "openai_structured", "openai_client": FakeOpenAIAdvisorClient()}
         ).evaluate(
@@ -327,7 +481,61 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertEqual(decision.advisor_mode, "openai_structured")
         self.assertEqual(decision.model_ref, "gpt-test")
         self.assertTrue(decision.recommend_index_prebuild)
+        self.assertFalse(decision.recommend_index_reuse_attempt)
+        self.assertTrue(decision.recommend_streaming_write)
         self.assertEqual(decision.recommended_schedule, "sidecar_first")
+        self.assertEqual(
+            self._action_kinds(decision),
+            ["cold_preview", "sidecar_index_prebuild", "streaming_package_write"],
+        )
+        self.assertFalse(decision.abstained)
+        self.assertIsNone(decision.abstain_reason)
+
+    def test_openai_structured_hallucinated_action_is_preserved_for_future_gate_reject(self) -> None:
+        class FakeOpenAIAdvisorClient:
+            def request_advisor_decision(
+                self,
+                *,
+                feature_payload: dict[str, object],
+                decision_schema: dict[str, object],
+                feature_snapshot_hash: str,
+                decision_version: str,
+            ) -> OpenAIAdvisorClientResult:
+                return OpenAIAdvisorClientResult(
+                    decision_payload=self_outer._typed_action_set_payload(
+                        actions=[
+                            {
+                                "action_id": "action:openai:hallucinated",
+                                "action_kind": "hallucinated_action_kind",
+                                "required_artifacts": ["control/unknown.json"],
+                                "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["unknown action"]},
+                                "risk_level": "high",
+                                "proof_scope_impact": "none",
+                                "fallback_action": None,
+                            }
+                        ],
+                    ),
+                    response_id="resp-hallucinated",
+                    model="gpt-test",
+                    usage={},
+                    latency_seconds=0.0,
+                    request_payload={},
+                )
+
+        self_outer = self
+        decision = RuntimeOptimizationAdvisor(
+            {"advisor_mode": "openai_structured", "openai_client": FakeOpenAIAdvisorClient()}
+        ).evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 2048})
+
+        self.assertEqual(decision.advisor_mode, "openai_structured")
+        self.assertEqual(self._action_kinds(decision), ["hallucinated_action_kind"])
+        self.assertFalse(decision.recommend_index_prebuild)
+        self.assertFalse(decision.recommend_index_reuse_attempt)
+        self.assertFalse(decision.recommend_streaming_write)
+        self.assertEqual(decision.recommended_schedule, "serial_safe")
+        gate_result = DeterministicValidationGate().validate_advisor_decision(advisor_decision=decision)
+        self.assertFalse(gate_result.accepted)
+        self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_UNKNOWN")
 
     def test_openai_client_uses_structured_outputs_and_redacted_features(self) -> None:
         captured: dict[str, object] = {}
@@ -337,21 +545,19 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             captured["url"] = url
             captured["headers"] = headers
             captured["request_payload"] = request_payload
-            decision_payload = {
-                "decision_version": "runtime-advisor-decision-v1",
-                "advisor_mode": "openai_structured",
-                "model_ref": "gpt-test",
-                "model_checksum": None,
-                "feature_snapshot_hash": "sha256:feature",
-                "recommend_index_prebuild": False,
-                "recommend_index_reuse_attempt": False,
-                "recommend_streaming_write": False,
-                "recommended_schedule": "serial_safe",
-                "predicted_runtime_seconds": 1.0,
-                "predicted_peak_rss_mb": 128.0,
-                "risk_level": "low",
-                "reasons": ["redacted structured output"],
-            }
+            decision_payload = self._typed_action_set_payload(
+                actions=[
+                    {
+                        "action_id": "action:openai:sidecar_index_reuse",
+                        "action_kind": "sidecar_index_reuse",
+                        "required_artifacts": ["sidecar_index_ticket"],
+                        "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["redacted structured output"]},
+                        "risk_level": "medium",
+                        "proof_scope_impact": "none",
+                        "fallback_action": None,
+                    }
+                ],
+            )
             response_payload = {
                 "id": "resp-test",
                 "status": "completed",
@@ -392,15 +598,17 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
                 "sidecar_row": {"edge_hash": "x" * 64},
                 "event_content": {"message": "private event payload"},
             },
-            decision_schema=load_schema("advisor_decision.schema.json"),
+            decision_schema=load_schema("runtime_action_set.schema.json"),
             feature_snapshot_hash="sha256:feature",
-            decision_version="runtime-advisor-decision-v1",
+            decision_version="runtime-action-set-v1",
         )
 
-        self.assertEqual(result.decision_payload["advisor_mode"], "openai_structured")
+        self.assertEqual(result.decision_payload["action_set_version"], "runtime-action-set-v1")
+        self.assertEqual(result.decision_payload["proposed_actions"][0]["action_kind"], "sidecar_index_reuse")
         request_payload = captured["request_payload"]
         self.assertIsInstance(request_payload, dict)
         user_text = request_payload["input"][1]["content"][0]["text"]
+        self.assertIn("allowed_action_kinds", user_text)
         self.assertIn("dataset_id_hash", user_text)
         self.assertIn("run_id_hash", user_text)
         self.assertIn("stage_timings", user_text)
@@ -462,22 +670,12 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             body: bytes,
             timeout_s: float,
         ) -> tuple[int, dict[str, str], bytes]:
-            request_payload = json.loads(body.decode("utf-8"))
-            feature_snapshot_hash = json.loads(request_payload["input"][1]["content"][0]["text"])["feature_snapshot_hash"]
             decision_payload = {
-                "decision_version": "runtime-advisor-decision-v1",
-                "advisor_mode": "openai_structured",
-                "model_ref": "gpt-test",
-                "model_checksum": None,
-                "feature_snapshot_hash": feature_snapshot_hash,
-                "recommend_index_prebuild": False,
-                "recommend_index_reuse_attempt": False,
-                "recommend_streaming_write": False,
-                "recommended_schedule": "serial_safe",
-                "predicted_runtime_seconds": 1.0,
-                "predicted_peak_rss_mb": 128.0,
-                "risk_level": "not-a-risk-level",
-                "reasons": ["invalid schema response"],
+                "action_set_version": "runtime-action-set-v1",
+                "generated_at": "2026-07-06T00:00:00+00:00",
+                "proposed_actions": "not-an-array",
+                "abstained": False,
+                "abstain_reason": None,
             }
             response_payload = {
                 "id": "resp-schema-invalid",
@@ -513,21 +711,21 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             captured["url"] = url
             captured["headers"] = headers
             captured["request_payload"] = request_payload
-            decision_payload = {
-                "decision_version": "runtime-advisor-decision-v1",
-                "advisor_mode": "openai_structured",
-                "model_ref": "qwen-test",
-                "model_checksum": None,
-                "feature_snapshot_hash": "sha256:chat-feature",
-                "recommend_index_prebuild": False,
-                "recommend_index_reuse_attempt": False,
-                "recommend_streaming_write": False,
-                "recommended_schedule": "serial_safe",
-                "predicted_runtime_seconds": 2.0,
-                "predicted_peak_rss_mb": 256.0,
-                "risk_level": "medium",
-                "reasons": ["chat compatible structured output"],
-            }
+            decision_payload = self._typed_action_set_payload(
+                actions=[
+                    {
+                        "action_id": "action:chat:need_more_telemetry",
+                        "action_kind": "need_more_telemetry",
+                        "required_artifacts": ["telemetry_history"],
+                        "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["chat compatible structured output"]},
+                        "risk_level": "medium",
+                        "proof_scope_impact": "none",
+                        "fallback_action": None,
+                    }
+                ],
+                abstained=True,
+                abstain_reason="need more telemetry",
+            )
             response_payload = {
                 "id": "chatcmpl-test",
                 "model": "qwen-test",
@@ -559,13 +757,14 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
                 "proof_hash": "sha256:proof-secret",
                 "sidecar_source": str(self.root / "private" / "dependency_sidecar.jsonl"),
             },
-            decision_schema=load_schema("advisor_decision.schema.json"),
+            decision_schema=load_schema("runtime_action_set.schema.json"),
             feature_snapshot_hash="sha256:chat-feature",
-            decision_version="runtime-advisor-decision-v1",
+            decision_version="runtime-action-set-v1",
         )
 
         self.assertEqual(result.backend, "openai_compatible_chat")
-        self.assertEqual(result.decision_payload["model_ref"], "qwen-test")
+        self.assertEqual(result.model, "qwen-test")
+        self.assertEqual(result.decision_payload["abstain_reason"], "need more telemetry")
         self.assertEqual(captured["url"], "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")
         request_payload = captured["request_payload"]
         self.assertIsInstance(request_payload, dict)
@@ -579,21 +778,19 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
 
     def test_openai_compatible_chat_backend_accepts_fenced_json_with_surrounding_text(self) -> None:
         def transport(url: str, headers: dict[str, str], body: bytes, timeout_s: float) -> tuple[int, dict[str, str], bytes]:
-            decision_payload = {
-                "decision_version": "runtime-advisor-decision-v1",
-                "advisor_mode": "openai_structured",
-                "model_ref": "deepseek-v4-flash",
-                "model_checksum": None,
-                "feature_snapshot_hash": "sha256:fenced-feature",
-                "recommend_index_prebuild": False,
-                "recommend_index_reuse_attempt": False,
-                "recommend_streaming_write": True,
-                "recommended_schedule": "serial_safe",
-                "predicted_runtime_seconds": 1.0,
-                "predicted_peak_rss_mb": 128.0,
-                "risk_level": "low",
-                "reasons": ["fenced JSON compatible output"],
-            }
+            decision_payload = self._typed_action_set_payload(
+                actions=[
+                    {
+                        "action_id": "action:fenced:streaming",
+                        "action_kind": "streaming_package_write",
+                        "required_artifacts": [],
+                        "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["fenced JSON compatible output"]},
+                        "risk_level": "low",
+                        "proof_scope_impact": "none",
+                        "fallback_action": None,
+                    }
+                ],
+            )
             response_payload = {
                 "id": "chatcmpl-fenced-test",
                 "model": "deepseek-v4-flash",
@@ -626,13 +823,13 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             chat_completions_path="/chat/completions",
         ).request_advisor_decision(
             feature_payload={"input_bytes": 1024},
-            decision_schema=load_schema("advisor_decision.schema.json"),
+            decision_schema=load_schema("runtime_action_set.schema.json"),
             feature_snapshot_hash="sha256:fenced-feature",
-            decision_version="runtime-advisor-decision-v1",
+            decision_version="runtime-action-set-v1",
         )
 
-        self.assertEqual(result.decision_payload["advisor_mode"], "openai_structured")
-        self.assertEqual(result.decision_payload["model_ref"], "deepseek-v4-flash")
+        self.assertEqual(result.decision_payload["proposed_actions"][0]["action_kind"], "streaming_package_write")
+        self.assertEqual(result.model, "deepseek-v4-flash")
 
     def test_llm_client_from_config_uses_provider_key_env(self) -> None:
         with patch.dict(os.environ, {"DASHSCOPE_API_KEY": "dashscope-key"}, clear=False):
@@ -659,21 +856,19 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             request_payload = json.loads(body.decode("utf-8"))
             captured["url"] = url
             captured["request_payload"] = request_payload
-            decision_payload = {
-                "decision_version": "runtime-advisor-decision-v1",
-                "advisor_mode": "openai_structured",
-                "model_ref": "deepseek-v4-pro",
-                "model_checksum": None,
-                "feature_snapshot_hash": "sha256:deepseek-feature",
-                "recommend_index_prebuild": False,
-                "recommend_index_reuse_attempt": False,
-                "recommend_streaming_write": False,
-                "recommended_schedule": "serial_safe",
-                "predicted_runtime_seconds": 1.25,
-                "predicted_peak_rss_mb": 128.0,
-                "risk_level": "low",
-                "reasons": ["deepseek compatible structured output"],
-            }
+            decision_payload = self._typed_action_set_payload(
+                actions=[
+                    {
+                        "action_id": "action:deepseek:reuse",
+                        "action_kind": "sidecar_index_reuse",
+                        "required_artifacts": ["sidecar_index_ticket"],
+                        "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["deepseek compatible structured output"]},
+                        "risk_level": "low",
+                        "proof_scope_impact": "none",
+                        "fallback_action": None,
+                    }
+                ],
+            )
             response_payload = {
                 "id": "chatcmpl-deepseek-test",
                 "model": "deepseek-v4-pro",
@@ -701,9 +896,9 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
 
         result = client.request_advisor_decision(
             feature_payload={"input_bytes": 1024},
-            decision_schema=load_schema("advisor_decision.schema.json"),
+            decision_schema=load_schema("runtime_action_set.schema.json"),
             feature_snapshot_hash="sha256:deepseek-feature",
-            decision_version="runtime-advisor-decision-v1",
+            decision_version="runtime-action-set-v1",
         )
 
         self.assertEqual(client.api_key, "deepseek-key")
@@ -734,9 +929,9 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         with self.assertRaises(LLMAdvisorClientError) as raised:
             client.request_advisor_decision(
                 feature_payload={"input_bytes": 1024},
-                decision_schema=load_schema("advisor_decision.schema.json"),
+                decision_schema=load_schema("runtime_action_set.schema.json"),
                 feature_snapshot_hash="sha256:deepseek-disabled",
-                decision_version="runtime-advisor-decision-v1",
+                decision_version="runtime-action-set-v1",
             )
         self.assertEqual(raised.exception.reason, "openai_unconfigured")
         self.assertEqual(calls["count"], 0)
@@ -762,9 +957,9 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         with self.assertRaises(LLMAdvisorClientError) as raised:
             client.request_advisor_decision(
                 feature_payload={"input_bytes": 1024},
-                decision_schema=load_schema("advisor_decision.schema.json"),
+                decision_schema=load_schema("runtime_action_set.schema.json"),
                 feature_snapshot_hash="sha256:deepseek-provider-disabled",
-                decision_version="runtime-advisor-decision-v1",
+                decision_version="runtime-action-set-v1",
             )
         self.assertEqual(raised.exception.reason, "openai_unconfigured")
         self.assertEqual(calls["count"], 0)
@@ -776,21 +971,19 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             calls["count"] += 1
             if calls["count"] == 1:
                 raise urllib.error.URLError("temporary dns failure")
-            decision_payload = {
-                "decision_version": "runtime-advisor-decision-v1",
-                "advisor_mode": "openai_structured",
-                "model_ref": "deepseek-v4-pro",
-                "model_checksum": None,
-                "feature_snapshot_hash": "sha256:retry-feature",
-                "recommend_index_prebuild": False,
-                "recommend_index_reuse_attempt": False,
-                "recommend_streaming_write": False,
-                "recommended_schedule": "serial_safe",
-                "predicted_runtime_seconds": 1.0,
-                "predicted_peak_rss_mb": 128.0,
-                "risk_level": "low",
-                "reasons": ["retry structured output"],
-            }
+            decision_payload = self._typed_action_set_payload(
+                actions=[
+                    {
+                        "action_id": "action:retry:reuse",
+                        "action_kind": "sidecar_index_reuse",
+                        "required_artifacts": ["sidecar_index_ticket"],
+                        "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["retry structured output"]},
+                        "risk_level": "low",
+                        "proof_scope_impact": "none",
+                        "fallback_action": None,
+                    }
+                ],
+            )
             response_payload = {
                 "id": "chatcmpl-retry-test",
                 "model": "deepseek-v4-pro",
@@ -816,13 +1009,13 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             retry_delay_s=0,
         ).request_advisor_decision(
             feature_payload={"input_bytes": 1024},
-            decision_schema=load_schema("advisor_decision.schema.json"),
+            decision_schema=load_schema("runtime_action_set.schema.json"),
             feature_snapshot_hash="sha256:retry-feature",
-            decision_version="runtime-advisor-decision-v1",
+            decision_version="runtime-action-set-v1",
         )
 
         self.assertEqual(calls["count"], 2)
-        self.assertEqual(result.decision_payload["advisor_mode"], "openai_structured")
+        self.assertEqual(result.decision_payload["proposed_actions"][0]["action_kind"], "sidecar_index_reuse")
 
     def test_advisor_result_facade_wraps_decision_without_changing_legacy_api(self) -> None:
         advisor = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"})
@@ -908,6 +1101,129 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertTrue(ticket_result.accepted, ticket_result.rejected_reason)
         self.assertIn("ticket_fast_path", ticket_result.execution_plan)
 
+    def test_gate_rejects_unknown_typed_action(self) -> None:
+        gate_result = DeterministicValidationGate().validate_advisor_decision(
+            advisor_decision=self._advisor_decision_payload(
+                actions=[self._runtime_action_payload("hallucinated_action_kind")]
+            )
+        )
+
+        self.assertFalse(gate_result.accepted)
+        self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_UNKNOWN")
+
+    def test_gate_rejects_unsafe_llm_action_before_unknown_check(self) -> None:
+        gate_result = DeterministicValidationGate().validate_advisor_decision(
+            advisor_decision=self._advisor_decision_payload(
+                actions=[
+                    self._runtime_action_payload(
+                        "shell_script_rewrite",
+                        expected_benefit={
+                            "runtime_seconds_delta": None,
+                            "peak_rss_mb_delta": None,
+                            "notes": ["run shell script to rewrite proof_digest and schema migration"],
+                        },
+                    )
+                ]
+            )
+        )
+
+        self.assertFalse(gate_result.accepted)
+        self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_UNSAFE_LLM_OUTPUT")
+
+    def test_gate_rejects_non_none_proof_scope_impact(self) -> None:
+        gate_result = DeterministicValidationGate().validate_advisor_decision(
+            advisor_decision=self._advisor_decision_payload(
+                actions=[
+                    self._runtime_action_payload(
+                        "cold_preview",
+                        proof_scope_impact="expands_proof_scope",
+                    )
+                ]
+            )
+        )
+
+        self.assertFalse(gate_result.accepted)
+        self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_PROOF_SCOPE_IMPACT")
+
+    def test_gate_rejects_typed_reuse_action_when_artifacts_missing(self) -> None:
+        gate_result = DeterministicValidationGate().validate_advisor_decision(
+            advisor_decision=self._advisor_decision_payload(
+                actions=[self._runtime_action_payload("sidecar_index_reuse")]
+            )
+        )
+
+        self.assertFalse(gate_result.accepted)
+        self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_MISSING_ARTIFACT")
+
+    def test_gate_rejects_typed_reuse_action_when_checksum_mismatches(self) -> None:
+        sidecar_path, manifest, sidecar_checksum = self._prepare_sidecar()
+        fingerprint = (
+            int(sidecar_path.stat().st_dev),
+            int(sidecar_path.stat().st_ino),
+            int(sidecar_path.stat().st_size),
+            int(sidecar_path.stat().st_mtime_ns),
+        )
+        indexed = build_or_open_sidecar_index(
+            sidecar_path,
+            expected_snapshot_id="snapshot:test:advisor",
+            expected_trace_checksum="trace:test",
+            sidecar_checksum=sidecar_checksum,
+            file_fingerprint=fingerprint,
+            dictionary_checksum="dict:test",
+            rebuild_on_mismatch=True,
+        )
+        self.assertTrue(indexed.ok, indexed.message)
+
+        gate_result = DeterministicValidationGate().validate_advisor_decision(
+            advisor_decision=self._advisor_decision_payload(
+                actions=[self._runtime_action_payload("sidecar_index_reuse")]
+            ),
+            sidecar_manifest=manifest,
+            request_context={
+                "sidecar_path": str(sidecar_path),
+                "index_path": str(indexed.data.path),
+                "ticket_path": str(sidecar_index_ticket_path_for_source(sidecar_path, index_path=indexed.data.path)),
+                "snapshot_id": "snapshot:test:advisor",
+                "trace_checksum": "trace:test",
+                "dictionary_checksum": "dict:test",
+                "sidecar_checksum": "sha256:wrong-sidecar",
+            },
+        )
+
+        self.assertFalse(gate_result.accepted)
+        self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_CHECKSUM_MISMATCH")
+
+    def test_gate_rejects_typed_action_when_policy_denied(self) -> None:
+        gate_result = DeterministicValidationGate().validate_advisor_decision(
+            advisor_decision=self._advisor_decision_payload(
+                actions=[self._runtime_action_payload("streaming_package_write")]
+            ),
+            policy={
+                "advisor_enabled": True,
+                "streaming_package_write_enabled": False,
+            },
+        )
+
+        self.assertFalse(gate_result.accepted)
+        self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_POLICY_DENIED")
+
+    def test_gate_accepts_need_more_telemetry_without_artifact_binding(self) -> None:
+        gate_result = DeterministicValidationGate().validate_advisor_decision(
+            advisor_decision=self._advisor_decision_payload(
+                actions=[
+                    self._runtime_action_payload(
+                        "need_more_telemetry",
+                        required_artifacts=["telemetry_history"],
+                    )
+                ],
+                abstained=True,
+                abstain_reason="telemetry is insufficient",
+            )
+        )
+
+        self.assertTrue(gate_result.accepted, gate_result.rejected_reason)
+        self.assertIn("need_more_telemetry", gate_result.execution_plan)
+
     def test_gate_result_facade_accepts_and_rejects_with_audit_data(self) -> None:
         advisor = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"})
         gate = DeterministicValidationGate()
@@ -937,6 +1253,18 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertFalse(ticket_rejected.ok)
         self.assertEqual(ticket_rejected.code, "ERR-ADVISOR_REJECTED_BY_GATE")
         self.assertIsInstance(legacy_gate, ValidationGateResult)
+
+    def test_gate_legacy_bool_path_still_accepts_with_empty_proposed_actions(self) -> None:
+        gate_result = DeterministicValidationGate().validate_advisor_decision(
+            advisor_decision={
+                "recommend_streaming_write": True,
+                "recommended_schedule": "serial_safe",
+                "proposed_actions": [],
+            }
+        )
+
+        self.assertTrue(gate_result.accepted, gate_result.rejected_reason)
+        self.assertEqual(gate_result.execution_plan, ["stream_write", "serial_safe"])
 
     def test_runtime_load_gate_rejects_reuse_without_ticket(self) -> None:
         rejected = gate_ValidateRuntimeLoadPlan(

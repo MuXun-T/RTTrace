@@ -173,19 +173,25 @@ class _MockDeepSeekHandler(BaseHTTPRequestHandler):
         user_payload = _parse_user_payload(request_payload)
         model = str(request_payload.get("model") or user_payload.get("model_ref") or DEFAULT_MODEL)
         decision_payload = {
-            "decision_version": str(user_payload.get("decision_version") or "runtime-advisor-decision-v1"),
-            "advisor_mode": "openai_structured",
-            "model_ref": model,
-            "model_checksum": None,
-            "feature_snapshot_hash": str(user_payload.get("feature_snapshot_hash") or ""),
-            "recommend_index_prebuild": False,
-            "recommend_index_reuse_attempt": False,
-            "recommend_streaming_write": True,
-            "recommended_schedule": "serial_safe",
-            "predicted_runtime_seconds": 1.0,
-            "predicted_peak_rss_mb": 128.0,
-            "risk_level": "low",
-            "reasons": ["mock deepseek advisor smoke decision"],
+            "action_set_version": str(user_payload.get("action_set_version") or "runtime-action-set-v1"),
+            "generated_at": "2026-05-05T00:00:00+00:00",
+            "proposed_actions": [
+                {
+                    "action_id": "runtime-action:streaming_package_write",
+                    "action_kind": "streaming_package_write",
+                    "required_artifacts": [],
+                    "expected_benefit": {
+                        "runtime_seconds_delta": None,
+                        "peak_rss_mb_delta": None,
+                        "notes": ["mock deepseek advisor smoke decision"],
+                    },
+                    "risk_level": "low",
+                    "proof_scope_impact": "none",
+                    "fallback_action": None,
+                }
+            ],
+            "abstained": False,
+            "abstain_reason": None,
         }
 
         self.server.request_count += 1

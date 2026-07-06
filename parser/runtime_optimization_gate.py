@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import re
 from typing import Any
 
 from parser.evidence_sidecar_index import (
@@ -18,6 +19,27 @@ from parser.runtime_advisor import RUNTIME_LOAD_INDEX_BUILD_MODES, RUNTIME_LOAD_
 
 
 GATE_VERSION = "runtime-optimization-gate-v1"
+RUNTIME_ACTION_GATE_ALLOWLIST = {
+    "cold_preview",
+    "sidecar_index_prebuild",
+    "sidecar_index_reuse",
+    "streaming_package_write",
+    "need_more_telemetry",
+}
+_ACTION_POLICY_KEYS = {
+    "cold_preview": "cold_preview_enabled",
+    "sidecar_index_prebuild": "sidecar_index_prebuild_enabled",
+    "sidecar_index_reuse": "sidecar_index_reuse_enabled",
+    "streaming_package_write": "streaming_package_write_enabled",
+    "need_more_telemetry": "need_more_telemetry_enabled",
+}
+_UNSAFE_ACTION_TEXT_PATTERNS = (
+    re.compile(r"(^|[^a-z0-9])(shell|bash|powershell|cmd(?:\.exe)?|script|python3?|node|perl|ruby|curl|wget)([^a-z0-9]|$)"),
+    re.compile(r"schema[-_\s]?migration|migrate[-_\s]?schema"),
+    re.compile(r"proof[-_\s]?(path|digest|hash)"),
+    re.compile(r"truth[-_\s]?path"),
+    re.compile(r"(?:^|[\\/])[^\\/\s]+\.(?:sh|ps1|bat|cmd)\b"),
+)
 
 
 def _decision_mapping(value: Any) -> dict[str, Any]:
@@ -53,6 +75,54 @@ def _dependency_sidecar_checksum_from_manifest(manifest: dict[str, Any] | None) 
             if checksum:
                 return checksum
     return ""
+
+
+def _action_mapping(value: Any) -> dict[str, Any]:
+    if value is None:
+        return {}
+    if hasattr(value, "to_dict"):
+        return dict(value.to_dict())
+    if isinstance(value, dict):
+        return dict(value)
+    return {}
+
+
+def _iter_string_values(value: Any) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        items: list[str] = []
+        for nested in value.values():
+            items.extend(_iter_string_values(nested))
+        return items
+    if isinstance(value, (list, tuple, set)):
+        items = []
+        for nested in value:
+            items.extend(_iter_string_values(nested))
+        return items
+    return []
+
+
+def _action_contains_unsafe_output(action: dict[str, Any]) -> bool:
+    for key, value in action.items():
+        if key == "proof_scope_impact":
+            continue
+        for text in _iter_string_values(value):
+            lowered = str(text or "").strip().lower()
+            if not lowered:
+                continue
+            if any(pattern.search(lowered) for pattern in _UNSAFE_ACTION_TEXT_PATTERNS):
+                return True
+    return False
+
+
+def _action_policy_allowed(action_kind: str, policy: dict[str, Any]) -> bool:
+    policy_key = _ACTION_POLICY_KEYS.get(action_kind)
+    if policy_key and not bool(policy.get(policy_key, True)):
+        return False
+    if action_kind == "sidecar_index_reuse" and not bool(policy.get("ticket_fast_path_enabled", True)):
+        return False
+    return True
 
 
 def _gate_result_to_result(gate_result: "ValidationGateResult", *, action: str) -> Result["ValidationGateResult"]:
@@ -254,6 +324,115 @@ class DeterministicValidationGate:
             action="ticket fast path",
         )
 
+    def validate_runtime_action(
+        self,
+        *,
+        runtime_action: Any,
+        sidecar_ticket: SidecarIndexTicket | None = None,
+        sidecar_manifest: dict[str, Any] | None = None,
+        request_context: dict[str, Any] | None = None,
+        policy: dict[str, Any] | None = None,
+    ) -> ValidationGateResult:
+        action = _action_mapping(runtime_action)
+        policy_payload = dict(policy or {})
+        action_kind = str(action.get("action_kind") or "").strip()
+        proof_scope_impact = str(action.get("proof_scope_impact") or "none").strip()
+
+        if proof_scope_impact != "none":
+            return self._reject("ERR-ACTION_PROOF_SCOPE_IMPACT", checked_policy=True)
+        if _action_contains_unsafe_output(action):
+            return self._reject("ERR-ACTION_UNSAFE_LLM_OUTPUT", checked_policy=True)
+        if action_kind not in RUNTIME_ACTION_GATE_ALLOWLIST:
+            return self._reject("ERR-ACTION_UNKNOWN", checked_policy=True)
+        if not _action_policy_allowed(action_kind, policy_payload):
+            return self._reject("ERR-ACTION_POLICY_DENIED", checked_policy=True)
+        if action_kind == "sidecar_index_reuse":
+            manifest_payload = dict(sidecar_manifest or {})
+            request_payload = dict(request_context or {})
+            resolved_sidecar_path = str(request_payload.get("sidecar_path") or "").strip()
+            resolved_snapshot_id = str(request_payload.get("snapshot_id") or manifest_payload.get("snapshot_id") or "").strip()
+            resolved_trace_checksum = str(
+                request_payload.get("trace_checksum") or manifest_payload.get("trace_checksum") or ""
+            ).strip()
+            resolved_dictionary_checksum = str(
+                request_payload.get("dictionary_checksum") or manifest_payload.get("dictionary_checksum") or ""
+            ).strip()
+            resolved_sidecar_checksum = str(
+                request_payload.get("sidecar_checksum") or _dependency_sidecar_checksum_from_manifest(manifest_payload) or ""
+            ).strip()
+            if (
+                sidecar_manifest is None
+                or request_context is None
+                or not resolved_sidecar_path
+                or not resolved_snapshot_id
+                or not resolved_trace_checksum
+                or not resolved_dictionary_checksum
+                or not resolved_sidecar_checksum
+            ):
+                return self._reject("ERR-ACTION_MISSING_ARTIFACT", checked_ticket=True, checked_policy=True)
+            ticket_result = self.validate_ticket_fast_path(
+                sidecar_manifest=manifest_payload,
+                request_context=request_payload,
+                policy=policy_payload,
+                sidecar_ticket=sidecar_ticket,
+            )
+            if not ticket_result.accepted:
+                rejected_reason = str(ticket_result.rejected_reason or "")
+                if rejected_reason == "ERR-ADVISOR_REJECTED_BY_GATE":
+                    return self._reject(
+                        "ERR-ACTION_POLICY_DENIED",
+                        checked_ticket=ticket_result.checked_ticket,
+                        checked_schema=ticket_result.checked_schema,
+                        checked_checksum=ticket_result.checked_checksum,
+                        checked_fingerprint=ticket_result.checked_fingerprint,
+                        checked_policy=True,
+                    )
+                if rejected_reason == "ERR-SIDECAR_INDEX_MISSING":
+                    return self._reject(
+                        "ERR-ACTION_MISSING_ARTIFACT",
+                        checked_ticket=True,
+                        checked_schema=ticket_result.checked_schema,
+                        checked_checksum=ticket_result.checked_checksum,
+                        checked_fingerprint=ticket_result.checked_fingerprint,
+                        checked_policy=True,
+                    )
+                return self._reject(
+                    "ERR-ACTION_CHECKSUM_MISMATCH",
+                    checked_ticket=True,
+                    checked_schema=True,
+                    checked_checksum=True,
+                    checked_fingerprint=bool(ticket_result.checked_fingerprint or rejected_reason == "ERR-SIDECAR_INDEX_STALE"),
+                    checked_policy=True,
+                )
+            return ValidationGateResult(
+                gate_version=GATE_VERSION,
+                accepted=True,
+                rejected_reason=None,
+                checked_ticket=True,
+                checked_schema=bool(ticket_result.checked_schema),
+                checked_checksum=bool(ticket_result.checked_checksum),
+                checked_fingerprint=bool(ticket_result.checked_fingerprint),
+                checked_policy=True,
+                execution_plan=list(ticket_result.execution_plan),
+            )
+        action_execution_plan = {
+            "cold_preview": ["cold_preview"],
+            "sidecar_index_prebuild": ["build_index"],
+            "streaming_package_write": ["stream_write"],
+            "need_more_telemetry": ["need_more_telemetry"],
+        }.get(action_kind, [])
+        return ValidationGateResult(
+            gate_version=GATE_VERSION,
+            accepted=True,
+            rejected_reason=None,
+            checked_ticket=False,
+            checked_schema=False,
+            checked_checksum=False,
+            checked_fingerprint=False,
+            checked_policy=True,
+            execution_plan=action_execution_plan,
+        )
+
     def validate_advisor_decision(
         self,
         *,
@@ -276,6 +455,46 @@ class DeterministicValidationGate:
                 checked_fingerprint=False,
                 checked_policy=True,
                 execution_plan=["baseline"],
+            )
+        proposed_actions = [_action_mapping(item) for item in list(decision.get("proposed_actions") or [])]
+        if proposed_actions:
+            checked_ticket = False
+            checked_schema = False
+            checked_checksum = False
+            checked_fingerprint = False
+            checked_policy = False
+            execution_plan: list[str] = []
+            for action in proposed_actions:
+                action_result = self.validate_runtime_action(
+                    runtime_action=action,
+                    sidecar_ticket=sidecar_ticket,
+                    sidecar_manifest=sidecar_manifest,
+                    request_context=request_context,
+                    policy=policy_payload,
+                )
+                if not action_result.accepted:
+                    return action_result
+                checked_ticket = checked_ticket or bool(action_result.checked_ticket)
+                checked_schema = checked_schema or bool(action_result.checked_schema)
+                checked_checksum = checked_checksum or bool(action_result.checked_checksum)
+                checked_fingerprint = checked_fingerprint or bool(action_result.checked_fingerprint)
+                checked_policy = checked_policy or bool(action_result.checked_policy)
+                execution_plan.extend(list(action_result.execution_plan))
+            schedule = str(decision.get("recommended_schedule") or "")
+            if schedule in {"serial_safe", "sidecar_first", "bounded_parallel", "degraded_priority"}:
+                execution_plan.append(schedule)
+            if not execution_plan:
+                execution_plan.append("baseline")
+            return ValidationGateResult(
+                gate_version=GATE_VERSION,
+                accepted=True,
+                rejected_reason=None,
+                checked_ticket=checked_ticket,
+                checked_schema=checked_schema,
+                checked_checksum=checked_checksum,
+                checked_fingerprint=checked_fingerprint,
+                checked_policy=checked_policy,
+                execution_plan=list(dict.fromkeys(execution_plan)),
             )
         execution_plan: list[str] = []
         if bool(decision.get("recommend_streaming_write")):

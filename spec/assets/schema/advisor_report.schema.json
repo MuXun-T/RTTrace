@@ -35,7 +35,10 @@
         "predicted_runtime_seconds",
         "predicted_peak_rss_mb",
         "risk_level",
-        "reasons"
+        "reasons",
+        "proposed_actions",
+        "abstained",
+        "abstain_reason"
       ],
       "properties": {
         "decision_version": {"type": "string"},
@@ -56,7 +59,51 @@
         "predicted_runtime_seconds": {"type": ["number", "null"], "minimum": 0},
         "predicted_peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
         "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
-        "reasons": {"type": "array", "items": {"type": "string"}}
+        "reasons": {"type": "array", "items": {"type": "string"}},
+        "proposed_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "action_id",
+              "action_kind",
+              "required_artifacts",
+              "expected_benefit",
+              "risk_level",
+              "proof_scope_impact",
+              "fallback_action"
+            ],
+            "properties": {
+              "action_id": {"type": "string"},
+              "action_kind": {"type": "string"},
+              "required_artifacts": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "expected_benefit": {
+                "type": "object",
+                "properties": {
+                  "runtime_seconds_delta": {"type": ["number", "null"]},
+                  "peak_rss_mb_delta": {"type": ["number", "null"]},
+                  "notes": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                },
+                "additionalProperties": true
+              },
+              "risk_level": {
+                "type": "string",
+                "enum": ["low", "medium", "high", "critical"]
+              },
+              "proof_scope_impact": {"type": "string"},
+              "fallback_action": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+          }
+        },
+        "abstained": {"type": "boolean"},
+        "abstain_reason": {"type": ["string", "null"]}
       },
       "additionalProperties": false
     },
@@ -135,7 +182,10 @@
         "predicted_runtime_seconds",
         "predicted_peak_rss_mb",
         "risk_level",
-        "reasons"
+        "reasons",
+        "proposed_actions",
+        "abstained",
+        "abstain_reason"
       ],
       "properties": {
         "decision_version": {"type": "string"},
@@ -156,7 +206,51 @@
         "predicted_runtime_seconds": {"type": ["number", "null"], "minimum": 0},
         "predicted_peak_rss_mb": {"type": ["number", "null"], "minimum": 0},
         "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
-        "reasons": {"type": "array", "items": {"type": "string"}}
+        "reasons": {"type": "array", "items": {"type": "string"}},
+        "proposed_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "action_id",
+              "action_kind",
+              "required_artifacts",
+              "expected_benefit",
+              "risk_level",
+              "proof_scope_impact",
+              "fallback_action"
+            ],
+            "properties": {
+              "action_id": {"type": "string"},
+              "action_kind": {"type": "string"},
+              "required_artifacts": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "expected_benefit": {
+                "type": "object",
+                "properties": {
+                  "runtime_seconds_delta": {"type": ["number", "null"]},
+                  "peak_rss_mb_delta": {"type": ["number", "null"]},
+                  "notes": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                },
+                "additionalProperties": true
+              },
+              "risk_level": {
+                "type": "string",
+                "enum": ["low", "medium", "high", "critical"]
+              },
+              "proof_scope_impact": {"type": "string"},
+              "fallback_action": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+          }
+        },
+        "abstained": {"type": "boolean"},
+        "abstain_reason": {"type": ["string", "null"]}
       },
       "additionalProperties": false
     },

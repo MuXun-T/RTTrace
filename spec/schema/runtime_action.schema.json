@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RuntimeAction",
+  "type": "object",
+  "required": [
+    "action_id",
+    "action_kind",
+    "required_artifacts",
+    "expected_benefit",
+    "risk_level",
+    "proof_scope_impact",
+    "fallback_action"
+  ],
+  "properties": {
+    "action_id": {"type": "string"},
+    "action_kind": {"type": "string"},
+    "required_artifacts": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "expected_benefit": {
+      "type": "object",
+      "properties": {
+        "runtime_seconds_delta": {"type": ["number", "null"]},
+        "peak_rss_mb_delta": {"type": ["number", "null"]},
+        "notes": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": true
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "proof_scope_impact": {"type": "string"},
+    "fallback_action": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

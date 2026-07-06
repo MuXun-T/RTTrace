@@ -145,6 +145,9 @@ class EvidenceContractAssetTests(unittest.TestCase):
                 "advisor_decision",
                 "advisor_trace",
                 "advisor_report",
+                "runtime_action",
+                "runtime_action_set",
+                "advisor_grounding_report",
                 "validation_gate_result",
                 "agent_job_contract",
                 "export_write_metric",
@@ -163,6 +166,9 @@ class EvidenceContractAssetTests(unittest.TestCase):
             "advisor_decision_schema",
             "advisor_trace_schema",
             "advisor_report_schema",
+            "runtime_action_schema",
+            "runtime_action_set_schema",
+            "advisor_grounding_report_schema",
             "validation_gate_result_schema",
             "agent_job_contract_schema",
             "export_write_metric_schema",
@@ -177,6 +183,46 @@ class EvidenceContractAssetTests(unittest.TestCase):
                 schema_ref_props = specs[spec_name]["properties"]["schema_ref"]["properties"]
                 self.assertTrue(runtime_schema_ref_keys.issubset(set(schema_ref_props)))
                 self.assertTrue(runtime_schema_ref_keys.isdisjoint(set(specs[spec_name]["properties"]["schema_ref"].get("required", []))))
+        action_props = specs["runtime_action"]["properties"]
+        self.assertEqual(action_props["action_kind"]["type"], "string")
+        self.assertEqual(action_props["proof_scope_impact"]["type"], "string")
+        self.assertEqual(set(action_props["fallback_action"]["type"]), {"string", "null"})
+        action_item_props = specs["runtime_action_set"]["properties"]["proposed_actions"]["items"]["properties"]
+        self.assertEqual(action_item_props["action_kind"]["type"], "string")
+        self.assertEqual(action_item_props["proof_scope_impact"]["type"], "string")
+        self.assertEqual(set(action_item_props["fallback_action"]["type"]), {"string", "null"})
+
+        known_action = {
+            "action_id": "action:test:known",
+            "action_kind": "cold_preview",
+            "required_artifacts": [],
+            "expected_benefit": {"runtime_seconds_delta": -1.0, "peak_rss_mb_delta": None, "notes": ["known action"]},
+            "risk_level": "medium",
+            "proof_scope_impact": "none",
+            "fallback_action": None,
+        }
+        permissive_action = {
+            "action_id": "action:test:unknown",
+            "action_kind": "hallucinated_action_kind",
+            "required_artifacts": ["control/unknown.json"],
+            "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["gate should reject later"]},
+            "risk_level": "high",
+            "proof_scope_impact": "mutates_proof_facts",
+            "fallback_action": "other_unknown_action",
+        }
+        _assert_schema(specs["runtime_action"], known_action, label="runtime_action.known")
+        _assert_schema(specs["runtime_action"], permissive_action, label="runtime_action.permissive")
+        _assert_schema(
+            specs["runtime_action_set"],
+            {
+                "action_set_version": "runtime-action-set-v1",
+                "generated_at": "2026-07-06T00:00:00+00:00",
+                "proposed_actions": [permissive_action],
+                "abstained": False,
+                "abstain_reason": None,
+            },
+            label="runtime_action_set.permissive",
+        )
 
     def test_dependency_sidecar_schema_freezes_kind_and_relation_enums(self) -> None:
         schema = load_specs()["dependency_sidecar"]

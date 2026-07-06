@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AdvisorGroundingReport",
+  "type": "object",
+  "required": [
+    "report_version",
+    "generated_at",
+    "grounding_basis",
+    "telemetry_refs",
+    "artifact_refs",
+    "action_ids",
+    "evidence_sufficient",
+    "notes"
+  ],
+  "properties": {
+    "report_version": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "grounding_basis": {
+      "type": "string",
+      "enum": ["none", "telemetry_only", "artifact_only", "telemetry_and_artifact"]
+    },
+    "telemetry_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "artifact_refs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "action_ids": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "evidence_sufficient": {"type": "boolean"},
+    "notes": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}
