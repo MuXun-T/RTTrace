@@ -1,0 +1,97 @@
+{
+  "schema_version": "phase0-paper-evidence-index-v1",
+  "generated_at": "2026-07-06T14:40:45+08:00",
+  "project_root": "/media/zzq/新加卷/patent/realization",
+  "baseline_dir": "docs/paper_baseline_20260706",
+  "indexed_sources": [
+    {
+      "id": "status-freeze",
+      "path": "docs/runtime_optimization_current_status_20260704.md",
+      "role": "phase-freeze summary and claim boundary anchor"
+    },
+    {
+      "id": "product-summary",
+      "path": "docs/runtime_optimization_product_evidence_20260703/summary.md",
+      "role": "P3/P4/P5/P7 archived summary wording"
+    },
+    {
+      "id": "product-verification",
+      "path": "docs/runtime_optimization_product_evidence_20260703/verification.md",
+      "role": "archived mapping from staged evidence to reviewed docs"
+    },
+    {
+      "id": "product-summary-json",
+      "path": "docs/runtime_optimization_product_evidence_20260703/runtime_optimization_product_evidence_summary.json",
+      "role": "machine-readable P3/P4/P5/P7 boundary summary"
+    },
+    {
+      "id": "p3-report",
+      "path": "docs/runtime_optimization_product_evidence_20260703/p3_main/product_evidence_report.json",
+      "role": "cached desktop open/load evidence"
+    },
+    {
+      "id": "p4-report",
+      "path": "docs/runtime_optimization_product_evidence_20260703/p4_main/product_evidence_report.json",
+      "role": "click-to-export wait evidence"
+    },
+    {
+      "id": "closeout-report",
+      "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+      "role": "P0-P7 reviewed closeout boundary text"
+    },
+    {
+      "id": "closeout-summary",
+      "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_summary.json",
+      "role": "machine summary for supplemental product evidence and P7 boundary"
+    },
+    {
+      "id": "formal-parity-root",
+      "path": "docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/formal_parity_report.json",
+      "role": "cross-scenario mandatory-field consistency and proof boundary"
+    },
+    {
+      "id": "windows-parity-readiness",
+      "path": "docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/ticket_fast_path/windows_final_readiness_report.json",
+      "role": "Windows/Linux mandatory evidence field parity report"
+    },
+    {
+      "id": "paper-plan-support",
+      "path": "docs/result/patent_improvement_metrics_20260429.md",
+      "role": "historical paper-facing support material; referenced only"
+    },
+    {
+      "id": "deepseek-smoke-doc",
+      "path": "docs/result/deepseek_advisor_smoke_20260505.md",
+      "role": "archived DeepSeek smoke and proof boundary write-up"
+    },
+    {
+      "id": "deepseek-p5-doc",
+      "path": "docs/result/运行时优化Agent_P5_DeepSeek第五场景_20260507.md",
+      "role": "P5 DeepSeek formal rerun summary"
+    },
+    {
+      "id": "deepseek-smoke-summary-json",
+      "path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke_summary.json",
+      "role": "machine-readable real DeepSeek smoke summary"
+    },
+    {
+      "id": "deepseek-benchmark-rerun",
+      "path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/runtime_optimization_benchmark_p5_openai_structured_rerun.json",
+      "role": "formal rerun with advisor_openai_structured parity and overhead"
+    },
+    {
+      "id": "deepseek-proof-digest-sample",
+      "path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke/runs/01_basic/advisor_enabled/package/control/proof_digest.json",
+      "role": "sample proof digest showing no advisor or LLM fields"
+    },
+    {
+      "id": "external-1gb-trace",
+      "path": "docs/evidence_proof_archive_20260416/formal_10_4/inputs/google_cluster_external_dense_1gb_formal_qualified.trace",
+      "role": "qualified external dense 1GB trace input referenced by archived evidence"
+    }
+  ],
+  "notes": [
+    "Index created in Phase 0A by read-only discovery of existing evidence files.",
+    "Historical formal artifacts remain untouched; this directory only records references."
+  ]
+}

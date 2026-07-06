@@ -1,0 +1,6 @@
+command: python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q
+exit_code: 0
+
+........................................................................ [ 72%]
+...........................                                              [100%]
+99 passed in 7.32s

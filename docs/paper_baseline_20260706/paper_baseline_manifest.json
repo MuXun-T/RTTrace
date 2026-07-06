@@ -1,0 +1,225 @@
+{
+  "schema_version": "phase0-paper-baseline-manifest-v1",
+  "generated_at": "2026-07-06T14:53:25+08:00",
+  "project_root": "/media/zzq/新加卷/patent/realization",
+  "baseline_dir": "docs/paper_baseline_20260706",
+  "evidence_sources": [
+    {
+      "expected_path": "docs/runtime_optimization_current_status_20260704.md",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_current_status_20260704.md",
+      "status": "found",
+      "sha256": "e07098507ca3d98e5be3382ae183ab21afe11bb8f091eccff461b9c9482dc2b9",
+      "size_bytes": 3290,
+      "note": "phase freeze and historical final regression anchor"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_product_evidence_20260703/summary.md",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_product_evidence_20260703/summary.md",
+      "status": "found",
+      "sha256": "c523b17ede6a91be4e726c5114aeb1406463b3ea3893bdaf5fdbd97e7f3a1aaf",
+      "size_bytes": 1222,
+      "note": "reviewed P3/P4/P5/P7 summary wording"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_product_evidence_20260703/verification.md",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_product_evidence_20260703/verification.md",
+      "status": "found",
+      "sha256": "caa42d1d4b51ad65552838e79c366d42f139266e877f3c1d2cb529e86ed3b924",
+      "size_bytes": 4680,
+      "note": "archived source-to-doc verification map"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_product_evidence_20260703/runtime_optimization_product_evidence_summary.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_product_evidence_20260703/runtime_optimization_product_evidence_summary.json",
+      "status": "found",
+      "sha256": "59177fa2aa1949facd034247e4976fd8403d63da3e1fce19bcbf533752acb32d",
+      "size_bytes": 4937,
+      "note": "machine-readable P3/P4/P5/P7 summary"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_product_evidence_20260703/p3_main/product_evidence_report.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_product_evidence_20260703/p3_main/product_evidence_report.json",
+      "status": "found",
+      "sha256": "7e113e7438349e557cc3e7e4936d16cc96f46c04d33c782224cd4c81f20f5f87",
+      "size_bytes": 20803,
+      "note": "P3 cache-hit claim source"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_product_evidence_20260703/p4_main/product_evidence_report.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_product_evidence_20260703/p4_main/product_evidence_report.json",
+      "status": "found",
+      "sha256": "994549649526cb26949566b3ad74f5593cd9ef9188d6329be30586f734839e14",
+      "size_bytes": 12364,
+      "note": "P4 click-wait claim source"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+      "status": "found",
+      "sha256": "1d61fe23b2b58c9a17c26fd6435e49965e269cce466360a1a880d3e4961bbe54",
+      "size_bytes": 10787,
+      "note": "reviewed closeout text for P0-P7 boundaries"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_summary.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_summary.json",
+      "status": "found",
+      "sha256": "316fea020152a28f0e7ed9c06dd40436e0e1aa13604225319ceba4dfede1ebfa",
+      "size_bytes": 5642,
+      "note": "machine summary for supplemental evidence and P7 boundary"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/formal_parity_report.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/formal_parity_report.json",
+      "status": "found",
+      "sha256": "0c11af19028fddf23f67425d833c814e6720ba5b966e1d1005817860daa51e67",
+      "size_bytes": 11752,
+      "note": "cross-scenario proof boundary and mandatory field consistency"
+    },
+    {
+      "expected_path": "docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/ticket_fast_path/windows_final_readiness_report.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/ticket_fast_path/windows_final_readiness_report.json",
+      "status": "found",
+      "sha256": "a1c2cabc2f40ab7165f7797e7e12861ac93be5bbe0408e484708ccc338787eda",
+      "size_bytes": 60272,
+      "note": "Windows/Linux readiness and mandatory field parity detail"
+    },
+    {
+      "expected_path": "docs/result/patent_improvement_metrics_20260429.md",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/result/patent_improvement_metrics_20260429.md",
+      "status": "found",
+      "sha256": "747fca12fcbb68c50e9957bf9f87b83ac4ccf1172dd05341be4d0e6e1e764a8c",
+      "size_bytes": 9934,
+      "note": "historical paper-facing support material referenced only"
+    },
+    {
+      "expected_path": "docs/result/deepseek_advisor_smoke_20260505.md",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/result/deepseek_advisor_smoke_20260505.md",
+      "status": "found",
+      "sha256": "31c4b6b6a491e001bbe415186b3ac0e7795793d076f5038222ca324db2396b73",
+      "size_bytes": 17086,
+      "note": "reviewed DeepSeek smoke write-up"
+    },
+    {
+      "expected_path": "docs/result/运行时优化Agent_P5_DeepSeek第五场景_20260507.md",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/result/运行时优化Agent_P5_DeepSeek第五场景_20260507.md",
+      "status": "found",
+      "sha256": "8139763cc8e76dd83ec42beb100f92070a4d37c43426fda74cf72a2b999348e9",
+      "size_bytes": 4459,
+      "note": "reviewed P5 DeepSeek formal rerun summary"
+    },
+    {
+      "expected_path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke_summary.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke_summary.json",
+      "status": "found",
+      "sha256": "187226f9c7aa5aa4f7b3b07a713f00ed95feaf9c859b8932b6204fe657b37453",
+      "size_bytes": 62550,
+      "note": "machine-readable DeepSeek smoke summary"
+    },
+    {
+      "expected_path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/runtime_optimization_benchmark_p5_openai_structured_rerun.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/runtime_optimization_benchmark_p5_openai_structured_rerun.json",
+      "status": "found",
+      "sha256": "e8fdbb1de649086e713809714cf3230141cbbe069745c0f832c86eb697387fe0",
+      "size_bytes": 21750,
+      "note": "DeepSeek formal rerun parity and overhead record"
+    },
+    {
+      "expected_path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke/runs/01_basic/advisor_enabled/package/control/proof_digest.json",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke/runs/01_basic/advisor_enabled/package/control/proof_digest.json",
+      "status": "found",
+      "sha256": "022ef76304a9ba3631c45b681353248e04e9882e226f25e38dc5d12e63f1dd24",
+      "size_bytes": 945,
+      "note": "sample proof digest demonstrating no advisor/LLM fields"
+    },
+    {
+      "expected_path": "docs/evidence_proof_archive_20260416/formal_10_4/inputs/google_cluster_external_dense_1gb_formal_qualified.trace",
+      "resolved_path": "/media/zzq/新加卷/patent/realization/docs/evidence_proof_archive_20260416/formal_10_4/inputs/google_cluster_external_dense_1gb_formal_qualified.trace",
+      "status": "found",
+      "sha256": "c478b7cadeb1320362af0ea9921a1ad8592e2e53f8d90ebe800b3a25fd8ada3c",
+      "size_bytes": 1118295183,
+      "note": "qualified external dense 1GB anchor input"
+    }
+  ],
+  "test_artifacts": [
+    {
+      "id": "phase0a-focused-pytest",
+      "path": "docs/paper_baseline_20260706/phase0a_focused_pytest.log",
+      "command": "python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q",
+      "exit_code": 0,
+      "summary": "99 passed in 7.33s"
+    },
+    {
+      "id": "phase0b-focused-pytest",
+      "path": "docs/paper_baseline_20260706/phase0b_focused_pytest.log",
+      "command": "python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q",
+      "exit_code": 0,
+      "summary": "99 passed in 7.36s"
+    },
+    {
+      "id": "phase0c-focused-pytest",
+      "path": "docs/paper_baseline_20260706/phase0c_focused_pytest.log",
+      "command": "python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q",
+      "exit_code": 0,
+      "summary": "99 passed in 7.30s"
+    },
+    {
+      "id": "phase0d-focused-pytest",
+      "path": "docs/paper_baseline_20260706/phase0d_focused_pytest.log",
+      "command": "python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q",
+      "exit_code": 0,
+      "summary": "99 passed in 7.33s"
+    },
+    {
+      "id": "phase0e-focused-pytest",
+      "path": "docs/paper_baseline_20260706/phase0e_focused_pytest.log",
+      "command": "python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q",
+      "exit_code": 0,
+      "summary": "99 passed in 7.32s"
+    },
+    {
+      "id": "focused-pytest-canonical",
+      "path": "docs/paper_baseline_20260706/focused_pytest.log",
+      "command": "python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q",
+      "exit_code": 0,
+      "summary": "99 passed in 7.32s"
+    },
+    {
+      "id": "full-regression-main-agent",
+      "path": "docs/paper_baseline_20260706/full_regression.log",
+      "command": "python3 -m pytest tests/python -q",
+      "exit_code": 0,
+      "summary": "547 passed, 79 subtests passed in 112.47s"
+    }
+  ],
+  "claim_boundary_file": "docs/paper_baseline_20260706/paper_claim_boundary.json",
+  "focused_pytest_log": "docs/paper_baseline_20260706/focused_pytest.log",
+  "full_regression_log": {
+    "status": "pass",
+    "path": "docs/paper_baseline_20260706/full_regression.log",
+    "command": "python3 -m pytest tests/python -q",
+    "exit_code": 0,
+    "summary": "547 passed, 79 subtests passed in 112.47s"
+  },
+  "historical_artifact_policy": {
+    "mode": "reference_only",
+    "historical_artifacts_modified": false,
+    "note": "Historical closeout, formal, result and evidence archive artifacts are hashed and referenced only."
+  },
+  "modification_scope": {
+    "allowed_write_root": "docs/paper_baseline_20260706",
+    "other_repo_paths_modified": false,
+    "forbidden_scope_touched": false,
+    "note": "No parser, pipeline, advisor, gate, telemetry, schema, trace-truth or existing docs/result/runtime_optimization evidence files were modified."
+  },
+  "validation_summary": {
+    "focused_tests_executed": true,
+    "focused_tests_passed": true,
+    "full_regression_executed": true,
+    "full_regression_passed": true,
+    "historical_artifacts_modified": false,
+    "latest_focused_phase": "phase0e",
+    "latest_focused_summary": "99 passed in 7.32s",
+    "full_regression_summary": "547 passed, 79 subtests passed in 112.47s"
+  }
+}

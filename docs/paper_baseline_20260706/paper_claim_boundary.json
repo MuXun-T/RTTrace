@@ -1,0 +1,614 @@
+{
+  "schema_version": "phase0-paper-claim-boundary-v1",
+  "generated_at": "2026-07-06T14:53:25+08:00",
+  "project_root": "/media/zzq/新加卷/patent/realization",
+  "claimable": [
+    {
+      "id": "claim-external-dense-1gb-anchor",
+      "statement": "现有归档证据支持把 external dense 1GB trace 作为已 qualified 的 product/formal anchor input 引用，但只能按归档限定口径表述。",
+      "boundary": "可宣称该 1GB 外部 dense trace 已被现有产品证据、formal rerun 和 closeout 文档引用为合格输入锚点；不可扩展成新的多数据集结论、稳定分布结论或未归档的新实验。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_product_evidence_20260703/summary.md",
+          "locator": "Scope"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_summary.json",
+          "locator": "/input_contract/path"
+        },
+        {
+          "path": "docs/evidence_proof_archive_20260416/formal_10_4/inputs/google_cluster_external_dense_1gb_formal_qualified.trace",
+          "locator": "qualified input file"
+        }
+      ],
+      "allowed_wording": [
+        "qualified external dense 1GB trace input",
+        "reviewed 1GB anchor input used by archived product and formal evidence"
+      ],
+      "forbidden_wording": [
+        "new 1GB benchmark suite",
+        "representative workload corpus",
+        "generalizes across datasets"
+      ]
+    },
+    {
+      "id": "claim-p3-cached-open-load",
+      "statement": "P3 现有证据支持 1GB 产品桌面路径在 cache hit 后的 open/load 中位时间收益。",
+      "boundary": "仅限 cache hit 后 open/load 中位时间 165.891s -> 8.279s；cold n=1、warm n=3，且 hot_metadata_only 不等于完整 UI open。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_product_evidence_20260703/p3_main/product_evidence_report.json",
+          "locator": "/claimable_speedups/0"
+        },
+        {
+          "path": "docs/runtime_optimization_product_evidence_20260703/runtime_optimization_product_evidence_summary.json",
+          "locator": "/p3"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+          "locator": "P3 artifact and sidecar reuse"
+        }
+      ],
+      "allowed_wording": [
+        "cache-hit desktop open/load benefit",
+        "product-path benefit after cache hit",
+        "open/load median 165.891s -> 8.279s under the archived 1GB evidence"
+      ],
+      "forbidden_wording": [
+        "all desktop open paths are 20x faster",
+        "cold-open distribution is proven",
+        "hot_metadata_only equals full UI open"
+      ]
+    },
+    {
+      "id": "claim-p4-click-to-export-wait",
+      "statement": "P4 现有证据支持 1GB 后台 prebuild 降低 click-to-export 等待时间。",
+      "boundary": "仅限 click_to_export_seconds 中位值 596.325s -> 129.104s 的等待降低；repeat=1，不可延伸为总耗时降低。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_product_evidence_20260703/p4_main/product_evidence_report.json",
+          "locator": "/claimable_speedups/0"
+        },
+        {
+          "path": "docs/runtime_optimization_product_evidence_20260703/runtime_optimization_product_evidence_summary.json",
+          "locator": "/p4"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+          "locator": "P4 background prebuild"
+        }
+      ],
+      "allowed_wording": [
+        "click-to-export wait reduction",
+        "reduced user-visible wait after prebuild reuse",
+        "click_to_export_seconds median 596.325s -> 129.104s"
+      ],
+      "forbidden_wording": [
+        "total elapsed was reduced",
+        "stable repeated distribution is proven",
+        "prebuild makes the full workflow faster end to end"
+      ]
+    },
+    {
+      "id": "claim-p5-acceptance-met",
+      "statement": "P5 segmented sidecar/index 的验收结论在当前 closeout 中仍然成立。",
+      "boundary": "只能宣称 acceptance met / acceptance remains valid；不可把它改写为 1GB 产品路径 speedup。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_current_status_20260704.md",
+          "locator": "P5 segmented sidecar/index row"
+        },
+        {
+          "path": "docs/runtime_optimization_product_evidence_20260703/runtime_optimization_product_evidence_summary.json",
+          "locator": "/p5"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+          "locator": "P5 segmented sidecar/index"
+        }
+      ],
+      "allowed_wording": [
+        "segmented sidecar/index acceptance remains valid",
+        "acceptance met under the archived closeout evidence"
+      ],
+      "forbidden_wording": [
+        "P5 proves 1GB product-path speedup",
+        "P5 is a deployed product acceleration result"
+      ]
+    },
+    {
+      "id": "claim-focused-python-regression-pass",
+      "statement": "当前 Phase 0 focused Python regression baseline 通过。",
+      "boundary": "仅覆盖 tests/python/test_runtime_optimization_advisor.py 与 tests/python/test_runtime_optimization_agents.py 的 focused 子集；不是本轮 full regression。",
+      "source_refs": [
+        {
+          "path": "docs/paper_baseline_20260706/phase0a_focused_pytest.log",
+          "locator": "log header and summary"
+        },
+        {
+          "path": "docs/runtime_optimization_current_status_20260704.md",
+          "locator": "historical final regression reference"
+        }
+      ],
+      "allowed_wording": [
+        "current focused regression baseline passes",
+        "99 focused tests passed in Phase 0A"
+      ],
+      "forbidden_wording": [
+        "full current regression has already passed in this turn",
+        "all Python tests were rerun by Phase 0 agent"
+      ]
+    },
+    {
+      "id": "claim-deepseek-proof-parity-boundary",
+      "statement": "DeepSeek smoke 与 P5 formal rerun 现有证据支持 proof parity pass，且 proof_digest 不含 advisor/LLM 字段。",
+      "boundary": "只能宣称 advisor overhead 被记录且 proof facts 保持隔离；不可宣称 online LLM 改善 parse/proof correctness，亦不可把 LLM 输出当作 truth-generation evidence。",
+      "source_refs": [
+        {
+          "path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke_summary.json",
+          "locator": "checks and runs"
+        },
+        {
+          "path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/runtime_optimization_benchmark_p5_openai_structured_rerun.json",
+          "locator": "/summary/parity"
+        },
+        {
+          "path": "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke/runs/01_basic/advisor_enabled/package/control/proof_digest.json",
+          "locator": "top-level keys"
+        },
+        {
+          "path": "docs/result/运行时优化Agent_P5_DeepSeek第五场景_20260507.md",
+          "locator": "P5 pass summary"
+        }
+      ],
+      "allowed_wording": [
+        "proof parity passed with DeepSeek smoke",
+        "proof_digest remained free of advisor or LLM fields",
+        "LLM overhead was recorded outside the proof chain"
+      ],
+      "forbidden_wording": [
+        "DeepSeek improves parsing correctness",
+        "LLM output participates in proof generation",
+        "proof_digest contains advisor telemetry"
+      ]
+    },
+    {
+      "id": "claim-windows-linux-mandatory-field-parity",
+      "statement": "已有 closeout 证据支持 Windows/Linux parity 的 mandatory evidence field set 一致，且 metric diff 为 0。",
+      "boundary": "该结论限定为归档 formal parity/readiness 证据中的 mandatory field set consistency、proof hash consistency 和 metric diff=0；不可外推为所有未来平台或未执行场景的普遍结论。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/formal_parity_report.json",
+          "locator": "/mandatory_field_set_consistent and /metric_diff_count"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/ticket_fast_path/windows_final_readiness_report.json",
+          "locator": "/formal_parity_report"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+          "locator": "formal parity and rebuilt artifact audit sections"
+        }
+      ],
+      "allowed_wording": [
+        "Windows/Linux mandatory evidence fields are consistent in the archived parity evidence",
+        "metric diff count is 0 in the archived parity report"
+      ],
+      "forbidden_wording": [
+        "all platforms are permanently equivalent",
+        "future runs need no parity validation",
+        "cross-platform behavior is proven beyond the archived scenarios"
+      ]
+    }
+  ],
+  "not_claimable": [
+    {
+      "id": "not-claim-p4-total-elapsed",
+      "statement": "不可宣称 P4 total elapsed reduction。",
+      "boundary": "归档证据明确显示 total_elapsed_seconds 970.407s -> 2195.590s 变差。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_product_evidence_20260703/p4_main/product_evidence_report.json",
+          "locator": "/not_claimable/0"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+          "locator": "P4 background prebuild"
+        }
+      ],
+      "allowed_wording": [
+        "total elapsed is not claimable"
+      ],
+      "forbidden_wording": [
+        "P4 speeds up end-to-end elapsed time"
+      ]
+    },
+    {
+      "id": "not-claim-p5-1gb-product-speedup",
+      "statement": "不可宣称 P5 已证明 1GB 产品路径提速。",
+      "boundary": "当前 closeout 只支持 acceptance met，不支持 1GB product-path speedup claim。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_current_status_20260704.md",
+          "locator": "P5 segmented sidecar/index row"
+        },
+        {
+          "path": "docs/runtime_optimization_product_evidence_20260703/runtime_optimization_product_evidence_summary.json",
+          "locator": "/p5"
+        }
+      ],
+      "allowed_wording": [
+        "acceptance met but 1GB product-path speedup not proven"
+      ],
+      "forbidden_wording": [
+        "P5 proves 1GB product acceleration"
+      ]
+    },
+    {
+      "id": "not-claim-p7-parallel-speedup",
+      "statement": "不可宣称 P7 true parallel rebuild speedup 或 real parallel state merge。",
+      "boundary": "现有产品/formal path 仍是 serial rebuild / serial fallback。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_summary.json",
+          "locator": "/p7_boundary"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+          "locator": "P7 Boundary Statement"
+        }
+      ],
+      "allowed_wording": [
+        "experimental boundary only"
+      ],
+      "forbidden_wording": [
+        "real parallel rebuild speedup",
+        "multi-core product-path speedup",
+        "real parallel state merge"
+      ]
+    },
+    {
+      "id": "not-claim-ticket-fast-path-general-speedup",
+      "statement": "不可把 ticket_fast_path 写成一般性的产品提速结论。",
+      "boundary": "当前 closeout 只证明其为 functional/parity path，本轮 benchmark 未支持 faster-than-baseline claim。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_current_status_20260704.md",
+          "locator": "P2 RuntimeLoadPlan/gate row"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+          "locator": "P2 RuntimeLoadPlan/gate"
+        }
+      ],
+      "allowed_wording": [
+        "functional/parity path only"
+      ],
+      "forbidden_wording": [
+        "ticket_fast_path is a general product speedup"
+      ]
+    },
+    {
+      "id": "not-claim-online-llm-truth-generation",
+      "statement": "不可把 online LLM 输出写成 parse/rebuild/sidecar/index truth-generation evidence。",
+      "boundary": "当前边界只允许宣称 LLM remains outside truth-generation paths and fail-closed/experimental。",
+      "source_refs": [
+        {
+          "path": "docs/runtime_optimization_current_status_20260704.md",
+          "locator": "P6 advisor boundary row"
+        },
+        {
+          "path": "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+          "locator": "P6 advisor/LLM boundary"
+        }
+      ],
+      "allowed_wording": [
+        "LLM remains outside truth-generation paths"
+      ],
+      "forbidden_wording": [
+        "LLM generates proof facts",
+        "LLM improves proof correctness"
+      ]
+    },
+    {
+      "id": "not-claim-phase1-typed-advisor",
+      "statement": "不可宣称已经完成 gate-first typed advisor、typed action schema 或逐 action deterministic gate。",
+      "boundary": "Phase 1 仍是计划项；当前实现与证据未提供 typed action proposal、runtime_action schema 或 per-action reject taxonomy 的论文可宣称结果。",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 1"
+        },
+        {
+          "path": "docs/runtime_optimization_current_status_20260704.md",
+          "locator": "Current phase freeze"
+        }
+      ],
+      "allowed_wording": [
+        "planned for Phase 1 only"
+      ],
+      "forbidden_wording": [
+        "typed action schema is already shipped",
+        "every advisor action is deterministically validated today"
+      ]
+    },
+    {
+      "id": "not-claim-phase2-runtime-cost-graph",
+      "statement": "不可宣称已经实现 RuntimeCostGraph 或 stage-level deterministic stage DAG 规划。",
+      "boundary": "Phase 2 仍是计划项；当前 Phase 0 只冻结基线，不引入 runtime_cost_graph.json 或 graph-driven action mapping claim。",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 2"
+        },
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "8.1 必改 item 3"
+        }
+      ],
+      "allowed_wording": [
+        "proposed deterministic cost graph"
+      ],
+      "forbidden_wording": [
+        "RuntimeCostGraph is implemented and evaluated"
+      ]
+    },
+    {
+      "id": "not-claim-phase3-retrieval-grounding",
+      "statement": "不可宣称已经实现 retrieval-grounded advisor、case bank grounding 或 abstention evaluation。",
+      "boundary": "Phase 3 仍是计划项；当前证据不支持 grounded recommendation precision、abstain precision 或 conflicting_evidence claim。",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 3"
+        }
+      ],
+      "allowed_wording": [
+        "planned retrieval grounding and abstention"
+      ],
+      "forbidden_wording": [
+        "advisor is retrieval grounded today",
+        "abstention behavior has been evaluated"
+      ]
+    },
+    {
+      "id": "not-claim-phase4-offline-online-split",
+      "statement": "不可宣称已经完成 offline/online split、offline safe priors 或 online explainer/tie-breaker boundary评估。",
+      "boundary": "Phase 4 仍是计划项；当前证据不支持 regret、offline checksum validation 或 offline-vs-online paper claim。",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 4"
+        }
+      ],
+      "allowed_wording": [
+        "proposed offline/online split"
+      ],
+      "forbidden_wording": [
+        "offline safe action priors are validated",
+        "online LLM is only a tie-breaker in the implemented system"
+      ]
+    },
+    {
+      "id": "not-claim-phase5-sandbox",
+      "statement": "不可宣称已经完成 sandboxed online advisor fail-closed evaluation。",
+      "boundary": "Phase 5 仍是计划项；当前证据没有完整的 sandbox experiment matrix。",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 5"
+        }
+      ],
+      "allowed_wording": [
+        "sandbox evaluation is proposed"
+      ],
+      "forbidden_wording": [
+        "the online advisor is already sandbox-evaluated in this baseline"
+      ]
+    },
+    {
+      "id": "not-claim-phase5-adversarial-eval",
+      "statement": "不可宣称已经完成 adversarial advisor test coverage、secret leak validation 或 overclaim attack evaluation。",
+      "boundary": "Phase 5 对抗测试仍是后续工作；当前 Phase 0 基线未新增 injection/secret/proof contamination/hallucinated action case coverage claim。",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 5 adversarial cases"
+        }
+      ],
+      "allowed_wording": [
+        "adversarial evaluation is planned"
+      ],
+      "forbidden_wording": [
+        "adversarial cases are already covered",
+        "secret leak resistance has been validated in this baseline"
+      ]
+    },
+    {
+      "id": "not-claim-phase6-rtos-diagnosis",
+      "statement": "不可宣称已经建立 RTOS diagnosis benchmark、top-k root cause 指标或 human feedback evidence。",
+      "boundary": "Phase 6 仍是计划项；当前基线不支持 reproducible RTOS diagnosis、human helpfulness 或 diagnosis SOTA 类结论。",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 6"
+        }
+      ],
+      "allowed_wording": [
+        "RTOS diagnosis benchmark is proposed for later phases"
+      ],
+      "forbidden_wording": [
+        "RTTrace already supports evaluated RTOS diagnosis benchmark",
+        "top-k root cause performance is established"
+      ]
+    }
+  ],
+  "proposed_only": [
+    {
+      "id": "phase1-gate-first-typed-advisor",
+      "statement": "Phase 1 proposes gate-first typed advisor, typed action schemas, abstain fields and per-action deterministic gate validation.",
+      "boundary": "proposal only in the July 5 paper plan; not part of the frozen Phase 0 baseline.",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 1"
+        }
+      ],
+      "allowed_wording": [
+        "planned Phase 1 work"
+      ],
+      "forbidden_wording": [
+        "already implemented in Phase 0"
+      ]
+    },
+    {
+      "id": "phase2-deterministic-cost-graph",
+      "statement": "Phase 2 proposes RuntimeCostGraph and explicit stage-graph telemetry/mapping.",
+      "boundary": "proposal only; no Phase 0 implementation or evaluation claim.",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 2"
+        }
+      ],
+      "allowed_wording": [
+        "planned Phase 2 work"
+      ],
+      "forbidden_wording": [
+        "already implemented in Phase 0"
+      ]
+    },
+    {
+      "id": "phase3-retrieval-grounded-advisor",
+      "statement": "Phase 3 proposes retrieval-grounded advisor context, case bank support and abstention evaluation.",
+      "boundary": "proposal only; no frozen-baseline claim.",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 3"
+        }
+      ],
+      "allowed_wording": [
+        "planned Phase 3 work"
+      ],
+      "forbidden_wording": [
+        "already implemented in Phase 0"
+      ]
+    },
+    {
+      "id": "phase4-offline-online-split",
+      "statement": "Phase 4 proposes offline/online split with safe action priors and no online exploration.",
+      "boundary": "proposal only; no frozen-baseline claim.",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 4"
+        }
+      ],
+      "allowed_wording": [
+        "planned Phase 4 work"
+      ],
+      "forbidden_wording": [
+        "already implemented in Phase 0"
+      ]
+    },
+    {
+      "id": "phase5-sandbox-and-adversarial-evaluation",
+      "statement": "Phase 5 proposes sandbox restrictions plus adversarial evaluation for online advisor outputs.",
+      "boundary": "proposal only; no frozen-baseline claim.",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 5"
+        }
+      ],
+      "allowed_wording": [
+        "planned Phase 5 work"
+      ],
+      "forbidden_wording": [
+        "already implemented in Phase 0"
+      ]
+    },
+    {
+      "id": "phase6-rtos-diagnosis-and-human-feedback",
+      "statement": "Phase 6 proposes RTOS diagnosis benchmarks, replay-equivalence metrics and human feedback schema.",
+      "boundary": "proposal only; no frozen-baseline claim.",
+      "source_refs": [
+        {
+          "path": "docs/rttrace_paper_oriented_agent_optimization_plan_20260705.md",
+          "locator": "Phase 6"
+        }
+      ],
+      "allowed_wording": [
+        "planned Phase 6 work"
+      ],
+      "forbidden_wording": [
+        "already implemented in Phase 0"
+      ]
+    }
+  ],
+  "source_paths": [
+    "docs/runtime_optimization_current_status_20260704.md",
+    "docs/runtime_optimization_product_evidence_20260703/summary.md",
+    "docs/runtime_optimization_product_evidence_20260703/verification.md",
+    "docs/runtime_optimization_product_evidence_20260703/runtime_optimization_product_evidence_summary.json",
+    "docs/runtime_optimization_product_evidence_20260703/p3_main/product_evidence_report.json",
+    "docs/runtime_optimization_product_evidence_20260703/p4_main/product_evidence_report.json",
+    "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_report.md",
+    "docs/runtime_optimization_closeout_20260701/runtime_optimization_closeout_summary.json",
+    "docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/formal_parity_report.json",
+    "docs/runtime_optimization_closeout_20260701/formal/formal_matrix_execute_rerun3/ticket_fast_path/windows_final_readiness_report.json",
+    "docs/result/patent_improvement_metrics_20260429.md",
+    "docs/result/deepseek_advisor_smoke_20260505.md",
+    "docs/result/运行时优化Agent_P5_DeepSeek第五场景_20260507.md",
+    "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke_summary.json",
+    "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/runtime_optimization_benchmark_p5_openai_structured_rerun.json",
+    "docs/evidence_proof_archive_20260506/runtime_optimization_agent/p5_advisor_openai_structured/deepseek_smoke/runs/01_basic/advisor_enabled/package/control/proof_digest.json",
+    "docs/evidence_proof_archive_20260416/formal_10_4/inputs/google_cluster_external_dense_1gb_formal_qualified.trace",
+    "docs/paper_baseline_20260706/phase0a_focused_pytest.log"
+  ],
+  "test_commands": [
+    {
+      "id": "focused-phase0",
+      "scope": "focused regression",
+      "command": "python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q",
+      "status": "executed"
+    },
+    {
+      "id": "full-python-suite",
+      "scope": "full regression",
+      "command": "python3 -m pytest tests/python -q",
+      "status": "pass"
+    }
+  ],
+  "focused_test_result": {
+    "status": "pass",
+    "phase": "phase0e",
+    "executed_at": "2026-07-06T14:52:58+08:00",
+    "command": "python3 -m pytest tests/python/test_runtime_optimization_advisor.py tests/python/test_runtime_optimization_agents.py -q",
+    "exit_code": 0,
+    "summary": "99 passed in 7.32s",
+    "log_path": "docs/paper_baseline_20260706/focused_pytest.log",
+    "phase_log_path": "docs/paper_baseline_20260706/phase0e_focused_pytest.log"
+  },
+  "full_regression_result": {
+    "status": "pass",
+    "executed_at": "2026-07-06T14:52:45+08:00",
+    "finished_at": "2026-07-06T14:54:39+08:00",
+    "command": "python3 -m pytest tests/python -q",
+    "exit_code": 0,
+    "summary": "547 passed, 79 subtests passed in 112.47s",
+    "log_path": "docs/paper_baseline_20260706/full_regression.log",
+    "historical_reference": {
+      "date": "2026-07-04",
+      "result": "547 passed, 79 subtests passed",
+      "source_path": "docs/runtime_optimization_current_status_20260704.md"
+    },
+    "note": "Main Agent executed the current-turn full Python regression after sub-agent Phase 0 work completed."
+  },
+  "notes": [
+    "Phase 0 freezes paper-safe wording only; it does not implement Phase 1-6 functionality.",
+    "Historical formal artifacts and archived result documents are referenced only, never modified.",
+    "Known archived gap: missing historical external checksum root on this machine remains a note in the closeout, but archived audited artifacts passed."
+  ]
+}
