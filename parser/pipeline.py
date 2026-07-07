@@ -18,6 +18,7 @@ from .index import idx_Build
 from .models import DatasetArtifact, GlobalHeader, LoadPreview, ReadinessState, TaskStatePreview, dataclass_to_dict
 from .rebuild import rb_Rebuild
 from .result import Result, err_result, ok_result
+from .runtime_cost_graph import build_pipeline_runtime_cost_graph
 from .telemetry import StageObserver, add_stage_timing, emit_stage_update, memory_snapshot
 
 
@@ -1057,6 +1058,12 @@ def load_dataset_with_timings(
             "rebuild_parallel_workers": rebuild_parallel_workers,
             "rebuild_mode": rebuild_mode,
             "peak_rss_mb": peak_rss_mb,
+            "runtime_cost_graph": build_pipeline_runtime_cost_graph(
+                dataset_id=detailed.data["artifact"].dataset_id,
+                stage_timings=stage_timings,
+                index_build_mode=index_build_mode,
+                materialize_event_stream=materialize_event_stream,
+            ),
         },
         warnings=detailed.warnings,
         untrusted_windows=detailed.untrusted_windows,

@@ -93,6 +93,7 @@ def load_specs() -> dict[str, dict[str, Any]]:
         "advisor_report": load_schema("advisor_report.schema.json"),
         "runtime_action": load_schema("runtime_action.schema.json"),
         "runtime_action_set": load_schema("runtime_action_set.schema.json"),
+        "runtime_cost_graph": load_schema("runtime_cost_graph.schema.json"),
         "advisor_grounding_report": load_schema("advisor_grounding_report.schema.json"),
         "validation_gate_result": load_schema("validation_gate_result.schema.json"),
         "benchmark_scenario": load_schema("benchmark_scenario.schema.json"),

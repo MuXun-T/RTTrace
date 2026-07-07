@@ -3433,6 +3433,8 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         )
 
         report = json.loads(output_path.read_text(encoding="utf-8"))
+        runtime_cost_graph_path = output_root / "runtime_cost_graph.json"
+        runtime_cost_graph = json.loads(runtime_cost_graph_path.read_text(encoding="utf-8"))
         results = {row["scenario_id"]: row for row in report["results"]}
         self.assertEqual(set(results), {
             "current_baseline",
@@ -3441,6 +3443,12 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             "advisor_optional_sklearn",
             "advisor_openai_structured",
         })
+        self.assertTrue(runtime_cost_graph_path.exists())
+        self.assertIsNone(validate_schema(load_specs()["runtime_cost_graph"], runtime_cost_graph))
+        self.assertEqual(
+            [graph["scenario_id"] for graph in runtime_cost_graph["graphs"]],
+            report["scenario_order"],
+        )
         self.assertTrue(report["summary"]["parity"]["proof_hash_consistent"])
         self.assertEqual(report["summary"]["parity"]["metric_diff_count"], 0)
         self.assertTrue(report["summary"]["parity"]["mandatory_field_set_consistent"])
@@ -3462,6 +3470,23 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             self.assertEqual(runtime_breakdown["index_build_open_seconds"], row["index_build_open_seconds"])
             self.assertEqual(runtime_breakdown["advisor_overhead_seconds"], row["advisor_overhead_seconds"])
             self.assertEqual(runtime_breakdown["package_write_seconds"], row["package_write_seconds"])
+            self.assertEqual(row["artifact_refs"]["runtime_cost_graph"], str(runtime_cost_graph_path))
+            self.assertEqual(row["summary_metrics"]["runtime_cost_graph_path_type"], "product")
+            self.assertTrue(row["summary_metrics"]["formal_product_separation"])
+            self.assertTrue(row["summary_metrics"]["advisor_action_graph_binding_complete"])
+            self.assertEqual(
+                row["summary_metrics"]["proof_contamination_check"]["cost_graph_fields_in_proof_digest"],
+                0,
+            )
+            self.assertEqual(
+                row["summary_metrics"]["proof_contamination_check"]["advisor_fields_in_proof_digest"],
+                0,
+            )
+            self.assertTrue(row["summary_metrics"]["predicted_vs_observed"])
+            self.assertEqual(
+                row["summary_metrics"]["runtime_cost_graph_stage_coverage"]["expected_nodes"],
+                14,
+            )
         for metric in [
             "runtime_seconds",
             "sidecar_bytes_scanned",
@@ -3476,6 +3501,7 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         for scenario_id, refs in report["summary"]["artifact_refs"].items():
             self.assertTrue(Path(refs["package_path"]).exists(), scenario_id)
             self.assertTrue(Path(refs["scenario_result"]).exists(), scenario_id)
+            self.assertEqual(refs["runtime_cost_graph"], str(runtime_cost_graph_path), scenario_id)
         optional_metrics = results["advisor_optional_sklearn"]["summary_metrics"]
         openai_metrics = results["advisor_openai_structured"]["summary_metrics"]
         self.assertEqual(openai_metrics["advisor_mode_requested"], "openai_structured")
@@ -3517,6 +3543,20 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             self.assertFalse(optional_metrics["advisor_coefficients_attached"])
             self.assertTrue(optional_metrics["advisor_training_skip_reason"])
             self.assertTrue(optional_metrics["fallback_reasons"])
+        graphs_by_scenario = {
+            graph["scenario_id"]: graph
+            for graph in runtime_cost_graph["graphs"]
+        }
+        for scenario_id, scenario_graph in graphs_by_scenario.items():
+            self.assertEqual(scenario_graph["path_type"], "product", scenario_id)
+            self.assertEqual(
+                [node["node_id"] for node in scenario_graph["nodes"]],
+                scenario_graph["node_order"],
+                scenario_id,
+            )
+            self.assertTrue(scenario_graph["predicted_vs_observed"], scenario_id)
+            self.assertEqual(scenario_graph["proof_boundary"]["cost_graph_fields_in_proof_digest"], 0, scenario_id)
+            self.assertEqual(scenario_graph["proof_boundary"]["advisor_fields_in_proof_digest"], 0, scenario_id)
 
     def test_new_runtime_schema_contracts_validate_representative_payloads(self) -> None:
         specs = load_specs()

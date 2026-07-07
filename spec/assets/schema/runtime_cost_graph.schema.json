@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RuntimeCostGraph",
+  "type": "object",
+  "required": [
+    "graph_version",
+    "generated_at",
+    "graphs"
+  ],
+  "properties": {
+    "graph_version": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "graphs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "graph_id",
+          "scenario_id",
+          "path_type",
+          "node_order",
+          "nodes",
+          "edges",
+          "action_bindings",
+          "stage_coverage",
+          "predicted_vs_observed",
+          "proof_boundary",
+          "metadata"
+        ],
+        "properties": {
+          "graph_id": {"type": "string"},
+          "scenario_id": {"type": ["string", "null"]},
+          "path_type": {"type": "string", "enum": ["product", "formal"]},
+          "node_order": {"type": "array", "items": {"type": "string"}},
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "node_id",
+                "stage_name",
+                "ordinal",
+                "path_type",
+                "status",
+                "started_at_ns",
+                "ended_at_ns",
+                "duration_ms",
+                "predicted_ms",
+                "observed_ms",
+                "prediction_source",
+                "preconditions",
+                "cache_key",
+                "fallback_edge",
+                "telemetry_refs",
+                "artifact_refs",
+                "error_reason",
+                "reject_reason"
+              ],
+              "properties": {
+                "node_id": {"type": "string"},
+                "stage_name": {"type": "string"},
+                "ordinal": {"type": "integer", "minimum": 0},
+                "path_type": {"type": "string", "enum": ["product", "formal", "shared"]},
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "planned",
+                    "running",
+                    "completed",
+                    "skipped",
+                    "failed",
+                    "degraded",
+                    "rejected"
+                  ]
+                },
+                "started_at_ns": {"type": ["integer", "null"], "minimum": 0},
+                "ended_at_ns": {"type": ["integer", "null"], "minimum": 0},
+                "duration_ms": {"type": ["number", "null"], "minimum": 0},
+                "predicted_ms": {"type": ["number", "null"], "minimum": 0},
+                "observed_ms": {"type": ["number", "null"], "minimum": 0},
+                "prediction_source": {"type": "string"},
+                "preconditions": {
+                  "type": "object",
+                  "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+                },
+                "cache_key": {"type": ["string", "null"]},
+                "fallback_edge": {"type": ["string", "null"]},
+                "telemetry_refs": {"type": "array", "items": {"type": "string"}},
+                "artifact_refs": {"type": "array", "items": {"type": "string"}},
+                "error_reason": {"type": ["string", "null"]},
+                "reject_reason": {"type": ["string", "null"]}
+              },
+              "additionalProperties": false
+            }
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["edge_id", "from_node", "to_node", "edge_kind", "condition"],
+              "properties": {
+                "edge_id": {"type": "string"},
+                "from_node": {"type": "string"},
+                "to_node": {"type": "string"},
+                "edge_kind": {"type": "string", "enum": ["normal", "fallback", "cache_hit", "deferred"]},
+                "condition": {"type": ["string", "null"]}
+              },
+              "additionalProperties": false
+            }
+          },
+          "action_bindings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "action_kind",
+                "node_ids",
+                "selected",
+                "available",
+                "unavailable_reason",
+                "gate_execution_plan"
+              ],
+              "properties": {
+                "action_kind": {"type": "string"},
+                "node_ids": {"type": "array", "items": {"type": "string"}},
+                "selected": {"type": "boolean"},
+                "available": {"type": "boolean"},
+                "unavailable_reason": {"type": ["string", "null"]},
+                "gate_execution_plan": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            }
+          },
+          "stage_coverage": {
+            "type": "object",
+            "required": [
+              "covered_nodes",
+              "expected_nodes",
+              "coverage_ratio",
+              "observed_nodes"
+            ],
+            "properties": {
+              "covered_nodes": {"type": "integer", "minimum": 0},
+              "expected_nodes": {"type": "integer", "minimum": 0},
+              "coverage_ratio": {"type": "number", "minimum": 0},
+              "observed_nodes": {"type": "integer", "minimum": 0}
+            },
+            "additionalProperties": false
+          },
+          "predicted_vs_observed": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "node_id",
+                "predicted_ms",
+                "observed_ms",
+                "prediction_source",
+                "status"
+              ],
+              "properties": {
+                "node_id": {"type": "string"},
+                "predicted_ms": {"type": ["number", "null"], "minimum": 0},
+                "observed_ms": {"type": ["number", "null"], "minimum": 0},
+                "prediction_source": {"type": "string"},
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "planned",
+                    "running",
+                    "completed",
+                    "skipped",
+                    "failed",
+                    "degraded",
+                    "rejected"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "proof_boundary": {
+            "type": "object",
+            "required": [
+              "cost_graph_fields_in_proof_digest",
+              "advisor_fields_in_proof_digest"
+            ],
+            "properties": {
+              "cost_graph_fields_in_proof_digest": {"type": "integer", "minimum": 0},
+              "advisor_fields_in_proof_digest": {"type": "integer", "minimum": 0}
+            },
+            "additionalProperties": false
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

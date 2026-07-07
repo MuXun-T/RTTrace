@@ -80,6 +80,7 @@ from parser.models import (
 )
 from parser.result import Result, err_result, ok_result
 from parser.runtime_advisor import RuntimeOptimizationAdvisor, build_advisor_trace
+from parser.runtime_cost_graph import annotate_evidence_export_progress
 from parser.runtime_optimization_gate import DeterministicValidationGate
 from parser.telemetry import TelemetryHistoryStore, TelemetryReportAgent
 from spec.io import checksum_file, json_load, serialize
@@ -993,12 +994,12 @@ def _write_evidence_package_impl(
             payload["emitted_events"] = int(emitted_events)
         if emitted_bytes is not None:
             payload["emitted_bytes"] = int(emitted_bytes)
-        emit_progress(payload)
+        emit_progress(annotate_evidence_export_progress(payload))
 
     def _emit_progress_payload(payload: dict[str, Any]) -> None:
         if emit_progress is None:
             return
-        emit_progress(dict(payload))
+        emit_progress(annotate_evidence_export_progress(dict(payload)))
 
     export_started_at = time.perf_counter()
     advisor_enabled = bool(job.get("advisor_enabled", False))

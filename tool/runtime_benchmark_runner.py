@@ -28,9 +28,12 @@ from parser.evidence_sidecar_index import (
     sidecar_index_ticket_path_for_source,
 )
 from parser.result import Result, err_result, ok_result
+from parser.runtime_cost_graph import build_benchmark_runtime_cost_graph, merge_runtime_cost_graphs
+from parser.runtime_optimization_gate import RUNTIME_ACTION_GATE_ALLOWLIST
 from parser.telemetry import TelemetryHistoryStore, TelemetryReportAgent
 from spec.io import checksum_file, json_dump, json_load, jsonl_dump
-from spec.schema_loader import DICTIONARY_PATH, SCHEMA_DIR
+from spec.schema_loader import DICTIONARY_PATH, SCHEMA_DIR, load_specs
+from spec.schema_validator import validate_schema
 from tool.train_runtime_advisor import train_runtime_advisor_coefficients
 
 
@@ -260,6 +263,37 @@ def _load_timing_metrics(load_payload: dict[str, Any]) -> dict[str, Any]:
         "peak_rss_mb",
     )
     return {key: load_payload.get(key) for key in keys}
+
+
+def _runtime_cost_graph_action_context(
+    *,
+    sidecar_manifest: dict[str, Any],
+    sidecar_path: Path,
+) -> dict[str, Any]:
+    return {
+        "snapshot_id": sidecar_manifest.get("snapshot_id"),
+        "trace_checksum": sidecar_manifest.get("trace_checksum"),
+        "dictionary_checksum": sidecar_manifest.get("dictionary_checksum"),
+        "sidecar_checksum": checksum_file(sidecar_path) if sidecar_path.exists() else None,
+    }
+
+
+def _runtime_cost_graph_summary(graph_payload: dict[str, Any]) -> dict[str, Any]:
+    scenario_graph = dict(list(graph_payload.get("graphs") or [{}])[0])
+    action_bindings = list(scenario_graph.get("action_bindings") or [])
+    observed_bindings = {
+        str(binding.get("action_kind"))
+        for binding in action_bindings
+        if str(binding.get("action_kind") or "").strip()
+    }
+    return {
+        "runtime_cost_graph_path_type": scenario_graph.get("path_type"),
+        "runtime_cost_graph_stage_coverage": dict(scenario_graph.get("stage_coverage") or {}),
+        "predicted_vs_observed": list(scenario_graph.get("predicted_vs_observed") or []),
+        "formal_product_separation": bool(dict(scenario_graph.get("metadata") or {}).get("formal_product_separation")),
+        "proof_contamination_check": dict(scenario_graph.get("proof_boundary") or {}),
+        "advisor_action_graph_binding_complete": observed_bindings == set(RUNTIME_ACTION_GATE_ALLOWLIST),
+    }
 
 
 def _product_runtime_breakdown(
@@ -545,7 +579,11 @@ def run_runtime_optimization_benchmark_matrix(
         bundle,
         snapshot_id="snapshot:runtime-benchmark:mode-b",
         rule_family=("ref_ref",),
-    )
+        )
+    shared_sidecar_manifest = _load_json_if_exists(sidecar_manifest_path)
+    base_runtime_cost_graph = dict(loaded.data.get("runtime_cost_graph") or {})
+    if not base_runtime_cost_graph:
+        return err_result("SCHEMA_INVALID", "pipeline runtime cost graph missing from load_dataset_with_timings output")
     _clear_sidecar_index_artifacts(sidecar_path)
     if prebuild_ticket_fast_path:
         sidecar_manifest = json_load(sidecar_manifest_path)
@@ -574,6 +612,8 @@ def run_runtime_optimization_benchmark_matrix(
     advisor_training_report_path: Path | None = None
 
     rows: list[dict[str, Any]] = []
+    runtime_cost_graph_artifact = root / "runtime_cost_graph.json"
+    runtime_cost_graph_payloads: list[dict[str, Any]] = []
     baseline_parity: dict[str, Any] | None = None
     scenario_result_dir = root / "scenario_results"
     scenario_result_dir.mkdir(parents=True, exist_ok=True)
@@ -677,12 +717,40 @@ def run_runtime_optimization_benchmark_matrix(
             sidecar_path=sidecar_path,
             dataset_id=registered.data,
         )
+        scenario_runtime_cost_graph = build_benchmark_runtime_cost_graph(
+            base_graph_payload=base_runtime_cost_graph,
+            scenario_id=scenario.scenario_id,
+            progress=progress,
+            row=row,
+            proof_digest=_load_json_if_exists(package_dir / "control" / "proof_digest.json"),
+            advisor_report=_load_json_if_exists(package_dir / "control" / "advisor_report.json") or None,
+            action_context=_runtime_cost_graph_action_context(
+                sidecar_manifest=shared_sidecar_manifest,
+                sidecar_path=sidecar_path,
+            ),
+            output_root=root,
+        )
+        row["artifact_refs"]["runtime_cost_graph"] = str(runtime_cost_graph_artifact)
+        row["summary_metrics"] = {
+            **dict(row.get("summary_metrics") or {}),
+            **_runtime_cost_graph_summary(scenario_runtime_cost_graph),
+        }
+        runtime_cost_graph_payloads.append(scenario_runtime_cost_graph)
         result_path = scenario_result_dir / f"{scenario.scenario_id}.json"
         row["artifact_refs"]["scenario_result"] = str(result_path)
         json_dump(result_path, row)
         if baseline_parity is None and row.get("parity_result"):
             baseline_parity = dict(row["parity_result"])
         rows.append(row)
+
+    merged_runtime_cost_graph = merge_runtime_cost_graphs(runtime_cost_graph_payloads)
+    runtime_cost_graph_schema_error = validate_schema(load_specs()["runtime_cost_graph"], merged_runtime_cost_graph)
+    if runtime_cost_graph_schema_error is not None:
+        return err_result(
+            "SCHEMA_INVALID",
+            f"runtime cost graph schema invalid: {runtime_cost_graph_schema_error}",
+        )
+    json_dump(runtime_cost_graph_artifact, merged_runtime_cost_graph)
 
     report_input_contract = {
         **dict(input_contract or {}),
