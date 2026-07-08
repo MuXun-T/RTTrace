@@ -38,6 +38,8 @@ REQUIRED_BENCHMARK_METRICS = (
     "package_write_seconds",
     "advisor_overhead_seconds",
 )
+PHASE4_STATUS_VALUES = ("passed", "failed", "fallback", "not_applicable", "missing")
+PHASE4_REPORT_ONLY_CLAIM_STRENGTH = "report_only"
 
 
 def _optional_float(value: Any) -> float | None:
@@ -49,11 +51,223 @@ def _optional_float(value: Any) -> float | None:
         return None
 
 
+def _optional_int(value: Any) -> int | None:
+    if value is None:
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _optional_bool(value: Any) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    return None
+
+
+def _mapping(value: Any) -> dict[str, Any]:
+    if isinstance(value, dict):
+        return dict(value)
+    if hasattr(value, "to_dict"):
+        return dict(value.to_dict())
+    return {}
+
+
+def _normalized_strings(values: Any) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    normalized = [str(value) for value in values if str(value).strip()]
+    return list(dict.fromkeys(normalized))
+
+
 def _normalized_metric_field_list(values: Any) -> list[str]:
     if not isinstance(values, list):
         return []
     normalized = [str(value) for value in values if str(value).strip()]
     return list(dict.fromkeys(normalized))
+
+
+def _proof_drift_summary(row: dict[str, Any], existing: dict[str, Any] | None = None) -> dict[str, Any]:
+    parity = _mapping(row.get("parity_result"))
+    proof_hash = str(row.get("proof_hash") or parity.get("proof_hash") or "").strip()
+    baseline_proof_hash = str(parity.get("baseline_proof_hash") or "").strip() or None
+    metric_diff_count = max(0, int(parity.get("metric_diff_count") or 0))
+    mandatory_field_set_changed = bool(metric_diff_count > 0 and baseline_proof_hash == proof_hash)
+    summary = {
+        "status": "clean" if metric_diff_count == 0 else "drift_detected",
+        "metric_diff_count": metric_diff_count,
+        "proof_hash_changed": bool(baseline_proof_hash and proof_hash and proof_hash != baseline_proof_hash),
+        "mandatory_field_set_changed": mandatory_field_set_changed,
+    }
+    return {**summary, **_mapping(existing)}
+
+
+def _checksum_validation_result(summary_metrics: dict[str, Any]) -> dict[str, Any]:
+    existing = _mapping(summary_metrics.get("checksum_validation_result"))
+    requested_mode = str(summary_metrics.get("advisor_mode_requested") or "disabled")
+    effective_mode = str(summary_metrics.get("advisor_mode_effective") or requested_mode)
+    observed_checksum = (
+        existing.get("observed_checksum")
+        if "observed_checksum" in existing
+        else summary_metrics.get("advisor_decision_model_checksum")
+    )
+    expected_checksum = (
+        existing.get("expected_checksum")
+        if "expected_checksum" in existing
+        else summary_metrics.get("advisor_training_model_checksum")
+    )
+    fallback_reason = existing.get("reason") or summary_metrics.get("fallback_reason")
+    if requested_mode != "offline_coefficients":
+        status = "not_applicable"
+        reason = "advisor_mode_not_offline"
+    elif effective_mode != "offline_coefficients":
+        status = "fallback"
+        reason = fallback_reason or f"advisor_mode_fallback:{effective_mode}"
+    elif not expected_checksum or not observed_checksum:
+        status = "missing"
+        reason = existing.get("reason") or "model_checksum_missing"
+    elif str(expected_checksum) == str(observed_checksum):
+        status = "passed"
+        reason = None
+    else:
+        status = "failed"
+        reason = existing.get("reason") or "checksum_mismatch"
+    return {
+        "status": status if status in PHASE4_STATUS_VALUES else "missing",
+        "expected_checksum": expected_checksum,
+        "observed_checksum": observed_checksum,
+        "reason": reason,
+    }
+
+
+def _plan_regret_summary(summary_metrics: dict[str, Any]) -> dict[str, Any]:
+    existing = _mapping(summary_metrics.get("plan_regret"))
+    requested_mode = str(summary_metrics.get("advisor_mode_requested") or "disabled")
+    source = (
+        "formal_matrix_summary_only"
+        if str(summary_metrics.get("metric_scope") or "") == "formal_matrix"
+        else "product_runtime_matrix_summary_only"
+    )
+    if existing:
+        payload = dict(existing)
+    else:
+        payload = {
+            "status": "not_applicable" if requested_mode == "disabled" else "not_measured",
+            "requested_action_kinds": _normalized_strings(summary_metrics.get("advisor_action_kinds")),
+            "oracle_scenario_id": None,
+            "oracle_action_kind": None,
+            "runtime_delta_seconds": None,
+            "normalized_regret": None,
+            "reason": "advisor_mode_disabled" if requested_mode == "disabled" else "no_oracle_safe_action_runtime_available",
+            "claim_strength": PHASE4_REPORT_ONLY_CLAIM_STRENGTH,
+            "source": source,
+            "notes": ["report_only_no_counterfactual_runtime_source"],
+        }
+    payload["requested_action_kinds"] = _normalized_strings(payload.get("requested_action_kinds"))
+    payload.setdefault("reason", "advisor_mode_disabled" if requested_mode == "disabled" else "no_oracle_safe_action_runtime_available")
+    payload.setdefault("claim_strength", PHASE4_REPORT_ONLY_CLAIM_STRENGTH)
+    payload.setdefault("source", source)
+    payload["notes"] = _normalized_strings(payload.get("notes"))
+    return payload
+
+
+def _counterfactual_replay_summary(summary_metrics: dict[str, Any]) -> dict[str, Any]:
+    existing = _mapping(summary_metrics.get("counterfactual_replay"))
+    requested_mode = str(summary_metrics.get("advisor_mode_requested") or "disabled")
+    source = (
+        "formal_matrix_summary_only"
+        if str(summary_metrics.get("metric_scope") or "") == "formal_matrix"
+        else "product_runtime_matrix_summary_only"
+    )
+    if existing:
+        payload = dict(existing)
+    else:
+        payload = {
+            "status": "not_applicable" if requested_mode == "disabled" else "not_measured",
+            "baseline_scenario_id": "current_baseline",
+            "replayed_scenario_id": None,
+            "replay_runtime_seconds": None,
+            "oracle_runtime_seconds": None,
+            "reason": "advisor_mode_disabled" if requested_mode == "disabled" else "no_counterfactual_fixture_or_external_benchmark_not_run",
+            "claim_strength": PHASE4_REPORT_ONLY_CLAIM_STRENGTH,
+            "source": source,
+            "notes": ["report_only_no_counterfactual_fixture"],
+        }
+    payload.setdefault("reason", "advisor_mode_disabled" if requested_mode == "disabled" else "no_counterfactual_fixture_or_external_benchmark_not_run")
+    payload.setdefault("claim_strength", PHASE4_REPORT_ONLY_CLAIM_STRENGTH)
+    payload.setdefault("source", source)
+    payload["notes"] = _normalized_strings(payload.get("notes"))
+    return payload
+
+
+def _phase4_reporting_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    advisor_mode_requested = {
+        str(row.get("scenario_id")): str(dict(row.get("summary_metrics") or {}).get("advisor_mode_requested") or "")
+        for row in rows
+    }
+    advisor_mode_effective = {
+        str(row.get("scenario_id")): str(dict(row.get("summary_metrics") or {}).get("advisor_mode_effective") or "")
+        for row in rows
+    }
+    checksum_validation = {
+        str(row.get("scenario_id")): dict(dict(row.get("summary_metrics") or {}).get("checksum_validation_result") or {})
+        for row in rows
+    }
+    gate_accept = {
+        str(row.get("scenario_id")): dict(row.get("summary_metrics") or {}).get("gate_accept")
+        for row in rows
+    }
+    gate_reject_reason = {
+        str(row.get("scenario_id")): dict(row.get("summary_metrics") or {}).get("gate_reject_reason")
+        for row in rows
+    }
+    proof_drift = {
+        str(row.get("scenario_id")): dict(dict(row.get("summary_metrics") or {}).get("proof_drift") or {})
+        for row in rows
+    }
+    plan_regret = {
+        str(row.get("scenario_id")): dict(dict(row.get("summary_metrics") or {}).get("plan_regret") or {})
+        for row in rows
+    }
+    counterfactual_replay = {
+        str(row.get("scenario_id")): dict(dict(row.get("summary_metrics") or {}).get("counterfactual_replay") or {})
+        for row in rows
+    }
+    fallback_reason = {
+        str(row.get("scenario_id")): dict(row.get("summary_metrics") or {}).get("fallback_reason")
+        for row in rows
+    }
+    checksum_status_counts: dict[str, int] = {}
+    gate_accept_counts = {"accepted": 0, "rejected": 0, "not_recorded": 0}
+    proof_drift_counts = {"clean": 0, "drift_detected": 0, "not_comparable": 0}
+    for payload in checksum_validation.values():
+        status = str(payload.get("status") or "missing")
+        checksum_status_counts[status] = checksum_status_counts.get(status, 0) + 1
+    for accepted in gate_accept.values():
+        if accepted is True:
+            gate_accept_counts["accepted"] += 1
+        elif accepted is False:
+            gate_accept_counts["rejected"] += 1
+        else:
+            gate_accept_counts["not_recorded"] += 1
+    for payload in proof_drift.values():
+        status = str(payload.get("status") or "not_comparable")
+        proof_drift_counts[status] = proof_drift_counts.get(status, 0) + 1
+    return {
+        "advisor_mode_requested": advisor_mode_requested,
+        "advisor_mode_effective": advisor_mode_effective,
+        "checksum_validation_result_by_scenario": checksum_validation,
+        "checksum_validation_status_counts": checksum_status_counts,
+        "fallback_reason_by_scenario": fallback_reason,
+        "gate_accept_by_scenario": gate_accept,
+        "gate_reject_reason_by_scenario": gate_reject_reason,
+        "gate_accept_counts": gate_accept_counts,
+        "proof_drift_by_scenario": proof_drift,
+        "proof_drift_status_counts": proof_drift_counts,
+        "plan_regret_by_scenario": plan_regret,
+        "counterfactual_replay_by_scenario": counterfactual_replay,
+    }
 
 
 def _metric_distribution(values: Iterable[Any]) -> dict[str, Any]:
@@ -119,6 +333,8 @@ def _enrich_summary_metrics(
     index_build_open_seconds = _optional_float(row.get("index_build_open_seconds"))
     advisor_overhead_seconds = _optional_float(row.get("advisor_overhead_seconds"))
     metric_scope = str(summary_metrics.get("metric_scope") or ("formal_matrix" if formal_matrix_mode else "product_runtime_path"))
+    gate_accept = _optional_bool(summary_metrics.get("gate_accept"))
+    gate_reject_reason = None if summary_metrics.get("gate_reject_reason") is None else str(summary_metrics.get("gate_reject_reason"))
     summary_metrics.update(
         {
             "metric_scope": metric_scope,
@@ -128,6 +344,15 @@ def _enrich_summary_metrics(
             "sidecar_index_build_open_seconds": index_build_open_seconds,
             "ticket_validate_seconds": sidecar_validate_seconds,
             "advisor_overhead_seconds": advisor_overhead_seconds,
+            "advisor_latency_seconds": _optional_float(
+                summary_metrics.get("advisor_latency_seconds")
+            ) if _optional_float(summary_metrics.get("advisor_latency_seconds")) is not None else (
+                _optional_float(summary_metrics.get("openai_latency_seconds"))
+                if _optional_float(summary_metrics.get("openai_latency_seconds")) is not None
+                else advisor_overhead_seconds
+            ),
+            "gate_accept": gate_accept,
+            "gate_reject_reason": gate_reject_reason,
             "synthetic_metric_fields": _normalized_metric_field_list(summary_metrics.get("synthetic_metric_fields")),
             "formal_proof_only": bool(formal_matrix_mode),
             "speedup_evidence_scope": (
@@ -135,6 +360,11 @@ def _enrich_summary_metrics(
                 if formal_matrix_mode
                 else "product_runtime_path"
             ),
+            "checksum_validation_result": _checksum_validation_result(summary_metrics),
+            "proof_drift": _proof_drift_summary(row, _mapping(summary_metrics.get("proof_drift"))),
+            "plan_regret": _plan_regret_summary(summary_metrics),
+            "counterfactual_replay": _counterfactual_replay_summary(summary_metrics),
+            "advisor_action_kinds": _normalized_strings(summary_metrics.get("advisor_action_kinds")),
         }
     )
     row["summary_metrics"] = summary_metrics
@@ -304,6 +534,11 @@ class BenchmarkReportBuilder:
         advisor_metadata = dict(advisor.last_advisor_metadata)
         retrieval_metadata = dict(advisor_metadata.get("retrieval") or {})
         advisor_overhead_seconds = round(time.perf_counter() - advisor_started, 6)
+        advisor_action_kinds = [
+            str(action.action_kind)
+            for action in list(advisor_decision.proposed_actions)
+            if str(action.action_kind).strip()
+        ]
         package_root = output_root / scenario.scenario_id
         write_agent = ExportWriteAgent(job_id=f"benchmark-{scenario.scenario_id}")
         write_result = write_agent.write_evidence_package_optimized(
@@ -362,6 +597,30 @@ class BenchmarkReportBuilder:
             if fallback_reason:
                 fallback_reasons.append(str(fallback_reason))
         fallback_reasons = list(dict.fromkeys(fallback_reasons))
+        expected_checksum = advisor_decision.model_checksum if advisor_decision.advisor_mode == "offline_coefficients" else None
+        observed_checksum = advisor_decision.model_checksum
+        checksum_validation_result = {
+            "status": "missing",
+            "expected_checksum": expected_checksum,
+            "observed_checksum": observed_checksum,
+            "reason": "model_checksum_missing",
+        }
+        if scenario.advisor_mode != "offline_coefficients":
+            checksum_validation_result.update({"status": "not_applicable", "reason": "advisor_mode_not_offline"})
+        elif advisor_decision.advisor_mode != "offline_coefficients":
+            checksum_validation_result.update(
+                {
+                    "status": "fallback",
+                    "reason": advisor_metadata.get("fallback_reason") or f"advisor_mode_fallback:{advisor_decision.advisor_mode}",
+                }
+            )
+        elif expected_checksum and observed_checksum:
+            checksum_validation_result.update(
+                {
+                    "status": "passed" if str(expected_checksum) == str(observed_checksum) else "failed",
+                    "reason": None if str(expected_checksum) == str(observed_checksum) else "checksum_mismatch",
+                }
+            )
         telemetry_record = TelemetryReportAgent().build_record(
             run_id=f"benchmark-{scenario.scenario_id}",
             dataset_id=str(input_contract.get("dataset_id") or "benchmark:dataset"),
@@ -430,8 +689,14 @@ class BenchmarkReportBuilder:
                 "fallback_reasons": fallback_reasons,
                 "advisor_mode_requested": scenario.advisor_mode,
                 "advisor_mode_effective": advisor_decision.advisor_mode,
+                "advisor_action_kinds": advisor_action_kinds,
                 "advisor_decision_model_ref": advisor_decision.model_ref,
                 "advisor_decision_model_checksum": advisor_decision.model_checksum,
+                "advisor_training_model_checksum": advisor_decision.model_checksum if advisor_decision.advisor_mode == "offline_coefficients" else None,
+                "checksum_validation_result": checksum_validation_result,
+                "advisor_latency_seconds": advisor_metadata.get("openai_latency_seconds", advisor_overhead_seconds if scenario.advisor_enabled else 0.0),
+                "gate_accept": True if scenario.advisor_enabled else None,
+                "gate_reject_reason": None,
                 "advisor_coefficients_path": str(Path(str(advisor_coefficients_path)).expanduser()) if advisor_coefficients_path else None,
                 "openai_latency_seconds": advisor_metadata.get("openai_latency_seconds"),
                 "openai_tokens": advisor_metadata.get("openai_tokens"),
@@ -439,6 +704,35 @@ class BenchmarkReportBuilder:
                 "openai_response_id": advisor_metadata.get("openai_response_id"),
                 "openai_model": advisor_metadata.get("openai_model"),
                 "llm_backend": advisor_metadata.get("llm_backend"),
+                "proof_drift": {
+                    "status": "clean",
+                    "metric_diff_count": 0,
+                    "proof_hash_changed": False,
+                    "mandatory_field_set_changed": False,
+                },
+                "plan_regret": {
+                    "status": "not_applicable" if scenario.advisor_mode == "disabled" else "not_measured",
+                    "requested_action_kinds": advisor_action_kinds,
+                    "oracle_scenario_id": None,
+                    "oracle_action_kind": None,
+                    "runtime_delta_seconds": None,
+                    "normalized_regret": None,
+                    "reason": "advisor_mode_disabled" if scenario.advisor_mode == "disabled" else "no_oracle_safe_action_runtime_available",
+                    "claim_strength": PHASE4_REPORT_ONLY_CLAIM_STRENGTH,
+                    "source": "benchmark_report_builder_builtin_scenario",
+                    "notes": ["report_only_no_counterfactual_runtime_source"],
+                },
+                "counterfactual_replay": {
+                    "status": "not_applicable" if scenario.advisor_mode == "disabled" else "not_measured",
+                    "baseline_scenario_id": "current_baseline",
+                    "replayed_scenario_id": None,
+                    "replay_runtime_seconds": None,
+                    "oracle_runtime_seconds": None,
+                    "reason": "advisor_mode_disabled" if scenario.advisor_mode == "disabled" else "no_counterfactual_fixture_or_external_benchmark_not_run",
+                    "claim_strength": PHASE4_REPORT_ONLY_CLAIM_STRENGTH,
+                    "source": "benchmark_report_builder_builtin_scenario",
+                    "notes": ["report_only_no_counterfactual_fixture"],
+                },
                 "retrieval_case_count": len(list(retrieval_metadata.get("retrieved_case_refs") or [])),
                 "retrieval_has_sufficient_similarity": bool(retrieval_metadata.get("has_sufficient_similarity")),
                 "retrieval_conflicting_actions": list(retrieval_metadata.get("conflicting_actions") or []),
@@ -460,11 +754,53 @@ class BenchmarkReportBuilder:
         scenarios: Iterable[BenchmarkScenario] | None = None,
     ) -> dict[str, Any]:
         formal_matrix_mode = str(dict(input_contract or {}).get("formal_matrix_mode") or "").strip() or None
+        scenario_list = list(scenarios or default_benchmark_scenarios())
+        scenario_map = {scenario.scenario_id: scenario for scenario in scenario_list}
         rows = [
-            _enrich_summary_metrics(dict(row), formal_matrix_mode=formal_matrix_mode)
+            _enrich_summary_metrics(
+                {
+                    **dict(row),
+                    "summary_metrics": {
+                        "advisor_mode_requested": dict(dict(row).get("summary_metrics") or {}).get(
+                            "advisor_mode_requested",
+                            scenario_map.get(str(dict(row).get("scenario_id")), BenchmarkScenario(
+                                scenario_version=BENCHMARK_SCENARIO_VERSION,
+                                scenario_id=str(dict(row).get("scenario_id") or ""),
+                                advisor_enabled=False,
+                                advisor_mode="disabled",
+                                ticket_fast_path_enabled=False,
+                                streaming_write_enabled=False,
+                            )).advisor_mode,
+                        ),
+                        "advisor_mode_effective": dict(dict(row).get("summary_metrics") or {}).get(
+                            "advisor_mode_effective",
+                            (
+                                "disabled"
+                                if not scenario_map.get(str(dict(row).get("scenario_id")), BenchmarkScenario(
+                                    scenario_version=BENCHMARK_SCENARIO_VERSION,
+                                    scenario_id=str(dict(row).get("scenario_id") or ""),
+                                    advisor_enabled=False,
+                                    advisor_mode="disabled",
+                                    ticket_fast_path_enabled=False,
+                                    streaming_write_enabled=False,
+                                )).advisor_enabled
+                                else scenario_map.get(str(dict(row).get("scenario_id")), BenchmarkScenario(
+                                    scenario_version=BENCHMARK_SCENARIO_VERSION,
+                                    scenario_id=str(dict(row).get("scenario_id") or ""),
+                                    advisor_enabled=False,
+                                    advisor_mode="disabled",
+                                    ticket_fast_path_enabled=False,
+                                    streaming_write_enabled=False,
+                                )).advisor_mode
+                            ),
+                        ),
+                        **dict(dict(row).get("summary_metrics") or {}),
+                    },
+                },
+                formal_matrix_mode=formal_matrix_mode,
+            )
             for row in scenario_results
         ]
-        scenario_list = list(scenarios or default_benchmark_scenarios())
         scenarios_present = [str(row.get("scenario_id")) for row in rows]
         proof_hashes = {
             str(row.get("proof_hash") or (dict(row.get("parity_result") or {}).get("proof_hash")) or "")
@@ -518,6 +854,7 @@ class BenchmarkReportBuilder:
                 "required_metric_coverage": required_metric_coverage,
                 "repeated_run_statistics": _repeated_run_statistics(rows),
                 "artifact_refs": artifact_refs,
+                "phase4_reporting": _phase4_reporting_summary(rows),
                 "parity": {
                     "proof_hash_consistent": len(proof_hashes) <= 1,
                     "metric_diff_count": int(metric_diff_count),

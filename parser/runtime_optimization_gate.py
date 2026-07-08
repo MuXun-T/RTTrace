@@ -20,18 +20,22 @@ from parser.runtime_advisor import RUNTIME_LOAD_INDEX_BUILD_MODES, RUNTIME_LOAD_
 
 GATE_VERSION = "runtime-optimization-gate-v1"
 RUNTIME_ACTION_GATE_ALLOWLIST = {
+    "baseline_full_load",
     "cold_preview",
     "sidecar_index_prebuild",
     "sidecar_index_reuse",
     "streaming_package_write",
-    "need_more_telemetry",
+    "deferred_index_build",
+    "abstain",
 }
 _ACTION_POLICY_KEYS = {
+    "baseline_full_load": "baseline_full_load_enabled",
     "cold_preview": "cold_preview_enabled",
     "sidecar_index_prebuild": "sidecar_index_prebuild_enabled",
     "sidecar_index_reuse": "sidecar_index_reuse_enabled",
     "streaming_package_write": "streaming_package_write_enabled",
-    "need_more_telemetry": "need_more_telemetry_enabled",
+    "deferred_index_build": "deferred_index_build_enabled",
+    "abstain": "abstain_enabled",
 }
 _UNSAFE_ACTION_TEXT_PATTERNS = (
     re.compile(r"(^|[^a-z0-9])(shell|bash|powershell|cmd(?:\.exe)?|script|python3?|node|perl|ruby|curl|wget)([^a-z0-9]|$)"),
@@ -416,10 +420,12 @@ class DeterministicValidationGate:
                 execution_plan=list(ticket_result.execution_plan),
             )
         action_execution_plan = {
+            "baseline_full_load": ["baseline"],
             "cold_preview": ["cold_preview"],
             "sidecar_index_prebuild": ["build_index"],
             "streaming_package_write": ["stream_write"],
-            "need_more_telemetry": ["need_more_telemetry"],
+            "deferred_index_build": ["deferred_index_build"],
+            "abstain": ["abstain"],
         }.get(action_kind, [])
         return ValidationGateResult(
             gate_version=GATE_VERSION,

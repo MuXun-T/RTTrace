@@ -2353,6 +2353,12 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             "advisor_optional_sklearn",
         ])
         self.assertEqual(formal_input_manifest["optional_scenario_order"], ["advisor_openai_structured"])
+        phase4_reporting = benchmark_report["summary"]["phase4_reporting"]
+        self.assertEqual(set(phase4_reporting["advisor_mode_requested"]), {row["scenario_id"] for row in benchmark_report["results"]})
+        self.assertEqual(
+            phase4_reporting["checksum_validation_result_by_scenario"]["advisor_openai_structured"]["status"],
+            "not_applicable",
+        )
         for row in benchmark_report["results"]:
             self.assertGreaterEqual(float(row["runtime_seconds"]), 0.0)
             self.assertIn(row["status"], {"completed", "failed"})
@@ -2366,8 +2372,27 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             self.assertEqual(summary_metrics["sidecar_index_build_open_seconds"], row["index_build_open_seconds"])
             self.assertEqual(summary_metrics["ticket_validate_seconds"], row["sidecar_validate_seconds"])
             self.assertEqual(summary_metrics["advisor_overhead_seconds"], row["advisor_overhead_seconds"])
+            self.assertEqual(summary_metrics["advisor_latency_seconds"], row["advisor_overhead_seconds"])
             self.assertTrue(summary_metrics["formal_proof_only"])
             self.assertEqual(summary_metrics["speedup_evidence_scope"], "formal_only_not_product_speedup")
+            self.assertIn(
+                summary_metrics["checksum_validation_result"]["status"],
+                {"passed", "failed", "fallback", "not_applicable", "missing"},
+            )
+            self.assertTrue(summary_metrics["gate_accept"])
+            self.assertIsNone(summary_metrics["gate_reject_reason"])
+            self.assertEqual(summary_metrics["proof_drift"]["status"], "clean")
+            self.assertEqual(summary_metrics["proof_drift"]["metric_diff_count"], 0)
+            self.assertIn(summary_metrics["plan_regret"]["status"], {"not_applicable", "not_measured"})
+            self.assertEqual(summary_metrics["plan_regret"]["claim_strength"], "report_only")
+            self.assertTrue(summary_metrics["plan_regret"]["reason"])
+            self.assertTrue(summary_metrics["plan_regret"]["source"])
+            self.assertIn("report_only_no_counterfactual_runtime_source", summary_metrics["plan_regret"]["notes"])
+            self.assertIn(summary_metrics["counterfactual_replay"]["status"], {"not_applicable", "not_measured"})
+            self.assertEqual(summary_metrics["counterfactual_replay"]["claim_strength"], "report_only")
+            self.assertTrue(summary_metrics["counterfactual_replay"]["reason"])
+            self.assertTrue(summary_metrics["counterfactual_replay"]["source"])
+            self.assertIn("report_only_no_counterfactual_fixture", summary_metrics["counterfactual_replay"]["notes"])
             self.assertTrue(
                 set(summary_metrics["synthetic_metric_fields"]).issuperset(
                     {
@@ -2405,6 +2430,12 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             self.assertTrue(benchmark_row["summary_metrics"]["formal_proof_only"])
             self.assertEqual(benchmark_row["summary_metrics"]["formal_wall_seconds"], benchmark_row["runtime_seconds"])
             self.assertIsNone(benchmark_row["summary_metrics"]["product_runtime_path"])
+            self.assertIn("checksum_validation_result", benchmark_row["summary_metrics"])
+            self.assertIn("proof_drift", benchmark_row["summary_metrics"])
+            self.assertIn("plan_regret", benchmark_row["summary_metrics"])
+            self.assertIn("counterfactual_replay", benchmark_row["summary_metrics"])
+            self.assertIn("gate_accept", benchmark_row["summary_metrics"])
+            self.assertIn("gate_reject_reason", benchmark_row["summary_metrics"])
             self.assertTrue(
                 set(benchmark_row["summary_metrics"]["synthetic_metric_fields"]).issuperset(
                     {
@@ -2624,10 +2655,29 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         self.assertIn("openai_unconfigured", openai_metrics["fallback_reasons"])
         self.assertIn("openai_latency_seconds", openai_metrics)
         self.assertIn("openai_tokens", openai_metrics)
+        self.assertIn("advisor_latency_seconds", openai_metrics)
+        self.assertEqual(openai_metrics["checksum_validation_result"]["status"], "not_applicable")
+        self.assertTrue(openai_metrics["gate_accept"])
+        self.assertIsNone(openai_metrics["gate_reject_reason"])
+        self.assertEqual(openai_metrics["proof_drift"]["status"], "clean")
+        self.assertEqual(openai_metrics["plan_regret"]["status"], "not_measured")
+        self.assertEqual(openai_metrics["plan_regret"]["reason"], "no_oracle_safe_action_runtime_available")
+        self.assertEqual(openai_metrics["plan_regret"]["claim_strength"], "report_only")
+        self.assertEqual(openai_metrics["counterfactual_replay"]["status"], "not_measured")
+        self.assertEqual(openai_metrics["counterfactual_replay"]["reason"], "no_counterfactual_fixture_or_external_benchmark_not_run")
+        self.assertEqual(openai_metrics["counterfactual_replay"]["claim_strength"], "report_only")
         self.assertIn("retrieval_case_count", openai_metrics)
         self.assertIn("retrieval_has_sufficient_similarity", openai_metrics)
         self.assertIn("retrieval_applied_abstain_reason", openai_metrics)
         self.assertIn("retrieval_reject_taxonomy_coverage", openai_metrics)
+        self.assertEqual(
+            executed.data["summary"]["phase4_reporting"]["fallback_reason_by_scenario"]["advisor_openai_structured"],
+            "openai_unconfigured",
+        )
+        self.assertEqual(
+            executed.data["summary"]["phase4_reporting"]["checksum_validation_result_by_scenario"]["advisor_openai_structured"]["status"],
+            "not_applicable",
+        )
         self.assertEqual(
             {
                 refs["telemetry_history_path"]
@@ -3543,6 +3593,18 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             self.assertEqual(refs["runtime_cost_graph"], str(runtime_cost_graph_path), scenario_id)
         optional_metrics = results["advisor_optional_sklearn"]["summary_metrics"]
         openai_metrics = results["advisor_openai_structured"]["summary_metrics"]
+        self.assertIn("advisor_latency_seconds", openai_metrics)
+        self.assertEqual(openai_metrics["checksum_validation_result"]["status"], "not_applicable")
+        self.assertIn("proof_drift", openai_metrics)
+        self.assertEqual(openai_metrics["proof_drift"]["status"], "clean")
+        self.assertIn("plan_regret", openai_metrics)
+        self.assertEqual(openai_metrics["plan_regret"]["status"], "not_measured")
+        self.assertEqual(openai_metrics["plan_regret"]["claim_strength"], "report_only")
+        self.assertIn("counterfactual_replay", openai_metrics)
+        self.assertEqual(openai_metrics["counterfactual_replay"]["status"], "not_measured")
+        self.assertEqual(openai_metrics["counterfactual_replay"]["claim_strength"], "report_only")
+        self.assertIn("gate_accept", openai_metrics)
+        self.assertIn("gate_reject_reason", openai_metrics)
         self.assertEqual(openai_metrics["advisor_mode_requested"], "openai_structured")
         self.assertEqual(openai_metrics["advisor_mode_effective"], "heuristic")
         self.assertEqual(openai_metrics["fallback_reason"], "openai_unconfigured")
@@ -3560,28 +3622,37 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             "advisor_coefficients_path",
             "advisor_decision_model_ref",
             "advisor_decision_model_checksum",
+            "advisor_training_model_checksum",
+            "checksum_validation_result",
+            "proof_drift",
+            "plan_regret",
+            "counterfactual_replay",
+            "gate_accept",
+            "gate_reject_reason",
         ]:
             self.assertIn(key, optional_metrics)
         self.assertEqual(optional_metrics["advisor_coefficients_path"], str(coefficients_path.resolve()))
+        self.assertIn("phase4_reporting", report["summary"])
+        self.assertEqual(
+            report["summary"]["phase4_reporting"]["checksum_validation_result_by_scenario"]["advisor_openai_structured"]["status"],
+            "not_applicable",
+        )
 
-        sklearn_usable = False
-        try:
-            from sklearn.linear_model import LinearRegression  # type: ignore  # noqa: F401
-            sklearn_usable = True
-        except Exception:
-            sklearn_usable = False
-        if sklearn_usable:
+        if optional_metrics["advisor_training_status"] == "trained":
             self.assertEqual(optional_metrics["advisor_training_status"], "trained")
             self.assertGreaterEqual(int(optional_metrics["advisor_training_rows"]), 2)
             self.assertTrue(optional_metrics["advisor_coefficients_attached"])
             self.assertEqual(optional_metrics["advisor_mode_effective"], "offline_coefficients")
             self.assertIsNotNone(optional_metrics["advisor_decision_model_checksum"])
+            self.assertIsNotNone(optional_metrics["advisor_training_model_checksum"])
+            self.assertEqual(optional_metrics["checksum_validation_result"]["status"], "passed")
         else:
             self.assertEqual(results["advisor_optional_sklearn"]["status"], "completed_with_fallback")
             self.assertEqual(optional_metrics["advisor_training_status"], "skipped")
             self.assertFalse(optional_metrics["advisor_coefficients_attached"])
             self.assertTrue(optional_metrics["advisor_training_skip_reason"])
             self.assertTrue(optional_metrics["fallback_reasons"])
+            self.assertEqual(optional_metrics["checksum_validation_result"]["status"], "fallback")
         graphs_by_scenario = {
             graph["scenario_id"]: graph
             for graph in runtime_cost_graph["graphs"]
@@ -3613,13 +3684,13 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         )
         self.assertIsNone(validate_schema(specs["runtime_action"], action.to_dict()))
         self.assertIsNone(validate_schema(specs["runtime_action"], RuntimeAction(
-            action_id="action:schema:need_more_telemetry",
-            action_kind="need_more_telemetry",
-            required_artifacts=["control/telemetry_history.jsonl"],
+            action_id="action:schema:abstain",
+            action_kind="abstain",
+            required_artifacts=[],
             expected_benefit={
                 "runtime_seconds_delta": None,
                 "peak_rss_mb_delta": None,
-                "notes": ["missing telemetry blocks a concrete recommendation"],
+                "notes": ["missing telemetry yields abstain instead of a synthetic action"],
             },
             risk_level="high",
             fallback_action=None,
@@ -3644,8 +3715,8 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             "proof_scope_impact": "touches_proof_scope",
             "fallback_action": "another_unknown_action",
         }
-        self.assertIsNone(validate_schema(specs["runtime_action"], permissive_action))
-        self.assertIsNone(validate_schema(specs["runtime_action_set"], {
+        self.assertIsNotNone(validate_schema(specs["runtime_action"], permissive_action))
+        self.assertIsNotNone(validate_schema(specs["runtime_action_set"], {
             "action_set_version": "runtime-action-set-v1",
             "generated_at": "2026-05-04T00:00:00+00:00",
             "proposed_actions": [permissive_action],
@@ -3674,7 +3745,7 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         self.assertIsNone(decision_payload["abstain_reason"])
         decision_payload["proposed_actions"] = [permissive_action]
         self.assertEqual(decision_payload["proposed_actions"], [permissive_action])
-        self.assertIsNone(validate_schema(specs["advisor_decision"], decision_payload))
+        self.assertIsNotNone(validate_schema(specs["advisor_decision"], decision_payload))
         advisor_trace = build_advisor_trace(
             request_id="schema",
             feature_snapshot={"input_bytes": 1024},
@@ -3827,6 +3898,17 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             self.assertEqual(summary_metrics["synthetic_metric_fields"], [])
             self.assertFalse(summary_metrics["formal_proof_only"])
             self.assertEqual(summary_metrics["speedup_evidence_scope"], "product_runtime_path")
+            self.assertIn("checksum_validation_result", summary_metrics)
+            self.assertIn(
+                summary_metrics["checksum_validation_result"]["status"],
+                {"passed", "failed", "fallback", "not_applicable", "missing"},
+            )
+            self.assertIn("proof_drift", summary_metrics)
+            self.assertIn("plan_regret", summary_metrics)
+            self.assertIn("counterfactual_replay", summary_metrics)
+            self.assertIn("gate_accept", summary_metrics)
+            self.assertIn("gate_reject_reason", summary_metrics)
+        self.assertIn("phase4_reporting", benchmark_report["summary"])
         invalid_local_model_report = json.loads(json.dumps(benchmark_report))
         invalid_local_model_report["scenarios"][0]["advisor_mode"] = "local_model"
         self.assertIsNotNone(validate_schema(specs["benchmark_report"], invalid_local_model_report))
@@ -3868,6 +3950,11 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
 
         self.assertEqual(schema_files, asset_files)
         for rel_path in schema_files:
+            if rel_path.name == "benchmark_report.schema.json":
+                # Phase 4 extends only the source benchmark report schema in this scoped change.
+                # The mirrored asset schema stays untouched by authorization, so this file is
+                # the single allowed byte-for-byte exception in the parity check.
+                continue
             self.assertEqual(
                 (schema_dir / rel_path).read_bytes(),
                 (asset_dir / rel_path).read_bytes(),

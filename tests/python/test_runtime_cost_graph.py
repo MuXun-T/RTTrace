@@ -70,6 +70,15 @@ class RuntimeCostGraphTests(unittest.TestCase):
         observed = {action_kind for action_kind in RUNTIME_ACTION_GATE_ALLOWLIST}
         bound = {action_kind for action_kind in observed if graph_node_ids_for_action(action_kind) is not None}
         self.assertEqual(observed, bound)
+        self.assertEqual(
+            graph_node_ids_for_action("baseline_full_load"),
+            ("decode", "verify", "align", "rebuild", "index_full"),
+        )
+        self.assertEqual(
+            graph_node_ids_for_action("deferred_index_build"),
+            ("rebuild", "index_deferred"),
+        )
+        self.assertEqual(graph_node_ids_for_action("abstain"), ())
 
     def test_runtime_cost_graph_marks_missing_cache_key_as_unavailable_for_reuse_action(self) -> None:
         base_graph = build_pipeline_runtime_cost_graph(

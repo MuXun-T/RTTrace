@@ -629,6 +629,14 @@ def _build_benchmark_report(
                 "scheduler_failed_task_count": int(dict(summary.get("scheduler") or {}).get("failed_task_count") or 0),
                 "deterministic_scenario": bool(summary.get("deterministic_scenario")),
                 "optional_scenario": bool(summary.get("optional_scenario")),
+                "gate_accept": bool(summary.get("ready_for_gate")),
+                "gate_reject_reason": None if bool(summary.get("ready_for_gate")) else "ready_for_gate_false",
+                "proof_drift": {
+                    "status": "clean" if metric_diff_count == 0 else "drift_detected",
+                    "metric_diff_count": int(metric_diff_count),
+                    "proof_hash_changed": bool(baseline_proof_hash and proof_hash and proof_hash != baseline_proof_hash),
+                    "mandatory_field_set_changed": bool(metric_diff_count > 0 and proof_hash == baseline_proof_hash),
+                },
             },
             runtime_seconds=runtime_seconds or 0.0,
             sidecar_validate_seconds=sidecar_validate_seconds,
@@ -955,6 +963,80 @@ def _formal_metric_summary(
     return summary_metrics
 
 
+def _phase4_placeholder_metrics(
+    *,
+    scenario: BenchmarkScenario,
+    advisor_decision: dict[str, Any] | None,
+    advisor_overhead_seconds: float | None,
+    gate_accept: bool | None,
+    gate_reject_reason: str | None,
+    proof_drift: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    decision_payload = dict(advisor_decision or {})
+    advisor_action_kinds = [
+        str(action.get("action_kind") or "")
+        for action in list(decision_payload.get("proposed_actions") or [])
+        if str(action.get("action_kind") or "").strip()
+    ]
+    effective_mode = decision_payload.get("advisor_mode") if decision_payload else ("disabled" if not scenario.advisor_enabled else "missing")
+    expected_checksum = decision_payload.get("model_checksum") if effective_mode == "offline_coefficients" else None
+    observed_checksum = decision_payload.get("model_checksum")
+    checksum_validation_result = {
+        "status": "missing",
+        "expected_checksum": expected_checksum,
+        "observed_checksum": observed_checksum,
+        "reason": "model_checksum_missing",
+    }
+    if scenario.advisor_mode != "offline_coefficients":
+        checksum_validation_result.update({"status": "not_applicable", "reason": "advisor_mode_not_offline"})
+    elif effective_mode != "offline_coefficients":
+        checksum_validation_result.update(
+            {
+                "status": "fallback",
+                "reason": f"advisor_mode_fallback:{effective_mode}",
+            }
+        )
+    elif expected_checksum and observed_checksum:
+        checksum_validation_result.update(
+            {
+                "status": "passed" if str(expected_checksum) == str(observed_checksum) else "failed",
+                "reason": None if str(expected_checksum) == str(observed_checksum) else "checksum_mismatch",
+            }
+        )
+    return {
+        "advisor_action_kinds": advisor_action_kinds,
+        "advisor_decision_model_checksum": decision_payload.get("model_checksum"),
+        "checksum_validation_result": checksum_validation_result,
+        "advisor_latency_seconds": advisor_overhead_seconds,
+        "gate_accept": gate_accept,
+        "gate_reject_reason": gate_reject_reason,
+        "proof_drift": dict(proof_drift or {"status": "not_comparable", "metric_diff_count": 0, "proof_hash_changed": False, "mandatory_field_set_changed": False}),
+        "plan_regret": {
+            "status": "not_applicable" if scenario.advisor_mode == "disabled" else "not_measured",
+            "requested_action_kinds": advisor_action_kinds,
+            "oracle_scenario_id": None,
+            "oracle_action_kind": None,
+            "runtime_delta_seconds": None,
+            "normalized_regret": None,
+            "reason": "advisor_mode_disabled" if scenario.advisor_mode == "disabled" else "no_oracle_safe_action_runtime_available",
+            "claim_strength": "report_only",
+            "source": "formal_matrix_summary_only",
+            "notes": ["report_only_no_counterfactual_runtime_source"],
+        },
+        "counterfactual_replay": {
+            "status": "not_applicable" if scenario.advisor_mode == "disabled" else "not_measured",
+            "baseline_scenario_id": "current_baseline",
+            "replayed_scenario_id": None,
+            "replay_runtime_seconds": None,
+            "oracle_runtime_seconds": None,
+            "reason": "advisor_mode_disabled" if scenario.advisor_mode == "disabled" else "no_counterfactual_fixture_or_external_benchmark_not_run",
+            "claim_strength": "report_only",
+            "source": "formal_matrix_summary_only",
+            "notes": ["report_only_no_counterfactual_fixture"],
+        },
+    }
+
+
 def _scenario_result_payload(
     scenario: BenchmarkScenario,
     *,
@@ -977,6 +1059,13 @@ def _scenario_result_payload(
     sidecar_validate_seconds = 0.0 if scenario.ticket_fast_path_enabled else 0.001
     index_build_open_seconds = 0.0
     advisor_overhead_seconds = 0.0 if not scenario.advisor_enabled else 0.001
+    phase4_metrics = _phase4_placeholder_metrics(
+        scenario=scenario,
+        advisor_decision=advisor_decision,
+        advisor_overhead_seconds=advisor_overhead_seconds,
+        gate_accept=bool(parity_summary.get("ready_for_gate")),
+        gate_reject_reason=None if bool(parity_summary.get("ready_for_gate")) else "ready_for_gate_false",
+    )
     return {
         "scenario_id": scenario.scenario_id,
         "status": status,
@@ -1001,6 +1090,7 @@ def _scenario_result_payload(
                 "sidecar_ticket_fast_path": bool(scenario.ticket_fast_path_enabled),
                 "scheduler_failed_tasks": failed_tasks,
                 "scheduler_ready_for_gate": bool(parity_summary.get("ready_for_gate")),
+                **phase4_metrics,
             },
             runtime_seconds=runtime_seconds,
             sidecar_validate_seconds=sidecar_validate_seconds,
@@ -1025,6 +1115,13 @@ def _failed_scenario_result_payload(
     sidecar_validate_seconds = 0.0 if scenario.ticket_fast_path_enabled else 0.001
     index_build_open_seconds = 0.0
     advisor_overhead_seconds = 0.0 if not scenario.advisor_enabled else 0.001
+    phase4_metrics = _phase4_placeholder_metrics(
+        scenario=scenario,
+        advisor_decision=advisor_decision,
+        advisor_overhead_seconds=advisor_overhead_seconds,
+        gate_accept=False,
+        gate_reject_reason="suite_error",
+    )
     payload = {
         "scenario_id": scenario.scenario_id,
         "status": "failed",
@@ -1050,6 +1147,7 @@ def _failed_scenario_result_payload(
                 "suite_error": error_message,
                 "scheduler_failed_tasks": [],
                 "scheduler_ready_for_gate": False,
+                **phase4_metrics,
             },
             runtime_seconds=runtime_seconds,
             sidecar_validate_seconds=sidecar_validate_seconds,

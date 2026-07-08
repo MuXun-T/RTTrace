@@ -125,6 +125,72 @@
           },
           "summary_metrics": {
             "type": "object",
+            "properties": {
+              "advisor_mode_requested": {"type": "string"},
+              "advisor_mode_effective": {"type": "string"},
+              "advisor_decision_model_checksum": {"type": ["string", "null"]},
+              "advisor_training_model_checksum": {"type": ["string", "null"]},
+              "advisor_latency_seconds": {"type": ["number", "null"], "minimum": 0},
+              "fallback_reason": {"type": ["string", "null"]},
+              "gate_accept": {"type": ["boolean", "null"]},
+              "gate_reject_reason": {"type": ["string", "null"]},
+              "advisor_action_kinds": {"type": "array", "items": {"type": "string"}},
+              "checksum_validation_result": {
+                "type": "object",
+                "required": ["status", "expected_checksum", "observed_checksum", "reason"],
+                "properties": {
+                  "status": {"type": "string", "enum": ["passed", "failed", "fallback", "not_applicable", "missing"]},
+                  "expected_checksum": {"type": ["string", "null"]},
+                  "observed_checksum": {"type": ["string", "null"]},
+                  "reason": {"type": ["string", "null"]}
+                },
+                "additionalProperties": false
+              },
+              "proof_drift": {
+                "type": "object",
+                "required": ["status", "metric_diff_count", "proof_hash_changed", "mandatory_field_set_changed"],
+                "properties": {
+                  "status": {"type": "string", "enum": ["clean", "drift_detected", "not_comparable"]},
+                  "metric_diff_count": {"type": "integer", "minimum": 0},
+                  "proof_hash_changed": {"type": "boolean"},
+                  "mandatory_field_set_changed": {"type": "boolean"}
+                },
+                "additionalProperties": false
+              },
+              "plan_regret": {
+                "type": "object",
+                "required": ["status", "requested_action_kinds", "oracle_scenario_id", "oracle_action_kind", "runtime_delta_seconds", "normalized_regret", "reason", "claim_strength", "source", "notes"],
+                "properties": {
+                  "status": {"type": "string"},
+                  "requested_action_kinds": {"type": "array", "items": {"type": "string"}},
+                  "oracle_scenario_id": {"type": ["string", "null"]},
+                  "oracle_action_kind": {"type": ["string", "null"]},
+                  "runtime_delta_seconds": {"type": ["number", "null"]},
+                  "normalized_regret": {"type": ["number", "null"]},
+                  "reason": {"type": ["string", "null"]},
+                  "claim_strength": {"type": "string", "enum": ["report_only"]},
+                  "source": {"type": ["string", "null"]},
+                  "notes": {"type": "array", "items": {"type": "string"}}
+                },
+                "additionalProperties": false
+              },
+              "counterfactual_replay": {
+                "type": "object",
+                "required": ["status", "baseline_scenario_id", "replayed_scenario_id", "replay_runtime_seconds", "oracle_runtime_seconds", "reason", "claim_strength", "source", "notes"],
+                "properties": {
+                  "status": {"type": "string"},
+                  "baseline_scenario_id": {"type": ["string", "null"]},
+                  "replayed_scenario_id": {"type": ["string", "null"]},
+                  "replay_runtime_seconds": {"type": ["number", "null"]},
+                  "oracle_runtime_seconds": {"type": ["number", "null"]},
+                  "reason": {"type": ["string", "null"]},
+                  "claim_strength": {"type": "string", "enum": ["report_only"]},
+                  "source": {"type": ["string", "null"]},
+                  "notes": {"type": "array", "items": {"type": "string"}}
+                },
+                "additionalProperties": false
+              }
+            },
             "additionalProperties": {"type": ["string", "number", "boolean", "null", "array", "object"]}
           },
           "telemetry_records": {
@@ -153,6 +219,7 @@
         "required_metric_coverage",
         "repeated_run_statistics",
         "artifact_refs",
+        "phase4_reporting",
         "parity"
       ],
       "properties": {
@@ -315,6 +382,131 @@
             "type": "object",
             "additionalProperties": {"type": "string"}
           }
+        },
+        "phase4_reporting": {
+          "type": "object",
+          "required": [
+            "advisor_mode_requested",
+            "advisor_mode_effective",
+            "checksum_validation_result_by_scenario",
+            "checksum_validation_status_counts",
+            "fallback_reason_by_scenario",
+            "gate_accept_by_scenario",
+            "gate_reject_reason_by_scenario",
+            "gate_accept_counts",
+            "proof_drift_by_scenario",
+            "proof_drift_status_counts",
+            "plan_regret_by_scenario",
+            "counterfactual_replay_by_scenario"
+          ],
+          "properties": {
+            "advisor_mode_requested": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            },
+            "advisor_mode_effective": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            },
+            "checksum_validation_result_by_scenario": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "required": ["status", "expected_checksum", "observed_checksum", "reason"],
+                "properties": {
+                  "status": {"type": "string", "enum": ["passed", "failed", "fallback", "not_applicable", "missing"]},
+                  "expected_checksum": {"type": ["string", "null"]},
+                  "observed_checksum": {"type": ["string", "null"]},
+                  "reason": {"type": ["string", "null"]}
+                },
+                "additionalProperties": false
+              }
+            },
+            "checksum_validation_status_counts": {
+              "type": "object",
+              "additionalProperties": {"type": "integer", "minimum": 0}
+            },
+            "fallback_reason_by_scenario": {
+              "type": "object",
+              "additionalProperties": {"type": ["string", "null"]}
+            },
+            "gate_accept_by_scenario": {
+              "type": "object",
+              "additionalProperties": {"type": ["boolean", "null"]}
+            },
+            "gate_reject_reason_by_scenario": {
+              "type": "object",
+              "additionalProperties": {"type": ["string", "null"]}
+            },
+            "gate_accept_counts": {
+              "type": "object",
+              "required": ["accepted", "rejected", "not_recorded"],
+              "properties": {
+                "accepted": {"type": "integer", "minimum": 0},
+                "rejected": {"type": "integer", "minimum": 0},
+                "not_recorded": {"type": "integer", "minimum": 0}
+              },
+              "additionalProperties": false
+            },
+            "proof_drift_by_scenario": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "required": ["status", "metric_diff_count", "proof_hash_changed", "mandatory_field_set_changed"],
+                "properties": {
+                  "status": {"type": "string", "enum": ["clean", "drift_detected", "not_comparable"]},
+                  "metric_diff_count": {"type": "integer", "minimum": 0},
+                  "proof_hash_changed": {"type": "boolean"},
+                  "mandatory_field_set_changed": {"type": "boolean"}
+                },
+                "additionalProperties": false
+              }
+            },
+            "proof_drift_status_counts": {
+              "type": "object",
+              "additionalProperties": {"type": "integer", "minimum": 0}
+            },
+            "plan_regret_by_scenario": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "required": ["status", "requested_action_kinds", "oracle_scenario_id", "oracle_action_kind", "runtime_delta_seconds", "normalized_regret", "reason", "claim_strength", "source", "notes"],
+                "properties": {
+                  "status": {"type": "string"},
+                  "requested_action_kinds": {"type": "array", "items": {"type": "string"}},
+                  "oracle_scenario_id": {"type": ["string", "null"]},
+                  "oracle_action_kind": {"type": ["string", "null"]},
+                  "runtime_delta_seconds": {"type": ["number", "null"]},
+                  "normalized_regret": {"type": ["number", "null"]},
+                  "reason": {"type": ["string", "null"]},
+                  "claim_strength": {"type": "string", "enum": ["report_only"]},
+                  "source": {"type": ["string", "null"]},
+                  "notes": {"type": "array", "items": {"type": "string"}}
+                },
+                "additionalProperties": false
+              }
+            },
+            "counterfactual_replay_by_scenario": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "required": ["status", "baseline_scenario_id", "replayed_scenario_id", "replay_runtime_seconds", "oracle_runtime_seconds", "reason", "claim_strength", "source", "notes"],
+                "properties": {
+                  "status": {"type": "string"},
+                  "baseline_scenario_id": {"type": ["string", "null"]},
+                  "replayed_scenario_id": {"type": ["string", "null"]},
+                  "replay_runtime_seconds": {"type": ["number", "null"]},
+                  "oracle_runtime_seconds": {"type": ["number", "null"]},
+                  "reason": {"type": ["string", "null"]},
+                  "claim_strength": {"type": "string", "enum": ["report_only"]},
+                  "source": {"type": ["string", "null"]},
+                  "notes": {"type": "array", "items": {"type": "string"}}
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
         },
         "parity": {
           "type": "object",

@@ -187,10 +187,14 @@ class EvidenceContractAssetTests(unittest.TestCase):
         self.assertEqual(action_props["action_kind"]["type"], "string")
         self.assertEqual(action_props["proof_scope_impact"]["type"], "string")
         self.assertEqual(set(action_props["fallback_action"]["type"]), {"string", "null"})
+        self.assertIn("abstain", action_props["action_kind"]["enum"])
+        self.assertEqual(action_props["proof_scope_impact"]["enum"], ["none"])
         action_item_props = specs["runtime_action_set"]["properties"]["proposed_actions"]["items"]["properties"]
         self.assertEqual(action_item_props["action_kind"]["type"], "string")
         self.assertEqual(action_item_props["proof_scope_impact"]["type"], "string")
         self.assertEqual(set(action_item_props["fallback_action"]["type"]), {"string", "null"})
+        self.assertIn("baseline_full_load", action_item_props["action_kind"]["enum"])
+        self.assertEqual(action_item_props["proof_scope_impact"]["enum"], ["none"])
 
         known_action = {
             "action_id": "action:test:known",
@@ -211,18 +215,20 @@ class EvidenceContractAssetTests(unittest.TestCase):
             "fallback_action": "other_unknown_action",
         }
         _assert_schema(specs["runtime_action"], known_action, label="runtime_action.known")
-        _assert_schema(specs["runtime_action"], permissive_action, label="runtime_action.permissive")
-        _assert_schema(
-            specs["runtime_action_set"],
-            {
-                "action_set_version": "runtime-action-set-v1",
-                "generated_at": "2026-07-06T00:00:00+00:00",
-                "proposed_actions": [permissive_action],
-                "abstained": False,
-                "abstain_reason": None,
-            },
-            label="runtime_action_set.permissive",
-        )
+        with self.assertRaises(AssertionError):
+            _assert_schema(specs["runtime_action"], permissive_action, label="runtime_action.permissive")
+        with self.assertRaises(AssertionError):
+            _assert_schema(
+                specs["runtime_action_set"],
+                {
+                    "action_set_version": "runtime-action-set-v1",
+                    "generated_at": "2026-07-06T00:00:00+00:00",
+                    "proposed_actions": [permissive_action],
+                    "abstained": False,
+                    "abstain_reason": None,
+                },
+                label="runtime_action_set.permissive",
+            )
 
     def test_dependency_sidecar_schema_freezes_kind_and_relation_enums(self) -> None:
         schema = load_specs()["dependency_sidecar"]

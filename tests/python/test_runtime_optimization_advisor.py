@@ -357,14 +357,14 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertFalse(decision.abstained)
         self.assertIsNone(decision.abstain_reason)
 
-    def test_heuristic_advisor_requests_more_telemetry_for_high_risk_rss_without_history(self) -> None:
+    def test_heuristic_advisor_abstains_for_high_risk_rss_without_history(self) -> None:
         decision = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"}).evaluate(
             current_request_features={"input_bytes": 1024, "peak_rss_mb": 3072.0},
         )
 
         self.assertEqual(
             self._action_kinds(decision),
-            ["need_more_telemetry"],
+            ["abstain"],
         )
         self.assertFalse(decision.recommend_index_prebuild)
         self.assertFalse(decision.recommend_index_reuse_attempt)
@@ -427,9 +427,9 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         ).evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 1024 * 1024 * 1024})
         self.assertTrue(decision.abstained)
         self.assertEqual(decision.abstain_reason, "insufficient_similar_case")
-        self.assertEqual(decision.proposed_actions, [])
+        self.assertEqual(self._action_kinds(decision), ["abstain"])
 
-    def test_retrieval_marks_conflicting_evidence_and_clears_actions(self) -> None:
+    def test_retrieval_marks_conflicting_evidence_and_abstains(self) -> None:
         case_bank_root = self._write_case_bank(
             [
                 self._case_entry(case_id="case:accept:001", label="accept", action_kind="sidecar_index_prebuild"),
@@ -446,7 +446,7 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         ).evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 1024 * 1024 * 1024})
         self.assertTrue(decision.abstained)
         self.assertEqual(decision.abstain_reason, "conflicting_evidence")
-        self.assertEqual(decision.proposed_actions, [])
+        self.assertEqual(self._action_kinds(decision), ["abstain"])
 
     def test_openai_output_is_overridden_by_retrieval_fail_closed_policy(self) -> None:
         class FakeOpenAIAdvisorClient:
@@ -496,7 +496,7 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertEqual(decision.advisor_mode, "openai_structured")
         self.assertTrue(decision.abstained)
         self.assertEqual(decision.abstain_reason, "unsafe_case_match")
-        self.assertEqual(decision.proposed_actions, [])
+        self.assertEqual(self._action_kinds(decision), ["abstain"])
 
     def test_sanitize_advisor_features_redacts_evidence_context_paths_and_hashes(self) -> None:
         sanitized = sanitize_advisor_features(
@@ -527,7 +527,7 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertNotIn("proof_digest_path", evidence_context)
         self.assertNotIn("sidecar_manifest_path", json.dumps(evidence_context, ensure_ascii=False))
 
-    def test_case_bank_missing_evidence_scenarios_abstain_or_request_more_telemetry_at_least_ninety_percent(self) -> None:
+    def test_case_bank_missing_evidence_scenarios_abstain_at_least_ninety_percent(self) -> None:
         cases = [
             case
             for case in self._repo_case_bank_cases()
@@ -547,7 +547,7 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
                 sidecar_ticket=sidecar_ticket,
             )
             action_kinds = self._action_kinds(decision)
-            if decision.abstained or "need_more_telemetry" in action_kinds:
+            if decision.abstained or "abstain" in action_kinds:
                 successful += 1
         self.assertGreaterEqual(successful / len(cases), 0.9)
 
@@ -837,7 +837,7 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertFalse(decision.abstained)
         self.assertIsNone(decision.abstain_reason)
 
-    def test_openai_structured_hallucinated_action_is_preserved_for_future_gate_reject(self) -> None:
+    def test_openai_structured_hallucinated_action_fails_closed_on_schema_validation(self) -> None:
         class FakeOpenAIAdvisorClient:
             def request_advisor_decision(
                 self,
@@ -873,15 +873,51 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             {"advisor_mode": "openai_structured", "openai_client": FakeOpenAIAdvisorClient()}
         ).evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 2048})
 
-        self.assertEqual(decision.advisor_mode, "openai_structured")
-        self.assertEqual(self._action_kinds(decision), ["hallucinated_action_kind"])
-        self.assertFalse(decision.recommend_index_prebuild)
-        self.assertFalse(decision.recommend_index_reuse_attempt)
-        self.assertFalse(decision.recommend_streaming_write)
-        self.assertEqual(decision.recommended_schedule, "serial_safe")
-        gate_result = DeterministicValidationGate().validate_advisor_decision(advisor_decision=decision)
-        self.assertFalse(gate_result.accepted)
-        self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_UNKNOWN")
+        self.assertEqual(decision.advisor_mode, "heuristic")
+        self.assertEqual(self._action_kinds(decision), [])
+        self.assertIn("openai fallback: openai_schema_invalid", decision.reasons)
+
+    def test_openai_structured_safe_candidate_mismatch_fails_closed_to_heuristic(self) -> None:
+        class FakeOpenAIAdvisorClient:
+            def request_advisor_decision(
+                self,
+                *,
+                feature_payload: dict[str, object],
+                decision_schema: dict[str, object],
+                feature_snapshot_hash: str,
+                decision_version: str,
+            ) -> OpenAIAdvisorClientResult:
+                return OpenAIAdvisorClientResult(
+                    decision_payload=self_outer._typed_action_set_payload(
+                        actions=[
+                            {
+                                "action_id": "action:openai:sidecar_index_reuse",
+                                "action_kind": "sidecar_index_reuse",
+                                "required_artifacts": ["sidecar_index_ticket"],
+                                "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["valid action but unsafe for this case"]},
+                                "risk_level": "medium",
+                                "proof_scope_impact": "none",
+                                "fallback_action": None,
+                            }
+                        ],
+                    ),
+                    response_id="resp-safe-mismatch",
+                    model="gpt-test",
+                    usage={},
+                    latency_seconds=0.0,
+                    request_payload={},
+                )
+
+        self_outer = self
+        advisor = RuntimeOptimizationAdvisor(
+            {"advisor_mode": "openai_structured", "openai_client": FakeOpenAIAdvisorClient()}
+        )
+        decision = advisor.evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 2048})
+
+        self.assertEqual(decision.advisor_mode, "heuristic")
+        self.assertEqual(self._action_kinds(decision), [])
+        self.assertEqual(advisor.last_advisor_metadata["fallback_reason"], "openai_safe_action_mismatch")
+        self.assertIn("openai fallback: openai_safe_action_mismatch", decision.reasons)
 
     def test_openai_client_uses_structured_outputs_and_redacted_features(self) -> None:
         captured: dict[str, object] = {}
@@ -1060,8 +1096,8 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             decision_payload = self._typed_action_set_payload(
                 actions=[
                     {
-                        "action_id": "action:chat:need_more_telemetry",
-                        "action_kind": "need_more_telemetry",
+                        "action_id": "action:chat:abstain",
+                        "action_kind": "abstain",
                         "required_artifacts": ["telemetry_history"],
                         "expected_benefit": {"runtime_seconds_delta": None, "peak_rss_mb_delta": None, "notes": ["chat compatible structured output"]},
                         "risk_level": "medium",
@@ -1553,12 +1589,12 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertFalse(gate_result.accepted)
         self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_POLICY_DENIED")
 
-    def test_gate_accepts_need_more_telemetry_without_artifact_binding(self) -> None:
+    def test_gate_accepts_abstain_without_artifact_binding(self) -> None:
         gate_result = DeterministicValidationGate().validate_advisor_decision(
             advisor_decision=self._advisor_decision_payload(
                 actions=[
                     self._runtime_action_payload(
-                        "need_more_telemetry",
+                        "abstain",
                         required_artifacts=["telemetry_history"],
                     )
                 ],
@@ -1568,7 +1604,21 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         )
 
         self.assertTrue(gate_result.accepted, gate_result.rejected_reason)
-        self.assertIn("need_more_telemetry", gate_result.execution_plan)
+        self.assertIn("abstain", gate_result.execution_plan)
+
+    def test_gate_accepts_new_safe_action_space_members(self) -> None:
+        for action_kind, expected_step in (
+            ("baseline_full_load", "baseline"),
+            ("deferred_index_build", "deferred_index_build"),
+            ("abstain", "abstain"),
+        ):
+            gate_result = DeterministicValidationGate().validate_advisor_decision(
+                advisor_decision=self._advisor_decision_payload(
+                    actions=[self._runtime_action_payload(action_kind)]
+                )
+            )
+            self.assertTrue(gate_result.accepted, action_kind)
+            self.assertIn(expected_step, gate_result.execution_plan)
 
     def test_gate_result_facade_accepts_and_rejects_with_audit_data(self) -> None:
         advisor = RuntimeOptimizationAdvisor({"advisor_mode": "heuristic"})

@@ -177,8 +177,8 @@ class _MockDeepSeekHandler(BaseHTTPRequestHandler):
             "generated_at": "2026-05-05T00:00:00+00:00",
             "proposed_actions": [
                 {
-                    "action_id": "runtime-action:streaming_package_write",
-                    "action_kind": "streaming_package_write",
+                    "action_id": "runtime-action:baseline_full_load",
+                    "action_kind": "baseline_full_load",
                     "required_artifacts": [],
                     "expected_benefit": {
                         "runtime_seconds_delta": None,

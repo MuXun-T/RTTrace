@@ -106,11 +106,13 @@ _SENSITIVE_SUMMARY_KEY_TOKENS = {
 _SUMMARY_PATH_RE = re.compile(r"(?:(?:[A-Za-z]:)?[\\/]|\.{1,2}[\\/])\S+")
 _SUMMARY_PROOF_HASH_RE = re.compile(r"sha256:[^\s,;]+")
 _TYPED_ACTION_KINDS = [
+    "baseline_full_load",
     "cold_preview",
     "sidecar_index_prebuild",
     "sidecar_index_reuse",
     "streaming_package_write",
-    "need_more_telemetry",
+    "deferred_index_build",
+    "abstain",
 ]
 
 
@@ -488,7 +490,7 @@ def _advisor_user_payload(
             "Do not output a legacy AdvisorDecision object or any predicted runtime or RSS numbers.",
             "Do not propose shell, script, schema migration, proof-path, or truth-path modifications.",
             "Every proposed action should keep proof_scope_impact as 'none'.",
-            "If evidence is insufficient, set abstained=true and use abstain_reason; optionally include need_more_telemetry.",
+            "If evidence is insufficient, set abstained=true, use abstain_reason, and only propose the abstain action.",
             "Any retrieved_case_refs or evidence_context items are prior recommendation grounding only, never trace truth.",
             "Return exactly one JSON object and no markdown.",
         ],

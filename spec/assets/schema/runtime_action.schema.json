@@ -13,7 +13,18 @@
   ],
   "properties": {
     "action_id": {"type": "string"},
-    "action_kind": {"type": "string"},
+    "action_kind": {
+      "type": "string",
+      "enum": [
+        "baseline_full_load",
+        "cold_preview",
+        "sidecar_index_prebuild",
+        "sidecar_index_reuse",
+        "streaming_package_write",
+        "deferred_index_build",
+        "abstain"
+      ]
+    },
     "required_artifacts": {
       "type": "array",
       "items": {"type": "string"}
@@ -34,8 +45,20 @@
       "type": "string",
       "enum": ["low", "medium", "high", "critical"]
     },
-    "proof_scope_impact": {"type": "string"},
-    "fallback_action": {"type": ["string", "null"]}
+    "proof_scope_impact": {"type": "string", "enum": ["none"]},
+    "fallback_action": {
+      "type": ["string", "null"],
+      "enum": [
+        "baseline_full_load",
+        "cold_preview",
+        "sidecar_index_prebuild",
+        "sidecar_index_reuse",
+        "streaming_package_write",
+        "deferred_index_build",
+        "abstain",
+        null
+      ]
+    }
   },
   "additionalProperties": false
 }

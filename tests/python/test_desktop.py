@@ -4746,9 +4746,9 @@ class DesktopServiceTests(unittest.TestCase):
                     "proposed_actions": (
                         [
                             {
-                                "action_id": "action:mock:sidecar_index_reuse",
-                                "action_kind": "sidecar_index_reuse",
-                                "required_artifacts": ["sidecar_index_ticket"],
+                                "action_id": "action:mock:baseline_full_load",
+                                "action_kind": "baseline_full_load",
+                                "required_artifacts": [],
                                 "expected_benefit": {
                                     "runtime_seconds_delta": None,
                                     "peak_rss_mb_delta": None,
@@ -4839,10 +4839,10 @@ class DesktopServiceTests(unittest.TestCase):
         self.assertIn("evidence_context", pre_execution_advisor_trace["feature_snapshot"])
         self.assertEqual(
             [item["action_kind"] for item in pre_execution_advisor_trace["decision"]["proposed_actions"]],
-            ["sidecar_index_reuse"],
+            ["baseline_full_load"],
         )
-        self.assertFalse(pre_execution_advisor_trace["gate_result"]["accepted"])
-        self.assertEqual(pre_execution_advisor_trace["gate_result"]["rejected_reason"], "ERR-ACTION_MISSING_ARTIFACT")
+        self.assertTrue(pre_execution_advisor_trace["gate_result"]["accepted"])
+        self.assertIsNone(pre_execution_advisor_trace["gate_result"]["rejected_reason"])
         self.assertEqual(advisor_report["pre_execution_gate_result"], pre_execution_advisor_trace["gate_result"])
         self.assertEqual(advisor_trace["decision"]["advisor_mode"], "openai_structured")
         self.assertEqual(advisor_report["decision"]["advisor_mode"], "openai_structured")

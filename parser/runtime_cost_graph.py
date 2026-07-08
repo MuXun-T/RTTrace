@@ -43,11 +43,13 @@ RUNTIME_COST_GRAPH_EDGE_TEMPLATES = (
 )
 _NODE_ORDINALS = {node_id: index for index, node_id in enumerate(RUNTIME_COST_GRAPH_NODE_ORDER)}
 RUNTIME_ACTION_NODE_BINDINGS = {
+    "baseline_full_load": ("decode", "verify", "align", "rebuild", "index_full"),
     "cold_preview": ("decode", "verify", "align", "rebuild", "index_minimal"),
     "sidecar_index_prebuild": ("sidecar_validate", "sidecar_index_build"),
     "sidecar_index_reuse": ("sidecar_validate", "sidecar_index_open"),
     "streaming_package_write": ("package_write",),
-    "need_more_telemetry": (),
+    "deferred_index_build": ("rebuild", "index_deferred"),
+    "abstain": (),
 }
 
 _NODE_LABELS = {

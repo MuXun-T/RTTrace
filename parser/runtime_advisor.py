@@ -38,6 +38,8 @@ ADVISOR_EVIDENCE_CONTEXT_VERSION = "advisor-evidence-context-v1"
 RUNTIME_LOAD_PLAN_VERSION = "runtime-load-plan-v1"
 RUNTIME_ACTION_SET_VERSION = "runtime-action-set-v1"
 HEURISTIC_MODEL_REF = "heuristic-runtime-advisor-v1"
+OFFLINE_ADVISOR_PRIOR_VERSION = "runtime-advisor-safe-prior-v1"
+OFFLINE_ADVISOR_MODEL_REF = "offline-safe-prior-v1"
 ERR_ADVISOR_UNAVAILABLE = "ERR-ADVISOR_UNAVAILABLE"
 RISK_LEVELS = {"low", "medium", "high", "critical"}
 HIGH_RISK_ACTION_LEVELS = {"high", "critical"}
@@ -45,14 +47,18 @@ SCHEDULES = {"serial_safe", "sidecar_first", "bounded_parallel", "degraded_prior
 ADVISOR_MODES = {"disabled", "heuristic", "offline_coefficients", "openai_structured"}
 RUNTIME_LOAD_MODES = {"full", "cold_preview", "warm_reuse", "hot_reuse"}
 RUNTIME_LOAD_INDEX_BUILD_MODES = {"full", "minimal", "deferred"}
-RUNTIME_ACTION_KINDS = {
+SAFE_RUNTIME_ACTION_KINDS = (
+    "baseline_full_load",
     "cold_preview",
     "sidecar_index_prebuild",
     "sidecar_index_reuse",
     "streaming_package_write",
-    "need_more_telemetry",
-}
+    "deferred_index_build",
+    "abstain",
+)
+RUNTIME_ACTION_KINDS = set(SAFE_RUNTIME_ACTION_KINDS)
 RUNTIME_ACTION_PROOF_SCOPE_IMPACTS = {"none"}
+DEFAULT_RUNTIME_LOAD_LARGE_INPUT_THRESHOLD_BYTES = 256 * 1024 * 1024
 
 
 def _iso_now() -> str:
@@ -96,6 +102,84 @@ def coefficient_payload_checksum(payload: dict[str, Any]) -> str:
     canonical = {key: value for key, value in dict(payload).items() if key != "model_checksum"}
     encoded = json.dumps(canonical, ensure_ascii=False, sort_keys=True, default=str).encode("utf-8")
     return f"sha256:{hashlib.sha256(encoded).hexdigest()}"
+
+
+def safe_runtime_action_space() -> list[str]:
+    return list(SAFE_RUNTIME_ACTION_KINDS)
+
+
+def _runtime_load_large_input_threshold_bytes(config: dict[str, Any] | None = None) -> int:
+    value = _optional_int(dict(config or {}).get("runtime_load_large_input_threshold_bytes"))
+    if value is None:
+        return DEFAULT_RUNTIME_LOAD_LARGE_INPUT_THRESHOLD_BYTES
+    return max(0, int(value))
+
+
+def runtime_advisor_prior_bucket(features: dict[str, Any], *, config: dict[str, Any] | None = None) -> str:
+    payload = dict(features or {})
+    input_bytes = _optional_int(payload.get("input_bytes") or payload.get("source_bytes")) or 0
+    sidecar_bytes = _optional_int(payload.get("sidecar_bytes") or payload.get("ticket_sidecar_bytes")) or 0
+    peak_rss_mb = _optional_float(payload.get("peak_rss_mb"))
+    ticket_present = bool(
+        payload.get("ticket_present")
+        or payload.get("ticket_validated")
+        or payload.get("index_reused")
+        or payload.get("sidecar_ticket_fast_path")
+    )
+    large_input = input_bytes >= _runtime_load_large_input_threshold_bytes(config)
+    large_sidecar = sidecar_bytes >= DEFAULT_SIDECAR_STREAM_SCAN_MAX_BYTES
+    high_rss = peak_rss_mb is not None and peak_rss_mb >= 2048.0
+    return "|".join(
+        (
+            f"ticket:{int(ticket_present)}",
+            f"large_input:{int(large_input)}",
+            f"large_sidecar:{int(large_sidecar)}",
+            f"high_rss:{int(high_rss)}",
+        )
+    )
+
+
+def safe_runtime_action_candidates(
+    features: dict[str, Any],
+    *,
+    config: dict[str, Any] | None = None,
+    include_abstain: bool = True,
+    telemetry_missing: bool = False,
+) -> list[str]:
+    payload = dict(features or {})
+    input_bytes = _optional_int(payload.get("input_bytes") or payload.get("source_bytes")) or 0
+    sidecar_bytes = _optional_int(payload.get("sidecar_bytes") or payload.get("ticket_sidecar_bytes")) or 0
+    peak_rss_mb = _optional_float(payload.get("peak_rss_mb"))
+    ticket_present = bool(
+        payload.get("ticket_present")
+        or payload.get("ticket_validated")
+        or payload.get("index_reused")
+        or payload.get("sidecar_ticket_fast_path")
+    )
+    large_input = input_bytes >= _runtime_load_large_input_threshold_bytes(config)
+    large_sidecar = sidecar_bytes >= DEFAULT_SIDECAR_STREAM_SCAN_MAX_BYTES
+    high_rss = peak_rss_mb is not None and peak_rss_mb >= 2048.0
+    action_kinds = ["baseline_full_load"]
+    if large_input and not ticket_present:
+        action_kinds.append("cold_preview")
+    if ticket_present:
+        action_kinds.append("sidecar_index_reuse")
+    elif large_sidecar or large_input:
+        action_kinds.append("sidecar_index_prebuild")
+    if large_input and not ticket_present:
+        action_kinds.append("deferred_index_build")
+    if large_input or high_rss:
+        action_kinds.append("streaming_package_write")
+    if include_abstain and telemetry_missing and high_rss:
+        action_kinds.insert(1, "abstain")
+    elif include_abstain:
+        action_kinds.append("abstain")
+    return [action_kind for action_kind in dict.fromkeys(action_kinds) if action_kind in RUNTIME_ACTION_KINDS]
+
+
+def _telemetry_missing(features: dict[str, Any]) -> bool:
+    telemetry_summary = _as_mapping(dict(features or {}).get("risk_history_summary"))
+    return (_optional_int(telemetry_summary.get("row_count")) or 0) <= 0
 
 
 def _latest_telemetry(
@@ -238,6 +322,23 @@ def _append_runtime_action(
             fallback_action=fallback_action,
         )
     )
+
+
+def _ensure_abstain_action(
+    actions: list[RuntimeAction],
+    *,
+    notes: list[str] | None = None,
+    required_artifacts: list[str] | None = None,
+) -> list[RuntimeAction]:
+    updated = list(actions)
+    _append_runtime_action(
+        updated,
+        action_kind="abstain",
+        risk_level="high",
+        required_artifacts=required_artifacts,
+        notes=notes,
+    )
+    return updated
 
 
 @dataclass(frozen=True)
@@ -700,26 +801,18 @@ class RuntimeOptimizationAdvisor:
         applied_abstain_reason: str | None = None
         filtered_actions = list(actions)
         if high_risk_actions and missing_telemetry_fields and needs_more_data_signal and not concrete_confident_action_present:
-            filtered_actions = [action for action in filtered_actions if action.action_kind == "need_more_telemetry"]
-            if not filtered_actions:
-                _append_runtime_action(
-                    filtered_actions,
-                    action_kind="need_more_telemetry",
-                    risk_level="high",
-                    required_artifacts=["telemetry_history"],
-                    notes=["retrieval grounding requested more telemetry before a high-risk action"],
-                )
+            filtered_actions = _ensure_abstain_action(
+                [],
+                required_artifacts=["telemetry_history"],
+                notes=["retrieval grounding requested more telemetry before a high-risk action"],
+            )
             applied_abstain_reason = "need_more_telemetry"
         elif high_risk_actions and missing_telemetry_fields and not concrete_confident_action_present:
-            filtered_actions = [action for action in filtered_actions if action.action_kind == "need_more_telemetry"]
-            if not filtered_actions:
-                _append_runtime_action(
-                    filtered_actions,
-                    action_kind="need_more_telemetry",
-                    risk_level="high",
-                    required_artifacts=["telemetry_history"],
-                    notes=["retrieval fail-closed: high-risk recommendation lacks telemetry evidence"],
-                )
+            filtered_actions = _ensure_abstain_action(
+                [],
+                required_artifacts=["telemetry_history"],
+                notes=["retrieval fail-closed: high-risk recommendation lacks telemetry evidence"],
+            )
             applied_abstain_reason = "need_more_telemetry"
         elif high_risk_actions and bool(retrieval_summary.get("unsafe_case_match")):
             filtered_actions = [action for action in filtered_actions if action.risk_level not in HIGH_RISK_ACTION_LEVELS]
@@ -736,13 +829,11 @@ class RuntimeOptimizationAdvisor:
                 retrieval_summary,
                 applied_abstain_reason=None,
             )
-        if not filtered_actions and applied_abstain_reason == "need_more_telemetry":
-            _append_runtime_action(
-                filtered_actions,
-                action_kind="need_more_telemetry",
-                risk_level="high",
-                required_artifacts=["telemetry_history"],
-                notes=["retrieval fail-closed: telemetry is insufficient"],
+        if not filtered_actions:
+            filtered_actions = _ensure_abstain_action(
+                [],
+                required_artifacts=["telemetry_history"] if applied_abstain_reason == "need_more_telemetry" else None,
+                notes=["retrieval fail-closed: telemetry is insufficient"] if applied_abstain_reason == "need_more_telemetry" else [f"retrieval fail-closed: {applied_abstain_reason}"],
             )
         legacy_fields = _derive_legacy_advisor_fields(filtered_actions)
         reasons = [reason for reason in list(decision.reasons) if reason != decision.abstain_reason]
@@ -772,12 +863,9 @@ class RuntimeOptimizationAdvisor:
         previous_runtime = _optional_float(features.get("runtime_seconds"))
         previous_peak_rss = _optional_float(features.get("peak_rss_mb"))
         ticket_present = bool(features.get("ticket_present"))
-        telemetry_summary = _as_mapping(features.get("risk_history_summary"))
-        telemetry_missing = (_optional_int(telemetry_summary.get("row_count")) or 0) <= 0
+        telemetry_missing = _telemetry_missing(features)
 
-        large_input_threshold_bytes = _optional_int(self.config.get("runtime_load_large_input_threshold_bytes"))
-        if large_input_threshold_bytes is None:
-            large_input_threshold_bytes = 256 * 1024 * 1024
+        large_input_threshold_bytes = _runtime_load_large_input_threshold_bytes(self.config)
         large_input = input_bytes >= max(0, large_input_threshold_bytes)
         large_sidecar = sidecar_bytes >= DEFAULT_SIDECAR_STREAM_SCAN_MAX_BYTES
         recommend_index_reuse = ticket_present
@@ -858,16 +946,18 @@ class RuntimeOptimizationAdvisor:
         abstained = False
         abstain_reason: str | None = None
         if telemetry_missing and (previous_peak_rss is not None and previous_peak_rss >= 2048.0) and not concrete_confident_action_present:
-            _append_runtime_action(
-                proposed_actions,
-                action_kind="need_more_telemetry",
-                risk_level="high",
+            proposed_actions = _ensure_abstain_action(
+                [],
                 required_artifacts=["telemetry_history"],
                 notes=["high-risk RSS path lacks telemetry history confidence"],
             )
             abstained = True
-            abstain_reason = "telemetry history is missing for a high-risk RSS-driven recommendation"
+            abstain_reason = "need_more_telemetry"
             reasons.append("telemetry history is missing for the high-risk RSS path")
+            recommend_index_prebuild = False
+            recommend_index_reuse = False
+            recommend_streaming_write = False
+            recommended_schedule = "serial_safe"
 
         return AdvisorDecision(
             decision_version=ADVISOR_DECISION_VERSION,
@@ -911,42 +1001,126 @@ class RuntimeOptimizationAdvisor:
                 snapshot_hash,
                 "offline coefficients payload is unavailable",
             )
+        if "artifact_version" not in coefficients and any(key in coefficients for key in ("runtime_weights", "runtime_intercept")):
+            return self._evaluate_heuristic_fallback(
+                features,
+                snapshot_hash,
+                "offline coefficients payload is legacy",
+            )
         if coefficients.get("status") != "trained":
             return self._evaluate_heuristic_fallback(
                 features,
                 snapshot_hash,
                 "offline coefficients payload is not trained",
             )
-        weights_payload = coefficients.get("runtime_weights")
-        if not isinstance(weights_payload, dict):
+        if str(coefficients.get("artifact_version") or "") != OFFLINE_ADVISOR_PRIOR_VERSION:
             return self._evaluate_heuristic_fallback(
                 features,
                 snapshot_hash,
-                "offline coefficients runtime weights are missing",
+                "offline coefficients artifact version mismatch",
+            )
+        if not str(coefficients.get("model_ref") or "").strip():
+            return self._evaluate_heuristic_fallback(
+                features,
+                snapshot_hash,
+                "offline coefficients model_ref is missing",
+            )
+        if not str(coefficients.get("created_at") or "").strip() or not str(coefficients.get("telemetry_source_digest") or "").strip():
+            return self._evaluate_heuristic_fallback(
+                features,
+                snapshot_hash,
+                "offline coefficients payload is legacy",
+            )
+        if not isinstance(coefficients.get("training_input_summary"), dict):
+            return self._evaluate_heuristic_fallback(
+                features,
+                snapshot_hash,
+                "offline coefficients payload is legacy",
+            )
+        expected_safe_actions = safe_runtime_action_space()
+        observed_safe_actions = [str(item) for item in list(coefficients.get("safe_action_space") or [])]
+        if observed_safe_actions != expected_safe_actions:
+            return self._evaluate_heuristic_fallback(
+                features,
+                snapshot_hash,
+                "offline coefficients safe action mismatch",
             )
         model_checksum = coefficient_payload_checksum(coefficients)
         expected_checksum = str(coefficients.get("model_checksum") or "").strip()
-        if expected_checksum and expected_checksum != model_checksum:
+        if not expected_checksum or expected_checksum != model_checksum:
             return self._evaluate_heuristic_fallback(
                 features,
                 snapshot_hash,
                 "offline coefficients checksum mismatch",
             )
-
         base = self._evaluate_heuristic(features, snapshot_hash)
-        weights = dict(weights_payload)
-        intercept = _optional_float(coefficients.get("runtime_intercept")) or 0.0
-        runtime = intercept
-        for name, weight in weights.items():
-            runtime += (_optional_float(features.get(name)) or 0.0) * (_optional_float(weight) or 0.0)
-        runtime = runtime if runtime > 0 else base.predicted_runtime_seconds
-        model_ref = str(coefficients.get("model_ref") or "offline-coefficients")
+        telemetry_missing = _telemetry_missing(features)
+        candidate_kinds = safe_runtime_action_candidates(
+            features,
+            config=self.config,
+            telemetry_missing=telemetry_missing,
+        )
+        global_scores = dict(coefficients.get("global_action_scores") or {})
+        bucket_key = runtime_advisor_prior_bucket(features, config=self.config)
+        bucket_payload = dict(dict(coefficients.get("buckets") or {}).get(bucket_key) or {})
+        bucket_scores = dict(bucket_payload.get("action_scores") or {})
+        unknown_actions = sorted(
+            {
+                str(action_kind)
+                for action_kind in [*global_scores.keys(), *bucket_scores.keys()]
+                if str(action_kind) not in expected_safe_actions
+            }
+        )
+        if unknown_actions:
+            return self._evaluate_heuristic_fallback(
+                features,
+                snapshot_hash,
+                "offline coefficients unknown action",
+            )
+        scored_candidates = sorted(
+            (
+                action_kind
+                for action_kind in candidate_kinds
+                if action_kind not in {"baseline_full_load", "abstain"}
+            ),
+            key=lambda action_kind: (
+                -(float(bucket_scores.get(action_kind) or 0.0)),
+                -(float(global_scores.get(action_kind) or 0.0)),
+                candidate_kinds.index(action_kind),
+            ),
+        )
+        action_by_kind = {action.action_kind: action for action in list(base.proposed_actions)}
+        ranked_actions: list[RuntimeAction] = []
+        if base.abstained:
+            ranked_actions = _ensure_abstain_action(
+                [],
+                required_artifacts=["telemetry_history"] if base.abstain_reason == "need_more_telemetry" else None,
+                notes=["offline safe prior preserved heuristic abstain"],
+            )
+        else:
+            for action_kind in scored_candidates:
+                existing = action_by_kind.get(action_kind)
+                if existing is not None:
+                    ranked_actions.append(existing)
+                    continue
+                required_artifacts = ["sidecar_index_ticket"] if action_kind == "sidecar_index_reuse" else []
+                _append_runtime_action(
+                    ranked_actions,
+                    action_kind=action_kind,
+                    risk_level=base.risk_level,
+                    required_artifacts=required_artifacts,
+                    notes=["offline safe prior ranked this action inside the deterministic candidate set"],
+                )
+        runtime = _optional_float(bucket_payload.get("mean_runtime_seconds")) or base.predicted_runtime_seconds
+        model_ref = str(coefficients.get("model_ref") or OFFLINE_ADVISOR_MODEL_REF)
         return replace(
             base,
             advisor_mode="offline_coefficients",
             model_ref=model_ref,
             model_checksum=model_checksum,
+            reasons=[*list(base.reasons), f"offline safe prior bucket={bucket_key}"],
             predicted_runtime_seconds=None if runtime is None else round(float(runtime), 6),
+            proposed_actions=ranked_actions,
         )
 
     def _evaluate_openai_structured(self, features: dict[str, Any], snapshot_hash: str) -> AdvisorDecision:
@@ -985,6 +1159,27 @@ class RuntimeOptimizationAdvisor:
             proposed_actions = _runtime_actions_from_payload(payload.get("proposed_actions"))
             abstained = bool(payload.get("abstained"))
             abstain_reason = None if payload.get("abstain_reason") is None else str(payload["abstain_reason"])
+            safe_candidates = set(
+                safe_runtime_action_candidates(
+                    features,
+                    config=self.config,
+                    telemetry_missing=_telemetry_missing(features),
+                )
+            )
+            for action in proposed_actions:
+                if action.action_kind not in RUNTIME_ACTION_KINDS:
+                    raise LLMAdvisorClientError("openai_unknown_action", f"unknown action {action.action_kind}")
+                if action.action_kind not in safe_candidates:
+                    raise LLMAdvisorClientError(
+                        "openai_safe_action_mismatch",
+                        f"action {action.action_kind} is outside safe candidate set",
+                    )
+            if abstained:
+                proposed_actions = _ensure_abstain_action(
+                    [],
+                    required_artifacts=["telemetry_history"] if abstain_reason == "need_more_telemetry" else None,
+                    notes=["online advisor abstained inside the deterministic candidate set"],
+                )
             legacy_fields = _derive_legacy_advisor_fields(proposed_actions)
             reasons = list(heuristic_base.reasons)
             if abstained and abstain_reason and abstain_reason not in reasons:

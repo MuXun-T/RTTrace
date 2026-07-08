@@ -398,6 +398,7 @@ def _build_row(
     advisor_metadata = dict(advisor_report.get("advisor_metadata") or {})
     telemetry_record = dict(advisor_report.get("telemetry_record") or {})
     decision = dict(advisor_report.get("decision") or {})
+    gate_result = dict(advisor_report.get("gate_result") or {})
     proof_hash = str(proof_digest.get("proof_hash") or "")
     mandatory_field_set = sorted(evd_ProofHashInput(proof_digest).keys()) if proof_digest else list(BENCHMARK_MANDATORY_FIELDS)
     baseline_hash = str((baseline_parity or {}).get("proof_hash") or proof_hash)
@@ -424,14 +425,21 @@ def _build_row(
     effective_advisor_mode = str(decision.get("advisor_mode") or ("disabled" if not scenario.advisor_enabled else "heuristic"))
     advisor_decision_model_ref = decision.get("model_ref")
     advisor_decision_model_checksum = decision.get("model_checksum")
+    advisor_action_kinds = [
+        str(action.get("action_kind") or "")
+        for action in list(decision.get("proposed_actions") or [])
+        if str(action.get("action_kind") or "").strip()
+    ]
     training_status = None
     training_skip_reason = None
     training_rows = None
+    training_model_checksum = None
     if scenario.optional_dependency:
         training_payload = dict(advisor_training_report or {})
         training_status = str(training_payload.get("status") or "not_requested")
         training_skip_reason = training_payload.get("skip_reason")
         training_rows = training_payload.get("training_rows")
+        training_model_checksum = training_payload.get("model_checksum")
     advisor_coefficients_attached = bool(
         scenario.optional_dependency
         and advisor_coefficients_path is not None
@@ -479,6 +487,36 @@ def _build_row(
     package_write_seconds = float(telemetry_record.get("package_write_seconds") or _write_phase_duration(progress))
     advisor_overhead_seconds = float(telemetry_record.get("advisor_overhead_seconds") or 0.0)
     peak_rss_mb = proof_digest.get("peak_rss_mb") if proof_digest.get("peak_rss_mb") is not None else _rss_mb()
+    expected_checksum = training_model_checksum
+    observed_checksum = advisor_decision_model_checksum
+    checksum_validation_result = {
+        "status": "missing",
+        "expected_checksum": expected_checksum,
+        "observed_checksum": observed_checksum,
+        "reason": "model_checksum_missing",
+    }
+    if scenario.advisor_mode != "offline_coefficients":
+        checksum_validation_result.update({"status": "not_applicable", "reason": "advisor_mode_not_offline"})
+    elif effective_advisor_mode != "offline_coefficients":
+        checksum_validation_result.update(
+            {
+                "status": "fallback",
+                "reason": advisor_metadata.get("fallback_reason") or f"advisor_mode_fallback:{effective_advisor_mode}",
+            }
+        )
+    elif expected_checksum and observed_checksum:
+        checksum_validation_result.update(
+            {
+                "status": "passed" if str(expected_checksum) == str(observed_checksum) else "failed",
+                "reason": None if str(expected_checksum) == str(observed_checksum) else "checksum_mismatch",
+            }
+        )
+    proof_drift = {
+        "status": "clean" if metric_diff_count == 0 else "drift_detected",
+        "metric_diff_count": int(metric_diff_count),
+        "proof_hash_changed": bool(baseline_hash and proof_hash and proof_hash != baseline_hash),
+        "mandatory_field_set_changed": bool(metric_diff_count > 0 and baseline_hash == proof_hash),
+    }
     return {
         "scenario_id": scenario.scenario_id,
         "status": status,
@@ -508,8 +546,14 @@ def _build_row(
             "optional_dependency_available": optional_available,
             "advisor_mode_requested": scenario.advisor_mode,
             "advisor_mode_effective": effective_advisor_mode,
+            "advisor_action_kinds": advisor_action_kinds,
             "advisor_decision_model_ref": advisor_decision_model_ref,
             "advisor_decision_model_checksum": advisor_decision_model_checksum,
+            "advisor_training_model_checksum": training_model_checksum,
+            "checksum_validation_result": checksum_validation_result,
+            "advisor_latency_seconds": advisor_metadata.get("openai_latency_seconds", advisor_overhead_seconds if scenario.advisor_enabled else 0.0),
+            "gate_accept": gate_result.get("accepted"),
+            "gate_reject_reason": gate_result.get("rejected_reason"),
             "advisor_report_present": bool(advisor_report),
             "advisor_training_status": training_status,
             "advisor_training_skip_reason": training_skip_reason,
@@ -522,6 +566,30 @@ def _build_row(
             "openai_response_id": advisor_metadata.get("openai_response_id"),
             "openai_model": advisor_metadata.get("openai_model"),
             "llm_backend": advisor_metadata.get("llm_backend"),
+            "proof_drift": proof_drift,
+            "plan_regret": {
+                "status": "not_applicable" if scenario.advisor_mode == "disabled" else "not_measured",
+                "requested_action_kinds": advisor_action_kinds,
+                "oracle_scenario_id": None,
+                "oracle_action_kind": None,
+                "runtime_delta_seconds": None,
+                "normalized_regret": None,
+                "reason": "advisor_mode_disabled" if scenario.advisor_mode == "disabled" else "no_oracle_safe_action_runtime_available",
+                "claim_strength": "report_only",
+                "source": "product_runtime_matrix_summary_only",
+                "notes": ["report_only_no_counterfactual_runtime_source"],
+            },
+            "counterfactual_replay": {
+                "status": "not_applicable" if scenario.advisor_mode == "disabled" else "not_measured",
+                "baseline_scenario_id": "current_baseline",
+                "replayed_scenario_id": None,
+                "replay_runtime_seconds": None,
+                "oracle_runtime_seconds": None,
+                "reason": "advisor_mode_disabled" if scenario.advisor_mode == "disabled" else "no_counterfactual_fixture_or_external_benchmark_not_run",
+                "claim_strength": "report_only",
+                "source": "product_runtime_matrix_summary_only",
+                "notes": ["report_only_no_counterfactual_fixture"],
+            },
             "sidecar_build_seconds": sidecar_build_seconds,
             "synthetic_metric_fields": [],
             "runtime_breakdown": _product_runtime_breakdown(
