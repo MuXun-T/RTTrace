@@ -285,15 +285,24 @@ class BenchmarkReportBuilder:
         advisor_decision = advisor.evaluate(
             telemetry_history=history,
             current_request_features={
+                "advisor_phase": "benchmark",
+                "export_family": "benchmark",
+                "embodiment_mode": "benchmark",
                 "input_bytes": int(input_contract.get("input_bytes") or 1024),
                 "sidecar_bytes": int(input_contract.get("sidecar_bytes") or 4096),
                 "ticket_present": bool(scenario.ticket_fast_path_enabled),
+                "ticket_validated": bool(scenario.ticket_fast_path_enabled),
+                "gate_policy_summary": {
+                    "advisor_enabled": scenario.advisor_enabled,
+                    "ticket_fast_path_enabled": scenario.ticket_fast_path_enabled,
+                },
             },
             sidecar_ticket={"row_count": 1, "sidecar_bytes": int(input_contract.get("sidecar_bytes") or 4096)}
             if scenario.ticket_fast_path_enabled
             else None,
         )
         advisor_metadata = dict(advisor.last_advisor_metadata)
+        retrieval_metadata = dict(advisor_metadata.get("retrieval") or {})
         advisor_overhead_seconds = round(time.perf_counter() - advisor_started, 6)
         package_root = output_root / scenario.scenario_id
         write_agent = ExportWriteAgent(job_id=f"benchmark-{scenario.scenario_id}")
@@ -430,6 +439,13 @@ class BenchmarkReportBuilder:
                 "openai_response_id": advisor_metadata.get("openai_response_id"),
                 "openai_model": advisor_metadata.get("openai_model"),
                 "llm_backend": advisor_metadata.get("llm_backend"),
+                "retrieval_case_count": len(list(retrieval_metadata.get("retrieved_case_refs") or [])),
+                "retrieval_has_sufficient_similarity": bool(retrieval_metadata.get("has_sufficient_similarity")),
+                "retrieval_conflicting_actions": list(retrieval_metadata.get("conflicting_actions") or []),
+                "retrieval_unsafe_case_match": bool(retrieval_metadata.get("unsafe_case_match")),
+                "retrieval_missing_telemetry_fields": list(retrieval_metadata.get("missing_telemetry_fields") or []),
+                "retrieval_applied_abstain_reason": retrieval_metadata.get("applied_abstain_reason"),
+                "retrieval_reject_taxonomy_coverage": retrieval_metadata.get("reject_taxonomy_coverage"),
             },
             "telemetry_records": [
                 telemetry_update.to_dict()

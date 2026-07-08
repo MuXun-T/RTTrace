@@ -15,6 +15,11 @@ from parser.agent_contract import (
     AGENT_VALIDATING_INPUT,
     AgentJobContract,
 )
+from parser.advisor_retrieval import (
+    default_case_bank_root,
+    build_case_similarity_features,
+    retrieve_runtime_cases,
+)
 from parser.evidence_sidecar_index import DEFAULT_SIDECAR_STREAM_SCAN_MAX_BYTES, SidecarIndexTicket
 from parser.openai_advisor_client import (
     LLMAdvisorClient,
@@ -29,11 +34,13 @@ from spec.io import json_dump
 
 ADVISOR_DECISION_VERSION = "runtime-advisor-decision-v1"
 ADVISOR_TRACE_VERSION = "runtime-advisor-trace-v1"
+ADVISOR_EVIDENCE_CONTEXT_VERSION = "advisor-evidence-context-v1"
 RUNTIME_LOAD_PLAN_VERSION = "runtime-load-plan-v1"
 RUNTIME_ACTION_SET_VERSION = "runtime-action-set-v1"
 HEURISTIC_MODEL_REF = "heuristic-runtime-advisor-v1"
 ERR_ADVISOR_UNAVAILABLE = "ERR-ADVISOR_UNAVAILABLE"
 RISK_LEVELS = {"low", "medium", "high", "critical"}
+HIGH_RISK_ACTION_LEVELS = {"high", "critical"}
 SCHEDULES = {"serial_safe", "sidecar_first", "bounded_parallel", "degraded_priority"}
 ADVISOR_MODES = {"disabled", "heuristic", "offline_coefficients", "openai_structured"}
 RUNTIME_LOAD_MODES = {"full", "cold_preview", "warm_reuse", "hot_reuse"}
@@ -300,6 +307,109 @@ class AdvisorTrace:
 
 
 @dataclass(frozen=True)
+class AdvisorEvidenceContext:
+    context_version: str
+    advisor_phase: str
+    input_bytes: int | None
+    sidecar_bytes: int | None
+    sidecar_row_count: int | None
+    platform: str | None
+    export_family: str | None
+    embodiment_mode: str | None
+    ticket_present: bool
+    ticket_validated: bool | None
+    trace_checksum_prefix: str | None = None
+    dictionary_checksum_prefix: str | None = None
+    gate_policy_summary: dict[str, Any] = field(default_factory=dict)
+    retrieved_case_refs: list[str] = field(default_factory=list)
+    case_similarity_features: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "context_version": self.context_version,
+            "advisor_phase": self.advisor_phase,
+            "input_bytes": self.input_bytes,
+            "sidecar_bytes": self.sidecar_bytes,
+            "sidecar_row_count": self.sidecar_row_count,
+            "platform": self.platform,
+            "export_family": self.export_family,
+            "embodiment_mode": self.embodiment_mode,
+            "ticket_present": bool(self.ticket_present),
+            "ticket_validated": self.ticket_validated,
+            "trace_checksum_prefix": self.trace_checksum_prefix,
+            "dictionary_checksum_prefix": self.dictionary_checksum_prefix,
+            "gate_policy_summary": dict(self.gate_policy_summary),
+            "retrieved_case_refs": list(self.retrieved_case_refs),
+            "case_similarity_features": dict(self.case_similarity_features),
+        }
+
+
+def _checksum_prefix(value: Any, *, keep: int = 16) -> str | None:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    if ":" in text:
+        _prefix, _sep, suffix = text.partition(":")
+        text = suffix or text
+    return text[: max(8, int(keep or 8))]
+
+
+def _advisor_evidence_context_from_features(
+    features: dict[str, Any],
+    *,
+    retrieved_case_refs: list[str] | None = None,
+    case_similarity_features: dict[str, Any] | None = None,
+) -> AdvisorEvidenceContext:
+    payload = dict(features or {})
+    similarity_features = dict(case_similarity_features or build_case_similarity_features(payload))
+    ticket_validated = payload.get("ticket_validated")
+    sidecar_bytes = _optional_int(payload.get("sidecar_bytes"))
+    if sidecar_bytes is None:
+        sidecar_bytes = _optional_int(payload.get("ticket_sidecar_bytes"))
+    sidecar_row_count = _optional_int(payload.get("sidecar_row_count"))
+    if sidecar_row_count is None:
+        sidecar_row_count = _optional_int(payload.get("ticket_row_count"))
+    return AdvisorEvidenceContext(
+        context_version=ADVISOR_EVIDENCE_CONTEXT_VERSION,
+        advisor_phase=str(payload.get("advisor_phase") or ""),
+        input_bytes=_optional_int(payload.get("input_bytes")),
+        sidecar_bytes=sidecar_bytes,
+        sidecar_row_count=sidecar_row_count,
+        platform=None if payload.get("platform") is None else str(payload.get("platform")),
+        export_family=None if payload.get("export_family") is None else str(payload.get("export_family")),
+        embodiment_mode=None if payload.get("embodiment_mode") is None else str(payload.get("embodiment_mode")),
+        ticket_present=bool(payload.get("ticket_present")),
+        ticket_validated=None if ticket_validated is None else bool(ticket_validated),
+        trace_checksum_prefix=_checksum_prefix(payload.get("trace_checksum")),
+        dictionary_checksum_prefix=_checksum_prefix(payload.get("dictionary_checksum")),
+        gate_policy_summary=dict(payload.get("gate_policy_summary") or {}),
+        retrieved_case_refs=list(retrieved_case_refs or []),
+        case_similarity_features=similarity_features,
+    )
+
+
+def _retrieval_metadata(
+    context: AdvisorEvidenceContext,
+    retrieval_summary: dict[str, Any],
+    *,
+    applied_abstain_reason: str | None,
+) -> dict[str, Any]:
+    return {
+        "retrieved_case_refs": list(context.retrieved_case_refs),
+        "case_similarity_features": dict(context.case_similarity_features),
+        "matched_case_count": int(retrieval_summary.get("matched_case_count") or 0),
+        "similar_case_count": int(retrieval_summary.get("similar_case_count") or 0),
+        "has_sufficient_similarity": bool(retrieval_summary.get("has_sufficient_similarity")),
+        "conflicting_actions": list(retrieval_summary.get("conflicting_actions") or []),
+        "unsafe_case_match": bool(retrieval_summary.get("unsafe_case_match")),
+        "top_score": int(retrieval_summary.get("top_score") or 0),
+        "reject_taxonomy_coverage": float(retrieval_summary.get("reject_taxonomy_coverage") or 0.0),
+        "missing_telemetry_fields": list(context.case_similarity_features.get("missing_telemetry_fields") or []),
+        "applied_abstain_reason": applied_abstain_reason,
+    }
+
+
+@dataclass(frozen=True)
 class RuntimeLoadPlan:
     plan_version: str
     load_mode: str
@@ -327,6 +437,7 @@ class RuntimeOptimizationAdvisor:
     def __init__(self, config: dict[str, Any] | None = None) -> None:
         self.config = dict(config or {})
         self.last_advisor_metadata: dict[str, Any] = {}
+        self.last_evidence_context: dict[str, Any] = {}
 
     def plan_load(
         self,
@@ -417,6 +528,7 @@ class RuntimeOptimizationAdvisor:
         sidecar_ticket: SidecarIndexTicket | dict[str, Any] | None = None,
     ) -> AdvisorDecision:
         self.last_advisor_metadata = {}
+        self.last_evidence_context = {}
         mode = str(self.config.get("advisor_mode") or self.config.get("mode") or "disabled").strip() or "disabled"
         if mode not in ADVISOR_MODES:
             mode = "disabled"
@@ -424,17 +536,21 @@ class RuntimeOptimizationAdvisor:
         latest = _latest_telemetry(history_items)
         ticket_payload = _as_mapping(sidecar_ticket)
         max_history_rows = _optional_int(self.config.get("openai_max_history_rows")) or 20
+        request_features = {**latest, **dict(current_request_features or {})}
+        ticket_validated = request_features.get("ticket_validated")
+        if ticket_validated is None and ticket_payload:
+            ticket_validated = True
         features = {
-            **latest,
-            **dict(current_request_features or {}),
+            **request_features,
             "ticket_present": bool(ticket_payload),
+            "ticket_validated": ticket_validated,
             "ticket_row_count": ticket_payload.get("row_count"),
             "ticket_sidecar_bytes": ticket_payload.get("sidecar_bytes"),
             "risk_history_summary": _risk_history_summary(history_items, max_rows=max_history_rows),
         }
         snapshot_hash = _feature_snapshot_hash(features)
         if mode == "disabled":
-            return AdvisorDecision(
+            decision = AdvisorDecision(
                 decision_version=ADVISOR_DECISION_VERSION,
                 advisor_mode="disabled",
                 model_ref="disabled",
@@ -452,11 +568,30 @@ class RuntimeOptimizationAdvisor:
                 abstained=False,
                 abstain_reason=None,
             )
-        if mode == "offline_coefficients":
-            return self._evaluate_offline_coefficients(features, snapshot_hash)
-        if mode == "openai_structured":
-            return self._evaluate_openai_structured(features, snapshot_hash)
-        return self._evaluate_heuristic(features, snapshot_hash)
+        elif mode == "offline_coefficients":
+            decision = self._evaluate_offline_coefficients(features, snapshot_hash)
+        elif mode == "openai_structured":
+            decision = self._evaluate_openai_structured(features, snapshot_hash)
+        else:
+            decision = self._evaluate_heuristic(features, snapshot_hash)
+        decision, evidence_context, retrieval_metadata = self._apply_retrieval_fail_closed_policy(
+            decision=decision,
+            features=features,
+        )
+        final_snapshot_hash = _feature_snapshot_hash(
+            {
+                **features,
+                "evidence_context": evidence_context.to_dict(),
+            }
+        )
+        if decision.feature_snapshot_hash != final_snapshot_hash:
+            decision = replace(decision, feature_snapshot_hash=final_snapshot_hash)
+        self.last_evidence_context = evidence_context.to_dict()
+        self.last_advisor_metadata = {
+            **dict(self.last_advisor_metadata),
+            "retrieval": retrieval_metadata,
+        }
+        return decision
 
     def evaluate_result(
         self,
@@ -497,6 +632,7 @@ class RuntimeOptimizationAdvisor:
                     "advisor_decision": decision,
                     "agent_contract": contract.to_dict(),
                     "advisor_metadata": dict(self.last_advisor_metadata),
+                    "advisor_evidence_context": dict(self.last_evidence_context),
                 }
             )
         except Exception as exc:
@@ -508,8 +644,126 @@ class RuntimeOptimizationAdvisor:
                     "advisor_decision": None,
                     "agent_contract": contract.to_dict(),
                     "advisor_metadata": dict(self.last_advisor_metadata),
+                    "advisor_evidence_context": dict(self.last_evidence_context),
                 },
             )
+
+    def _case_bank_root(self) -> Path:
+        root = self.config.get("advisor_case_bank_root")
+        if root:
+            return Path(str(root)).expanduser().resolve()
+        return default_case_bank_root().resolve()
+
+    def _retrieval_summary_for_decision(
+        self,
+        *,
+        features: dict[str, Any],
+        decision: AdvisorDecision,
+    ) -> tuple[AdvisorEvidenceContext, dict[str, Any]]:
+        summary = retrieve_runtime_cases(
+            current_features=features,
+            proposed_actions=decision.proposed_actions,
+            case_bank_root=self._case_bank_root(),
+            top_k=_optional_int(self.config.get("advisor_retrieval_top_k")) or 3,
+            similarity_threshold=_optional_int(self.config.get("advisor_similarity_threshold")) or 14,
+        ).to_dict()
+        context = _advisor_evidence_context_from_features(
+            features,
+            retrieved_case_refs=list(summary.get("retrieved_case_refs") or []),
+            case_similarity_features=dict(summary.get("case_similarity_features") or {}),
+        )
+        return context, summary
+
+    def _apply_retrieval_fail_closed_policy(
+        self,
+        *,
+        decision: AdvisorDecision,
+        features: dict[str, Any],
+    ) -> tuple[AdvisorDecision, AdvisorEvidenceContext, dict[str, Any]]:
+        evidence_context, retrieval_summary = self._retrieval_summary_for_decision(
+            features=features,
+            decision=decision,
+        )
+        actions = list(decision.proposed_actions)
+        high_risk_actions = [
+            action
+            for action in actions
+            if action.risk_level in HIGH_RISK_ACTION_LEVELS and action.action_kind in RUNTIME_ACTION_KINDS
+        ]
+        concrete_confident_action_present = any(
+            action.action_kind in {"cold_preview", "sidecar_index_prebuild", "sidecar_index_reuse"}
+            for action in actions
+        )
+        missing_telemetry_fields = list(evidence_context.case_similarity_features.get("missing_telemetry_fields") or [])
+        matched_labels = {str(label) for label in list(retrieval_summary.get("matched_labels") or []) if str(label)}
+        needs_more_data_signal = bool(matched_labels) and matched_labels.issubset({"abstain", "needs_more_data"})
+        applied_abstain_reason: str | None = None
+        filtered_actions = list(actions)
+        if high_risk_actions and missing_telemetry_fields and needs_more_data_signal and not concrete_confident_action_present:
+            filtered_actions = [action for action in filtered_actions if action.action_kind == "need_more_telemetry"]
+            if not filtered_actions:
+                _append_runtime_action(
+                    filtered_actions,
+                    action_kind="need_more_telemetry",
+                    risk_level="high",
+                    required_artifacts=["telemetry_history"],
+                    notes=["retrieval grounding requested more telemetry before a high-risk action"],
+                )
+            applied_abstain_reason = "need_more_telemetry"
+        elif high_risk_actions and missing_telemetry_fields and not concrete_confident_action_present:
+            filtered_actions = [action for action in filtered_actions if action.action_kind == "need_more_telemetry"]
+            if not filtered_actions:
+                _append_runtime_action(
+                    filtered_actions,
+                    action_kind="need_more_telemetry",
+                    risk_level="high",
+                    required_artifacts=["telemetry_history"],
+                    notes=["retrieval fail-closed: high-risk recommendation lacks telemetry evidence"],
+                )
+            applied_abstain_reason = "need_more_telemetry"
+        elif high_risk_actions and bool(retrieval_summary.get("unsafe_case_match")):
+            filtered_actions = [action for action in filtered_actions if action.risk_level not in HIGH_RISK_ACTION_LEVELS]
+            applied_abstain_reason = "unsafe_case_match"
+        elif high_risk_actions and list(retrieval_summary.get("conflicting_actions") or []):
+            filtered_actions = [action for action in filtered_actions if action.risk_level not in HIGH_RISK_ACTION_LEVELS]
+            applied_abstain_reason = "conflicting_evidence"
+        elif high_risk_actions and not bool(retrieval_summary.get("has_sufficient_similarity")):
+            filtered_actions = [action for action in filtered_actions if action.risk_level not in HIGH_RISK_ACTION_LEVELS]
+            applied_abstain_reason = "insufficient_similar_case"
+        if applied_abstain_reason is None:
+            return decision, evidence_context, _retrieval_metadata(
+                evidence_context,
+                retrieval_summary,
+                applied_abstain_reason=None,
+            )
+        if not filtered_actions and applied_abstain_reason == "need_more_telemetry":
+            _append_runtime_action(
+                filtered_actions,
+                action_kind="need_more_telemetry",
+                risk_level="high",
+                required_artifacts=["telemetry_history"],
+                notes=["retrieval fail-closed: telemetry is insufficient"],
+            )
+        legacy_fields = _derive_legacy_advisor_fields(filtered_actions)
+        reasons = [reason for reason in list(decision.reasons) if reason != decision.abstain_reason]
+        if applied_abstain_reason not in reasons:
+            reasons.append(applied_abstain_reason)
+        updated = replace(
+            decision,
+            recommend_index_prebuild=bool(legacy_fields["recommend_index_prebuild"]),
+            recommend_index_reuse_attempt=bool(legacy_fields["recommend_index_reuse_attempt"]),
+            recommend_streaming_write=bool(legacy_fields["recommend_streaming_write"]),
+            recommended_schedule=str(legacy_fields["recommended_schedule"]),
+            reasons=reasons,
+            proposed_actions=filtered_actions,
+            abstained=True,
+            abstain_reason=applied_abstain_reason,
+        )
+        return updated, evidence_context, _retrieval_metadata(
+            evidence_context,
+            retrieval_summary,
+            applied_abstain_reason=applied_abstain_reason,
+        )
 
     def _evaluate_heuristic(self, features: dict[str, Any], snapshot_hash: str) -> AdvisorDecision:
         sidecar_bytes = _optional_int(features.get("sidecar_bytes") or features.get("ticket_sidecar_bytes")) or 0
@@ -558,7 +812,8 @@ class RuntimeOptimizationAdvisor:
             risk_level = "medium"
             reasons.append("sidecar cost is present")
         if recommend_streaming_write:
-            risk_level = "high" if risk_level == "medium" else risk_level
+            if risk_level in {"low", "medium"}:
+                risk_level = "high"
             reasons.append("input or RSS suggests streaming write")
         if ticket_present:
             reasons.append("sidecar index ticket is available")
@@ -703,12 +958,22 @@ class RuntimeOptimizationAdvisor:
         client_for_metadata = None
         try:
             heuristic_base = self._evaluate_heuristic(features, snapshot_hash)
+            preliminary_context, _preliminary_summary = self._retrieval_summary_for_decision(
+                features=features,
+                decision=heuristic_base,
+            )
+            features_with_context = {
+                **features,
+                "evidence_context": preliminary_context.to_dict(),
+            }
+            snapshot_hash = _feature_snapshot_hash(features_with_context)
+            heuristic_base = replace(heuristic_base, feature_snapshot_hash=snapshot_hash)
             client = self.config.get("llm_client") or self.config.get("openai_client")
             if client is None:
                 client = LLMAdvisorClient.from_config(self.config)
             client_for_metadata = client
             result = client.request_advisor_decision(
-                feature_payload=features,
+                feature_payload=features_with_context,
                 decision_schema=schema,
                 feature_snapshot_hash=snapshot_hash,
                 decision_version=RUNTIME_ACTION_SET_VERSION,

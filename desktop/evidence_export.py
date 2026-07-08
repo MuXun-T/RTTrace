@@ -1466,10 +1466,18 @@ def _write_evidence_package_impl(
                         "dataset_id": dataset_id,
                         "run_id": str(job.get("run_id") or record.artifact.header.run_id or dataset_id),
                         "embodiment_mode": request.embodiment_mode,
+                        "export_family": "evidence",
                         "input_bytes": int(trace_source.stat().st_size) if trace_source.exists() else None,
                         "sidecar_bytes": int(sidecar_bytes),
                         "sidecar_row_count": int(pre_ticket_payload.row_count) if pre_ticket_payload is not None else None,
                         "ticket_present": bool(pre_ticket_payload is not None),
+                        "ticket_validated": bool(loaded_ticket.ok),
+                        "trace_checksum": source_trace_checksum,
+                        "dictionary_checksum": source_dictionary_checksum,
+                        "gate_policy_summary": {
+                            "advisor_enabled": advisor_enabled,
+                            "ticket_fast_path_enabled": True,
+                        },
                         "background_prebuild_reused": bool(background_prebuild_candidate is not None),
                     }
                     pre_advisor_result = RuntimeOptimizationAdvisor(advisor_config).evaluate_result(
@@ -1481,6 +1489,7 @@ def _write_evidence_package_impl(
                     pre_advisor_payload = dict(pre_advisor_result.data or {})
                     pre_execution_agent_contract = dict(pre_advisor_payload.get("agent_contract") or {})
                     pre_execution_advisor_metadata = dict(pre_advisor_payload.get("advisor_metadata") or {})
+                    pre_execution_evidence_context = dict(pre_advisor_payload.get("advisor_evidence_context") or {})
                     if not pre_advisor_result.ok:
                         try:
                             write_evidence_advisor_artifacts(
@@ -1520,6 +1529,7 @@ def _write_evidence_package_impl(
                         feature_snapshot={
                             "advisor_phase": "pre_execution",
                             "pre_execution_features": dict(pre_execution_features),
+                            "evidence_context": pre_execution_evidence_context,
                         },
                         decision=pre_execution_advisor_decision,
                         gate_result=pre_execution_gate_result,
@@ -2252,6 +2262,7 @@ def _write_evidence_package_impl(
             "dataset_id": dataset_id,
             "run_id": str(job.get("run_id") or record.artifact.header.run_id or dataset_id),
             "embodiment_mode": request.embodiment_mode,
+            "export_family": "evidence",
             "advisor_phase": "post_execution_report",
             "pre_execution_decision": (
                 pre_execution_advisor_decision.to_dict() if pre_execution_advisor_decision is not None else None
@@ -2268,7 +2279,15 @@ def _write_evidence_package_impl(
             "index_reused": sidecar_selector_telemetry["sidecar_index_reused"],
             "index_rebuilt": sidecar_selector_telemetry["sidecar_index_rebuilt"],
             "sidecar_ticket_fast_path": sidecar_selector_telemetry["sidecar_ticket_fast_path"],
+            "ticket_present": bool(sidecar_ticket_for_advisor is not None),
+            "ticket_validated": bool(sidecar_selector_telemetry["sidecar_ticket_fast_path"]),
             "background_prebuild_reused": sidecar_selector_telemetry["background_prebuild_reused"],
+            "trace_checksum": source_trace_checksum,
+            "dictionary_checksum": source_dictionary_checksum,
+            "gate_policy_summary": {
+                "advisor_enabled": advisor_enabled,
+                "ticket_fast_path_enabled": True,
+            },
             "candidate_consumption_diagnostics": dict(candidate_consumption_diagnostics),
             "package_write_seconds": round(time.perf_counter() - package_write_started_at, 6),
             "runtime_seconds": round(time.perf_counter() - export_started_at, 6),
@@ -2290,6 +2309,9 @@ def _write_evidence_package_impl(
         advisor_decision = advisor_payload["advisor_decision"]
         advisor_contract = dict(advisor_payload["agent_contract"])
         advisor_metadata = dict(advisor_payload.get("advisor_metadata") or {})
+        advisor_evidence_context = dict(advisor_payload.get("advisor_evidence_context") or {})
+        if advisor_evidence_context:
+            advisor_feature_snapshot["evidence_context"] = advisor_evidence_context
         advisor_gate_result = advisor_gate.validate_advisor_decision(
             advisor_decision=advisor_decision,
             sidecar_ticket=sidecar_ticket_for_advisor,

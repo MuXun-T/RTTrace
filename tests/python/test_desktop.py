@@ -4664,6 +4664,8 @@ class DesktopServiceTests(unittest.TestCase):
         )
         self.assertEqual(pre_execution_advisor_trace["feature_snapshot"]["advisor_phase"], "pre_execution")
         self.assertIn("pre_execution_features", pre_execution_advisor_trace["feature_snapshot"])
+        self.assertIn("evidence_context", pre_execution_advisor_trace["feature_snapshot"])
+        self.assertTrue(pre_execution_advisor_trace["feature_snapshot"]["evidence_context"]["retrieved_case_refs"])
         self.assertTrue(pre_execution_advisor_trace["gate_result"]["accepted"])
         self.assertEqual(advisor_contract["agent_name"], "RuntimeOptimizationAdvisor")
         self.assertEqual(advisor_contract["agent_state"], "AGENT-completed")
@@ -4683,7 +4685,11 @@ class DesktopServiceTests(unittest.TestCase):
         )
         self.assertEqual(advisor_trace["agent_contract_ref"]["job_id"], advisor_contract["job_id"])
         self.assertEqual(advisor_trace["decision"]["advisor_mode"], "heuristic")
+        self.assertIn("evidence_context", advisor_trace["feature_snapshot"])
+        self.assertTrue(advisor_trace["feature_snapshot"]["evidence_context"]["retrieved_case_refs"])
         self.assertTrue(advisor_report["decision"]["recommend_index_reuse_attempt"])
+        self.assertIn("retrieval", advisor_report["advisor_metadata"])
+        self.assertTrue(advisor_report["advisor_metadata"]["retrieval"]["retrieved_case_refs"])
         self.assertEqual(advisor_report["pre_execution_decision"]["advisor_mode"], "heuristic")
         self.assertEqual(advisor_report["pre_execution_decision"]["predicted_runtime_seconds"], 12.5)
         self.assertTrue(advisor_report["pre_execution_gate_result"]["accepted"])
@@ -4717,6 +4723,9 @@ class DesktopServiceTests(unittest.TestCase):
         self.assertNotIn("pre_execution_advisor_trace", proof_digest)
         self.assertNotIn("pre_execution_runtime_advisor_agent_contract", proof_digest)
         self.assertNotIn("predicted_runtime_seconds", proof_digest)
+        self.assertNotIn("retrieved_case_refs", proof_digest)
+        self.assertNotIn("case_similarity_features", proof_digest)
+        self.assertNotIn("evidence_context", proof_digest)
         self.assertEqual(proof_digest["proof_hash"], evd_RecomputeProofHash(proof_digest))
         self.assertEqual(len(TelemetryHistoryStore(telemetry_history_path).read_advisor_history(export_family="evidence")), 2)
 
@@ -4827,6 +4836,7 @@ class DesktopServiceTests(unittest.TestCase):
         proof_digest = json.loads((package_dir / "control" / "proof_digest.json").read_text(encoding="utf-8"))
 
         self.assertEqual(pre_execution_advisor_trace["decision"]["advisor_mode"], "openai_structured")
+        self.assertIn("evidence_context", pre_execution_advisor_trace["feature_snapshot"])
         self.assertEqual(
             [item["action_kind"] for item in pre_execution_advisor_trace["decision"]["proposed_actions"]],
             ["sidecar_index_reuse"],
@@ -4839,6 +4849,7 @@ class DesktopServiceTests(unittest.TestCase):
         self.assertEqual(advisor_report["advisor_metadata"]["openai_latency_seconds"], 0.123)
         self.assertEqual(advisor_report["advisor_metadata"]["openai_tokens"], 7)
         self.assertIsNone(advisor_report["advisor_metadata"]["fallback_reason"])
+        self.assertIn("retrieval", advisor_report["advisor_metadata"])
         self.assertEqual(advisor_report["pre_execution_advisor_metadata"]["openai_tokens"], 7)
 
         self.assertNotIn("advisor_report", proof_digest)
@@ -4846,6 +4857,8 @@ class DesktopServiceTests(unittest.TestCase):
         self.assertNotIn("openai_latency_seconds", proof_digest)
         self.assertNotIn("openai_tokens", proof_digest)
         self.assertNotIn("pre_execution_advisor_trace", proof_digest)
+        self.assertNotIn("retrieved_case_refs", proof_digest)
+        self.assertNotIn("case_similarity_features", proof_digest)
         self.assertEqual(proof_digest["proof_hash"], evd_RecomputeProofHash(proof_digest))
 
     def test_evidence_export_returns_package_write_failure_with_blocker_artifact(self) -> None:

@@ -11,6 +11,8 @@ from unittest.mock import patch
 
 from parser.evidence_models import DependencySidecarEdge
 from parser.evidence_sidecar_index import build_or_open_sidecar_index, sidecar_index_ticket_path_for_source
+from parser.openai_advisor_client import sanitize_advisor_features
+from parser.advisor_retrieval import retrieve_runtime_cases
 from parser.openai_advisor_client import (
     LLMAdvisorClient,
     LLMAdvisorClientError,
@@ -83,6 +85,148 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             "entry_checksums": {"control/dependency_sidecar.jsonl": sidecar_checksum},
         }
         return sidecar_path, manifest, sidecar_checksum
+
+    def _write_case_bank(self, cases: list[dict[str, object]]) -> Path:
+        root = self.root / "case-bank"
+        root.mkdir(parents=True, exist_ok=True)
+        (root / "manifest.json").write_text(
+            json.dumps(
+                {
+                    "case_bank_version": "runtime-optimization-case-bank-v1",
+                    "case_files": ["recommendation_cases.json"],
+                },
+                ensure_ascii=False,
+                indent=2,
+            ) + "\n",
+            encoding="utf-8",
+        )
+        (root / "recommendation_cases.json").write_text(
+            json.dumps(cases, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        return root
+
+    def _case_entry(
+        self,
+        *,
+        case_id: str,
+        label: str,
+        action_kind: str,
+        risk_level: str = "high",
+        similarity_features: dict[str, object] | None = None,
+        reject_taxonomy: str | None = None,
+    ) -> dict[str, object]:
+        return {
+            "case_id": case_id,
+            "label": label,
+            "action_kind": action_kind,
+            "risk_level": risk_level,
+            "source_ref": "tests:unit-case-bank",
+            "case_tags": ["unit_test"],
+            "similarity_features": {
+                "input_bytes_bucket": "small",
+                "sidecar_bytes_bucket": "large",
+                "sidecar_row_count_bucket": "medium",
+                "peak_rss_bucket": "high",
+                "ticket_present": False,
+                "ticket_validated": False,
+                "advisor_phase": "",
+                "export_family": "",
+                "embodiment_mode": "",
+                "platform": "",
+                "missing_telemetry_fields": [],
+                **dict(similarity_features or {}),
+            },
+            "expected_decision": {
+                "proposed_actions": [action_kind] if action_kind else [],
+                "abstained": label in {"abstain", "unsafe", "needs_more_data", "reject"},
+                "abstain_reason": None,
+            },
+            "gate_outcome": {
+                "accepted": label not in {"reject", "unsafe"},
+                "rejected_reason": reject_taxonomy,
+            },
+            "reject_taxonomy": reject_taxonomy,
+        }
+
+    def _repo_case_bank_root(self) -> Path:
+        return Path(__file__).resolve().parents[2] / "docs" / "runtime_optimization_case_bank"
+
+    def _repo_case_bank_cases(self) -> list[dict[str, object]]:
+        return json.loads((self._repo_case_bank_root() / "recommendation_cases.json").read_text(encoding="utf-8"))
+
+    def _materialize_case_features(
+        self,
+        similarity_features: dict[str, object],
+    ) -> tuple[dict[str, object], list[dict[str, object]], dict[str, object] | None]:
+        input_bytes = {
+            "tiny": 256 * 1024,
+            "small": 8 * 1024 * 1024,
+            "medium": 128 * 1024 * 1024,
+            "large": 768 * 1024 * 1024,
+            "xlarge": 2 * 1024 * 1024 * 1024,
+            "missing": None,
+        }[str(similarity_features.get("input_bytes_bucket") or "small")]
+        sidecar_bytes = {
+            "tiny": 256 * 1024,
+            "small": 8 * 1024 * 1024,
+            "large": 768 * 1024 * 1024,
+            "xlarge": 8 * 1024 * 1024 * 1024,
+            "huge": 24 * 1024 * 1024 * 1024,
+            "missing": None,
+        }[str(similarity_features.get("sidecar_bytes_bucket") or "small")]
+        sidecar_row_count = {
+            "tiny": 4,
+            "small": 128,
+            "medium": 2000,
+            "large": 400000,
+            "xlarge": 8000000,
+            "missing": None,
+        }[str(similarity_features.get("sidecar_row_count_bucket") or "small")]
+        peak_rss_mb = {
+            "low": 256.0,
+            "medium": 1024.0,
+            "high": 3072.0,
+            "critical": 5120.0,
+            "missing": None,
+        }[str(similarity_features.get("peak_rss_bucket") or "medium")]
+        missing = set(str(item) for item in list(similarity_features.get("missing_telemetry_fields") or []))
+        features: dict[str, object] = {
+            "advisor_phase": str(similarity_features.get("advisor_phase") or ""),
+            "export_family": str(similarity_features.get("export_family") or ""),
+            "embodiment_mode": str(similarity_features.get("embodiment_mode") or ""),
+            "ticket_present": bool(similarity_features.get("ticket_present")),
+            "ticket_validated": bool(similarity_features.get("ticket_validated")),
+        }
+        if input_bytes is not None:
+            features["input_bytes"] = input_bytes
+        if sidecar_bytes is not None:
+            features["sidecar_bytes"] = sidecar_bytes
+        if sidecar_row_count is not None:
+            features["sidecar_row_count"] = sidecar_row_count
+        if peak_rss_mb is not None and "peak_rss_mb" not in missing:
+            features["peak_rss_mb"] = peak_rss_mb
+        if "runtime_seconds" not in missing:
+            features["runtime_seconds"] = 12.5
+        telemetry_history: list[dict[str, object]] = []
+        if "telemetry_history" not in missing:
+            telemetry_row = {
+                "runtime_seconds": 12.5,
+                "peak_rss_mb": peak_rss_mb if peak_rss_mb is not None else 1024.0,
+                "input_bytes": input_bytes if input_bytes is not None else 8 * 1024 * 1024,
+                "sidecar_bytes": sidecar_bytes if sidecar_bytes is not None else 8 * 1024 * 1024,
+                "sidecar_row_count": sidecar_row_count if sidecar_row_count is not None else 128,
+                "export_family": str(similarity_features.get("export_family") or ""),
+                "embodiment_mode": str(similarity_features.get("embodiment_mode") or ""),
+            }
+            telemetry_history = [telemetry_row]
+        sidecar_ticket = None
+        if bool(similarity_features.get("ticket_present")):
+            sidecar_ticket = {
+                "row_count": sidecar_row_count if sidecar_row_count is not None else 1,
+                "sidecar_bytes": sidecar_bytes if sidecar_bytes is not None else 8 * 1024 * 1024,
+            }
+        return features, telemetry_history, sidecar_ticket
 
     def _action_kinds(self, decision: AdvisorDecision) -> list[str]:
         return [action.action_kind for action in decision.proposed_actions]
@@ -220,17 +364,219 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
 
         self.assertEqual(
             self._action_kinds(decision),
-            ["streaming_package_write", "need_more_telemetry"],
+            ["need_more_telemetry"],
         )
         self.assertFalse(decision.recommend_index_prebuild)
         self.assertFalse(decision.recommend_index_reuse_attempt)
-        self.assertTrue(decision.recommend_streaming_write)
+        self.assertFalse(decision.recommend_streaming_write)
         self.assertEqual(decision.recommended_schedule, "serial_safe")
         self.assertTrue(decision.abstained)
-        self.assertEqual(
-            decision.abstain_reason,
-            "telemetry history is missing for a high-risk RSS-driven recommendation",
+        self.assertEqual(decision.abstain_reason, "need_more_telemetry")
+
+    def test_retrieval_top_k_is_stable_for_matching_case_bank(self) -> None:
+        case_bank_root = self._write_case_bank(
+            [
+                self._case_entry(
+                    case_id="case:accept:001",
+                    label="accept",
+                    action_kind="sidecar_index_prebuild",
+                    similarity_features={"input_bytes_bucket": "small", "sidecar_bytes_bucket": "large"},
+                ),
+                self._case_entry(
+                    case_id="case:accept:002",
+                    label="accept",
+                    action_kind="sidecar_index_prebuild",
+                    similarity_features={"input_bytes_bucket": "small", "sidecar_bytes_bucket": "large"},
+                ),
+                self._case_entry(
+                    case_id="case:accept:003",
+                    label="accept",
+                    action_kind="cold_preview",
+                    similarity_features={"input_bytes_bucket": "small", "sidecar_bytes_bucket": "small"},
+                ),
+            ]
         )
+        features = {"input_bytes": 1024, "sidecar_bytes": 1024 * 1024 * 1024}
+        summary_a = retrieve_runtime_cases(
+            current_features=features,
+            proposed_actions=[self._runtime_action_payload("sidecar_index_prebuild", risk_level="high")],
+            case_bank_root=case_bank_root,
+        ).to_dict()
+        summary_b = retrieve_runtime_cases(
+            current_features=features,
+            proposed_actions=[self._runtime_action_payload("sidecar_index_prebuild", risk_level="high")],
+            case_bank_root=case_bank_root,
+        ).to_dict()
+        self.assertEqual(summary_a["retrieved_case_refs"], summary_b["retrieved_case_refs"])
+        self.assertEqual(summary_a["retrieved_case_refs"][:2], ["case:accept:001", "case:accept:002"])
+
+    def test_retrieval_abstains_without_similar_case_for_high_risk_action(self) -> None:
+        case_bank_root = self._write_case_bank(
+            [
+                self._case_entry(
+                    case_id="case:accept:001",
+                    label="accept",
+                    action_kind="sidecar_index_reuse",
+                    risk_level="medium",
+                    similarity_features={"ticket_present": True, "ticket_validated": True, "sidecar_bytes_bucket": "small"},
+                )
+            ]
+        )
+        decision = RuntimeOptimizationAdvisor(
+            {"advisor_mode": "heuristic", "advisor_case_bank_root": str(case_bank_root)}
+        ).evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 1024 * 1024 * 1024})
+        self.assertTrue(decision.abstained)
+        self.assertEqual(decision.abstain_reason, "insufficient_similar_case")
+        self.assertEqual(decision.proposed_actions, [])
+
+    def test_retrieval_marks_conflicting_evidence_and_clears_actions(self) -> None:
+        case_bank_root = self._write_case_bank(
+            [
+                self._case_entry(case_id="case:accept:001", label="accept", action_kind="sidecar_index_prebuild"),
+                self._case_entry(
+                    case_id="case:reject:001",
+                    label="reject",
+                    action_kind="sidecar_index_prebuild",
+                    reject_taxonomy="ERR-ACTION_POLICY_DENIED",
+                ),
+            ]
+        )
+        decision = RuntimeOptimizationAdvisor(
+            {"advisor_mode": "heuristic", "advisor_case_bank_root": str(case_bank_root)}
+        ).evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 1024 * 1024 * 1024})
+        self.assertTrue(decision.abstained)
+        self.assertEqual(decision.abstain_reason, "conflicting_evidence")
+        self.assertEqual(decision.proposed_actions, [])
+
+    def test_openai_output_is_overridden_by_retrieval_fail_closed_policy(self) -> None:
+        class FakeOpenAIAdvisorClient:
+            def request_advisor_decision(
+                self,
+                *,
+                feature_payload: dict[str, object],
+                decision_schema: dict[str, object],
+                feature_snapshot_hash: str,
+                decision_version: str,
+            ) -> OpenAIAdvisorClientResult:
+                return OpenAIAdvisorClientResult(
+                    decision_payload=self_outer._typed_action_set_payload(
+                        actions=[
+                            self_outer._runtime_action_payload(
+                                "sidecar_index_prebuild",
+                                risk_level="high",
+                                required_artifacts=[],
+                            )
+                        ]
+                    ),
+                    response_id="resp-unsafe",
+                    model="gpt-test",
+                    usage={},
+                    latency_seconds=0.0,
+                    request_payload={},
+                )
+
+        self_outer = self
+        case_bank_root = self._write_case_bank(
+            [
+                self._case_entry(
+                    case_id="case:unsafe:001",
+                    label="unsafe",
+                    action_kind="sidecar_index_prebuild",
+                    reject_taxonomy="ERR-ACTION_POLICY_DENIED",
+                )
+            ]
+        )
+        decision = RuntimeOptimizationAdvisor(
+            {
+                "advisor_mode": "openai_structured",
+                "advisor_case_bank_root": str(case_bank_root),
+                "openai_client": FakeOpenAIAdvisorClient(),
+            }
+        ).evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 1024 * 1024 * 1024})
+        self.assertEqual(decision.advisor_mode, "openai_structured")
+        self.assertTrue(decision.abstained)
+        self.assertEqual(decision.abstain_reason, "unsafe_case_match")
+        self.assertEqual(decision.proposed_actions, [])
+
+    def test_sanitize_advisor_features_redacts_evidence_context_paths_and_hashes(self) -> None:
+        sanitized = sanitize_advisor_features(
+            {
+                "dataset_id": "dataset:test",
+                "run_id": "run:test",
+                "input_bytes": 1024,
+                "evidence_context": {
+                    "advisor_phase": "post_execution_report",
+                    "trace_checksum_prefix": "sha256:secret-proof-hash",
+                    "dictionary_checksum_prefix": "sha256:dictionary",
+                    "retrieved_case_refs": ["case:p3_cache_hit_accept:001"],
+                    "case_similarity_features": {
+                        "input_bytes_bucket": "small",
+                        "missing_telemetry_fields": ["telemetry_history"],
+                    },
+                    "gate_policy_summary": {
+                        "sidecar_manifest_path": "/tmp/private/manifest.json",
+                        "advisor_enabled": True,
+                    },
+                    "proof_digest_path": "/tmp/proof_digest.json",
+                },
+            }
+        )
+        evidence_context = dict(sanitized.get("evidence_context") or {})
+        self.assertIn("retrieved_case_refs", evidence_context)
+        self.assertIn("trace_checksum_prefix", evidence_context)
+        self.assertNotIn("proof_digest_path", evidence_context)
+        self.assertNotIn("sidecar_manifest_path", json.dumps(evidence_context, ensure_ascii=False))
+
+    def test_case_bank_missing_evidence_scenarios_abstain_or_request_more_telemetry_at_least_ninety_percent(self) -> None:
+        cases = [
+            case
+            for case in self._repo_case_bank_cases()
+            if str(case.get("label") or "") in {"abstain", "needs_more_data"}
+        ]
+        self.assertTrue(cases)
+        successful = 0
+        for case in cases:
+            features, telemetry_history, sidecar_ticket = self._materialize_case_features(
+                dict(case.get("similarity_features") or {})
+            )
+            decision = RuntimeOptimizationAdvisor(
+                {"advisor_mode": "heuristic", "advisor_case_bank_root": str(self._repo_case_bank_root())}
+            ).evaluate(
+                telemetry_history=telemetry_history,
+                current_request_features=features,
+                sidecar_ticket=sidecar_ticket,
+            )
+            action_kinds = self._action_kinds(decision)
+            if decision.abstained or "need_more_telemetry" in action_kinds:
+                successful += 1
+        self.assertGreaterEqual(successful / len(cases), 0.9)
+
+    def test_case_bank_unsafe_scenarios_keep_false_accept_rate_zero(self) -> None:
+        cases = [
+            case
+            for case in self._repo_case_bank_cases()
+            if str(case.get("label") or "") == "unsafe"
+        ]
+        self.assertTrue(cases)
+        accepted_high_risk = 0
+        for case in cases:
+            features, telemetry_history, sidecar_ticket = self._materialize_case_features(
+                dict(case.get("similarity_features") or {})
+            )
+            decision = RuntimeOptimizationAdvisor(
+                {"advisor_mode": "heuristic", "advisor_case_bank_root": str(self._repo_case_bank_root())}
+            ).evaluate(
+                telemetry_history=telemetry_history,
+                current_request_features=features,
+                sidecar_ticket=sidecar_ticket,
+            )
+            if any(
+                action.action_kind == str(case.get("action_kind") or "")
+                and action.risk_level in {"high", "critical"}
+                for action in decision.proposed_actions
+            ):
+                accepted_high_risk += 1
+        self.assertEqual(accepted_high_risk, 0)
 
     def test_runtime_load_plan_prefers_minimal_for_large_input(self) -> None:
         advisor = RuntimeOptimizationAdvisor()

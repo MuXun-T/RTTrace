@@ -51,6 +51,13 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
     def _dictionary_copy(self) -> dict[str, Any]:
         return json.loads(json.dumps(load_dictionary()))
 
+    def _load_runtime_case_bank(self) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+        repo_root = Path(__file__).resolve().parents[2]
+        case_bank_root = repo_root / "docs" / "runtime_optimization_case_bank"
+        manifest = json.loads((case_bank_root / "manifest.json").read_text(encoding="utf-8"))
+        cases = json.loads((case_bank_root / "recommendation_cases.json").read_text(encoding="utf-8"))
+        return manifest, cases
+
     def _rename_event(self, raw_dictionary: dict[str, Any], event_id: int, event_name: str) -> dict[str, Any]:
         for item in raw_dictionary["event_defs"]:
             if item["event_id"] == event_id:
@@ -2617,6 +2624,10 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         self.assertIn("openai_unconfigured", openai_metrics["fallback_reasons"])
         self.assertIn("openai_latency_seconds", openai_metrics)
         self.assertIn("openai_tokens", openai_metrics)
+        self.assertIn("retrieval_case_count", openai_metrics)
+        self.assertIn("retrieval_has_sufficient_similarity", openai_metrics)
+        self.assertIn("retrieval_applied_abstain_reason", openai_metrics)
+        self.assertIn("retrieval_reject_taxonomy_coverage", openai_metrics)
         self.assertEqual(
             {
                 refs["telemetry_history_path"]
@@ -2624,6 +2635,34 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
             },
             {str(history_path.resolve())},
         )
+
+    def test_runtime_optimization_case_bank_has_required_cases_and_labels(self) -> None:
+        manifest, cases = self._load_runtime_case_bank()
+        self.assertGreaterEqual(len(cases), 30)
+        case_tags = {
+            tag
+            for case in cases
+            for tag in list(dict(case).get("case_tags") or [])
+        }
+        self.assertTrue(set(manifest["required_case_tags"]).issubset(case_tags))
+        labels = {str(case.get("label") or "") for case in cases}
+        self.assertTrue({"accept", "reject", "abstain", "unsafe", "needs_more_data"}.issubset(labels))
+
+    def test_runtime_optimization_case_bank_reject_taxonomy_coverage_meets_target(self) -> None:
+        _manifest, cases = self._load_runtime_case_bank()
+        rejected = [
+            case
+            for case in cases
+            if str(case.get("label") or "") in {"reject", "unsafe"}
+        ]
+        self.assertTrue(rejected)
+        covered = [
+            case
+            for case in rejected
+            if str(case.get("reject_taxonomy") or "").strip()
+            or str(dict(case.get("gate_outcome") or {}).get("rejected_reason") or "").strip()
+        ]
+        self.assertGreaterEqual(len(covered) / len(rejected), 0.95)
 
     def test_runtime_benchmark_cli_can_limit_scenarios(self) -> None:
         trace_path = write_scenario(self.root / "runtime-benchmark-selected.trace", name="basic", repeat=1)

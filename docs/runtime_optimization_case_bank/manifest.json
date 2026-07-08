@@ -1,0 +1,21 @@
+{
+  "case_bank_version": "runtime-optimization-case-bank-v1",
+  "generated_at": "2026-07-08T00:00:00+08:00",
+  "case_files": [
+    "recommendation_cases.json"
+  ],
+  "required_case_tags": [
+    "p3_cache_hit",
+    "p4_prebuild_wait",
+    "ticket_slower_than_baseline",
+    "openai_structured_overhead",
+    "formal_parity_pass",
+    "transient_failure_resolved"
+  ],
+  "notes": [
+    "Recommendation grounding only; not trace truth.",
+    "Do not claim P4 total elapsed speedup.",
+    "Do not claim P5 1GB product-path speedup.",
+    "Do not claim P7 true parallel rebuild speedup."
+  ]
+}

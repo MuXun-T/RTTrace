@@ -71,6 +71,22 @@ _ADVISORY_SUMMARY_FIELDS = {
     "benchmark_delta",
     "ticket_status",
 }
+_EVIDENCE_CONTEXT_FIELDS = {
+    "advisor_phase",
+    "case_similarity_features",
+    "dictionary_checksum_prefix",
+    "embodiment_mode",
+    "export_family",
+    "gate_policy_summary",
+    "input_bytes",
+    "platform",
+    "retrieved_case_refs",
+    "sidecar_bytes",
+    "sidecar_row_count",
+    "ticket_present",
+    "ticket_validated",
+    "trace_checksum_prefix",
+}
 _SENSITIVE_SUMMARY_KEY_TOKENS = {
     "event_content",
     "event_payload",
@@ -473,6 +489,7 @@ def _advisor_user_payload(
             "Do not propose shell, script, schema migration, proof-path, or truth-path modifications.",
             "Every proposed action should keep proof_scope_impact as 'none'.",
             "If evidence is insufficient, set abstained=true and use abstain_reason; optionally include need_more_telemetry.",
+            "Any retrieved_case_refs or evidence_context items are prior recommendation grounding only, never trace truth.",
             "Return exactly one JSON object and no markdown.",
         ],
     }
@@ -522,7 +539,45 @@ def sanitize_advisor_features(features: dict[str, Any], *, max_history_rows: int
         sanitized["failure_reason"] = failure_reason
     if "risk_history_summary" in payload:
         sanitized["risk_history_summary"] = _json_safe(payload.get("risk_history_summary"), max_items=max_history_rows)
+    evidence_context = _sanitize_evidence_context(payload.get("evidence_context"), max_items=max_history_rows)
+    if evidence_context:
+        sanitized["evidence_context"] = evidence_context
     return sanitized
+
+
+def _sanitize_evidence_context(value: Any, *, max_items: int) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        return {}
+    payload = dict(value)
+    safe: dict[str, Any] = {}
+    for key in sorted(_EVIDENCE_CONTEXT_FIELDS):
+        if key not in payload:
+            continue
+        if key == "retrieved_case_refs":
+            refs = [
+                str(item)[:80]
+                for item in list(payload.get(key) or [])[:max_items]
+                if str(item).strip()
+            ]
+            if refs:
+                safe[key] = refs
+            continue
+        if key in {"case_similarity_features", "gate_policy_summary"}:
+            summary = _sanitize_advisory_summary(payload.get(key), max_items=max_items)
+            if summary not in (None, {}, []):
+                safe[key] = summary
+            continue
+        if isinstance(payload.get(key), bool):
+            safe[key] = bool(payload.get(key))
+            continue
+        numeric = _clean_number(payload.get(key))
+        if numeric is not None:
+            safe[key] = numeric
+            continue
+        text = _sanitize_summary_text(payload.get(key))
+        if text:
+            safe[key] = text
+    return safe
 
 
 def parse_openai_advisor_response(
