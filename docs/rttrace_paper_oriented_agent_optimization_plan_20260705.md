@@ -585,6 +585,8 @@ AdvisorGroundingReport
 
 ### Phase 6：RTOS Diagnosis and Human Feedback
 
+Phase 6 批准前开发计划与启动审计记录见：[phase6_pre_approval_development_plan_20260709.md](phase6_pre_approval_development_plan_20260709.md)。该文档是后续 P6.0/P6.1 的参考输入，不表示 P6.2+ 已批准执行。
+
 目标：补足毕业设计和论文审稿最容易质疑的“诊断价值”。
 
 实施任务：
