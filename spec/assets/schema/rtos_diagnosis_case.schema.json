@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RtosDiagnosisCase",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "case_id",
+    "case_kind",
+    "title",
+    "description",
+    "baseline_trace",
+    "candidate_trace",
+    "expected_root_cause",
+    "expected_affected_entity",
+    "expected_evidence_refs",
+    "expected_closure_mode",
+    "expected_replay",
+    "claim_class",
+    "tags",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "enum": ["rtos-diagnosis-case-v1"]},
+    "case_id": {"type": "string"},
+    "case_kind": {
+      "type": "string",
+      "enum": [
+        "priority_inversion",
+        "irq_latency_spike",
+        "mutex_hold_inflation",
+        "queue_wait_backlog",
+        "task_starvation",
+        "corrupt_segment",
+        "stale_sidecar",
+        "missing_calibration"
+      ]
+    },
+    "title": {"type": "string"},
+    "description": {"type": "string"},
+    "baseline_trace": {
+      "type": "object",
+      "required": ["trace_id", "trace_ref", "trace_kind"],
+      "properties": {
+        "trace_id": {"type": "string"},
+        "trace_ref": {"type": "string"},
+        "trace_kind": {"type": "string", "enum": ["logical_reference"]},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "candidate_trace": {
+      "type": "object",
+      "required": ["trace_id", "trace_ref", "trace_kind"],
+      "properties": {
+        "trace_id": {"type": "string"},
+        "trace_ref": {"type": "string"},
+        "trace_kind": {"type": "string", "enum": ["logical_reference"]},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "expected_root_cause": {
+      "type": "object",
+      "required": ["root_cause_id", "root_cause_kind", "summary"],
+      "properties": {
+        "root_cause_id": {"type": "string"},
+        "root_cause_kind": {
+          "type": "string",
+          "enum": [
+            "priority_inversion",
+            "irq_latency_spike",
+            "mutex_hold_inflation",
+            "queue_wait_backlog",
+            "task_starvation",
+            "corrupt_segment",
+            "stale_sidecar",
+            "missing_calibration"
+          ]
+        },
+        "summary": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "expected_affected_entity": {
+      "type": "object",
+      "required": ["entity_kind", "entity_id"],
+      "properties": {
+        "entity_kind": {
+          "type": "string",
+          "enum": [
+            "task",
+            "irq",
+            "resource",
+            "mutex",
+            "queue",
+            "trace_segment",
+            "sidecar",
+            "calibration"
+          ]
+        },
+        "entity_id": {"type": "string"},
+        "resource_id": {"type": ["string", "null"]},
+        "irq_id": {"type": ["string", "null"]},
+        "task_id": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "expected_evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ref_kind", "ref_id", "required"],
+        "properties": {
+          "ref_kind": {
+            "type": "string",
+            "enum": [
+              "logical_trace_window",
+              "logical_task",
+              "logical_irq",
+              "logical_resource",
+              "logical_mutex",
+              "logical_queue",
+              "logical_sidecar",
+              "logical_segment",
+              "logical_calibration",
+              "logical_case_note"
+            ]
+          },
+          "ref_id": {"type": "string"},
+          "required": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "expected_closure_mode": {
+      "type": "string",
+      "enum": ["exact", "bounded", "degraded", "reference_only"]
+    },
+    "expected_replay": {
+      "type": "object",
+      "required": ["replay_required", "expected_replay_pass", "equivalence_scope"],
+      "properties": {
+        "replay_required": {"type": "boolean"},
+        "expected_replay_pass": {"type": ["boolean", "null"]},
+        "equivalence_scope": {
+          "type": "string",
+          "enum": ["not_evaluated", "metadata_only", "full_trace_to_package", "evidence_package"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "claim_class": {
+      "type": "string",
+      "enum": ["claimable", "report_only", "not_claimable"]
+    },
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

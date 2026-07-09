@@ -1,0 +1,406 @@
+{
+  "schema_version": "rtos-diagnosis-suite-v1",
+  "suite_id": "phase6_stub_suite",
+  "generated_at": "2026-07-09T00:00:00+08:00",
+  "description": "Metadata-only Phase 6 stub suite for schema validation. It contains logical references only and no generated traces, evidence packages, replay result, or benchmark result.",
+  "cases": [
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_stub_priority_inversion",
+      "case_kind": "priority_inversion",
+      "title": "Priority inversion metadata stub",
+      "description": "Logical placeholder for a priority inversion diagnosis case.",
+      "baseline_trace": {
+        "trace_id": "baseline_priority_inversion",
+        "trace_ref": "logical://rtos_diagnosis_stub/priority_inversion/baseline",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_priority_inversion",
+        "trace_ref": "logical://rtos_diagnosis_stub/priority_inversion/candidate",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_priority_inversion",
+        "root_cause_kind": "priority_inversion",
+        "summary": "Low-priority holder blocks a higher-priority task through a shared resource."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "task",
+        "entity_id": "task_high_priority",
+        "resource_id": "resource_shared_lock",
+        "task_id": "task_high_priority"
+      },
+      "expected_evidence_refs": [
+        {"ref_kind": "logical_task", "ref_id": "task_high_priority", "required": true},
+        {"ref_kind": "logical_resource", "ref_id": "resource_shared_lock", "required": true}
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": ["phase6", "metadata_only", "stub"],
+      "notes": ["Report-only stub case; not a diagnosis benchmark result."]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_stub_irq_latency_spike",
+      "case_kind": "irq_latency_spike",
+      "title": "IRQ latency spike metadata stub",
+      "description": "Logical placeholder for an interrupt latency spike diagnosis case.",
+      "baseline_trace": {
+        "trace_id": "baseline_irq_latency_spike",
+        "trace_ref": "logical://rtos_diagnosis_stub/irq_latency_spike/baseline",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_irq_latency_spike",
+        "trace_ref": "logical://rtos_diagnosis_stub/irq_latency_spike/candidate",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_irq_latency_spike",
+        "root_cause_kind": "irq_latency_spike",
+        "summary": "Interrupt service response is delayed beyond the expected latency envelope."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "irq",
+        "entity_id": "irq_timer_tick",
+        "irq_id": "irq_timer_tick"
+      },
+      "expected_evidence_refs": [
+        {"ref_kind": "logical_irq", "ref_id": "irq_timer_tick", "required": true},
+        {"ref_kind": "logical_trace_window", "ref_id": "window_irq_latency_spike", "required": true}
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": ["phase6", "metadata_only", "stub"],
+      "notes": ["Report-only stub case; not a diagnosis benchmark result."]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_stub_mutex_hold_inflation",
+      "case_kind": "mutex_hold_inflation",
+      "title": "Mutex hold inflation metadata stub",
+      "description": "Logical placeholder for a mutex hold-time inflation diagnosis case.",
+      "baseline_trace": {
+        "trace_id": "baseline_mutex_hold_inflation",
+        "trace_ref": "logical://rtos_diagnosis_stub/mutex_hold_inflation/baseline",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_mutex_hold_inflation",
+        "trace_ref": "logical://rtos_diagnosis_stub/mutex_hold_inflation/candidate",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_mutex_hold_inflation",
+        "root_cause_kind": "mutex_hold_inflation",
+        "summary": "A mutex is held longer in the candidate trace than in the baseline metadata expectation."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "mutex",
+        "entity_id": "mutex_control_path",
+        "resource_id": "mutex_control_path"
+      },
+      "expected_evidence_refs": [
+        {"ref_kind": "logical_mutex", "ref_id": "mutex_control_path", "required": true},
+        {"ref_kind": "logical_task", "ref_id": "task_mutex_holder", "required": true}
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": ["phase6", "metadata_only", "stub"],
+      "notes": ["Report-only stub case; not a diagnosis benchmark result."]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_stub_queue_wait_backlog",
+      "case_kind": "queue_wait_backlog",
+      "title": "Queue wait backlog metadata stub",
+      "description": "Logical placeholder for a queue wait backlog diagnosis case.",
+      "baseline_trace": {
+        "trace_id": "baseline_queue_wait_backlog",
+        "trace_ref": "logical://rtos_diagnosis_stub/queue_wait_backlog/baseline",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_queue_wait_backlog",
+        "trace_ref": "logical://rtos_diagnosis_stub/queue_wait_backlog/candidate",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_queue_wait_backlog",
+        "root_cause_kind": "queue_wait_backlog",
+        "summary": "Queue consumers lag behind producers and increase wait backlog."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "queue",
+        "entity_id": "queue_sensor_events",
+        "resource_id": "queue_sensor_events"
+      },
+      "expected_evidence_refs": [
+        {"ref_kind": "logical_queue", "ref_id": "queue_sensor_events", "required": true},
+        {"ref_kind": "logical_task", "ref_id": "task_queue_consumer", "required": true}
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": ["phase6", "metadata_only", "stub"],
+      "notes": ["Report-only stub case; not a diagnosis benchmark result."]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_stub_task_starvation",
+      "case_kind": "task_starvation",
+      "title": "Task starvation metadata stub",
+      "description": "Logical placeholder for a task starvation diagnosis case.",
+      "baseline_trace": {
+        "trace_id": "baseline_task_starvation",
+        "trace_ref": "logical://rtos_diagnosis_stub/task_starvation/baseline",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_task_starvation",
+        "trace_ref": "logical://rtos_diagnosis_stub/task_starvation/candidate",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_task_starvation",
+        "root_cause_kind": "task_starvation",
+        "summary": "A runnable task is not scheduled for the expected interval."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "task",
+        "entity_id": "task_background_worker",
+        "task_id": "task_background_worker"
+      },
+      "expected_evidence_refs": [
+        {"ref_kind": "logical_task", "ref_id": "task_background_worker", "required": true},
+        {"ref_kind": "logical_trace_window", "ref_id": "window_task_starvation", "required": true}
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": ["phase6", "metadata_only", "stub"],
+      "notes": ["Report-only stub case; not a diagnosis benchmark result."]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_stub_corrupt_segment",
+      "case_kind": "corrupt_segment",
+      "title": "Corrupt segment metadata stub",
+      "description": "Logical placeholder for a corrupt trace segment diagnosis case.",
+      "baseline_trace": {
+        "trace_id": "baseline_corrupt_segment",
+        "trace_ref": "logical://rtos_diagnosis_stub/corrupt_segment/baseline",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_corrupt_segment",
+        "trace_ref": "logical://rtos_diagnosis_stub/corrupt_segment/candidate",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_corrupt_segment",
+        "root_cause_kind": "corrupt_segment",
+        "summary": "A logical trace segment is unavailable or malformed."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "trace_segment",
+        "entity_id": "segment_0007"
+      },
+      "expected_evidence_refs": [
+        {"ref_kind": "logical_segment", "ref_id": "segment_0007", "required": true},
+        {"ref_kind": "logical_case_note", "ref_id": "case_corrupt_segment_metadata", "required": true}
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": ["phase6", "metadata_only", "stub"],
+      "notes": ["Report-only stub case; not a diagnosis benchmark result."]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_stub_stale_sidecar",
+      "case_kind": "stale_sidecar",
+      "title": "Stale sidecar metadata stub",
+      "description": "Logical placeholder for a stale sidecar diagnosis case.",
+      "baseline_trace": {
+        "trace_id": "baseline_stale_sidecar",
+        "trace_ref": "logical://rtos_diagnosis_stub/stale_sidecar/baseline",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_stale_sidecar",
+        "trace_ref": "logical://rtos_diagnosis_stub/stale_sidecar/candidate",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_stale_sidecar",
+        "root_cause_kind": "stale_sidecar",
+        "summary": "Sidecar metadata no longer matches the candidate trace identity."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "sidecar",
+        "entity_id": "sidecar_candidate_index"
+      },
+      "expected_evidence_refs": [
+        {"ref_kind": "logical_sidecar", "ref_id": "sidecar_candidate_index", "required": true},
+        {"ref_kind": "logical_trace_window", "ref_id": "window_sidecar_check", "required": true}
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": ["phase6", "metadata_only", "stub"],
+      "notes": ["Report-only stub case; not a diagnosis benchmark result."]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_stub_missing_calibration",
+      "case_kind": "missing_calibration",
+      "title": "Missing calibration metadata stub",
+      "description": "Logical placeholder for a missing timing calibration diagnosis case.",
+      "baseline_trace": {
+        "trace_id": "baseline_missing_calibration",
+        "trace_ref": "logical://rtos_diagnosis_stub/missing_calibration/baseline",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_missing_calibration",
+        "trace_ref": "logical://rtos_diagnosis_stub/missing_calibration/candidate",
+        "trace_kind": "logical_reference",
+        "notes": ["No real trace artifact is attached."]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_missing_calibration",
+        "root_cause_kind": "missing_calibration",
+        "summary": "Timing conversion depends on calibration metadata that is absent."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "calibration",
+        "entity_id": "clock_calibration"
+      },
+      "expected_evidence_refs": [
+        {"ref_kind": "logical_calibration", "ref_id": "clock_calibration", "required": true},
+        {"ref_kind": "logical_case_note", "ref_id": "case_missing_calibration_metadata", "required": true}
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": ["phase6", "metadata_only", "stub"],
+      "notes": ["Report-only stub case; not a diagnosis benchmark result."]
+    }
+  ],
+  "claim_boundary": {
+    "claimable": [],
+    "report_only": [
+      {
+        "boundary_id": "boundary_top_k_root_cause_report_only",
+        "topic": "top_k_root_cause",
+        "claim_class": "report_only",
+        "statement": "Top-k root cause can only be reported after a later approved benchmark runner exists; this stub suite has no metric result.",
+        "conditions": ["P6.4 or later approval required for metrics."]
+      },
+      {
+        "boundary_id": "boundary_synthetic_benchmark_report_only",
+        "topic": "synthetic_benchmark",
+        "claim_class": "report_only",
+        "statement": "Synthetic RTOS benchmark material, if separately approved later, cannot be stated as real RTOS generality.",
+        "conditions": ["P6.2 approval required before any synthetic trace fixture work."]
+      },
+      {
+        "boundary_id": "boundary_stub_suite_status_report_only",
+        "topic": "stub_suite_status",
+        "claim_class": "report_only",
+        "statement": "This is a metadata-only stub suite; real benchmark is not completed.",
+        "conditions": ["No generated traces, no evidence packages, no replay equivalence result."]
+      }
+    ],
+    "not_claimable": [
+      {
+        "boundary_id": "boundary_human_helpfulness_not_claimable",
+        "topic": "human_helpfulness",
+        "claim_class": "not_claimable",
+        "statement": "Human helpfulness is not claimable until real human feedback data exists and is reviewed.",
+        "conditions": ["P6.6 approval and real data required."]
+      },
+      {
+        "boundary_id": "boundary_llm_explanation_not_truth",
+        "topic": "llm_explanation",
+        "claim_class": "not_claimable",
+        "statement": "LLM explanation is not root-cause truth and does not replace deterministic evidence or known labels.",
+        "conditions": ["Advisor or LLM output must remain outside proof and trace truth paths."]
+      },
+      {
+        "boundary_id": "boundary_p6_2_plus_not_approved",
+        "topic": "p6_2_plus_approval",
+        "claim_class": "not_claimable",
+        "statement": "P6.2+ is not approved by this stub suite or this schema-only work.",
+        "conditions": ["Separate main-agent review required before P6.2 or later implementation."]
+      }
+    ]
+  },
+  "minimum_case_kinds": [
+    "priority_inversion",
+    "irq_latency_spike",
+    "mutex_hold_inflation",
+    "queue_wait_backlog",
+    "task_starvation",
+    "corrupt_segment",
+    "stale_sidecar",
+    "missing_calibration"
+  ],
+  "notes": [
+    "Exactly eight metadata-only stub cases cover the initial approved case kinds.",
+    "All cases are report_only and use logical references only.",
+    "No real evidence package, proof digest path, replay equivalence, diagnosis benchmark runner, advisor comparison, or human feedback artifact is included."
+  ]
+}
