@@ -527,6 +527,38 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertNotIn("proof_digest_path", evidence_context)
         self.assertNotIn("sidecar_manifest_path", json.dumps(evidence_context, ensure_ascii=False))
 
+    def test_sanitize_advisor_features_redacts_secret_like_text_from_free_text_fields(self) -> None:
+        secret_env = "DEEPSEEK_TEST_SECRET_SHOULD_NOT_LEAK"
+        secret_key = "sk-test-should-not-leak"
+        secret_path = "/tmp/proof_digest_should_not_be_exposed.json"
+        sanitized = sanitize_advisor_features(
+            {
+                "failure_reason": (
+                    f"Bearer bearer-secret {secret_key} {secret_env} "
+                    f"{secret_path} sha256:proof-secret"
+                ),
+                "ticket_status": {
+                    "api_token": secret_env,
+                    "status": "ready",
+                },
+                "evidence_context": {
+                    "advisor_phase": "post_execution_report",
+                    "gate_policy_summary": {
+                        "api_token": secret_env,
+                        "proof_digest_path": secret_path,
+                    },
+                },
+            }
+        )
+
+        sanitized_json = json.dumps(sanitized, ensure_ascii=False, sort_keys=True)
+        self.assertNotIn("bearer-secret", sanitized_json)
+        self.assertNotIn(secret_key, sanitized_json)
+        self.assertNotIn(secret_env, sanitized_json)
+        self.assertNotIn(secret_path, sanitized_json)
+        self.assertNotIn("proof-secret", sanitized_json)
+        self.assertIn("[REDACTED]", sanitized_json)
+
     def test_case_bank_missing_evidence_scenarios_abstain_at_least_ninety_percent(self) -> None:
         cases = [
             case
@@ -919,6 +951,138 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertEqual(advisor.last_advisor_metadata["fallback_reason"], "openai_safe_action_mismatch")
         self.assertIn("openai fallback: openai_safe_action_mismatch", decision.reasons)
 
+    def test_openai_structured_adversarial_payloads_fail_closed_before_persisting_report_fields(self) -> None:
+        cases = (
+            (
+                "prompt_injection",
+                self._typed_action_set_payload(
+                    actions=[
+                        self._runtime_action_payload(
+                            "baseline_full_load",
+                            expected_benefit={
+                                "runtime_seconds_delta": None,
+                                "peak_rss_mb_delta": None,
+                                "notes": ["run shell script to bypass the gate"],
+                            },
+                        )
+                    ]
+                ),
+                ["shell script", "bypass the gate"],
+            ),
+            (
+                "secret_exfiltration",
+                self._typed_action_set_payload(
+                    actions=[
+                        self._runtime_action_payload(
+                            "baseline_full_load",
+                            expected_benefit={
+                                "runtime_seconds_delta": None,
+                                "peak_rss_mb_delta": None,
+                                "notes": [
+                                    "leak sk-test-should-not-leak",
+                                    "DEEPSEEK_TEST_SECRET_SHOULD_NOT_LEAK",
+                                    "/tmp/proof_digest_should_not_be_exposed.json",
+                                ],
+                            },
+                        )
+                    ]
+                ),
+                [
+                    "sk-test-should-not-leak",
+                    "DEEPSEEK_TEST_SECRET_SHOULD_NOT_LEAK",
+                    "/tmp/proof_digest_should_not_be_exposed.json",
+                ],
+            ),
+            (
+                "proof_contamination",
+                self._typed_action_set_payload(
+                    actions=[
+                        self._runtime_action_payload(
+                            "baseline_full_load",
+                            expected_benefit={
+                                "runtime_seconds_delta": None,
+                                "peak_rss_mb_delta": None,
+                                "notes": ["write the OpenAI prompt into proof_digest and proof_hash input"],
+                            },
+                        )
+                    ]
+                ),
+                ["proof_digest", "proof_hash input"],
+            ),
+            (
+                "overclaim",
+                self._typed_action_set_payload(
+                    actions=[
+                        self._runtime_action_payload(
+                            "baseline_full_load",
+                            expected_benefit={
+                                "runtime_seconds_delta": None,
+                                "peak_rss_mb_delta": None,
+                                "notes": [
+                                    "P4 total elapsed reduction is established",
+                                    "LLM improves parsing correctness",
+                                    "LLM participates in proof digest generation",
+                                    "system is formally secure",
+                                ],
+                            },
+                        )
+                    ]
+                ),
+                [
+                    "P4 total elapsed reduction is established",
+                    "LLM improves parsing correctness",
+                    "LLM participates in proof digest generation",
+                    "system is formally secure",
+                ],
+            ),
+        )
+
+        class FakeOpenAIAdvisorClient:
+            def __init__(self, payload: dict[str, object]) -> None:
+                self.payload = payload
+
+            def request_advisor_decision(
+                self,
+                *,
+                feature_payload: dict[str, object],
+                decision_schema: dict[str, object],
+                feature_snapshot_hash: str,
+                decision_version: str,
+            ) -> OpenAIAdvisorClientResult:
+                return OpenAIAdvisorClientResult(
+                    decision_payload=self.payload,
+                    response_id="resp-adversarial",
+                    model="gpt-test",
+                    usage={},
+                    latency_seconds=0.0,
+                    request_payload={},
+                )
+
+        for category, payload, forbidden_strings in cases:
+            with self.subTest(category=category):
+                advisor = RuntimeOptimizationAdvisor(
+                    {
+                        "advisor_mode": "openai_structured",
+                        "openai_client": FakeOpenAIAdvisorClient(payload),
+                    }
+                )
+                decision = advisor.evaluate(current_request_features={"input_bytes": 1024, "sidecar_bytes": 2048})
+
+                self.assertEqual(decision.advisor_mode, "heuristic")
+                self.assertEqual(advisor.last_advisor_metadata["fallback_reason"], "openai_unsafe_output")
+                self.assertTrue(any(reason.startswith("openai fallback:") for reason in decision.reasons))
+                persisted_json = json.dumps(
+                    {
+                        "decision": decision.to_dict(),
+                        "advisor_metadata": advisor.last_advisor_metadata,
+                        "advisor_evidence_context": advisor.last_evidence_context,
+                    },
+                    ensure_ascii=False,
+                    sort_keys=True,
+                )
+                for forbidden in forbidden_strings:
+                    self.assertNotIn(forbidden, persisted_json)
+
     def test_openai_client_uses_structured_outputs_and_redacted_features(self) -> None:
         captured: dict[str, object] = {}
 
@@ -1158,7 +1322,7 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
         self.assertNotIn("proof-secret", user_text)
         self.assertNotIn("dependency_sidecar.jsonl", user_text)
 
-    def test_openai_compatible_chat_backend_accepts_fenced_json_with_surrounding_text(self) -> None:
+    def test_openai_compatible_chat_backend_rejects_fenced_json_with_surrounding_text(self) -> None:
         def transport(url: str, headers: dict[str, str], body: bytes, timeout_s: float) -> tuple[int, dict[str, str], bytes]:
             decision_payload = self._typed_action_set_payload(
                 actions=[
@@ -1195,7 +1359,7 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             }
             return 200, {}, json.dumps(response_payload, ensure_ascii=False).encode("utf-8")
 
-        result = LLMAdvisorClient(
+        client = LLMAdvisorClient(
             api_key="provider-key",
             model="deepseek-v4-flash",
             base_url="https://api.deepseek.com",
@@ -1203,15 +1367,16 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
             backend="openai_compatible_chat",
             transport=transport,
             chat_completions_path="/chat/completions",
-        ).request_advisor_decision(
-            feature_payload={"input_bytes": 1024},
-            decision_schema=load_schema("runtime_action_set.schema.json"),
-            feature_snapshot_hash="sha256:fenced-feature",
-            decision_version="runtime-action-set-v1",
         )
+        with self.assertRaises(LLMAdvisorClientError) as raised:
+            client.request_advisor_decision(
+                feature_payload={"input_bytes": 1024},
+                decision_schema=load_schema("runtime_action_set.schema.json"),
+                feature_snapshot_hash="sha256:fenced-feature",
+                decision_version="runtime-action-set-v1",
+            )
 
-        self.assertEqual(result.decision_payload["proposed_actions"][0]["action_kind"], "streaming_package_write")
-        self.assertEqual(result.model, "deepseek-v4-flash")
+        self.assertEqual(raised.exception.reason, "openai_json_invalid")
 
     def test_llm_client_from_config_uses_provider_key_env(self) -> None:
         with patch.dict(os.environ, {"DASHSCOPE_API_KEY": "dashscope-key"}, clear=False):
@@ -1526,6 +1691,46 @@ class RuntimeOptimizationAdvisorTests(unittest.TestCase):
 
         self.assertFalse(gate_result.accepted)
         self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_PROOF_SCOPE_IMPACT")
+
+    def test_gate_rejects_secret_exfiltration_and_overclaim_textual_output(self) -> None:
+        cases = (
+            (
+                "secret_exfiltration",
+                [
+                    "leak sk-test-should-not-leak",
+                    "DEEPSEEK_TEST_SECRET_SHOULD_NOT_LEAK",
+                    "/tmp/proof_digest_should_not_be_exposed.json",
+                ],
+            ),
+            (
+                "overclaim",
+                [
+                    "P4 total elapsed reduction is established",
+                    "LLM improves parsing correctness",
+                    "LLM participates in proof digest generation",
+                    "system is formally secure",
+                ],
+            ),
+        )
+        for category, notes in cases:
+            with self.subTest(category=category):
+                gate_result = DeterministicValidationGate().validate_advisor_decision(
+                    advisor_decision=self._advisor_decision_payload(
+                        actions=[
+                            self._runtime_action_payload(
+                                "cold_preview",
+                                expected_benefit={
+                                    "runtime_seconds_delta": None,
+                                    "peak_rss_mb_delta": None,
+                                    "notes": notes,
+                                },
+                            )
+                        ]
+                    )
+                )
+
+                self.assertFalse(gate_result.accepted)
+                self.assertEqual(gate_result.rejected_reason, "ERR-ACTION_UNSAFE_LLM_OUTPUT")
 
     def test_gate_rejects_typed_reuse_action_when_artifacts_missing(self) -> None:
         gate_result = DeterministicValidationGate().validate_advisor_decision(

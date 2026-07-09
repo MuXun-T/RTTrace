@@ -88,23 +88,36 @@ _EVIDENCE_CONTEXT_FIELDS = {
     "trace_checksum_prefix",
 }
 _SENSITIVE_SUMMARY_KEY_TOKENS = {
+    "api_key",
+    "api_token",
+    "auth_token",
     "event_content",
     "event_payload",
     "event_stream",
     "index_path",
+    "llm_api_key",
+    "openai_api_key",
     "package_path",
     "proof_digest",
     "proof_hash",
     "raw_sidecar",
     "raw_trace",
+    "secret",
+    "secret_key",
     "sidecar_path",
     "sidecar_row",
     "sidecar_rows",
     "source_path",
+    "token",
     "trace_path",
 }
 _SUMMARY_PATH_RE = re.compile(r"(?:(?:[A-Za-z]:)?[\\/]|\.{1,2}[\\/])\S+")
 _SUMMARY_PROOF_HASH_RE = re.compile(r"sha256:[^\s,;]+")
+_SUMMARY_SECRET_RES = (
+    re.compile(r"(?i)\bBearer\s+[^\s,;]+"),
+    re.compile(r"\bsk-[A-Za-z0-9_-]+\b"),
+    re.compile(r"\b[A-Z0-9_]*(?:SECRET|TOKEN|API[_-]?KEY)[A-Z0-9_]*\b"),
+)
 _TYPED_ACTION_KINDS = [
     "baseline_full_load",
     "cold_preview",
@@ -662,18 +675,7 @@ def _load_json_value_from_text(value: str) -> Any:
     try:
         return json.loads(text)
     except json.JSONDecodeError as direct_exc:
-        last_exc = direct_exc
-
-    decoder = json.JSONDecoder()
-    for index, char in enumerate(text):
-        if char != "{":
-            continue
-        try:
-            parsed, _end = decoder.raw_decode(text[index:])
-            return parsed
-        except json.JSONDecodeError as exc:
-            last_exc = exc
-    raise OpenAIAdvisorClientError(OPENAI_FALLBACK_JSON_INVALID, last_exc.msg) from last_exc
+        raise OpenAIAdvisorClientError(OPENAI_FALLBACK_JSON_INVALID, direct_exc.msg) from direct_exc
 
 
 def _responses_url(base_url: str) -> str:
@@ -780,15 +782,7 @@ def _extract_chat_output_text(payload: dict[str, Any]) -> str:
 
 
 def _strip_json_text(value: str) -> str:
-    text = str(value or "").strip()
-    if text.startswith("```"):
-        lines = text.splitlines()
-        if lines and lines[0].startswith("```"):
-            lines = lines[1:]
-        if lines and lines[-1].startswith("```"):
-            lines = lines[:-1]
-        text = "\n".join(lines).strip()
-    return text
+    return str(value or "").strip()
 
 
 def _contains_refusal(payload: dict[str, Any]) -> bool:
@@ -887,6 +881,8 @@ def _sanitize_summary_key(value: Any) -> str | None:
     key_token = normalized.lower().replace("-", "_").replace(".", "_")
     if key_token.endswith("_path") or key_token in _SENSITIVE_SUMMARY_KEY_TOKENS:
         return None
+    if any(fragment in key_token for fragment in ("secret", "token", "api_key")):
+        return None
     if "proof_hash" in key_token:
         return None
     return normalized[:80]
@@ -896,6 +892,8 @@ def _sanitize_summary_text(value: Any) -> str | None:
     text = str(value or "").strip()
     if not text:
         return None
+    for pattern in _SUMMARY_SECRET_RES:
+        text = pattern.sub("[REDACTED]", text)
     text = _SUMMARY_PATH_RE.sub("[REDACTED]", text)
     text = _SUMMARY_PROOF_HASH_RE.sub("[REDACTED]", text)
     text = re.sub(r"\s+", " ", text).strip()

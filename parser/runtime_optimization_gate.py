@@ -42,6 +42,14 @@ _UNSAFE_ACTION_TEXT_PATTERNS = (
     re.compile(r"schema[-_\s]?migration|migrate[-_\s]?schema"),
     re.compile(r"proof[-_\s]?(path|digest|hash)"),
     re.compile(r"truth[-_\s]?path"),
+    re.compile(r"(?:(?:[a-z]:)?[\\/]|\.{1,2}[\\/])\S+"),
+    re.compile(r"\bbearer\s+[^\s,;]+"),
+    re.compile(r"\bsk-[a-z0-9_-]+\b"),
+    re.compile(r"\b[a-z0-9_]*(?:secret|token|api[_-]?key)[a-z0-9_]*\b"),
+    re.compile(r"p4 total elapsed reduction"),
+    re.compile(r"llm improves parsing correctness"),
+    re.compile(r"llm participates in proof digest generation"),
+    re.compile(r"system is formally secure"),
     re.compile(r"(?:^|[\\/])[^\\/\s]+\.(?:sh|ps1|bat|cmd)\b"),
 )
 
@@ -117,6 +125,16 @@ def _action_contains_unsafe_output(action: dict[str, Any]) -> bool:
                 continue
             if any(pattern.search(lowered) for pattern in _UNSAFE_ACTION_TEXT_PATTERNS):
                 return True
+    return False
+
+
+def _decision_contains_unsafe_output(decision: dict[str, Any]) -> bool:
+    for text in _iter_string_values(decision):
+        lowered = str(text or "").strip().lower()
+        if not lowered:
+            continue
+        if any(pattern.search(lowered) for pattern in _UNSAFE_ACTION_TEXT_PATTERNS):
+            return True
     return False
 
 
@@ -462,6 +480,8 @@ class DeterministicValidationGate:
                 checked_policy=True,
                 execution_plan=["baseline"],
             )
+        if _decision_contains_unsafe_output(decision):
+            return self._reject("ERR-ACTION_UNSAFE_LLM_OUTPUT", checked_policy=True)
         proposed_actions = [_action_mapping(item) for item in list(decision.get("proposed_actions") or [])]
         if proposed_actions:
             checked_ticket = False

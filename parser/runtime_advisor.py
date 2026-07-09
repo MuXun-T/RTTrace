@@ -59,6 +59,24 @@ SAFE_RUNTIME_ACTION_KINDS = (
 RUNTIME_ACTION_KINDS = set(SAFE_RUNTIME_ACTION_KINDS)
 RUNTIME_ACTION_PROOF_SCOPE_IMPACTS = {"none"}
 DEFAULT_RUNTIME_LOAD_LARGE_INPUT_THRESHOLD_BYTES = 256 * 1024 * 1024
+_ADVISOR_UNSAFE_TEXT_PATTERNS = (
+    re.compile(r"(^|[^a-z0-9])(shell|bash|powershell|cmd(?:\.exe)?|script|python3?|node|perl|ruby|curl|wget)([^a-z0-9]|$)"),
+    re.compile(r"schema[-_\s]?migration|migrate[-_\s]?schema"),
+    re.compile(r"proof[-_\s]?(path|digest|hash)"),
+    re.compile(r"truth[-_\s]?path"),
+    re.compile(r"(?:(?:[a-z]:)?[\\/]|\.{1,2}[\\/])\S+"),
+    re.compile(r"\bbearer\s+[^\s,;]+"),
+    re.compile(r"\bsk-[a-z0-9_-]+\b"),
+    re.compile(r"\b[a-z0-9_]*(?:secret|token|api[_-]?key)[a-z0-9_]*\b"),
+)
+_ADVISOR_OVERCLAIM_TEXT_PATTERNS = (
+    re.compile(r"p4 total elapsed reduction"),
+    re.compile(r"llm improves parsing correctness"),
+    re.compile(r"llm participates in proof digest generation"),
+    re.compile(r"system is formally secure"),
+)
+_ADVISOR_FALLBACK_PATH_RE = re.compile(r"(?:(?:[A-Za-z]:)?[\\/]|\.{1,2}[\\/])\S+")
+_ADVISOR_FALLBACK_PROOF_HASH_RE = re.compile(r"sha256:[^\s,;]+")
 
 
 def _iso_now() -> str:
@@ -91,6 +109,34 @@ def _optional_int(value: Any) -> int | None:
         return int(value)
     except (TypeError, ValueError):
         return None
+
+
+def _iter_string_values(value: Any) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        items: list[str] = []
+        for nested in value.values():
+            items.extend(_iter_string_values(nested))
+        return items
+    if isinstance(value, (list, tuple, set)):
+        items = []
+        for nested in value:
+            items.extend(_iter_string_values(nested))
+        return items
+    return []
+
+
+def _advisor_output_validation_error(payload: dict[str, Any]) -> str | None:
+    for text in _iter_string_values(payload):
+        lowered = str(text or "").strip().lower()
+        if not lowered:
+            continue
+        if any(pattern.search(lowered) for pattern in _ADVISOR_OVERCLAIM_TEXT_PATTERNS):
+            return "structured output contains forbidden claim text"
+        if any(pattern.search(lowered) for pattern in _ADVISOR_UNSAFE_TEXT_PATTERNS):
+            return "structured output contains unsafe text"
+    return None
 
 
 def _feature_snapshot_hash(features: dict[str, Any]) -> str:
@@ -1156,6 +1202,9 @@ class RuntimeOptimizationAdvisor:
             schema_reason = validate_schema(schema, payload)
             if schema_reason is not None:
                 raise LLMAdvisorClientError("openai_schema_invalid", schema_reason)
+            unsafe_reason = _advisor_output_validation_error(payload)
+            if unsafe_reason is not None:
+                raise LLMAdvisorClientError("openai_unsafe_output", unsafe_reason)
             proposed_actions = _runtime_actions_from_payload(payload.get("proposed_actions"))
             abstained = bool(payload.get("abstained"))
             abstain_reason = None if payload.get("abstain_reason") is None else str(payload["abstain_reason"])
@@ -1287,6 +1336,9 @@ def _redact_llm_fallback_message(message: str | None, config: dict[str, Any]) ->
             redacted = redacted.replace(value, "[REDACTED]")
     redacted = re.sub(r"(?i)\bBearer\s+[^\s,;]+", "Bearer [REDACTED]", redacted)
     redacted = re.sub(r"\bsk-[A-Za-z0-9_-]+", "sk-[REDACTED]", redacted)
+    redacted = re.sub(r"\b[A-Z0-9_]*(?:SECRET|TOKEN|API[_-]?KEY)[A-Z0-9_]*\b", "[REDACTED]", redacted)
+    redacted = _ADVISOR_FALLBACK_PATH_RE.sub("[REDACTED]", redacted)
+    redacted = _ADVISOR_FALLBACK_PROOF_HASH_RE.sub("[REDACTED]", redacted)
     return redacted
 
 

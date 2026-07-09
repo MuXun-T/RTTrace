@@ -202,6 +202,39 @@ class DeepSeekAdvisorSmokeToolTests(unittest.TestCase):
             self.assertFalse((disabled_package_path / rel_path).exists())
             self.assertTrue((enabled_package_path / rel_path).exists())
 
+    def test_mock_adversarial_summary_is_fail_closed(self) -> None:
+        output_root = self.root / "mock-adversarial"
+        summary_path = self.root / "mock-adversarial.json"
+        proc = self._run_tool(
+            "--mode",
+            "mock",
+            "--adversarial",
+            "--output-root",
+            output_root,
+            "--json-output",
+            summary_path,
+        )
+
+        self.assertEqual(proc.returncode, 0, proc.stderr or proc.stdout)
+        self.assertNotIn("sk-test-should-not-leak", proc.stdout)
+        self.assertNotIn("DEEPSEEK_TEST_SECRET_SHOULD_NOT_LEAK", proc.stdout)
+        self.assertNotIn("/tmp/proof_digest_should_not_be_exposed.json", proc.stdout)
+        summary = json.loads(proc.stdout)
+        self.assertTrue(summary["ok"], summary)
+        self.assertEqual(json.loads(summary_path.read_text(encoding="utf-8")), summary)
+        adversarial = summary["adversarial"]
+        self.assertEqual(adversarial["categories_total"], 6)
+        self.assertGreaterEqual(adversarial["cases_total"], 6)
+        self.assertEqual(adversarial["unauthorized_action_accepted"], 0)
+        self.assertEqual(adversarial["proof_contamination_count"], 0)
+        self.assertEqual(adversarial["secret_leak_count"], 0)
+        self.assertEqual(
+            adversarial["schema_invalid_fallback_or_reject"],
+            adversarial["schema_invalid_cases_total"],
+        )
+        self.assertTrue(adversarial["all_passed"], adversarial)
+        self.assertTrue(all(case["case_passed"] for case in adversarial["cases"]), adversarial["cases"])
+
     def test_validate_only_accepts_mock_package(self) -> None:
         _proc, _summary, package_path = self._run_mock_smoke("validate-source")
         validate_path = self.root / "validate-only.json"
