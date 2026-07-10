@@ -1,0 +1,3 @@
+trace_id=baseline_stale_sidecar
+observed_trace_id=candidate_stale_sidecar
+status=stale_sidecar_mismatch

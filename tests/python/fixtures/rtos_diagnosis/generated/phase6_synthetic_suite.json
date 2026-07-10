@@ -1,0 +1,611 @@
+{
+  "schema_version": "rtos-diagnosis-suite-v1",
+  "suite_id": "phase6_synthetic_suite",
+  "generated_at": "2026-07-10T00:00:00+08:00",
+  "description": "Small synthetic RTOS diagnosis fixture suite for approved P6.2 work. It keeps logical trace references in-suite and writes tiny companion files beside the generated output.",
+  "cases": [
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_synthetic_priority_inversion",
+      "case_kind": "priority_inversion",
+      "title": "Priority inversion synthetic fixture",
+      "description": "Small synthetic case where the candidate extends mutex blocking for a higher-priority task.",
+      "baseline_trace": {
+        "trace_id": "baseline_priority_inversion",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/priority_inversion/baseline",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_priority_inversion",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/priority_inversion/candidate",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_priority_inversion",
+        "root_cause_kind": "priority_inversion",
+        "summary": "Low-priority holder blocks a higher-priority task through a shared mutex for longer in the candidate fixture."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "task",
+        "entity_id": "task_high_priority",
+        "resource_id": "resource_shared_lock",
+        "task_id": "task_high_priority"
+      },
+      "expected_evidence_refs": [
+        {
+          "ref_kind": "logical_task",
+          "ref_id": "task_high_priority",
+          "required": true
+        },
+        {
+          "ref_kind": "logical_resource",
+          "ref_id": "resource_shared_lock",
+          "required": true
+        }
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": [
+        "phase6",
+        "synthetic",
+        "fixture",
+        "report_only"
+      ],
+      "notes": [
+        "Synthetic fixture case only; trace_ref remains logical.",
+        "Companion files are small reproducible text artifacts.",
+        "No replay verdict or benchmark metric is attached."
+      ]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_synthetic_irq_latency_spike",
+      "case_kind": "irq_latency_spike",
+      "title": "IRQ latency spike synthetic fixture",
+      "description": "Small synthetic case where candidate interrupt service starts later than the baseline envelope.",
+      "baseline_trace": {
+        "trace_id": "baseline_irq_latency_spike",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/irq_latency_spike/baseline",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_irq_latency_spike",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/irq_latency_spike/candidate",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_irq_latency_spike",
+        "root_cause_kind": "irq_latency_spike",
+        "summary": "Interrupt service response is delayed beyond the expected latency envelope in the candidate fixture."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "irq",
+        "entity_id": "irq_timer_tick",
+        "irq_id": "irq_timer_tick"
+      },
+      "expected_evidence_refs": [
+        {
+          "ref_kind": "logical_irq",
+          "ref_id": "irq_timer_tick",
+          "required": true
+        },
+        {
+          "ref_kind": "logical_trace_window",
+          "ref_id": "window_irq_latency_spike",
+          "required": true
+        }
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": [
+        "phase6",
+        "synthetic",
+        "fixture",
+        "report_only"
+      ],
+      "notes": [
+        "Synthetic fixture case only; trace_ref remains logical.",
+        "Companion files are small reproducible text artifacts.",
+        "No replay verdict or benchmark metric is attached."
+      ]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_synthetic_mutex_hold_inflation",
+      "case_kind": "mutex_hold_inflation",
+      "title": "Mutex hold inflation synthetic fixture",
+      "description": "Small synthetic case where candidate keeps the same mutex longer on a control path.",
+      "baseline_trace": {
+        "trace_id": "baseline_mutex_hold_inflation",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/mutex_hold_inflation/baseline",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_mutex_hold_inflation",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/mutex_hold_inflation/candidate",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_mutex_hold_inflation",
+        "root_cause_kind": "mutex_hold_inflation",
+        "summary": "A mutex is held longer in the candidate fixture than in the baseline fixture."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "mutex",
+        "entity_id": "mutex_control_path",
+        "resource_id": "mutex_control_path"
+      },
+      "expected_evidence_refs": [
+        {
+          "ref_kind": "logical_mutex",
+          "ref_id": "mutex_control_path",
+          "required": true
+        },
+        {
+          "ref_kind": "logical_task",
+          "ref_id": "task_mutex_holder",
+          "required": true
+        }
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": [
+        "phase6",
+        "synthetic",
+        "fixture",
+        "report_only"
+      ],
+      "notes": [
+        "Synthetic fixture case only; trace_ref remains logical.",
+        "Companion files are small reproducible text artifacts.",
+        "No replay verdict or benchmark metric is attached."
+      ]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_synthetic_queue_wait_backlog",
+      "case_kind": "queue_wait_backlog",
+      "title": "Queue wait backlog synthetic fixture",
+      "description": "Small synthetic case where candidate backlog grows between producer and consumer events.",
+      "baseline_trace": {
+        "trace_id": "baseline_queue_wait_backlog",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/queue_wait_backlog/baseline",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_queue_wait_backlog",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/queue_wait_backlog/candidate",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_queue_wait_backlog",
+        "root_cause_kind": "queue_wait_backlog",
+        "summary": "Queue consumers lag behind producers and increase queue backlog in the candidate fixture."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "queue",
+        "entity_id": "queue_sensor_events",
+        "resource_id": "queue_sensor_events"
+      },
+      "expected_evidence_refs": [
+        {
+          "ref_kind": "logical_queue",
+          "ref_id": "queue_sensor_events",
+          "required": true
+        },
+        {
+          "ref_kind": "logical_task",
+          "ref_id": "task_queue_consumer",
+          "required": true
+        }
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": [
+        "phase6",
+        "synthetic",
+        "fixture",
+        "report_only"
+      ],
+      "notes": [
+        "Synthetic fixture case only; trace_ref remains logical.",
+        "Companion files are small reproducible text artifacts.",
+        "No replay verdict or benchmark metric is attached."
+      ]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_synthetic_task_starvation",
+      "case_kind": "task_starvation",
+      "title": "Task starvation synthetic fixture",
+      "description": "Small synthetic case where candidate leaves the same runnable task unscheduled for longer.",
+      "baseline_trace": {
+        "trace_id": "baseline_task_starvation",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/task_starvation/baseline",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_task_starvation",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/task_starvation/candidate",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_task_starvation",
+        "root_cause_kind": "task_starvation",
+        "summary": "A runnable task is not scheduled for the expected interval in the candidate fixture."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "task",
+        "entity_id": "task_background_worker",
+        "task_id": "task_background_worker"
+      },
+      "expected_evidence_refs": [
+        {
+          "ref_kind": "logical_task",
+          "ref_id": "task_background_worker",
+          "required": true
+        },
+        {
+          "ref_kind": "logical_trace_window",
+          "ref_id": "window_task_starvation",
+          "required": true
+        }
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": [
+        "phase6",
+        "synthetic",
+        "fixture",
+        "report_only"
+      ],
+      "notes": [
+        "Synthetic fixture case only; trace_ref remains logical.",
+        "Companion files are small reproducible text artifacts.",
+        "No replay verdict or benchmark metric is attached."
+      ]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_synthetic_corrupt_segment",
+      "case_kind": "corrupt_segment",
+      "title": "Corrupt segment synthetic fixture",
+      "description": "Small synthetic case where one candidate segment companion is marked malformed.",
+      "baseline_trace": {
+        "trace_id": "baseline_corrupt_segment",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/corrupt_segment/baseline",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_corrupt_segment",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/corrupt_segment/candidate",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_corrupt_segment",
+        "root_cause_kind": "corrupt_segment",
+        "summary": "A synthetic segment companion is malformed for the candidate fixture."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "trace_segment",
+        "entity_id": "segment_0007"
+      },
+      "expected_evidence_refs": [
+        {
+          "ref_kind": "logical_segment",
+          "ref_id": "segment_0007",
+          "required": true
+        },
+        {
+          "ref_kind": "logical_case_note",
+          "ref_id": "case_corrupt_segment_metadata",
+          "required": true
+        }
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": [
+        "phase6",
+        "synthetic",
+        "fixture",
+        "report_only"
+      ],
+      "notes": [
+        "Synthetic fixture case only; trace_ref remains logical.",
+        "Companion files are small reproducible text artifacts.",
+        "No replay verdict or benchmark metric is attached."
+      ]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_synthetic_stale_sidecar",
+      "case_kind": "stale_sidecar",
+      "title": "Stale sidecar synthetic fixture",
+      "description": "Small synthetic case where candidate trace identity no longer matches a sidecar companion.",
+      "baseline_trace": {
+        "trace_id": "baseline_stale_sidecar",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/stale_sidecar/baseline",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_stale_sidecar",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/stale_sidecar/candidate",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_stale_sidecar",
+        "root_cause_kind": "stale_sidecar",
+        "summary": "Sidecar metadata no longer matches the candidate trace identity."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "sidecar",
+        "entity_id": "sidecar_candidate_index"
+      },
+      "expected_evidence_refs": [
+        {
+          "ref_kind": "logical_sidecar",
+          "ref_id": "sidecar_candidate_index",
+          "required": true
+        },
+        {
+          "ref_kind": "logical_trace_window",
+          "ref_id": "window_sidecar_check",
+          "required": true
+        }
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": [
+        "phase6",
+        "synthetic",
+        "fixture",
+        "report_only"
+      ],
+      "notes": [
+        "Synthetic fixture case only; trace_ref remains logical.",
+        "Companion files are small reproducible text artifacts.",
+        "No replay verdict or benchmark metric is attached."
+      ]
+    },
+    {
+      "schema_version": "rtos-diagnosis-case-v1",
+      "case_id": "phase6_synthetic_missing_calibration",
+      "case_kind": "missing_calibration",
+      "title": "Missing calibration synthetic fixture",
+      "description": "Small synthetic case where candidate timing conversion lacks the expected calibration note.",
+      "baseline_trace": {
+        "trace_id": "baseline_missing_calibration",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/missing_calibration/baseline",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "candidate_trace": {
+        "trace_id": "candidate_missing_calibration",
+        "trace_ref": "logical://rtos_diagnosis_synthetic/missing_calibration/candidate",
+        "trace_kind": "logical_reference",
+        "notes": [
+          "Suite metadata keeps logical references only.",
+          "Companion synthetic trace is written beside generated output."
+        ]
+      },
+      "expected_root_cause": {
+        "root_cause_id": "root_missing_calibration",
+        "root_cause_kind": "missing_calibration",
+        "summary": "Timing conversion depends on calibration metadata that is absent in the candidate fixture."
+      },
+      "expected_affected_entity": {
+        "entity_kind": "calibration",
+        "entity_id": "clock_calibration"
+      },
+      "expected_evidence_refs": [
+        {
+          "ref_kind": "logical_calibration",
+          "ref_id": "clock_calibration",
+          "required": true
+        },
+        {
+          "ref_kind": "logical_case_note",
+          "ref_id": "case_missing_calibration_metadata",
+          "required": true
+        }
+      ],
+      "expected_closure_mode": "reference_only",
+      "expected_replay": {
+        "replay_required": false,
+        "expected_replay_pass": null,
+        "equivalence_scope": "not_evaluated"
+      },
+      "claim_class": "report_only",
+      "tags": [
+        "phase6",
+        "synthetic",
+        "fixture",
+        "report_only"
+      ],
+      "notes": [
+        "Synthetic fixture case only; trace_ref remains logical.",
+        "Companion files are small reproducible text artifacts.",
+        "No replay verdict or benchmark metric is attached."
+      ]
+    }
+  ],
+  "claim_boundary": {
+    "claimable": [],
+    "report_only": [
+      {
+        "boundary_id": "boundary_synthetic_fixture_report_only",
+        "topic": "synthetic_benchmark",
+        "claim_class": "report_only",
+        "statement": "Synthetic fixture coverage is report-only and does not establish real RTOS generality.",
+        "conditions": [
+          "Cases remain synthetic and small."
+        ]
+      },
+      {
+        "boundary_id": "boundary_schema_validity_report_only",
+        "topic": "schema_validity",
+        "claim_class": "report_only",
+        "statement": "Schema-compatible generation only confirms fixture shape and boundary discipline.",
+        "conditions": [
+          "Suite continues to validate against the existing P6.1 schema."
+        ]
+      },
+      {
+        "boundary_id": "boundary_phase6_scope_lock_report_only",
+        "topic": "phase6_scope_lock",
+        "claim_class": "report_only",
+        "statement": "P6.2 outputs stop at synthetic fixture material and do not include replay or benchmark runner semantics.",
+        "conditions": [
+          "No evidence package, replay verdict, advisor comparison, or human feedback artifact is generated."
+        ]
+      }
+    ],
+    "not_claimable": [
+      {
+        "boundary_id": "boundary_top_k_root_cause_not_claimable",
+        "topic": "top_k_root_cause",
+        "claim_class": "not_claimable",
+        "statement": "Top-k root-cause performance is not claimable from fixture generation alone.",
+        "conditions": [
+          "No diagnosis metrics runner exists in P6.2."
+        ]
+      },
+      {
+        "boundary_id": "boundary_human_helpfulness_not_claimable",
+        "topic": "human_helpfulness",
+        "claim_class": "not_claimable",
+        "statement": "Human helpfulness is outside the fixture-only scope.",
+        "conditions": [
+          "P6.6 remains deferred."
+        ]
+      },
+      {
+        "boundary_id": "boundary_llm_explanation_not_claimable",
+        "topic": "llm_explanation",
+        "claim_class": "not_claimable",
+        "statement": "LLM explanation is not part of this fixture suite and cannot substitute for labels.",
+        "conditions": [
+          "Truth paths remain deterministic and unchanged."
+        ]
+      },
+      {
+        "boundary_id": "boundary_p6_3_plus_not_claimable",
+        "topic": "p6_2_plus_approval",
+        "claim_class": "not_claimable",
+        "statement": "Later Phase 6 work remains deferred and is not approved by fixture generation.",
+        "conditions": [
+          "Separate main-agent review is still required for P6.3 through P6.7."
+        ]
+      }
+    ]
+  },
+  "minimum_case_kinds": [
+    "priority_inversion",
+    "irq_latency_spike",
+    "mutex_hold_inflation",
+    "queue_wait_backlog",
+    "task_starvation",
+    "corrupt_segment",
+    "stale_sidecar",
+    "missing_calibration"
+  ],
+  "notes": [
+    "Exactly eight synthetic cases cover the approved P6.2 case kinds.",
+    "All cases remain report_only and keep expected_replay as a placeholder only.",
+    "Companion files stay small and reproducible under the enforced size policy."
+  ]
+}

@@ -1,0 +1,10 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=priority_inversion
+# variant=candidate
+# trace_ref_is_logical_only=true
+ts=000 cpu=0 task=task_low_holder event=lock mutex=resource_shared_lock
+ts=002 cpu=0 task=task_high_priority event=blocked_on mutex=resource_shared_lock
+ts=003 cpu=0 task=task_mid_runner event=preempt target=task_low_holder
+ts=009 cpu=0 task=task_low_holder event=unlock mutex=resource_shared_lock
+ts=010 cpu=0 task=task_high_priority event=resume reason=lock_released
+ts=011 cpu=0 task=task_high_priority event=diagnostic marker=candidate_hold_extended

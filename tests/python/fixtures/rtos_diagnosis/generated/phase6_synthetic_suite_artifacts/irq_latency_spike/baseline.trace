@@ -1,0 +1,8 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=irq_latency_spike
+# variant=baseline
+# trace_ref_is_logical_only=true
+ts=010 cpu=0 irq=irq_timer_tick event=raised
+ts=011 cpu=0 irq=irq_timer_tick event=service_begin latency_us=1
+ts=012 cpu=0 irq=irq_timer_tick event=service_end duration_us=2
+ts=013 cpu=0 irq=irq_timer_tick event=diagnostic marker=baseline_latency_nominal

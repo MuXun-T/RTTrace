@@ -1,0 +1,3 @@
+baseline_calibration=clock_calibration_present
+candidate_calibration=absent
+status=missing_calibration_detected

@@ -1,0 +1,6 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=stale_sidecar
+# variant=baseline
+# trace_ref_is_logical_only=true
+ts=060 cpu=0 trace=baseline_stale_sidecar event=index_sync status=matched
+ts=061 cpu=0 trace=baseline_stale_sidecar event=diagnostic marker=baseline_sidecar_fresh

@@ -1,0 +1,7 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=corrupt_segment
+# variant=baseline
+# trace_ref_is_logical_only=true
+ts=050 cpu=0 segment=segment_0007 event=read status=ok
+ts=051 cpu=0 segment=segment_0007 event=parse records=3
+ts=052 cpu=0 segment=segment_0007 event=diagnostic marker=baseline_segment_clean

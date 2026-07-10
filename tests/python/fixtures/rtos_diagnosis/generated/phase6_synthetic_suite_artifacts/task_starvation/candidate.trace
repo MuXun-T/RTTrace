@@ -1,0 +1,9 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=task_starvation
+# variant=candidate
+# trace_ref_is_logical_only=true
+ts=040 cpu=0 task=task_background_worker event=ready
+ts=041 cpu=0 task=task_foreground event=run slice=1
+ts=048 cpu=0 task=task_foreground event=run slice=2
+ts=049 cpu=0 task=task_background_worker event=run slice=1 delayed_ticks=9
+ts=050 cpu=0 task=task_background_worker event=diagnostic marker=candidate_starved_interval

@@ -1,0 +1,9 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=queue_wait_backlog
+# variant=baseline
+# trace_ref_is_logical_only=true
+ts=030 cpu=0 queue=queue_sensor_events event=enqueue depth=1
+ts=031 cpu=0 task=task_queue_consumer event=dequeue depth=0
+ts=032 cpu=0 queue=queue_sensor_events event=enqueue depth=1
+ts=033 cpu=0 task=task_queue_consumer event=dequeue depth=0
+ts=034 cpu=0 queue=queue_sensor_events event=diagnostic marker=baseline_depth_flat

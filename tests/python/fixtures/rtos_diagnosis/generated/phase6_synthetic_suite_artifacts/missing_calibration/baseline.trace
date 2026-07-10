@@ -1,0 +1,6 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=missing_calibration
+# variant=baseline
+# trace_ref_is_logical_only=true
+ts=070 cpu=0 clock=core_clock event=convert ticks=100 scale=present
+ts=071 cpu=0 clock=core_clock event=diagnostic marker=baseline_calibration_present

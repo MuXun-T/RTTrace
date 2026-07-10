@@ -1,0 +1,8 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=mutex_hold_inflation
+# variant=baseline
+# trace_ref_is_logical_only=true
+ts=020 cpu=0 task=task_mutex_holder event=lock mutex=mutex_control_path
+ts=023 cpu=0 task=task_mutex_holder event=work units=2
+ts=024 cpu=0 task=task_mutex_holder event=unlock mutex=mutex_control_path hold_ticks=4
+ts=025 cpu=0 task=task_mutex_holder event=diagnostic marker=baseline_mutex_window

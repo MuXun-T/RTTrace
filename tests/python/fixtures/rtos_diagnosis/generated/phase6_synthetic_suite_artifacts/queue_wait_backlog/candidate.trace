@@ -1,0 +1,10 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=queue_wait_backlog
+# variant=candidate
+# trace_ref_is_logical_only=true
+ts=030 cpu=0 queue=queue_sensor_events event=enqueue depth=1
+ts=031 cpu=0 queue=queue_sensor_events event=enqueue depth=2
+ts=032 cpu=0 queue=queue_sensor_events event=enqueue depth=3
+ts=036 cpu=0 task=task_queue_consumer event=dequeue depth=2
+ts=037 cpu=0 task=task_queue_consumer event=dequeue depth=1
+ts=038 cpu=0 queue=queue_sensor_events event=diagnostic marker=candidate_backlog_persists

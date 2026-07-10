@@ -1,0 +1,9 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=priority_inversion
+# variant=baseline
+# trace_ref_is_logical_only=true
+ts=000 cpu=0 task=task_low_holder event=lock mutex=resource_shared_lock
+ts=002 cpu=0 task=task_high_priority event=blocked_on mutex=resource_shared_lock
+ts=005 cpu=0 task=task_low_holder event=unlock mutex=resource_shared_lock
+ts=006 cpu=0 task=task_high_priority event=resume reason=lock_released
+ts=007 cpu=0 task=task_high_priority event=diagnostic marker=baseline_hold_short

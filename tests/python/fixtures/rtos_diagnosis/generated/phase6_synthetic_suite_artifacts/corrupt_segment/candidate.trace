@@ -1,0 +1,7 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=corrupt_segment
+# variant=candidate
+# trace_ref_is_logical_only=true
+ts=050 cpu=0 segment=segment_0007 event=read status=short_frame
+ts=051 cpu=0 segment=segment_0007 event=parse status=malformed
+ts=052 cpu=0 segment=segment_0007 event=diagnostic marker=candidate_segment_corrupt

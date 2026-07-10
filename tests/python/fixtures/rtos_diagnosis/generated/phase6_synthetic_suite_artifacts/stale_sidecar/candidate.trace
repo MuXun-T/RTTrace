@@ -1,0 +1,6 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=stale_sidecar
+# variant=candidate
+# trace_ref_is_logical_only=true
+ts=060 cpu=0 trace=candidate_stale_sidecar event=index_sync status=mismatch
+ts=061 cpu=0 trace=candidate_stale_sidecar event=diagnostic marker=candidate_sidecar_stale

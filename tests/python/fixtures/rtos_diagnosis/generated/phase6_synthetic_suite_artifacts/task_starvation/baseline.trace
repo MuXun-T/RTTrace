@@ -1,0 +1,8 @@
+# synthetic_rtos_diagnosis_trace
+# case_kind=task_starvation
+# variant=baseline
+# trace_ref_is_logical_only=true
+ts=040 cpu=0 task=task_background_worker event=ready
+ts=041 cpu=0 task=task_background_worker event=run slice=1
+ts=042 cpu=0 task=task_background_worker event=yield
+ts=043 cpu=0 task=task_background_worker event=diagnostic marker=baseline_schedulable

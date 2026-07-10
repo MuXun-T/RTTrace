@@ -1,0 +1,3 @@
+segment_id=segment_0007
+status=corrupt
+fault=truncated_event_field
