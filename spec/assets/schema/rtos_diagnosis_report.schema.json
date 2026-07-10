@@ -1,0 +1,409 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RtosDiagnosisReport",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "report_id",
+    "generated_at",
+    "source_suite",
+    "source_replay_mode",
+    "scope",
+    "summary",
+    "case_coverage",
+    "preservation_metrics",
+    "replay_status_metrics",
+    "integrity_metrics",
+    "claim_boundary",
+    "limitations",
+    "cases",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "enum": ["rtos-diagnosis-report-v1"]},
+    "report_id": {"type": "string"},
+    "generated_at": {"type": ["string", "null"]},
+    "source_suite": {
+      "type": "object",
+      "required": [
+        "suite_id",
+        "schema_version",
+        "generated_at",
+        "case_count",
+        "case_claimable_count",
+        "case_report_only_count",
+        "case_not_claimable_count"
+      ],
+      "properties": {
+        "suite_id": {"type": "string"},
+        "schema_version": {"type": "string", "enum": ["rtos-diagnosis-suite-v1"]},
+        "generated_at": {"type": ["string", "null"]},
+        "case_count": {"type": "integer", "minimum": 0},
+        "case_claimable_count": {"type": "integer", "minimum": 0},
+        "case_report_only_count": {"type": "integer", "minimum": 0},
+        "case_not_claimable_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "source_replay_mode": {"type": "string", "enum": ["synthetic_replay"]},
+    "scope": {
+      "type": "object",
+      "required": ["validation_scope", "equivalence_scope", "claim_class", "description"],
+      "properties": {
+        "validation_scope": {"type": "string", "enum": ["synthetic_only"]},
+        "equivalence_scope": {"type": "string", "enum": ["metadata_only"]},
+        "claim_class": {"type": "string", "enum": ["report_only"]},
+        "description": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "cases_total",
+        "replay_pass_count",
+        "replay_fail_count",
+        "reference_only_count",
+        "not_evaluated_count",
+        "all_required_cases_evaluated",
+        "all_replay_passed",
+        "no_replay_failures",
+        "preservation_complete",
+        "evidence_retention_ratio",
+        "proof_drift_count",
+        "synthetic_case_count",
+        "real_hardware_case_count",
+        "claimable_count",
+        "report_only_count",
+        "not_claimable_count"
+      ],
+      "properties": {
+        "cases_total": {"type": "integer", "minimum": 0},
+        "replay_pass_count": {"type": "integer", "minimum": 0},
+        "replay_fail_count": {"type": "integer", "minimum": 0},
+        "reference_only_count": {"type": "integer", "minimum": 0},
+        "not_evaluated_count": {"type": "integer", "minimum": 0},
+        "all_required_cases_evaluated": {"type": "boolean"},
+        "all_replay_passed": {"type": "boolean"},
+        "no_replay_failures": {"type": "boolean"},
+        "preservation_complete": {"type": "boolean"},
+        "evidence_retention_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "proof_drift_count": {"type": "integer", "minimum": 0},
+        "synthetic_case_count": {"type": "integer", "minimum": 0},
+        "real_hardware_case_count": {"type": "integer", "minimum": 0},
+        "claimable_count": {"type": "integer", "minimum": 0},
+        "report_only_count": {"type": "integer", "minimum": 0},
+        "not_claimable_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "case_coverage": {
+      "type": "object",
+      "required": [
+        "cases_total",
+        "required_case_kinds",
+        "observed_case_kinds",
+        "case_kind_coverage_count",
+        "case_kind_coverage_ratio",
+        "missing_case_kinds",
+        "case_kinds_expected_count",
+        "case_kinds_present_count",
+        "evaluated_count",
+        "evaluated_ratio",
+        "reference_only_count",
+        "not_evaluated_count",
+        "all_required_cases_evaluated"
+      ],
+      "properties": {
+        "cases_total": {"type": "integer", "minimum": 0},
+        "required_case_kinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "priority_inversion",
+              "irq_latency_spike",
+              "mutex_hold_inflation",
+              "queue_wait_backlog",
+              "task_starvation",
+              "corrupt_segment",
+              "stale_sidecar",
+              "missing_calibration"
+            ]
+          }
+        },
+        "observed_case_kinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "priority_inversion",
+              "irq_latency_spike",
+              "mutex_hold_inflation",
+              "queue_wait_backlog",
+              "task_starvation",
+              "corrupt_segment",
+              "stale_sidecar",
+              "missing_calibration"
+            ]
+          }
+        },
+        "case_kind_coverage_count": {"type": "integer", "minimum": 0},
+        "case_kind_coverage_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "missing_case_kinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "priority_inversion",
+              "irq_latency_spike",
+              "mutex_hold_inflation",
+              "queue_wait_backlog",
+              "task_starvation",
+              "corrupt_segment",
+              "stale_sidecar",
+              "missing_calibration"
+            ]
+          }
+        },
+        "case_kinds_expected_count": {"type": "integer", "minimum": 0},
+        "case_kinds_present_count": {"type": "integer", "minimum": 0},
+        "evaluated_count": {"type": "integer", "minimum": 0},
+        "evaluated_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "reference_only_count": {"type": "integer", "minimum": 0},
+        "not_evaluated_count": {"type": "integer", "minimum": 0},
+        "all_required_cases_evaluated": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "preservation_metrics": {
+      "type": "object",
+      "required": [
+        "diagnosis_metadata_retained_count",
+        "root_cause_retained_count",
+        "affected_entity_retained_count",
+        "closure_metadata_retained_count",
+        "deterministic_signal_retained_count",
+        "evidence_refs_expected_count",
+        "evidence_refs_retained_count",
+        "evidence_retention_ratio",
+        "preservation_complete_count",
+        "preservation_complete_ratio",
+        "preservation_complete"
+      ],
+      "properties": {
+        "diagnosis_metadata_retained_count": {"type": "integer", "minimum": 0},
+        "root_cause_retained_count": {"type": "integer", "minimum": 0},
+        "affected_entity_retained_count": {"type": "integer", "minimum": 0},
+        "closure_metadata_retained_count": {"type": "integer", "minimum": 0},
+        "deterministic_signal_retained_count": {"type": "integer", "minimum": 0},
+        "evidence_refs_expected_count": {"type": "integer", "minimum": 0},
+        "evidence_refs_retained_count": {"type": "integer", "minimum": 0},
+        "evidence_retention_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "preservation_complete_count": {"type": "integer", "minimum": 0},
+        "preservation_complete_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "preservation_complete": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "replay_status_metrics": {
+      "type": "object",
+      "required": [
+        "replay_pass_count",
+        "replay_fail_count",
+        "reference_only_count",
+        "not_evaluated_count",
+        "evaluated_count",
+        "all_required_cases_evaluated",
+        "no_replay_failures",
+        "all_replay_passed"
+      ],
+      "properties": {
+        "replay_pass_count": {"type": "integer", "minimum": 0},
+        "replay_fail_count": {"type": "integer", "minimum": 0},
+        "reference_only_count": {"type": "integer", "minimum": 0},
+        "not_evaluated_count": {"type": "integer", "minimum": 0},
+        "evaluated_count": {"type": "integer", "minimum": 0},
+        "all_required_cases_evaluated": {"type": "boolean"},
+        "no_replay_failures": {"type": "boolean"},
+        "all_replay_passed": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "integrity_metrics": {
+      "type": "object",
+      "required": [
+        "proof_drift_count",
+        "tamper_detected_count",
+        "fail_closed_count",
+        "invalid_result_count",
+        "inconsistent_status_count",
+        "forbidden_field_count",
+        "input_mutation_count"
+      ],
+      "properties": {
+        "proof_drift_count": {"type": "integer", "minimum": 0},
+        "tamper_detected_count": {"type": "integer", "minimum": 0},
+        "fail_closed_count": {"type": "integer", "minimum": 0},
+        "invalid_result_count": {"type": "integer", "minimum": 0},
+        "inconsistent_status_count": {"type": "integer", "minimum": 0},
+        "forbidden_field_count": {"type": "integer", "minimum": 0},
+        "input_mutation_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "claim_boundary": {
+      "type": "object",
+      "required": [
+        "claim_class",
+        "synthetic_case_count",
+        "real_hardware_case_count",
+        "claimable_count",
+        "report_only_count",
+        "not_claimable_count",
+        "case_claimable_count",
+        "case_report_only_count",
+        "case_not_claimable_count",
+        "suite_claimable_boundary_count",
+        "suite_report_only_boundary_count",
+        "suite_not_claimable_boundary_count",
+        "claimable_topics",
+        "report_only_topics",
+        "not_claimable_topics"
+      ],
+      "properties": {
+        "claim_class": {"type": "string", "enum": ["report_only"]},
+        "synthetic_case_count": {"type": "integer", "minimum": 0},
+        "real_hardware_case_count": {"type": "integer", "minimum": 0},
+        "claimable_count": {"type": "integer", "minimum": 0},
+        "report_only_count": {"type": "integer", "minimum": 0},
+        "not_claimable_count": {"type": "integer", "minimum": 0},
+        "case_claimable_count": {"type": "integer", "minimum": 0},
+        "case_report_only_count": {"type": "integer", "minimum": 0},
+        "case_not_claimable_count": {"type": "integer", "minimum": 0},
+        "suite_claimable_boundary_count": {"type": "integer", "minimum": 0},
+        "suite_report_only_boundary_count": {"type": "integer", "minimum": 0},
+        "suite_not_claimable_boundary_count": {"type": "integer", "minimum": 0},
+        "claimable_topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "top_k_root_cause",
+              "human_helpfulness",
+              "llm_explanation",
+              "synthetic_benchmark",
+              "p6_2_plus_approval",
+              "stub_suite_status",
+              "schema_validity",
+              "phase6_scope_lock"
+            ]
+          }
+        },
+        "report_only_topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "top_k_root_cause",
+              "human_helpfulness",
+              "llm_explanation",
+              "synthetic_benchmark",
+              "p6_2_plus_approval",
+              "stub_suite_status",
+              "schema_validity",
+              "phase6_scope_lock"
+            ]
+          }
+        },
+        "not_claimable_topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "top_k_root_cause",
+              "human_helpfulness",
+              "llm_explanation",
+              "synthetic_benchmark",
+              "p6_2_plus_approval",
+              "stub_suite_status",
+              "schema_validity",
+              "phase6_scope_lock"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "case_id",
+          "case_kind",
+          "replay_status",
+          "replay_pass",
+          "reference_only",
+          "diagnosis_metadata_retained",
+          "root_cause_retained",
+          "affected_entity_retained",
+          "evidence_refs_expected_count",
+          "evidence_refs_retained_count",
+          "evidence_retention_ratio",
+          "closure_metadata_retained",
+          "deterministic_signal_retained",
+          "proof_drift_count",
+          "tamper_detected",
+          "fail_closed",
+          "claim_class",
+          "failure_reasons",
+          "limitations"
+        ],
+        "properties": {
+          "case_id": {"type": "string"},
+          "case_kind": {
+            "type": "string",
+            "enum": [
+              "priority_inversion",
+              "irq_latency_spike",
+              "mutex_hold_inflation",
+              "queue_wait_backlog",
+              "task_starvation",
+              "corrupt_segment",
+              "stale_sidecar",
+              "missing_calibration"
+            ]
+          },
+          "replay_status": {
+            "type": "string",
+            "enum": ["pass", "fail", "reference_only", "not_evaluated"]
+          },
+          "replay_pass": {"type": "boolean"},
+          "reference_only": {"type": "boolean"},
+          "diagnosis_metadata_retained": {"type": "boolean"},
+          "root_cause_retained": {"type": "boolean"},
+          "affected_entity_retained": {"type": "boolean"},
+          "evidence_refs_expected_count": {"type": "integer", "minimum": 0},
+          "evidence_refs_retained_count": {"type": "integer", "minimum": 0},
+          "evidence_retention_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+          "closure_metadata_retained": {"type": "boolean"},
+          "deterministic_signal_retained": {"type": "boolean"},
+          "proof_drift_count": {"type": "integer", "minimum": 0},
+          "tamper_detected": {"type": "boolean"},
+          "fail_closed": {"type": "boolean"},
+          "claim_class": {
+            "type": "string",
+            "enum": ["claimable", "report_only", "not_claimable"]
+          },
+          "failure_reasons": {"type": "array", "items": {"type": "string"}},
+          "limitations": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "notes": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
