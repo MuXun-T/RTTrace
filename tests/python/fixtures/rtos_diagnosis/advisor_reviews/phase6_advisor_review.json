@@ -1,0 +1,241 @@
+{
+  "cases": [
+    {
+      "abstention_reason": null,
+      "case_id": "phase6_synthetic_corrupt_segment",
+      "case_kind": "corrupt_segment",
+      "claim_class": "report_only",
+      "evidence_citations": [
+        {
+          "case_id": "phase6_synthetic_corrupt_segment",
+          "not_proof": true,
+          "reference": "p6_4_case:phase6_synthetic_corrupt_segment",
+          "source": "p6_4_case"
+        }
+      ],
+      "limitations": [
+        "Reference-only does not mean replay pass.",
+        "Synthetic-only and metadata-only review overlay."
+      ],
+      "review_status": "completed",
+      "summary": "Review-only metadata summary for corrupt_segment.",
+      "unsupported_statements": [],
+      "variant_id": "deterministic_template"
+    },
+    {
+      "abstention_reason": null,
+      "case_id": "phase6_synthetic_irq_latency_spike",
+      "case_kind": "irq_latency_spike",
+      "claim_class": "report_only",
+      "evidence_citations": [
+        {
+          "case_id": "phase6_synthetic_irq_latency_spike",
+          "not_proof": true,
+          "reference": "p6_4_case:phase6_synthetic_irq_latency_spike",
+          "source": "p6_4_case"
+        }
+      ],
+      "limitations": [
+        "Reference-only does not mean replay pass.",
+        "Synthetic-only and metadata-only review overlay."
+      ],
+      "review_status": "completed",
+      "summary": "Review-only metadata summary for irq_latency_spike.",
+      "unsupported_statements": [],
+      "variant_id": "deterministic_template"
+    },
+    {
+      "abstention_reason": null,
+      "case_id": "phase6_synthetic_missing_calibration",
+      "case_kind": "missing_calibration",
+      "claim_class": "report_only",
+      "evidence_citations": [
+        {
+          "case_id": "phase6_synthetic_missing_calibration",
+          "not_proof": true,
+          "reference": "p6_4_case:phase6_synthetic_missing_calibration",
+          "source": "p6_4_case"
+        }
+      ],
+      "limitations": [
+        "Reference-only does not mean replay pass.",
+        "Synthetic-only and metadata-only review overlay."
+      ],
+      "review_status": "completed",
+      "summary": "Review-only metadata summary for missing_calibration.",
+      "unsupported_statements": [],
+      "variant_id": "deterministic_template"
+    },
+    {
+      "abstention_reason": null,
+      "case_id": "phase6_synthetic_mutex_hold_inflation",
+      "case_kind": "mutex_hold_inflation",
+      "claim_class": "report_only",
+      "evidence_citations": [
+        {
+          "case_id": "phase6_synthetic_mutex_hold_inflation",
+          "not_proof": true,
+          "reference": "p6_4_case:phase6_synthetic_mutex_hold_inflation",
+          "source": "p6_4_case"
+        }
+      ],
+      "limitations": [
+        "Reference-only does not mean replay pass.",
+        "Synthetic-only and metadata-only review overlay."
+      ],
+      "review_status": "completed",
+      "summary": "Review-only metadata summary for mutex_hold_inflation.",
+      "unsupported_statements": [],
+      "variant_id": "deterministic_template"
+    },
+    {
+      "abstention_reason": null,
+      "case_id": "phase6_synthetic_priority_inversion",
+      "case_kind": "priority_inversion",
+      "claim_class": "report_only",
+      "evidence_citations": [
+        {
+          "case_id": "phase6_synthetic_priority_inversion",
+          "not_proof": true,
+          "reference": "p6_4_case:phase6_synthetic_priority_inversion",
+          "source": "p6_4_case"
+        }
+      ],
+      "limitations": [
+        "Reference-only does not mean replay pass.",
+        "Synthetic-only and metadata-only review overlay."
+      ],
+      "review_status": "completed",
+      "summary": "Review-only metadata summary for priority_inversion.",
+      "unsupported_statements": [],
+      "variant_id": "deterministic_template"
+    },
+    {
+      "abstention_reason": null,
+      "case_id": "phase6_synthetic_queue_wait_backlog",
+      "case_kind": "queue_wait_backlog",
+      "claim_class": "report_only",
+      "evidence_citations": [
+        {
+          "case_id": "phase6_synthetic_queue_wait_backlog",
+          "not_proof": true,
+          "reference": "p6_4_case:phase6_synthetic_queue_wait_backlog",
+          "source": "p6_4_case"
+        }
+      ],
+      "limitations": [
+        "Reference-only does not mean replay pass.",
+        "Synthetic-only and metadata-only review overlay."
+      ],
+      "review_status": "completed",
+      "summary": "Review-only metadata summary for queue_wait_backlog.",
+      "unsupported_statements": [],
+      "variant_id": "deterministic_template"
+    },
+    {
+      "abstention_reason": null,
+      "case_id": "phase6_synthetic_stale_sidecar",
+      "case_kind": "stale_sidecar",
+      "claim_class": "report_only",
+      "evidence_citations": [
+        {
+          "case_id": "phase6_synthetic_stale_sidecar",
+          "not_proof": true,
+          "reference": "p6_4_case:phase6_synthetic_stale_sidecar",
+          "source": "p6_4_case"
+        }
+      ],
+      "limitations": [
+        "Reference-only does not mean replay pass.",
+        "Synthetic-only and metadata-only review overlay."
+      ],
+      "review_status": "completed",
+      "summary": "Review-only metadata summary for stale_sidecar.",
+      "unsupported_statements": [],
+      "variant_id": "deterministic_template"
+    },
+    {
+      "abstention_reason": null,
+      "case_id": "phase6_synthetic_task_starvation",
+      "case_kind": "task_starvation",
+      "claim_class": "report_only",
+      "evidence_citations": [
+        {
+          "case_id": "phase6_synthetic_task_starvation",
+          "not_proof": true,
+          "reference": "p6_4_case:phase6_synthetic_task_starvation",
+          "source": "p6_4_case"
+        }
+      ],
+      "limitations": [
+        "Reference-only does not mean replay pass.",
+        "Synthetic-only and metadata-only review overlay."
+      ],
+      "review_status": "completed",
+      "summary": "Review-only metadata summary for task_starvation.",
+      "unsupported_statements": [],
+      "variant_id": "deterministic_template"
+    }
+  ],
+  "claim_class": "report_only",
+  "deterministic": true,
+  "input_integrity": {
+    "input_report_mutated": false,
+    "input_report_mutation_count": 0,
+    "source_hash_after": "fe6bb93191fc72e9584339878c0418b1005f3631f0e213e92b8dcbeb2bd2811e",
+    "source_hash_before": "fe6bb93191fc72e9584339878c0418b1005f3631f0e213e92b8dcbeb2bd2811e",
+    "source_hash_unchanged": true
+  },
+  "limitations": [
+    "Advisor output is review-only and does not create source facts.",
+    "Reference-only review coverage is not replay success.",
+    "Synthetic-only metadata remains the sole source scope."
+  ],
+  "llm_used": false,
+  "notes": [
+    "Advisor overlay is review-only and cannot alter the P6.4 source report."
+  ],
+  "retrieval_used": false,
+  "review_id": "phase6-p6-5-template",
+  "review_summary": {
+    "adversarial_rejection_count": 0,
+    "cases_abstained_count": 0,
+    "cases_reviewed_count": 8,
+    "cases_total": 8,
+    "citation_presence_count": 8,
+    "deterministic_reproducible": true,
+    "evidence_citation_count": 8,
+    "limitation_coverage_count": 8,
+    "review_coverage_ratio": 1.0,
+    "schema_valid": true,
+    "unsupported_statement_count": 0
+  },
+  "safety_summary": {
+    "absolute_path_leak_count": 0,
+    "abstention_count": 0,
+    "executable_command_count": 0,
+    "fallback_count": 0,
+    "forbidden_truth_field_count": 0,
+    "prompt_injection_blocked_count": 0,
+    "rejected_invalid_count": 0,
+    "schema_invalid_count": 0,
+    "secret_leak_count": 0,
+    "tool_invocation_count": 0,
+    "unauthorized_action_accepted_count": 0,
+    "unsupported_statement_count": 0
+  },
+  "schema_version": "rtos-diagnosis-advisor-review-v1",
+  "source_report_canonical_hash": "fe6bb93191fc72e9584339878c0418b1005f3631f0e213e92b8dcbeb2bd2811e",
+  "source_report_id": "phase6-p6-4-fixture",
+  "status": "completed",
+  "truth_invariance": {
+    "affected_entity_mutation_count": 0,
+    "claim_class_mutation_count": 0,
+    "proof_contamination_count": 0,
+    "proof_drift_count": 0,
+    "replay_status_mutation_count": 0,
+    "report_metric_mutation_count": 0,
+    "root_cause_mutation_count": 0
+  },
+  "variant_id": "deterministic_template"
+}

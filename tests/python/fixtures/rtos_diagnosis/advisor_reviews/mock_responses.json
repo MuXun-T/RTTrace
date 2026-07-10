@@ -1,0 +1,13 @@
+{
+  "schema_version": "rtos-diagnosis-advisor-mock-v1",
+  "case_reviews": [
+    {"case_id": "phase6_synthetic_corrupt_segment", "summary": "Mock explanation is review-only and does not create source facts.", "limitations": []},
+    {"case_id": "phase6_synthetic_irq_latency_spike", "summary": "Mock explanation is review-only and does not create source facts.", "limitations": []},
+    {"case_id": "phase6_synthetic_missing_calibration", "summary": "Mock explanation is review-only and does not create source facts.", "limitations": []},
+    {"case_id": "phase6_synthetic_mutex_hold_inflation", "summary": "Mock explanation is review-only and does not create source facts.", "limitations": []},
+    {"case_id": "phase6_synthetic_priority_inversion", "summary": "Mock explanation is review-only and does not create source facts.", "limitations": []},
+    {"case_id": "phase6_synthetic_queue_wait_backlog", "summary": "Mock explanation is review-only and does not create source facts.", "limitations": []},
+    {"case_id": "phase6_synthetic_stale_sidecar", "summary": "Mock explanation is review-only and does not create source facts.", "limitations": []},
+    {"case_id": "phase6_synthetic_task_starvation", "summary": "Mock explanation is review-only and does not create source facts.", "limitations": []}
+  ]
+}

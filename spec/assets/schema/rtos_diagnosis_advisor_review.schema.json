@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RtosDiagnosisAdvisorReview",
+  "type": "object",
+  "required": ["schema_version", "review_id", "source_report_id", "source_report_canonical_hash", "variant_id", "status", "deterministic", "retrieval_used", "llm_used", "input_integrity", "truth_invariance", "safety_summary", "review_summary", "cases", "limitations", "claim_class", "notes"],
+  "properties": {
+    "schema_version": {"type": "string", "enum": ["rtos-diagnosis-advisor-review-v1"]},
+    "review_id": {"type": "string", "minLength": 1},
+    "source_report_id": {"type": "string", "minLength": 1},
+    "source_report_canonical_hash": {"type": "string", "minLength": 64, "maxLength": 64},
+    "variant_id": {"type": "string", "enum": ["advisor_disabled", "deterministic_template", "retrieval_grounded_review", "mock_llm_explanation"]},
+    "status": {"type": "string", "enum": ["disabled", "completed", "abstained", "fallback", "rejected", "error"]},
+    "deterministic": {"type": "boolean"},
+    "retrieval_used": {"type": "boolean"},
+    "llm_used": {"type": "boolean"},
+    "input_integrity": {
+      "type": "object",
+      "required": ["input_report_mutated", "input_report_mutation_count", "source_hash_before", "source_hash_after", "source_hash_unchanged"],
+      "properties": {
+        "input_report_mutated": {"type": "boolean"},
+        "input_report_mutation_count": {"type": "integer", "minimum": 0},
+        "source_hash_before": {"type": "string", "minLength": 64, "maxLength": 64},
+        "source_hash_after": {"type": "string", "minLength": 64, "maxLength": 64},
+        "source_hash_unchanged": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "truth_invariance": {
+      "type": "object",
+      "required": ["root_cause_mutation_count", "affected_entity_mutation_count", "replay_status_mutation_count", "claim_class_mutation_count", "report_metric_mutation_count", "proof_drift_count", "proof_contamination_count"],
+      "properties": {
+        "root_cause_mutation_count": {"type": "integer", "minimum": 0},
+        "affected_entity_mutation_count": {"type": "integer", "minimum": 0},
+        "replay_status_mutation_count": {"type": "integer", "minimum": 0},
+        "claim_class_mutation_count": {"type": "integer", "minimum": 0},
+        "report_metric_mutation_count": {"type": "integer", "minimum": 0},
+        "proof_drift_count": {"type": "integer", "minimum": 0},
+        "proof_contamination_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "safety_summary": {
+      "type": "object",
+      "required": ["unauthorized_action_accepted_count", "executable_command_count", "tool_invocation_count", "secret_leak_count", "absolute_path_leak_count", "forbidden_truth_field_count", "schema_invalid_count", "rejected_invalid_count", "fallback_count", "abstention_count", "prompt_injection_blocked_count", "unsupported_statement_count"],
+      "properties": {
+        "unauthorized_action_accepted_count": {"type": "integer", "minimum": 0},
+        "executable_command_count": {"type": "integer", "minimum": 0},
+        "tool_invocation_count": {"type": "integer", "minimum": 0},
+        "secret_leak_count": {"type": "integer", "minimum": 0},
+        "absolute_path_leak_count": {"type": "integer", "minimum": 0},
+        "forbidden_truth_field_count": {"type": "integer", "minimum": 0},
+        "schema_invalid_count": {"type": "integer", "minimum": 0},
+        "rejected_invalid_count": {"type": "integer", "minimum": 0},
+        "fallback_count": {"type": "integer", "minimum": 0},
+        "abstention_count": {"type": "integer", "minimum": 0},
+        "prompt_injection_blocked_count": {"type": "integer", "minimum": 0},
+        "unsupported_statement_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "review_summary": {
+      "type": "object",
+      "required": ["cases_total", "cases_reviewed_count", "cases_abstained_count", "review_coverage_ratio", "limitation_coverage_count", "evidence_citation_count", "citation_presence_count", "unsupported_statement_count", "schema_valid", "deterministic_reproducible", "adversarial_rejection_count"],
+      "properties": {
+        "cases_total": {"type": "integer", "minimum": 0},
+        "cases_reviewed_count": {"type": "integer", "minimum": 0},
+        "cases_abstained_count": {"type": "integer", "minimum": 0},
+        "review_coverage_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "limitation_coverage_count": {"type": "integer", "minimum": 0},
+        "evidence_citation_count": {"type": "integer", "minimum": 0},
+        "citation_presence_count": {"type": "integer", "minimum": 0},
+        "unsupported_statement_count": {"type": "integer", "minimum": 0},
+        "schema_valid": {"type": "boolean"},
+        "deterministic_reproducible": {"type": "boolean"},
+        "adversarial_rejection_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["case_id", "case_kind", "variant_id", "review_status", "summary", "limitations", "evidence_citations", "unsupported_statements", "abstention_reason", "claim_class"],
+        "properties": {
+          "case_id": {"type": "string", "minLength": 1},
+          "case_kind": {"type": "string", "enum": ["priority_inversion", "irq_latency_spike", "mutex_hold_inflation", "queue_wait_backlog", "task_starvation", "corrupt_segment", "stale_sidecar", "missing_calibration"]},
+          "variant_id": {"type": "string", "enum": ["advisor_disabled", "deterministic_template", "retrieval_grounded_review", "mock_llm_explanation"]},
+          "review_status": {"type": "string", "enum": ["disabled", "completed", "abstained", "fallback", "rejected"]},
+          "summary": {"type": "string"},
+          "limitations": {"type": "array", "items": {"type": "string"}},
+          "evidence_citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["source", "case_id", "reference", "not_proof"],
+              "properties": {
+                "source": {"type": "string", "enum": ["p6_4_case", "retrieved_review_reference"]},
+                "case_id": {"type": "string", "minLength": 1},
+                "reference": {"type": "string", "minLength": 1},
+                "not_proof": {"type": "boolean"}
+              },
+              "additionalProperties": false
+            }
+          },
+          "unsupported_statements": {"type": "array", "items": {"type": "string"}},
+          "abstention_reason": {"type": ["string", "null"]},
+          "claim_class": {"type": "string", "enum": ["report_only", "not_claimable"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "claim_class": {"type": "string", "enum": ["report_only", "not_claimable"]},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
