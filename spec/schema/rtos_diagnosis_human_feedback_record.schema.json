@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RtosDiagnosisHumanFeedbackRecord",
+  "type": "object",
+  "required": ["schema_version", "response_id", "data_source", "synthetic", "source_report_id", "source_report_canonical_hash", "source_review_id", "source_review_canonical_hash", "variant_id", "case_id", "consent", "ratings", "structured_flags", "coded_comment_labels", "collection_scope", "privacy", "retention", "claim_class", "notes"],
+  "properties": {
+    "schema_version": {"type": "string", "enum": ["rtos-diagnosis-human-feedback-record-v1"]},
+    "response_id": {"type": "string", "minLength": 1},
+    "data_source": {"type": "string", "enum": ["synthetic", "consented_manual"]},
+    "synthetic": {"type": "boolean"},
+    "source_report_id": {"type": "string", "minLength": 1},
+    "source_report_canonical_hash": {"type": "string", "minLength": 64, "maxLength": 64},
+    "source_review_id": {"type": "string", "minLength": 1},
+    "source_review_canonical_hash": {"type": "string", "minLength": 64, "maxLength": 64},
+    "variant_id": {"type": "string", "enum": ["advisor_disabled", "deterministic_template", "retrieval_grounded_review", "mock_llm_explanation"]},
+    "case_id": {"type": "string", "minLength": 1},
+    "consent": {
+      "type": "object",
+      "required": ["required", "granted", "form_version", "withdrawal_supported", "consent_not_applicable"],
+      "properties": {
+        "required": {"type": "boolean"}, "granted": {"type": "boolean"},
+        "form_version": {"type": "string", "minLength": 1}, "withdrawal_supported": {"type": "boolean"},
+        "consent_not_applicable": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "ratings": {
+      "type": "object",
+      "required": ["explanation_clarity", "limitation_visibility", "citation_usefulness", "abstention_appropriateness", "review_usefulness"],
+      "properties": {
+        "explanation_clarity": {"type": "integer", "minimum": 1, "maximum": 5},
+        "limitation_visibility": {"type": "integer", "minimum": 1, "maximum": 5},
+        "citation_usefulness": {"type": "integer", "minimum": 1, "maximum": 5},
+        "abstention_appropriateness": {"type": "integer", "minimum": 1, "maximum": 5},
+        "review_usefulness": {"type": "integer", "minimum": 1, "maximum": 5}
+      },
+      "additionalProperties": false
+    },
+    "structured_flags": {
+      "type": "object",
+      "required": ["claim_boundary_understood", "unsupported_statement_observed", "explanation_too_verbose", "explanation_too_brief", "limitation_unclear", "citation_unclear"],
+      "properties": {
+        "claim_boundary_understood": {"type": "string", "enum": ["yes", "no", "unsure"]},
+        "unsupported_statement_observed": {"type": "boolean"}, "explanation_too_verbose": {"type": "boolean"},
+        "explanation_too_brief": {"type": "boolean"}, "limitation_unclear": {"type": "boolean"}, "citation_unclear": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "coded_comment_labels": {"type": "array", "items": {"type": "string", "enum": ["none", "confusing_scope", "missing_limitation", "citation_unclear", "abstention_unclear", "too_verbose", "too_brief", "unsupported_statement", "other_redacted"]}},
+    "collection_scope": {
+      "type": "object", "required": ["real_participant", "pipeline_validation_only"],
+      "properties": {"real_participant": {"type": "boolean"}, "pipeline_validation_only": {"type": "boolean"}}, "additionalProperties": false
+    },
+    "privacy": {
+      "type": "object", "required": ["contains_direct_identifiers", "contains_free_text", "contains_demographics", "pii_scan_passed"],
+      "properties": {"contains_direct_identifiers": {"type": "boolean"}, "contains_free_text": {"type": "boolean"}, "contains_demographics": {"type": "boolean"}, "pii_scan_passed": {"type": "boolean"}}, "additionalProperties": false
+    },
+    "retention": {
+      "type": "object", "required": ["retention_class", "deletion_supported", "repository_storage_allowed"],
+      "properties": {"retention_class": {"type": "string", "enum": ["synthetic_fixture_only", "external_governed"]}, "deletion_supported": {"type": "boolean"}, "repository_storage_allowed": {"type": "boolean"}}, "additionalProperties": false
+    },
+    "claim_class": {"type": "string", "enum": ["report_only", "not_claimable"]},
+    "notes": {"type": "array", "items": {"type": "string", "enum": ["synthetic_pipeline_validation_only"]}}
+  },
+  "additionalProperties": false
+}

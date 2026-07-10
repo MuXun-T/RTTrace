@@ -1,0 +1,268 @@
+{
+  "claim_boundary": {
+    "descriptive_pipeline_only": true,
+    "diagnosis_correctness_claimable": false,
+    "human_effect_claimable": false,
+    "proof_correctness_claimable": false,
+    "replay_correctness_claimable": false,
+    "root_cause_correctness_claimable": false,
+    "usability_improvement_claimable": false
+  },
+  "consent_summary": {
+    "accepted_consent_count": 8,
+    "consent_violation_count": 0,
+    "denied_consent_count": 0,
+    "missing_consent_count": 0
+  },
+  "contains_real_participant_data": false,
+  "integrity_metrics": {
+    "claim_class_mutation_count": 0,
+    "duplicate_response_id_count": 0,
+    "invalid_record_count": 0,
+    "proof_drift_count": 0,
+    "replay_status_mutation_count": 0,
+    "root_cause_mutation_count": 0,
+    "source_hash_mismatch_count": 0,
+    "source_mutation_count": 0
+  },
+  "limitations": [
+    "Synthetic feedback validates this pipeline only.",
+    "Descriptive ratings do not establish usability, human effect, or correctness."
+  ],
+  "notes": [
+    "No real participant data, free text, demographics, or inferential statistics are included."
+  ],
+  "pipeline_validation_only": true,
+  "privacy_summary": {
+    "absolute_path_leak_count": 0,
+    "demographic_field_count": 0,
+    "direct_identifier_count": 0,
+    "free_text_count": 0,
+    "privacy_rejection_count": 0,
+    "secret_leak_count": 0
+  },
+  "rating_metrics": {
+    "abstention_appropriateness": {
+      "count": 8,
+      "maximum": 4,
+      "mean": 4.0,
+      "minimum": 4
+    },
+    "citation_usefulness": {
+      "count": 8,
+      "maximum": 3,
+      "mean": 3.0,
+      "minimum": 3
+    },
+    "explanation_clarity": {
+      "count": 8,
+      "maximum": 4,
+      "mean": 4.0,
+      "minimum": 4
+    },
+    "limitation_visibility": {
+      "count": 8,
+      "maximum": 5,
+      "mean": 5.0,
+      "minimum": 5
+    },
+    "review_usefulness": {
+      "count": 8,
+      "maximum": 3,
+      "mean": 3.0,
+      "minimum": 3
+    }
+  },
+  "record_counts": {
+    "consented_manual_records_count": 0,
+    "real_participant_records_count": 0,
+    "records_accepted": 8,
+    "records_rejected": 0,
+    "records_total": 8,
+    "synthetic_records_count": 8
+  },
+  "schema_version": "rtos-diagnosis-human-feedback-summary-v1",
+  "source_feedback_set_hash": "413dc2e42af6f4afa2f591e8d56253a19e8ab70a66237363a84b1711c01dfe44",
+  "source_report_hash": "fe6bb93191fc72e9584339878c0418b1005f3631f0e213e92b8dcbeb2bd2811e",
+  "source_review_hashes": [
+    {
+      "canonical_hash": "a453a276fb458f9abbcc7932f777ca4510649b5e498739c1e46459d237a1ff97",
+      "review_id": "phase6-p6-5-advisor-review",
+      "variant_id": "advisor_disabled"
+    },
+    {
+      "canonical_hash": "dc6975dc1a2ff839e1533fbde96f4f719f0d859a06ff87a8abb5c2856228390d",
+      "review_id": "phase6-p6-5-advisor-review",
+      "variant_id": "deterministic_template"
+    },
+    {
+      "canonical_hash": "a0d7a7eb8d0ad7979179c2a7140452cf543bdc6c465056dc73e823245e51c0de",
+      "review_id": "phase6-p6-5-advisor-review",
+      "variant_id": "mock_llm_explanation"
+    },
+    {
+      "canonical_hash": "277213739e69e03e91261f6a6bdaf9b215ee31bf7cc3f41199617eafe2275777",
+      "review_id": "phase6-p6-5-advisor-review",
+      "variant_id": "retrieval_grounded_review"
+    }
+  ],
+  "structured_flag_metrics": {
+    "citation_unclear_count": 0,
+    "claim_boundary_understood": {
+      "no": 0,
+      "unsure": 0,
+      "yes": 8
+    },
+    "explanation_too_brief_count": 0,
+    "explanation_too_verbose_count": 0,
+    "limitation_unclear_count": 0,
+    "unsupported_statement_observed_count": 0
+  },
+  "summary_id": "phase6-p6-6-synthetic",
+  "variant_metrics": [
+    {
+      "accepted_record_count": 2,
+      "rating_metrics": {
+        "abstention_appropriateness": {
+          "count": 2,
+          "maximum": 4,
+          "mean": 4.0,
+          "minimum": 4
+        },
+        "citation_usefulness": {
+          "count": 2,
+          "maximum": 3,
+          "mean": 3.0,
+          "minimum": 3
+        },
+        "explanation_clarity": {
+          "count": 2,
+          "maximum": 4,
+          "mean": 4.0,
+          "minimum": 4
+        },
+        "limitation_visibility": {
+          "count": 2,
+          "maximum": 5,
+          "mean": 5.0,
+          "minimum": 5
+        },
+        "review_usefulness": {
+          "count": 2,
+          "maximum": 3,
+          "mean": 3.0,
+          "minimum": 3
+        }
+      },
+      "variant_id": "advisor_disabled"
+    },
+    {
+      "accepted_record_count": 2,
+      "rating_metrics": {
+        "abstention_appropriateness": {
+          "count": 2,
+          "maximum": 4,
+          "mean": 4.0,
+          "minimum": 4
+        },
+        "citation_usefulness": {
+          "count": 2,
+          "maximum": 3,
+          "mean": 3.0,
+          "minimum": 3
+        },
+        "explanation_clarity": {
+          "count": 2,
+          "maximum": 4,
+          "mean": 4.0,
+          "minimum": 4
+        },
+        "limitation_visibility": {
+          "count": 2,
+          "maximum": 5,
+          "mean": 5.0,
+          "minimum": 5
+        },
+        "review_usefulness": {
+          "count": 2,
+          "maximum": 3,
+          "mean": 3.0,
+          "minimum": 3
+        }
+      },
+      "variant_id": "deterministic_template"
+    },
+    {
+      "accepted_record_count": 2,
+      "rating_metrics": {
+        "abstention_appropriateness": {
+          "count": 2,
+          "maximum": 4,
+          "mean": 4.0,
+          "minimum": 4
+        },
+        "citation_usefulness": {
+          "count": 2,
+          "maximum": 3,
+          "mean": 3.0,
+          "minimum": 3
+        },
+        "explanation_clarity": {
+          "count": 2,
+          "maximum": 4,
+          "mean": 4.0,
+          "minimum": 4
+        },
+        "limitation_visibility": {
+          "count": 2,
+          "maximum": 5,
+          "mean": 5.0,
+          "minimum": 5
+        },
+        "review_usefulness": {
+          "count": 2,
+          "maximum": 3,
+          "mean": 3.0,
+          "minimum": 3
+        }
+      },
+      "variant_id": "mock_llm_explanation"
+    },
+    {
+      "accepted_record_count": 2,
+      "rating_metrics": {
+        "abstention_appropriateness": {
+          "count": 2,
+          "maximum": 4,
+          "mean": 4.0,
+          "minimum": 4
+        },
+        "citation_usefulness": {
+          "count": 2,
+          "maximum": 3,
+          "mean": 3.0,
+          "minimum": 3
+        },
+        "explanation_clarity": {
+          "count": 2,
+          "maximum": 4,
+          "mean": 4.0,
+          "minimum": 4
+        },
+        "limitation_visibility": {
+          "count": 2,
+          "maximum": 5,
+          "mean": 5.0,
+          "minimum": 5
+        },
+        "review_usefulness": {
+          "count": 2,
+          "maximum": 3,
+          "mean": 3.0,
+          "minimum": 3
+        }
+      },
+      "variant_id": "retrieval_grounded_review"
+    }
+  ]
+}
