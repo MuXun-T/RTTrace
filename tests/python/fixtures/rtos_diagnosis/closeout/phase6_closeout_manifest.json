@@ -1,0 +1,590 @@
+{
+  "artifact_groups": {
+    "advisor_review": [
+      {
+        "artifact_type": "review_overlay",
+        "claim_class": "report_only",
+        "path": "docs/phase6_p6_5_advisor_review.md",
+        "phase_item": "P6.5",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "review_overlay",
+        "claim_class": "report_only",
+        "path": "parser/rtos_diagnosis_advisor_review.py",
+        "phase_item": "P6.5",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "review_overlay",
+        "claim_class": "report_only",
+        "path": "tool/run_rtos_diagnosis_advisor_review.py",
+        "phase_item": "P6.5",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "review_overlay",
+        "claim_class": "report_only",
+        "path": "tests/python/fixtures/rtos_diagnosis/advisor_reviews/phase6_advisor_review.json",
+        "phase_item": "P6.5",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "review_overlay",
+        "claim_class": "report_only",
+        "path": "tests/python/test_rtos_diagnosis_advisor_review.py",
+        "phase_item": "P6.5",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "cli_tools": [
+      {
+        "artifact_type": "cli",
+        "claim_class": "deterministic_contract",
+        "path": "tool/build_rtos_diagnosis_cases.py",
+        "phase_item": "P6.2-P6.7",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "cli",
+        "claim_class": "deterministic_contract",
+        "path": "tool/build_phase6_closeout_manifest.py",
+        "phase_item": "P6.2-P6.7",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "closeout_documents": [
+      {
+        "artifact_type": "closeout_document",
+        "claim_class": "deterministic_contract",
+        "path": "docs/phase6_p6_7_closeout.md",
+        "phase_item": "P6.7",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "closeout_document",
+        "claim_class": "deterministic_contract",
+        "path": "docs/phase6_claim_boundary_matrix.md",
+        "phase_item": "P6.7",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "closeout_document",
+        "claim_class": "deterministic_contract",
+        "path": "docs/phase6_reproducibility_index.md",
+        "phase_item": "P6.7",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "diagnosis_report": [
+      {
+        "artifact_type": "report",
+        "claim_class": "report_only",
+        "path": "docs/phase6_p6_4_diagnosis_report.md",
+        "phase_item": "P6.4",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "report",
+        "claim_class": "report_only",
+        "path": "parser/rtos_diagnosis_report.py",
+        "phase_item": "P6.4",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "report",
+        "claim_class": "report_only",
+        "path": "tool/build_rtos_diagnosis_report.py",
+        "phase_item": "P6.4",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "report",
+        "claim_class": "report_only",
+        "path": "tests/python/fixtures/rtos_diagnosis/reports/phase6_diagnosis_report.json",
+        "phase_item": "P6.4",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "report",
+        "claim_class": "report_only",
+        "path": "tests/python/test_rtos_diagnosis_report.py",
+        "phase_item": "P6.4",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "human_feedback": [
+      {
+        "artifact_type": "synthetic_feedback",
+        "claim_class": "report_only",
+        "path": "docs/phase6_p6_6_human_feedback.md",
+        "phase_item": "P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "synthetic_feedback",
+        "claim_class": "report_only",
+        "path": "parser/rtos_diagnosis_human_feedback.py",
+        "phase_item": "P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "synthetic_feedback",
+        "claim_class": "report_only",
+        "path": "tool/build_rtos_diagnosis_human_feedback_summary.py",
+        "phase_item": "P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "synthetic_feedback",
+        "claim_class": "report_only",
+        "path": "tests/python/fixtures/rtos_diagnosis/human_feedback/phase6_synthetic_feedback.json",
+        "phase_item": "P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "synthetic_feedback",
+        "claim_class": "report_only",
+        "path": "tests/python/fixtures/rtos_diagnosis/human_feedback/phase6_human_feedback_summary.json",
+        "phase_item": "P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "synthetic_feedback",
+        "claim_class": "report_only",
+        "path": "tests/python/test_rtos_diagnosis_human_feedback.py",
+        "phase_item": "P6.6",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "replay_validation": [
+      {
+        "artifact_type": "validation",
+        "claim_class": "report_only",
+        "path": "docs/phase6_p6_3_replay_validation.md",
+        "phase_item": "P6.3",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "validation",
+        "claim_class": "report_only",
+        "path": "parser/rtos_diagnosis_replay.py",
+        "phase_item": "P6.3",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "validation",
+        "claim_class": "report_only",
+        "path": "tool/run_rtos_diagnosis_replay.py",
+        "phase_item": "P6.3",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "validation",
+        "claim_class": "report_only",
+        "path": "tests/python/test_rtos_diagnosis_replay.py",
+        "phase_item": "P6.3",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "schemas": [
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/schema/rtos_diagnosis_case.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/schema/rtos_diagnosis_suite.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/schema/rtos_diagnosis_report.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/schema/rtos_diagnosis_advisor_review.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/schema/rtos_diagnosis_human_feedback_record.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/schema/rtos_diagnosis_human_feedback_summary.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/assets/schema/rtos_diagnosis_case.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/assets/schema/rtos_diagnosis_suite.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/assets/schema/rtos_diagnosis_report.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/assets/schema/rtos_diagnosis_advisor_review.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/assets/schema/rtos_diagnosis_human_feedback_record.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "schema",
+        "claim_class": "deterministic_contract",
+        "path": "spec/assets/schema/rtos_diagnosis_human_feedback_summary.schema.json",
+        "phase_item": "P6.1-P6.6",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "scope_and_contracts": [
+      {
+        "artifact_type": "contract",
+        "claim_class": "report_only",
+        "path": "docs/phase6_pre_approval_development_plan_20260709.md",
+        "phase_item": "P6.0-P6.1",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "contract",
+        "claim_class": "report_only",
+        "path": "docs/phase6_scope_note.md",
+        "phase_item": "P6.0-P6.1",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "contract",
+        "claim_class": "report_only",
+        "path": "docs/phase6_implementation_checklist.md",
+        "phase_item": "P6.0-P6.1",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "contract",
+        "claim_class": "report_only",
+        "path": "docs/phase6_risk_register.md",
+        "phase_item": "P6.0-P6.1",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "synthetic_fixtures": [
+      {
+        "artifact_type": "synthetic_fixture",
+        "claim_class": "report_only",
+        "path": "tests/python/fixtures/rtos_diagnosis/generated/phase6_synthetic_suite.json",
+        "phase_item": "P6.2",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "synthetic_fixture",
+        "claim_class": "report_only",
+        "path": "tests/python/fixtures/rtos_diagnosis/generated/phase6_synthetic_suite_artifacts",
+        "phase_item": "P6.2",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "synthetic_fixture",
+        "claim_class": "report_only",
+        "path": "tests/python/fixtures/rtos_diagnosis/phase6_stub_suite.json",
+        "phase_item": "P6.2",
+        "required": true,
+        "synthetic_only": true
+      }
+    ],
+    "tests": [
+      {
+        "artifact_type": "test",
+        "claim_class": "deterministic_contract",
+        "path": "tests/python/test_rtos_diagnosis_schema.py",
+        "phase_item": "P6.1-P6.7",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "test",
+        "claim_class": "deterministic_contract",
+        "path": "tests/python/test_rtos_diagnosis_fixtures.py",
+        "phase_item": "P6.1-P6.7",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "test",
+        "claim_class": "deterministic_contract",
+        "path": "tests/python/test_rtos_diagnosis_advisor_review_security.py",
+        "phase_item": "P6.1-P6.7",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "test",
+        "claim_class": "deterministic_contract",
+        "path": "tests/python/test_rtos_diagnosis_human_feedback_privacy.py",
+        "phase_item": "P6.1-P6.7",
+        "required": true,
+        "synthetic_only": true
+      },
+      {
+        "artifact_type": "test",
+        "claim_class": "deterministic_contract",
+        "path": "tests/python/test_phase6_closeout.py",
+        "phase_item": "P6.1-P6.7",
+        "required": true,
+        "synthetic_only": true
+      }
+    ]
+  },
+  "canonical_artifacts": {
+    "p6_4_report": {
+      "canonical_hash": "fe6bb93191fc72e9584339878c0418b1005f3631f0e213e92b8dcbeb2bd2811e",
+      "path": "tests/python/fixtures/rtos_diagnosis/reports/phase6_diagnosis_report.json"
+    },
+    "p6_5_deterministic_review": {
+      "path": "tests/python/fixtures/rtos_diagnosis/advisor_reviews/phase6_advisor_review.json",
+      "synthetic_only": true
+    },
+    "p6_6_expected_summary": {
+      "path": "tests/python/fixtures/rtos_diagnosis/human_feedback/phase6_human_feedback_summary.json",
+      "synthetic_only": true
+    },
+    "p6_6_synthetic_feedback": {
+      "path": "tests/python/fixtures/rtos_diagnosis/human_feedback/phase6_synthetic_feedback.json",
+      "synthetic_only": true
+    }
+  },
+  "claim_boundary": {
+    "diagnosis_correctness_claimable": false,
+    "full_evidence_replay_claimable": false,
+    "human_effect_claimable": false,
+    "live_llm_quality_claimable": false,
+    "proof_correctness_claimable": false,
+    "proof_parity_claimable": false,
+    "replay_correctness_claimable": false,
+    "root_cause_correctness_claimable": false,
+    "trace_reconstruction_claimable": false,
+    "usability_improvement_claimable": false
+  },
+  "closeout_scope": "Phase 6 engineering closeout only; no new diagnosis, replay, proof, advisor, or feedback capability.",
+  "frozen_commits": [
+    {
+      "commit": "7f57ec5",
+      "frozen": true,
+      "message": "docs: add phase6 pre-approval development plan",
+      "phase_item": "P6.0"
+    },
+    {
+      "commit": "d381a8c",
+      "frozen": true,
+      "message": "phase6 add diagnosis scope lock and case schemas",
+      "phase_item": "P6.1"
+    },
+    {
+      "commit": "c187b41",
+      "frozen": true,
+      "message": "phase6 add synthetic diagnosis fixtures",
+      "phase_item": "P6.2"
+    },
+    {
+      "commit": "278e7ee",
+      "frozen": true,
+      "message": "phase6 add reference-only diagnosis replay validation",
+      "phase_item": "P6.3"
+    },
+    {
+      "commit": "ad8e7ab",
+      "frozen": true,
+      "message": "phase6 add deterministic diagnosis metrics report",
+      "phase_item": "P6.4"
+    },
+    {
+      "commit": "35b1505",
+      "frozen": true,
+      "message": "phase6 add isolated advisor diagnosis review variants",
+      "phase_item": "P6.5"
+    },
+    {
+      "commit": "d844474",
+      "frozen": true,
+      "message": "phase6 add privacy-preserving human feedback pipeline",
+      "phase_item": "P6.6"
+    }
+  ],
+  "invariants": {
+    "advisor": {
+      "deterministic_truth_modified": false,
+      "proof_drift_count": 0,
+      "truth_mutation_count": 0
+    },
+    "human_feedback": {
+      "contains_real_participant_data": false,
+      "pipeline_validation_only": true,
+      "real_participant_records_count": 0,
+      "synthetic_records_count": 8
+    },
+    "replay": {
+      "all_replay_passed": false,
+      "reference_only_count": 8,
+      "replay_fail_count": 0,
+      "replay_pass_count": 0
+    },
+    "report": {
+      "claimable_count": 0,
+      "proof_drift_count": 0,
+      "real_hardware_case_count": 0,
+      "report_only_count": 8
+    }
+  },
+  "limitations": [
+    "Reference-only metadata preservation is not a full evidence-package replay pass.",
+    "Synthetic fixtures do not establish real RTOS, hardware, correctness, generality, or causal claims.",
+    "Synthetic feedback is pipeline validation only and is not a participant study or usability result."
+  ],
+  "manifest_id": "phase6-p6-7-closeout",
+  "notes": [
+    "Deterministic manifest: no timestamp, absolute path, environment value, participant-level record, raw feedback record, proof write field, or live-model result is included."
+  ],
+  "phase": 6,
+  "pre_closeout_head": "d844474",
+  "release_readiness": {
+    "empirical_systems_evidence": "incomplete",
+    "engineering_artifact": "ready",
+    "human_evaluation": "incomplete",
+    "paper_claim_readiness": "conditionally_ready_for_artifact_scope_only",
+    "synthetic_evaluation": "ready"
+  },
+  "reproducibility_commands": [
+    "python3 -m pytest tests/python/test_phase6_closeout.py -q",
+    "python3 tool/build_phase6_closeout_manifest.py --output /tmp/phase6_closeout_manifest.json --summary --overwrite --manifest-id phase6-p6-7-closeout --test-passed <final_passed> --subtests-passed <final_subtests>",
+    "python3 -m pytest tests/python -q"
+  ],
+  "schema_mirror_checks": [
+    {
+      "matches": true,
+      "mirror": "spec/assets/schema/rtos_diagnosis_case.schema.json",
+      "source": "spec/schema/rtos_diagnosis_case.schema.json"
+    },
+    {
+      "matches": true,
+      "mirror": "spec/assets/schema/rtos_diagnosis_suite.schema.json",
+      "source": "spec/schema/rtos_diagnosis_suite.schema.json"
+    },
+    {
+      "matches": true,
+      "mirror": "spec/assets/schema/rtos_diagnosis_report.schema.json",
+      "source": "spec/schema/rtos_diagnosis_report.schema.json"
+    },
+    {
+      "matches": true,
+      "mirror": "spec/assets/schema/rtos_diagnosis_advisor_review.schema.json",
+      "source": "spec/schema/rtos_diagnosis_advisor_review.schema.json"
+    },
+    {
+      "matches": true,
+      "mirror": "spec/assets/schema/rtos_diagnosis_human_feedback_record.schema.json",
+      "source": "spec/schema/rtos_diagnosis_human_feedback_record.schema.json"
+    },
+    {
+      "matches": true,
+      "mirror": "spec/assets/schema/rtos_diagnosis_human_feedback_summary.schema.json",
+      "source": "spec/schema/rtos_diagnosis_human_feedback_summary.schema.json"
+    }
+  ],
+  "schema_version": "phase6-closeout-manifest-v1",
+  "test_baseline": {
+    "failures": 0,
+    "label": "P6.7 final full-regression result",
+    "python_test_passed": 682,
+    "skips": 0,
+    "subtests_passed": 950,
+    "warnings": 0
+  },
+  "unresolved_validation_gaps": [
+    "full_evidence_package_replay",
+    "proof_parity",
+    "complete_trace_reconstruction",
+    "real_rtos_hardware_validation",
+    "real_participant_study",
+    "live_llm_quality_evaluation",
+    "diagnosis_and_root_cause_correctness",
+    "cross_platform_generality"
+  ]
+}

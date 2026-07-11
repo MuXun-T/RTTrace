@@ -79,3 +79,25 @@ P6.2 and later require separate main-agent review and approval before implementa
 - LLM explanation is not root-cause truth and cannot substitute for known-root-cause labels or deterministic evidence.
 - P6.2+ approval is not claimable from this window. Each later phase needs separate main-agent review and approval.
 - Phase 6 does not currently support a claim that RTTrace has an evaluated RTOS diagnosis benchmark, diagnosis SOTA, or established top-k root cause performance.
+
+## P6.7 Additive Closeout Status
+
+This section records the P6.7 closeout boundary without rewriting the
+historical P6.0/P6.1 start-window record above.  P6.2 through P6.6 are frozen
+at `c187b41`, `278e7ee`, `ad8e7ab`, `35b1505`, and `d844474` respectively;
+P6.7 uses `d844474` as its pre-closeout anchor.
+
+P6.7 is limited to artifact inventory, a deterministic reproducibility
+manifest and validator, claim/limitation documentation, audit, and regression
+closeout.  It must not add or alter diagnosis, replay, report, advisor,
+feedback, proof, export, collector, hardware, real-participant, or live-LLM
+behavior.  The approved P6.7 management artifacts are
+`docs/phase6_p6_7_closeout.md`, `docs/phase6_claim_boundary_matrix.md`, and
+`docs/phase6_reproducibility_index.md`.
+
+Phase 6 may be described as having completed its approved engineering scope
+only after the P6.7 manifest, focused/full regressions, and independent review
+all pass.  That conclusion remains bounded to synthetic contracts and
+pipelines; it does not establish replay pass, proof parity, trace
+reconstruction, real RTOS correctness/generality, human effect/usability,
+advisor correctness, or live-LLM quality.

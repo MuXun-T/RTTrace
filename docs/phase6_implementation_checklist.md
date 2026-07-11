@@ -91,3 +91,26 @@ This checklist freezes the approved P6.0 and P6.1 execution window. P6.2 and lat
 - Targeted regression: future Phase 6 tests, advisor/agent tests, and `python3 -m pytest tests/python -q`.
 - Main-agent review required: yes.
 - Allowed to enter next phase from this window: no.
+
+## P6.7 Additive Closeout Checklist
+
+This checklist supplements, rather than rewrites, the historical planning
+entries above.
+
+- [x] P6.7.0: Freeze the closeout-only scope, forbidden boundaries, and
+  pre-closeout anchor `d844474`.
+- [x] P6.7.1: Inventory the seven frozen Phase 6 commits and artifact groups.
+- [x] P6.7.2: Add the claim boundary matrix, limitations/open gaps, and
+  conservative layered paper-readiness assessment.
+- [x] P6.7.3: Specify the deterministic reproducibility manifest, repository
+  relative-path rules, command index, and focused validation gate.
+- [x] P6.7.4: Complete the all-phase audit, including schema mirrors,
+  canonical hash, isolation, frozen-boundary, and prohibited-data checks.
+- [x] P6.7.5: Record passing focused, Phase 6, Phase 5 boundary, and full
+  Python regressions in the closeout manifest.
+- [x] P6.7.6: Obtain independent verification and complete final worktree
+  audit; no commit is authorized by this checklist.
+
+Completion condition: the final three boxes are checked only after their
+commands and independent review have actually passed.  P6.7 does not open
+P6.8 or Phase 7.
