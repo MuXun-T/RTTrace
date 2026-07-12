@@ -113,9 +113,9 @@ def _forbidden(value: object) -> None:
 
 @dataclass(frozen=True)
 class ExternalSourceIdentity:
-    source_id: str; source_kind: str; repository: str; repository_commit: str; source_path: str; source_artifact_id: str | None; source_checksum: str | None; source_bytes: int | None; rtos_name: str; trace_format: str; source_format_version: str; generation_mode: str; hardware_validation: bool; license_spdx: str; source_identity: str
+    source_id: str; source_kind: str; repository: str; repository_commit: str; source_path: str; source_artifact_id: str | None; source_checksum: str | None; source_bytes: int | None; rtos_name: str; trace_format: str; source_format_version: str; generation_mode: str; hardware_validation: bool; license_spdx: str; acquisition_status: str; source_identity: str
     def __post_init__(self) -> None:
-        if self.hardware_validation is not False or not all(isinstance(getattr(self, name), str) and getattr(self, name) for name in ("source_id","source_kind","repository","repository_commit","source_path","rtos_name","trace_format","source_format_version","generation_mode","license_spdx")) or not COMMIT_RE.fullmatch(self.repository_commit): raise ValueError("source types invalid")
+        if self.hardware_validation is not False or self.acquisition_status not in {"acquired", "acquisition_blocked", "external_reference_only"} or not all(isinstance(getattr(self, name), str) and getattr(self, name) for name in ("source_id","source_kind","repository","repository_commit","source_path","rtos_name","trace_format","source_format_version","generation_mode","license_spdx")) or not COMMIT_RE.fullmatch(self.repository_commit): raise ValueError("source types invalid")
         _relative_path(self.source_path,"source_path"); _sha256(self.source_identity,"source_identity")
         if (self.source_artifact_id is None) != (self.source_checksum is None) or (self.source_checksum is None) != (self.source_bytes is None): raise ValueError("source local-artifact fields invalid")
         if self.source_artifact_id is not None: _string(self.source_artifact_id,"source_artifact_id"); _sha256(self.source_checksum,"source_checksum"); _count(self.source_bytes,"source_bytes")
@@ -130,7 +130,7 @@ class ExternalSourceIdentity:
         commit = _string(row["repository_commit"], "repository_commit")
         if not COMMIT_RE.fullmatch(commit): raise ValueError("repository_commit is invalid")
         values = {name: row[name] for name in fields}
-        for name in ("source_id", "source_kind", "repository", "rtos_name", "trace_format", "source_format_version", "generation_mode", "license_spdx", "source_identity"):
+        for name in ("source_id", "source_kind", "repository", "rtos_name", "trace_format", "source_format_version", "generation_mode", "license_spdx", "acquisition_status", "source_identity"):
             values[name] = _sha256(row[name], name) if name == "source_identity" else _string(row[name], name)
         values["repository_commit"] = commit; values["source_path"] = _relative_path(row["source_path"], "source_path")
         if row["source_artifact_id"] is not None: values["source_artifact_id"] = _string(row["source_artifact_id"], "source_artifact_id"); values["source_checksum"] = _sha256(row["source_checksum"], "source_checksum")
