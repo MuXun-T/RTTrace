@@ -1,0 +1,1 @@
+{"actual_schema_version":"p7.4-v1","comparison_profile_id":"p7.4-freertos-semantic-exact-v1","exact_fields":["first_timestamp","last_timestamp","normalized_event_count"],"expected_schema_version":"p7.4-v1","hardware_validation":false,"ignored_fields":[],"profile_version":"v1","replay_profile_id":"p7.4-freertos-v1","tolerated_fields":[]}
