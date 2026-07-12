@@ -9,4 +9,4 @@ def normalize_btf(trace:ParsedBtfTrace)->tuple[SemanticEvent,...]:
   result.append(SemanticEvent(len(result),row.timestamp,"us","btf",int(row.subject.split("_")[1]) if row.subject.startswith("Core_") else None,None,task_name,kind,None,None,None,None,None,None,(("action",row.action),),row.source_record_index))
  return tuple(result)
 def normalize_vcd(trace:ParsedVcdTrace)->tuple[SemanticEvent,...]:
- return tuple(SemanticEvent(i,row.timestamp,"us","vcd",None,None,None,EventKind.MARKER,None,None,None,row.identifier,"signal",int(row.value) if row.value in {"0","1"} else None,(("value",row.value),),row.source_record_index) for i,row in enumerate(trace.changes))
+ return tuple(SemanticEvent(i,row.timestamp,"us","vcd",None,None,None,EventKind.MARKER,None,None,None,None,"signal",int(row.value) if row.value in {"0","1"} else None,(("signal",row.identifier),("value",row.value)),row.source_record_index) for i,row in enumerate(trace.changes))
