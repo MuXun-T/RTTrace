@@ -189,7 +189,7 @@ def _provenance_reasons(read: DirectoryPackageRead, descriptors: FrozenSourceDes
     if manifest.source.hardware_validation is not False or source["hardware_validation"] is not False or manifest.source.source_kind != source["data_class"] or manifest.source.source_format_version != "p7.2-source-inventory-v1": reasons.append(PackageOpenReason.SOURCE_IDENTITY_MISMATCH)
     status = source["acquisition_status"]
     if status == "acquired":
-        if manifest.package_kind is not PackageKind.SELF_CONTAINED or manifest.external_references: reasons.append(PackageOpenReason.SOURCE_IDENTITY_MISMATCH)
+        if manifest.package_kind not in {PackageKind.SELF_CONTAINED, PackageKind.HYBRID} or manifest.external_references and manifest.package_kind is PackageKind.SELF_CONTAINED: reasons.append(PackageOpenReason.SOURCE_IDENTITY_MISMATCH)
         primary = next((item for item in descriptors.descriptors if item.source_id == manifest.source.source_id and item.artifact_id == manifest.source.source_artifact_id), None)
         if primary is None or (manifest.source.source_path, manifest.source.source_checksum, manifest.source.source_bytes) != (primary.source_path, primary.sha256, primary.bytes): reasons.append(PackageOpenReason.SOURCE_IDENTITY_MISMATCH)
     else:
