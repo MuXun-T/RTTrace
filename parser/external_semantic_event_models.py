@@ -71,7 +71,7 @@ class SemanticEvent:
 
 @dataclass(frozen=True)
 class ComparisonProfile:
-    profile_id:str; profile_version:str; replay_profile_id:str; expected_schema_version:str; actual_schema_version:str; exact_fields:tuple[str,...]; ignored_fields:tuple[str,...]; tolerated_fields:tuple[str,...]; field_tolerances:tuple[tuple[str,int],...]; ordering_rules:str; missing_field_policy:str; extra_field_policy:str; mismatch_classification:tuple[MismatchClass,...]
+    profile_id:str; profile_version:str; profile_identity:str; replay_profile_id:str; expected_schema_version:str; actual_schema_version:str; exact_fields:tuple[str,...]; ignored_fields:tuple[str,...]; tolerated_fields:tuple[str,...]; field_tolerances:tuple[tuple[str,int],...]; ordering_rules:str; missing_field_policy:str; extra_field_policy:str; mismatch_classification:tuple[MismatchClass,...]
     def __post_init__(self)->None:
         groups=(self.exact_fields,self.ignored_fields,self.tolerated_fields)
         if not all(isinstance(x,str) and x for group in groups for x in group) or any(tuple(sorted(set(x)))!=x for x in groups) or set(self.exact_fields)&set(self.ignored_fields) or set(self.exact_fields)&set(self.tolerated_fields) or set(self.ignored_fields)&set(self.tolerated_fields): raise ValueError("profile fields")
@@ -87,6 +87,9 @@ class Mismatch:
         if self.event_index is not None: _count(self.event_index,"event_index")
     def to_dict(self)->dict[str,object]: return {**asdict(self),"mismatch_class":self.mismatch_class.value}
 
+def mismatch_order_key(value:Mismatch)->tuple[object,...]:
+    return (value.event_index is None, -1 if value.event_index is None else value.event_index, value.mismatch_class.value, value.field, canonical_json(value.expected_value), canonical_json(value.actual_value))
+
 @dataclass(frozen=True)
 class ReplayInvariantResult:
     invariant_id:str; passed:bool; event_index:int|None; reason:ReplayReason|None
@@ -96,15 +99,30 @@ class ReplayInvariantResult:
     def to_dict(self)->dict[str,object]: return {"invariant_id":self.invariant_id,"passed":self.passed,"event_index":self.event_index,"reason":None if self.reason is None else self.reason.value}
 
 @dataclass(frozen=True)
-class ReplayReport:
-    replay_state:ReplayState; replay_attempted:bool; comparison_attempted:bool; primary_reason:ReplayReason|None; reason_codes:tuple[ReplayReason,...]; package_open_result:str; replay_profile_id:str; comparison_profile_id:str; source_identity:str|None; package_identity:str|None; trace_identity:str|None; expected_identity:str|None; actual_identity:str|None; source_mutation_count:int; package_mutation_count:int; raw_trace_mutation_count:int; llm_invocation_count:int=0; advisor_invocation_count:int=0; feedback_invocation_count:int=0; network_invocation_count:int=0; shell_invocation_count:int=0; subprocess_invocation_count:int=0; hardware_validation:bool=False
+class TimestampRegression:
+    source_record_index:int; physical_line:int; previous_timestamp:int; current_timestamp:int; cpu_id:int|None; reason:ReplayReason=ReplayReason.TIMESTAMP_REGRESSION
     def __post_init__(self)->None:
-        if not all(isinstance(x,bool) for x in (self.replay_attempted,self.comparison_attempted,self.hardware_validation)) or self.hardware_validation: raise ValueError("hardware")
+        for name in ("source_record_index","physical_line","previous_timestamp","current_timestamp"): _count(getattr(self,name),name)
+        if self.physical_line < 5 or self.previous_timestamp <= self.current_timestamp or self.cpu_id is not None and (not isinstance(self.cpu_id,int) or isinstance(self.cpu_id,bool) or self.cpu_id<0) or self.reason is not ReplayReason.TIMESTAMP_REGRESSION: raise ValueError("timestamp regression")
+    def to_dict(self)->dict[str,object]: return asdict(self) | {"reason":self.reason.value}
+
+@dataclass(frozen=True)
+class ReplayReport:
+    replay_state:ReplayState; replay_attempted:bool; comparison_attempted:bool; comparison_completed:bool; comparison_matched:bool|None; primary_reason:ReplayReason|None; reason_codes:tuple[ReplayReason,...]; package_open_result:str; replay_profile_id:str; comparison_profile_id:str; comparison_profile_version:str|None; comparison_profile_identity:str|None; source_identity:str|None; package_identity:str|None; trace_identity:str|None; expected_identity:str|None; actual_identity:str|None; actual_output:tuple[tuple[str,int|None],...]; normalized_event_count:int|None; mismatches:tuple[Mismatch,...]; invariants:tuple[ReplayInvariantResult,...]; timestamp_regressions:tuple[TimestampRegression,...]; source_mutation_count:int; package_mutation_count:int; raw_trace_mutation_count:int; llm_invocation_count:int=0; advisor_invocation_count:int=0; feedback_invocation_count:int=0; network_invocation_count:int=0; shell_invocation_count:int=0; subprocess_invocation_count:int=0; hardware_validation:bool=False
+    def __post_init__(self)->None:
+        if not all(isinstance(x,bool) for x in (self.replay_attempted,self.comparison_attempted,self.comparison_completed,self.hardware_validation)) or self.hardware_validation or self.comparison_matched is not None and not isinstance(self.comparison_matched,bool): raise ValueError("hardware")
         if self.reason_codes != ordered_reasons(self.reason_codes) or self.primary_reason != (self.reason_codes[0] if self.reason_codes else None): raise ValueError("reasons")
         for name in ("source_mutation_count","package_mutation_count","raw_trace_mutation_count","llm_invocation_count","advisor_invocation_count","feedback_invocation_count","network_invocation_count","shell_invocation_count","subprocess_invocation_count"): _count(getattr(self,name),name)
-        for name in ("source_identity","package_identity","trace_identity","expected_identity","actual_identity"): _sha(getattr(self,name),name)
-        if self.replay_state in {ReplayState.NOT_EVALUATED,ReplayState.REFERENCE_ONLY} and (self.replay_attempted or self.comparison_attempted): raise ValueError("attempt")
-        if self.replay_state is ReplayState.REPLAY_PASS and (not self.replay_attempted or not self.comparison_attempted or self.reason_codes or any(getattr(self,name) for name in ("source_mutation_count","package_mutation_count","raw_trace_mutation_count","llm_invocation_count","advisor_invocation_count","feedback_invocation_count","network_invocation_count","shell_invocation_count","subprocess_invocation_count"))): raise ValueError("pass")
+        for name in ("comparison_profile_identity","source_identity","package_identity","trace_identity","expected_identity","actual_identity"): _sha(getattr(self,name),name)
+        if tuple(sorted(self.actual_output)) != self.actual_output or any(not isinstance(key,str) or not key or value is not None and (not isinstance(value,int) or isinstance(value,bool)) for key,value in self.actual_output): raise ValueError("actual output")
+        if self.normalized_event_count is not None: _count(self.normalized_event_count,"normalized_event_count")
+        if not all(isinstance(item,Mismatch) for item in self.mismatches) or tuple(sorted(self.mismatches,key=mismatch_order_key)) != self.mismatches or not all(isinstance(item,ReplayInvariantResult) for item in self.invariants) or not all(isinstance(item,TimestampRegression) for item in self.timestamp_regressions): raise ValueError("facts")
+        if self.comparison_completed and not self.comparison_attempted: raise ValueError("comparison")
+        if self.comparison_attempted and self.comparison_completed != (self.comparison_matched is not None): raise ValueError("comparison")
+        if self.comparison_matched is True and self.mismatches or self.comparison_matched is False and not self.mismatches: raise ValueError("comparison facts")
+        if self.replay_state in {ReplayState.NOT_EVALUATED,ReplayState.REFERENCE_ONLY} and (self.replay_attempted or self.comparison_attempted or self.comparison_completed or self.comparison_matched is not None): raise ValueError("attempt")
+        if self.replay_state is ReplayState.REPLAY_PASS and (not self.replay_attempted or not self.comparison_attempted or not self.comparison_completed or self.comparison_matched is not True or self.reason_codes or self.expected_identity is None or self.actual_identity is None or self.trace_identity is None or self.mismatches or any(getattr(self,name) for name in ("source_mutation_count","package_mutation_count","raw_trace_mutation_count","llm_invocation_count","advisor_invocation_count","feedback_invocation_count","network_invocation_count","shell_invocation_count","subprocess_invocation_count"))): raise ValueError("pass")
         if self.replay_state is ReplayState.REPLAY_FAIL and (not self.replay_attempted or not self.reason_codes): raise ValueError("fail")
+        if self.comparison_attempted and not self.comparison_completed and self.replay_state is not ReplayState.REPLAY_FAIL: raise ValueError("comparison")
     def to_dict(self)->dict[str,object]:
-        row=asdict(self); row["replay_state"]=self.replay_state.value; row["primary_reason"]=None if self.primary_reason is None else self.primary_reason.value; row["reason_codes"]=[x.value for x in self.reason_codes]; return row
+        row=asdict(self); row["replay_state"]=self.replay_state.value; row["primary_reason"]=None if self.primary_reason is None else self.primary_reason.value; row["reason_codes"]=[x.value for x in self.reason_codes]; row["actual_output"]=dict(self.actual_output); row["mismatches"]=[item.to_dict() for item in self.mismatches]; row["invariants"]=[item.to_dict() for item in self.invariants]; row["timestamp_regressions"]=[item.to_dict() for item in self.timestamp_regressions]; return row

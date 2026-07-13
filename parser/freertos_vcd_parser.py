@@ -26,7 +26,8 @@ def parse_freertos_vcd(raw:bytes)->ParsedVcdTrace:
    value=int(line[1:])
    if value>MAX_TIMESTAMP or timestamp is not None and value<timestamp: raise VcdParseError("TIMESTAMP_REGRESSION",no)
    timestamp=value; continue
-  if line and line[0] in "01xXzZ":
+  if line and line[0] in "xXzZ": raise VcdParseError("UNSUPPORTED_REQUIRED_RECORD",no)
+  if line and line[0] in "01":
    if not defined or timestamp is None or line[1:] not in ids: raise VcdParseError("PARSE_ERROR",no)
    changes.append(VcdChange(timestamp,line[1:],line[0],len(changes)))
   elif line.startswith(("b","r")): raise VcdParseError("UNSUPPORTED_REQUIRED_RECORD",no)

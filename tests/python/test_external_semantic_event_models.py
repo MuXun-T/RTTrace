@@ -5,7 +5,7 @@ from dataclasses import FrozenInstanceError
 from pathlib import Path
 import unittest
 
-from parser.external_semantic_event_models import EventKind, ReplayReason, ReplayReport, ReplayState, SemanticEvent, canonical_json, ordered_reasons
+from parser.external_semantic_event_models import EventKind, Mismatch, MismatchClass, ReplayReason, ReplayReport, ReplayState, SemanticEvent, canonical_json, ordered_reasons
 from spec.schema_loader import load_schema
 from spec.schema_validator import validate_schema
 
@@ -30,9 +30,10 @@ class SemanticEventModelTests(unittest.TestCase):
         self.assertEqual(ordered_reasons((ReplayReason.PARSE_ERROR, ReplayReason.SOURCE_MUTATED, ReplayReason.PARSE_ERROR)), (ReplayReason.SOURCE_MUTATED, ReplayReason.PARSE_ERROR))
 
     def test_replay_state_rules(self) -> None:
-        report = ReplayReport(ReplayState.REPLAY_FAIL, True, False, ReplayReason.PARSE_ERROR, (ReplayReason.PARSE_ERROR,), "opened", "p", "c", "a" * 64, "b" * 64, "c" * 64, "d" * 64, None, 0, 0, 0)
+        report = ReplayReport(ReplayState.REPLAY_FAIL, True, False, False, None, ReplayReason.PARSE_ERROR, (ReplayReason.PARSE_ERROR,), "opened", "p", "c", None, None, "a" * 64, "b" * 64, "c" * 64, "d" * 64, None, (), None, (), (), (), 0, 0, 0)
         self.assertEqual(report.to_dict()["replay_state"], "replay_fail")
-        with self.assertRaises(ValueError): ReplayReport(ReplayState.REPLAY_PASS, True, True, ReplayReason.PARSE_ERROR, (ReplayReason.PARSE_ERROR,), "opened", "p", "c", "a" * 64, "b" * 64, "c" * 64, "d" * 64, "e" * 64, 0, 0, 0)
+        with self.assertRaises(ValueError): ReplayReport(ReplayState.REPLAY_PASS, True, True, True, False, ReplayReason.PARSE_ERROR, (ReplayReason.PARSE_ERROR,), "opened", "p", "c", None, None, "a" * 64, "b" * 64, "c" * 64, "d" * 64, "e" * 64, (), None, (), (), (), 0, 0, 0)
+        with self.assertRaises(ValueError): ReplayReport(ReplayState.REPLAY_FAIL,True,True,True,False,ReplayReason.COMPARISON_MISMATCH,(ReplayReason.COMPARISON_MISMATCH,),"opened","p","c","v","f"*64,"a"*64,"b"*64,"c"*64,"d"*64,"e"*64,(),0,(Mismatch(MismatchClass.VALUE_MISMATCH,"b",None,1,2),Mismatch(MismatchClass.MISSING_ACTUAL_FIELD,"a",None,1,None)),(),(),0,0,0)
 
     def test_schema_mirrors_and_event_schema(self) -> None:
         for name in ("external_semantic_event.schema.json", "external_comparison_profile.schema.json", "external_replay_report.schema.json"):
