@@ -19,6 +19,7 @@ from tool import run_external_package_reopen
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_FIXTURE_ROOT = "tests/python/fixtures/external_validation/packages/per_case"
 RAW_FIXTURE_ROOT = "tests/python/fixtures/external_validation/sources/freertos_btf_trace/raw"
+TEMP_PARENT = Path("/tmp")
 
 
 @dataclass(frozen=True)
@@ -90,6 +91,16 @@ def read_regular_no_follow(relative_path: str) -> bytes:
         os.close(root_fd)
 
 
+def _temporary_parent() -> str:
+    fd = os.open(TEMP_PARENT, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        if not stat.S_ISDIR(os.fstat(fd).st_mode):
+            raise ValueError("temporary package parent must be a directory")
+    finally:
+        os.close(fd)
+    return str(TEMP_PARENT)
+
+
 def _manifest(spec: CasePackageSpec) -> tuple[bytes, ExternalEvidencePackageManifest]:
     raw = read_regular_no_follow(spec.manifest_relative_path)
     value = json.loads(raw.decode("utf-8"))
@@ -109,7 +120,7 @@ def materialized_case_package(spec: CasePackageSpec) -> Iterator[Path]:
     source_raw = read_regular_no_follow(spec.raw_relative_path)
     if len(source_raw) != artifact.bytes or hashlib.sha256(source_raw).hexdigest() != artifact.sha256:
         raise ValueError("frozen raw trace does not match case package manifest")
-    with tempfile.TemporaryDirectory(prefix="p7_3_case_package_") as directory:
+    with tempfile.TemporaryDirectory(prefix="p7_3_case_package_", dir=_temporary_parent()) as directory:
         package = Path(directory) / "package"
         artifact_dir = package / "artifact"
         artifact_dir.mkdir(parents=True)
@@ -124,7 +135,7 @@ def reopen_case(spec: CasePackageSpec, output: Path) -> int:
 
 
 def reproduce_case_report(spec: CasePackageSpec) -> bytes:
-    with tempfile.TemporaryDirectory(prefix="p7_3_case_report_") as directory:
+    with tempfile.TemporaryDirectory(prefix="p7_3_case_report_", dir=_temporary_parent()) as directory:
         output = Path(directory) / "report.json"
         if reopen_case(spec, output) != 0:
             raise ValueError("case package reopen did not succeed")

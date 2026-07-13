@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import socket
 import subprocess
+import tempfile
 import unittest
 from unittest import mock
 
@@ -47,7 +48,7 @@ class ExternalCaseEvidenceBindingSecurityTests(unittest.TestCase):
         self.assertEqual(tuple(raw for raw in first), tuple(fixtures[item.case_id] for item in build_case_bindings()))
 
     def test_truth_path_does_not_invoke_side_effect_or_replay_apis(self) -> None:
-        with mock.patch.object(socket, "create_connection", side_effect=AssertionError), mock.patch.object(subprocess, "run", side_effect=AssertionError), mock.patch("os.system", side_effect=AssertionError), mock.patch("parser.external_semantic_replay.replay", side_effect=AssertionError):
+        with mock.patch.object(socket, "create_connection", side_effect=AssertionError), mock.patch.object(subprocess, "run", side_effect=AssertionError), mock.patch("os.system", side_effect=AssertionError), mock.patch("parser.external_semantic_replay.replay", side_effect=AssertionError), mock.patch.object(tempfile, "tempdir", None), mock.patch.object(tempfile._os, "getenv", side_effect=AssertionError):
             tuple(binding_bytes(item) for item in build_case_bindings())
         self.assertTrue(callable(replay))
 
