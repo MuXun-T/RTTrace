@@ -92,6 +92,8 @@ def _report(
     reasons: tuple[ValidationReason, ...],
 ) -> LayeredValidationReport:
     proof_drift, proof_gate = evaluate_proof_parity_eligibility()
+    if proof_drift != ProofFactDrift(0, 0, ()) or proof_gate.proof_parity_eligible or proof_gate.proof_parity.value != "not_evaluated" or proof_gate.proof_correctness.value != "not_evaluated":
+        raise ValueError("P7.5 proof parity injection is unsupported")
     ordered = ordered_reasons(reasons)
     failed = any(item.layer_state is LayerState.FAILED for item in results.values())
     state = ValidationState.REFERENCE_ONLY if case_id in REFERENCE_ONLY_CASES and not failed else ValidationState.VALIDATION_FAIL if failed else ValidationState.VALIDATION_PASS
