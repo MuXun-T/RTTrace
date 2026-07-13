@@ -7,6 +7,12 @@ are `6c46055`, `826216d`, `b5ea128`, `2b2ac38`, `80bd1e1`, `003c386`,
 `96e9970`, `c81233f`, `ead3882`, and `8319be9`. No earlier commit was
 amended, squashed, rebased, reset, or cleaned.
 
+The frozen P7.5 closeout commit is
+`e1a402be95a8bd8d5d16b409c1bab12c417f2ea9`
+(`phase7: finalize layered validation and drift analysis`). This
+documentation-only follow-up records that immutable freeze hash; it is not a
+P7.5 implementation or freeze commit and does not start P7.6.
+
 ## Case Results
 
 | Case | P7.4 replay state | P7.5 validation state | Canonical SHA-256 |
