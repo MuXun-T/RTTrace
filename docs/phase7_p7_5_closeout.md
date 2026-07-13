@@ -13,6 +13,10 @@ The frozen P7.5 closeout commit is
 documentation-only follow-up records that immutable freeze hash; it is not a
 P7.5 implementation or freeze commit and does not start P7.6.
 
+Final audited repository HEAD before this documentation-only recording commit:
+`8ee70ab48d9af3cc30ba1fe7a8f23e71d3321dfa`. This recording commit is not
+self-recorded because a Git commit cannot contain its own hash.
+
 ## Case Results
 
 | Case | P7.4 replay state | P7.5 validation state | Canonical SHA-256 |
