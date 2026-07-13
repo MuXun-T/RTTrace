@@ -32,3 +32,7 @@ trace/package closure.  `hardware_validation=false`,
 `proof_parity_eligible=false`, `proof_parity=not_evaluated`,
 `proof_correctness=not_evaluated`, and `diagnosis_correctness=not_evaluated`.
 P7.5 is not started.  P7.6 is not started.
+# Final Freeze
+
+The corrective evidence binding is frozen after the independent final review
+reported `blocking=0` and `major=0`.
