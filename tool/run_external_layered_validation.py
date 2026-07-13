@@ -32,8 +32,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output")
     try:
         args = parser.parse_args(argv)
-    except SystemExit as exc:
-        return int(exc.code)
+    except SystemExit:
+        return 64
     try:
         report = validate_case(args.case)
         data = canonical_report(report)

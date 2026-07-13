@@ -9,27 +9,52 @@ from parser.external_layered_validation_models import FactDrift, ReplayFactDrift
 
 SUPPORTED_REPLAY_FACT_FIELDS = (
     "actual_identity",
+    "actual_output",
+    "advisor_invocation_count",
     "comparison_attempted",
+    "comparison_completed",
     "comparison_matched",
     "comparison_profile_id",
     "comparison_profile_identity",
     "comparison_profile_version",
     "expected_identity",
+    "feedback_invocation_count",
     "hardware_validation",
+    "invariants",
+    "llm_invocation_count",
+    "mismatch_classes",
+    "network_invocation_count",
+    "normalized_event_count",
     "package_identity",
+    "package_mutation_count",
+    "package_open_result",
     "primary_reason",
     "raw_trace_mutation_count",
     "reason_codes",
     "replay_attempted",
+    "replay_profile_id",
     "replay_state",
+    "shell_invocation_count",
     "source_identity",
     "source_mutation_count",
+    "subprocess_invocation_count",
+    "timestamp_regressions",
     "trace_identity",
 )
 _MISSING = {"p7_5_missing_replay_fact": True}
 
 
 def _fact_value(report: Mapping[str, object], field: str) -> object:
+    if field == "mismatch_classes":
+        mismatches = report.get("mismatches")
+        if not isinstance(mismatches, list):
+            return _MISSING
+        classes: list[str] = []
+        for mismatch in mismatches:
+            if not isinstance(mismatch, Mapping) or not isinstance(mismatch.get("mismatch_class"), str):
+                return _MISSING
+            classes.append(mismatch["mismatch_class"])
+        return tuple(classes)
     return report[field] if field in report else _MISSING
 
 

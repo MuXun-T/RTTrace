@@ -15,12 +15,12 @@ from tool.run_external_layered_validation import main
 ROOT = Path(__file__).resolve().parents[2]
 REPORT_ROOT = ROOT / "tests/python/fixtures/external_validation/layered_validation/reports"
 CANONICAL_HASHES = {
-    "freertos_btf_1core": "c307bfab9555055801fc85609865de4e9fdff136d18d7d7bad277c614a25e9bd",
-    "freertos_vcd_1core": "c37c3fa77cb15b80f98ba765917e7f13efc3ac9d7a6dbe54f5cb0e5fa036100c",
-    "freertos_btf_4cores": "a492a7bcfd5b85d42ce1b5e82aa80c747d5f5ffc9e58306555f3a733657bbf5a",
-    "freertos_btf_50k": "cf107a70473b0d483c0fc5acc14f3efd604687d55efc56b4f9a682abfdfeb60f",
-    "zephyr": "d0b83fb48fc821fd40a54eb7064f50f093a5dbfaad70cb0c2fa910853485c5c6",
-    "zephelin": "ef0ac521d6a24fdc4a86bdc8d1af54b12313df149c39130e7846956f6387769d",
+    "freertos_btf_1core": "3a780068900a56614c7ee48fb28f17a23c174582c8ce877d8ba4b4b36e6d4845",
+    "freertos_vcd_1core": "35573f907a1bb40d93f0c28f2a5ec4efec324cd1b666722c7481bbf74136bb84",
+    "freertos_btf_4cores": "fe1264e642f56d21fb605077196dffe36cbec0128216c0878c28bf79a12a52d7",
+    "freertos_btf_50k": "d10399ab2ebc4204d801af178d01d198e320731969f18aee3c22f6d341f8245b",
+    "zephyr": "5749bc2d9d262c40abd0b8e6d3218fa72d2c4a42d25af93bf392882a8623e1d6",
+    "zephelin": "4036ad2a2df1ac6776f39fda74e362c638df3839a3e44c83f7fdceb1aa662e3f",
 }
 EXPECTED = {
     "freertos_btf_1core": (0, "replay_pass", "validation_pass"),

@@ -10,6 +10,11 @@ from parser.external_case_package_evidence import read_regular_no_follow
 
 
 INVENTORY_PATH = "docs/phase7_external_trace_sources/source_inventory.json"
+P7_2_PROVENANCE_PATHS = (
+    "docs/phase7_external_trace_sources/README.md",
+    "docs/phase7_external_trace_sources/acquisition_report.md",
+    "docs/phase7_external_trace_sources/claim_boundary.md",
+)
 OPENED_REPORT_PATH = "tests/python/fixtures/external_validation/packages/reports/opened.json"
 PROFILE_PATH = "tests/python/fixtures/external_validation/replay/comparison_profiles/p7.4-freertos-semantic-exact-v1.json"
 _SOURCE_ROOT = "tests/python/fixtures/external_validation/sources"
@@ -25,6 +30,7 @@ REFERENCE_ONLY_CASES = {
     "zephyr": ("zephyr_pipeline", "SOURCE_ACQUISITION_BLOCKED"),
     "zephelin": ("zephelin_optional", "SOURCE_EXTERNAL_REFERENCE_ONLY"),
 }
+ACQUIRED_RAW_NAMES = ("example.btf", "example.vcd", "example-4cores.btf", "example-50k.btf")
 
 
 @dataclass(frozen=True)
@@ -70,10 +76,11 @@ def case_input_paths(case_id: str) -> tuple[str, ...]:
         source_id, raw_name = ACQUIRED_CASES[case_id]
         return (
             INVENTORY_PATH,
+            *P7_2_PROVENANCE_PATHS,
             f"{_SOURCE_ROOT}/{source_id}/SOURCE.md",
             f"{_SOURCE_ROOT}/{source_id}/LICENSE",
             f"{_SOURCE_ROOT}/{source_id}/checksums.sha256",
-            f"{_SOURCE_ROOT}/{source_id}/raw/{raw_name}",
+            *(f"{_SOURCE_ROOT}/{source_id}/raw/{name}" for name in ACQUIRED_RAW_NAMES),
             f"tests/python/fixtures/external_validation/packages/per_case/{case_id}/package_manifest.json",
             OPENED_REPORT_PATH,
             f"tests/python/fixtures/external_validation/packages/reports/per_case/{case_id}.json",
@@ -86,6 +93,7 @@ def case_input_paths(case_id: str) -> tuple[str, ...]:
         source_id, _ = REFERENCE_ONLY_CASES[case_id]
         return (
             INVENTORY_PATH,
+            *P7_2_PROVENANCE_PATHS,
             f"{_SOURCE_ROOT}/{source_id}/SOURCE.md",
             f"{_SOURCE_ROOT}/{source_id}/LICENSE",
             f"{_SOURCE_ROOT}/{source_id}/checksums.sha256",

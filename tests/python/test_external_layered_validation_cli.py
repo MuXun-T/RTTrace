@@ -21,5 +21,5 @@ def test_cli_is_canonical_stable_and_preserves_failures_and_reference_only():
 
 
 def test_cli_rejects_usage_and_repository_output():
-    assert main([]) == 2
+    assert main([]) == 64
     assert main(["--case", "freertos_btf_1core", "--output", str(ROOT / "report.json")]) == 70

@@ -17,13 +17,13 @@ class ExternalEvidenceClosureValidatorTests(unittest.TestCase):
             with self.subTest(case_id=case_id):
                 value = closure.validate_evidence_closure(case_id)
                 self.assertEqual(value.closure_result.closure_state.value, "passed")
-                self.assertEqual(value.closure_result.required_artifact_count, 12)
+                self.assertEqual(value.closure_result.required_artifact_count, 18)
                 self.assertTrue(all(item.matched for item in value.identity_bindings))
         for case_id in ("zephyr", "zephelin"):
             with self.subTest(case_id=case_id):
                 value = closure.validate_evidence_closure(case_id)
                 self.assertEqual(value.closure_result.closure_state.value, "passed")
-                self.assertEqual(value.closure_result.required_artifact_count, 5)
+                self.assertEqual(value.closure_result.required_artifact_count, 8)
                 self.assertEqual([item.binding_kind for item in value.identity_bindings], ["p7_2_to_p7_4_source_identity"])
 
     def test_embedded_binding_identity_and_fixture_sha_are_independent_checks(self) -> None:
@@ -31,6 +31,15 @@ class ExternalEvidenceClosureValidatorTests(unittest.TestCase):
         facts = {item.binding_kind: item for item in value.identity_bindings}
         self.assertEqual(facts["binding_fixture_sha256"].expected_identity, closure.ACQUIRED_BINDING_FIXTURE_SHA256["freertos_btf_1core"])
         self.assertNotEqual(facts["binding_fixture_sha256"].expected_identity, facts["embedded_binding_identity"].expected_identity)
+        self.assertTrue({"p7_3_manifest_sha256", "p7_3_source_identity", "p7_3_artifact_identity", "p7_3_report_sha256", "p7_4_replay_report_sha256"}.issubset(facts))
+
+    def test_p7_2_provenance_license_checksum_and_legacy_report_are_baseline_bound(self) -> None:
+        with mock.patch.dict(closure.P7_2_PROVENANCE_INPUT_SHA256, {"tests/python/fixtures/external_validation/sources/zephyr_pipeline/LICENSE": "0" * 64}):
+            with self.assertRaises(ValueError):
+                closure.validate_evidence_closure("zephyr")
+        with mock.patch.object(closure, "LEGACY_OPENED_REPORT_SHA256", "0" * 64):
+            with self.assertRaises(ValueError):
+                closure.validate_evidence_closure("freertos_btf_1core")
 
     def test_missing_or_replaced_frozen_inputs_fail_closed(self) -> None:
         expected_path = "tests/python/fixtures/external_validation/replay/expected/freertos_btf_1core.expected.json"

@@ -12,14 +12,14 @@ class ExternalValidationIntakeTests(unittest.TestCase):
             with self.subTest(case_id=case_id):
                 intake = intake_case(case_id)
                 self.assertTrue(intake.acquired)
-                self.assertEqual(len(intake.logical_paths), 12)
+                self.assertEqual(len(intake.logical_paths), 18)
                 self.assertIn(f"tests/python/fixtures/external_validation/evidence_bindings/{case_id}.json", intake.logical_paths)
                 self.assertIn(f"tests/python/fixtures/external_validation/replay/expected/{case_id}.expected.json", intake.logical_paths)
         for case_id in REFERENCE_ONLY_CASES:
             with self.subTest(case_id=case_id):
                 intake = intake_case(case_id)
                 self.assertFalse(intake.acquired)
-                self.assertEqual(len(intake.logical_paths), 5)
+                self.assertEqual(len(intake.logical_paths), 8)
                 self.assertFalse(any("evidence_bindings" in path or "/expected/" in path for path in intake.logical_paths))
 
     def test_unknown_case_and_post_intake_mutation_fail_closed(self) -> None:

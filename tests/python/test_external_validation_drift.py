@@ -6,6 +6,7 @@ import json
 import unittest
 
 from parser.external_replay_equivalence_validator import reproduce_and_compare_p7_4
+from parser.external_replay_equivalence_validator import EQUIVALENCE_FACT_FIELDS
 from parser.external_layered_validation_models import ValidationProfile
 from parser.external_validation_drift import SUPPORTED_REPLAY_FACT_FIELDS, analyze_replay_fact_drift, replay_fact_digest
 
@@ -35,6 +36,18 @@ class ExternalValidationDriftTests(unittest.TestCase):
         self.assertEqual(drift.replay_fact_drift_count, 3)
         self.assertEqual([item.fact_id for item in drift.replay_fact_drift_items], ["primary_reason", "reason_codes", "replay_state"])
         self.assertNotEqual(replay_fact_digest(frozen, PROFILE), replay_fact_digest(changed, PROFILE))
+
+    def test_profile_covers_every_equivalence_fact_including_nested_replay_results(self) -> None:
+        self.assertEqual(SUPPORTED_REPLAY_FACT_FIELDS, EQUIVALENCE_FACT_FIELDS)
+        frozen = reproduce_and_compare_p7_4("freertos_btf_1core").frozen_report
+        changed = copy.deepcopy(frozen)
+        changed["actual_output"]["normalized_event_count"] = 0
+        changed["comparison_completed"] = False
+        changed["normalized_event_count"] = 0
+        changed["invariants"] = [{"invariant_id": "changed", "passed": False, "event_index": 0, "reason": "TIMESTAMP_REGRESSION"}]
+        changed["timestamp_regressions"] = [{"source_record_index": 0, "physical_line": 5, "previous_timestamp": 1, "current_timestamp": 0, "cpu_id": None, "reason": "TIMESTAMP_REGRESSION"}]
+        drift = analyze_replay_fact_drift(frozen, changed, PROFILE)
+        self.assertEqual([item.fact_id for item in drift.replay_fact_drift_items], ["actual_output", "comparison_completed", "invariants", "normalized_event_count", "timestamp_regressions"])
 
     def test_report_only_and_unsupported_profile_fields_do_not_expand_drift(self) -> None:
         frozen = reproduce_and_compare_p7_4("freertos_btf_1core").frozen_report
