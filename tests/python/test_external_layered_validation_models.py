@@ -86,6 +86,9 @@ class ExternalLayeredValidationModelTests(unittest.TestCase):
         self.assertEqual(value.proof_fact_drift.comparable_proof_fact_count, 0)
         self.assertFalse(value.proof_parity_eligibility.proof_parity_eligible)
         self.assertEqual(value.proof_parity_eligibility.proof_parity, ProofParity.NOT_EVALUATED)
+        self.assertEqual(value.to_dict()["proof_parity_eligible"], False)
+        self.assertEqual(value.to_dict()["proof_parity"], "not_evaluated")
+        self.assertEqual(value.to_dict()["proof_correctness"], "not_evaluated")
         with self.assertRaises(FrozenInstanceError):
             value.validation_state = ValidationState.VALIDATION_FAIL  # type: ignore[misc]
 
@@ -95,6 +98,9 @@ class ExternalLayeredValidationModelTests(unittest.TestCase):
         self.assertIsNone(validate_schema(load_schema(name), report().to_dict()))
         bad = copy.deepcopy(report().to_dict()); bad["extra"] = True
         self.assertIsNotNone(validate_schema(load_schema(name), bad))
+        bad = report().to_dict(); bad["proof_parity"] = "parity_pass"
+        with self.assertRaises(ValueError):
+            LayeredValidationReport.from_dict(bad)
 
     def test_ordering_and_empty_proof_domain_rules_fail_closed(self) -> None:
         with self.assertRaises(ValueError):

@@ -438,6 +438,9 @@ class LayeredValidationReport:
             "replay_fact_drift": self.replay_fact_drift.to_dict(),
             "proof_fact_drift": self.proof_fact_drift.to_dict(),
             "proof_parity_eligibility": self.proof_parity_eligibility.to_dict(),
+            "proof_parity_eligible": self.proof_parity_eligibility.proof_parity_eligible,
+            "proof_parity": self.proof_parity_eligibility.proof_parity.value,
+            "proof_correctness": self.proof_parity_eligibility.proof_correctness.value,
             "primary_reason": None if self.primary_reason is None else self.primary_reason.value,
             "reason_codes": [item.value for item in self.reason_codes],
             "hardware_validation": False,
@@ -445,7 +448,8 @@ class LayeredValidationReport:
 
     @classmethod
     def from_dict(cls, value: object) -> "LayeredValidationReport":
-        fields = {"report_version", *cls.__dataclass_fields__}
+        top_level_proof_fields = {"proof_parity_eligible", "proof_parity", "proof_correctness"}
+        fields = {"report_version", *cls.__dataclass_fields__, *top_level_proof_fields}
         if not isinstance(value, Mapping) or set(value) != fields or value.get("report_version") != LAYERED_VALIDATION_REPORT_VERSION or not all(isinstance(value.get(name), list) for name in ("applicable_layers", "layer_results", "identity_bindings", "reason_codes")):
             raise ValueError("validation report fields are invalid")
         row = dict(value); del row["report_version"]
@@ -459,6 +463,9 @@ class LayeredValidationReport:
         row["replay_fact_drift"] = ReplayFactDrift.from_dict(row["replay_fact_drift"])
         row["proof_fact_drift"] = ProofFactDrift.from_dict(row["proof_fact_drift"])
         row["proof_parity_eligibility"] = ProofParityEligibility.from_dict(row["proof_parity_eligibility"])
+        proof = row["proof_parity_eligibility"]
+        if (row.pop("proof_parity_eligible"), row.pop("proof_parity"), row.pop("proof_correctness")) != (proof.proof_parity_eligible, proof.proof_parity.value, proof.proof_correctness.value):
+            raise ValueError("top-level proof facts do not match eligibility detail")
         row["primary_reason"] = None if row["primary_reason"] is None else ValidationReason(row["primary_reason"])
         row["reason_codes"] = tuple(ValidationReason(item) for item in row["reason_codes"])
         return cls(**row)  # type: ignore[arg-type]
