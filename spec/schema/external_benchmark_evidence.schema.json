@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P7.6 Benchmark Evidence",
+  "type": "object",
+  "required": ["benchmark_evidence_version", "claim_strength", "hardware_validation", "environment_identity", "environment", "samples", "summaries", "acquisition_overhead"],
+  "properties": {
+    "benchmark_evidence_version": {"const": "p7.6-benchmark-v1"},
+    "claim_strength": {"const": "report_only"},
+    "hardware_validation": {"const": false},
+    "environment_identity": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "environment": {"type": "object", "additionalProperties": {"type": "string"}},
+    "samples": {"type": "array", "items": {
+      "type": "object",
+      "required": ["sample_id", "case_id", "source_trace_sha256", "trace_bytes", "event_count", "event_count_status", "event_count_reason", "package_identity", "workload_identity", "environment_identity", "mode", "warmup", "iteration", "status", "failure_reason", "metrics"],
+      "properties": {
+        "sample_id": {"type": "string", "pattern": "^[^/\\\\\\u0000]+$"},
+        "case_id": {"enum": ["freertos_btf_1core", "freertos_vcd_1core", "freertos_btf_4cores", "freertos_btf_50k"]},
+        "source_trace_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "trace_bytes": {"type": "integer", "minimum": 0},
+        "event_count": {"type": ["integer", "null"], "minimum": 0},
+        "event_count_status": {"enum": ["measured", "unsupported", "unavailable", "not_evaluated"]},
+        "event_count_reason": {"type": ["string", "null"]},
+        "package_identity": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "workload_identity": {"type": "string", "minLength": 1},
+        "environment_identity": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "mode": {"enum": ["process_cold", "same_process_warm"]},
+        "warmup": {"type": "boolean"},
+        "iteration": {"type": "integer", "minimum": 0},
+        "status": {"enum": ["success", "failure"]},
+        "failure_reason": {"type": ["string", "null"]},
+        "metrics": {"type": "object", "additionalProperties": {"oneOf": [
+          {"type": "object", "required": ["status", "value", "unit", "reason"], "properties": {"status": {"enum": ["measured"]}, "value": {"type": "number", "minimum": 0}, "unit": {"type": "string", "minLength": 1}, "reason": {"type": "null"}}, "additionalProperties": false},
+          {"type": "object", "required": ["status", "value", "unit", "reason"], "properties": {"status": {"enum": ["unsupported", "unavailable", "not_evaluated"]}, "value": {"type": "null"}, "unit": {"type": "string", "minLength": 1}, "reason": {"type": "string", "minLength": 1}}, "additionalProperties": false}
+        ]}}
+      },
+      "additionalProperties": false
+    }},
+    "summaries": {"type": "array", "items": {"type": "object", "required": ["case_id", "mode", "measured_sample_count", "success_count", "failure_count", "metrics"], "properties": {"case_id": {"enum": ["freertos_btf_1core", "freertos_vcd_1core", "freertos_btf_4cores", "freertos_btf_50k"]}, "mode": {"enum": ["process_cold", "same_process_warm"]}, "measured_sample_count": {"type": "integer", "minimum": 0}, "success_count": {"type": "integer", "minimum": 0}, "failure_count": {"type": "integer", "minimum": 0}, "metrics": {"type": "object"}}, "additionalProperties": false}},
+    "acquisition_overhead": {
+      "type": "object",
+      "required": ["status", "reason"],
+      "properties": {
+        "status": {"const": "not_evaluated"},
+        "reason": {"const": "missing_board_or_source_identical_firmware"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
