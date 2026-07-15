@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase 7 P7.8 Closeout Manifest",
+  "type": "object",
+  "required": ["phase7_closeout_version", "contract_version", "freeze_commits", "protected_p6", "frozen_artifacts", "schema_mirrors", "regression", "identity", "no_mutation", "claim_boundary", "issues", "reproducibility"],
+  "properties": {
+    "phase7_closeout_version": {"const": "p7.8-closeout-v1"},
+    "contract_version": {"const": "phase7-external-validation-v1"},
+    "freeze_commits": {"type": "object", "required": ["p7.1", "p7.2", "p7.3", "p7.4", "p7.5", "p7.6", "p7.7"], "properties": {
+      "p7.1": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "p7.2": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "p7.3": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "p7.4": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "p7.5": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "p7.6": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "p7.7": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+    }, "additionalProperties": false},
+    "protected_p6": {"type": "object", "required": ["freeze_commit", "canonical_sha256"], "properties": {"freeze_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "canonical_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false},
+    "frozen_artifacts": {"type": "array", "items": {"type": "object", "required": ["phase", "relative_path", "sha256"], "properties": {"phase": {"enum": ["p7.1", "p7.2", "p7.3", "p7.4", "p7.5", "p7.6", "p7.7"]}, "relative_path": {"type": "string", "pattern": "^[^./][^\\\\]*$"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false}},
+    "schema_mirrors": {"type": "object", "required": ["status", "paths", "sha256"], "properties": {"status": {"const": "byte_identical"}, "paths": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "string"}}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false},
+    "regression": {"type": "object", "required": ["focused_command", "focused_exit_code", "focused_passed", "focused_failed", "full_command", "full_exit_code", "full_passed", "full_failed"], "properties": {"focused_command": {"type": "string", "minLength": 1}, "focused_exit_code": {"type": "integer", "minimum": 0}, "focused_passed": {"type": "integer", "minimum": 0}, "focused_failed": {"type": "integer", "minimum": 0}, "full_command": {"type": "string", "minLength": 1}, "full_exit_code": {"type": "integer", "minimum": 0}, "full_passed": {"type": "integer", "minimum": 0}, "full_failed": {"type": "integer", "minimum": 0}}, "additionalProperties": false},
+    "identity": {"type": "object", "required": ["source_identity", "package_identity", "raw_trace_identity", "benchmark_evidence_identity", "baseline_capability_identity"], "properties": {"source_identity": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "package_identity": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "raw_trace_identity": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "benchmark_evidence_identity": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "baseline_capability_identity": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false},
+    "no_mutation": {"type": "object", "required": ["status", "checked_paths"], "properties": {"status": {"const": "pass"}, "checked_paths": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false},
+    "claim_boundary": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "issues": {"type": "object", "required": ["open", "accepted", "governance_deviations"], "properties": {"open": {"type": "array", "items": {"type": "string"}}, "accepted": {"type": "array", "items": {"type": "string"}}, "governance_deviations": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false},
+    "reproducibility": {"type": "object", "required": ["commands", "clean_checkout_required"], "properties": {"commands": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}, "clean_checkout_required": {"const": true}}, "additionalProperties": false}
+  },
+  "additionalProperties": false
+}

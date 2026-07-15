@@ -1,0 +1,80 @@
+{
+  "claim_boundary": [
+    "P7.1-P7.7 approved scope is represented by independent frozen evidence.",
+    "Declared external packages and traces may be reopened under their frozen contracts.",
+    "P7.6 records limited host performance observations only.",
+    "P7.7 records capability and comparability evidence only.",
+    "Phase 7 artifacts, tests, hashes, and risks are reproducibly auditable."
+  ],
+  "contract_version": "phase7-external-validation-v1",
+  "freeze_commits": {
+    "p7.1": "aea923b91b4555f9af8dcdd3e1d78f512dede1d1",
+    "p7.2": "6a11064756b4b7f3a366b59f32064ae7220b655f",
+    "p7.3": "42b651f5e01f12846e13ac4fc10e9e650be192cb",
+    "p7.4": "f25cf869bc7080909b78d80b565c038fd9643e85",
+    "p7.5": "e1a402be95a8bd8d5d16b409c1bab12c417f2ea9",
+    "p7.6": "32930bcdbbf1536f815b766d62b3b9d0bb03329b",
+    "p7.7": "811d292566bad5466df79209e8d0c62fa3f5645a"
+  },
+  "frozen_artifacts": [
+    {"phase": "p7.1", "relative_path": "docs/phase7_p7_1_external_validation_contract.md", "sha256": "694733522fc46b2ff4962a3c51f1a4619aaf1010d98130fd72f157ddc6c0731d"},
+    {"phase": "p7.2", "relative_path": "docs/phase7_p7_2_licensed_external_trace_plan.md", "sha256": "f3675ec1cd23142df68172963c6c72ed8acfe8f74120bd9f6867720a166d0c3a"},
+    {"phase": "p7.2", "relative_path": "tests/python/fixtures/external_validation/sources/freertos_btf_trace/raw/example.btf", "sha256": "571183cbafba85f0eeb9c74cf2350f02a4e628abe514409dd3c1b68286969f44"},
+    {"phase": "p7.2", "relative_path": "tests/python/fixtures/external_validation/sources/freertos_btf_trace/raw/example.vcd", "sha256": "7aedcf4e14bb0e34838613225ff50e6cb8d76ed62e12bcfe16aa6101b0f36997"},
+    {"phase": "p7.2", "relative_path": "tests/python/fixtures/external_validation/sources/freertos_btf_trace/raw/example-4cores.btf", "sha256": "eb15beee65c62d53a3bbf9db5ebb36318156b720e4bd909272605dfeb1c6eed1"},
+    {"phase": "p7.2", "relative_path": "tests/python/fixtures/external_validation/sources/freertos_btf_trace/raw/example-50k.btf", "sha256": "f032a6af43334abc5c5fbed6b145e711f0262e2b1dfa6d3a44a28c37b6308baa"},
+    {"phase": "p7.3", "relative_path": "tests/python/fixtures/external_validation/packages/reports/opened.json", "sha256": "dd835f9a8595cd46d61ab1c3e05c6afa6473e4d38402ebacef82ded804ddbef1"},
+    {"phase": "p7.4", "relative_path": "docs/phase7_p7_4_closeout.md", "sha256": "75237cfe1cb4cf16af568fef30ee47ff0af735bebb3a8b82643ce9d1e26951ce"},
+    {"phase": "p7.4", "relative_path": "tests/python/fixtures/external_validation/replay/reports/freertos_btf_1core.json", "sha256": "c75143ce8c2c2ec689289a6e52848cb5c4fca42ce343f6710571075478708b8d"},
+    {"phase": "p7.4", "relative_path": "tests/python/fixtures/external_validation/replay/reports/freertos_btf_4cores.json", "sha256": "199aacdc0d1341d4fd799da10d1405e034065da13fa2bfbc865af1358e53fc24"},
+    {"phase": "p7.4", "relative_path": "tests/python/fixtures/external_validation/replay/reports/freertos_btf_50k.json", "sha256": "97ef68f12bd085ed66fb0fff50c65134c70cf91b0b433991e01f9ec1fd2f98e3"},
+    {"phase": "p7.4", "relative_path": "tests/python/fixtures/external_validation/replay/reports/freertos_vcd_1core.json", "sha256": "17a8037ba36e12bd04aaa376fac253eac400585aebdee9e7ad7d751a2ebea257"},
+    {"phase": "p7.4", "relative_path": "tests/python/fixtures/external_validation/replay/reports/zephelin.json", "sha256": "15d39789104f16103842f5ea0e7404af06c1f16138c5e547ff6ba7722f23d307"},
+    {"phase": "p7.4", "relative_path": "tests/python/fixtures/external_validation/replay/reports/zephyr.json", "sha256": "3f65a0553920237433e3c762548c4925fe2723441af6d7307318a6d8425cbe98"},
+    {"phase": "p7.5", "relative_path": "tests/python/fixtures/external_validation/layered_validation/reports/freertos_btf_1core.json", "sha256": "3a780068900a56614c7ee48fb28f17a23c174582c8ce877d8ba4b4b36e6d4845"},
+    {"phase": "p7.5", "relative_path": "tests/python/fixtures/external_validation/layered_validation/reports/freertos_btf_4cores.json", "sha256": "fe1264e642f56d21fb605077196dffe36cbec0128216c0878c28bf79a12a52d7"},
+    {"phase": "p7.5", "relative_path": "tests/python/fixtures/external_validation/layered_validation/reports/freertos_btf_50k.json", "sha256": "d10399ab2ebc4204d801af178d01d198e320731969f18aee3c22f6d341f8245b"},
+    {"phase": "p7.5", "relative_path": "tests/python/fixtures/external_validation/layered_validation/reports/freertos_vcd_1core.json", "sha256": "35573f907a1bb40d93f0c28f2a5ec4efec324cd1b666722c7481bbf74136bb84"},
+    {"phase": "p7.5", "relative_path": "tests/python/fixtures/external_validation/layered_validation/reports/zephelin.json", "sha256": "4036ad2a2df1ac6776f39fda74e362c638df3839a3e44c83f7fdceb1aa662e3f"},
+    {"phase": "p7.5", "relative_path": "tests/python/fixtures/external_validation/layered_validation/reports/zephyr.json", "sha256": "5749bc2d9d262c40abd0b8e6d3218fa72d2c4a42d25af93bf392882a8623e1d6"},
+    {"phase": "p7.6", "relative_path": "docs/phase7_p7_6_closeout.md", "sha256": "63970caa82a73365a6afbf94d74de1e84c3034171ce209ef78f90784432dd16d"},
+    {"phase": "p7.7", "relative_path": "tests/python/fixtures/external_validation/baseline/contract/valid_capability_only.json", "sha256": "b43a26f621ced80fbb92637b4d82a5fd20a6174522e8371a54a1c1c82ce0fe30"}
+  ],
+  "identity": {
+    "source_identity": "ad15a481e2dde8eea0ef2b6e3feecc083e30699532296f27d1095cacaedde54b",
+    "package_identity": "dd835f9a8595cd46d61ab1c3e05c6afa6473e4d38402ebacef82ded804ddbef1",
+    "raw_trace_identity": "571183cbafba85f0eeb9c74cf2350f02a4e628abe514409dd3c1b68286969f44",
+    "benchmark_evidence_identity": "c5a7c7b43cf0fb32905eb63ef3415a073d9363c21dc54843d6240822fcc46ef4",
+    "baseline_capability_identity": "b43a26f621ced80fbb92637b4d82a5fd20a6174522e8371a54a1c1c82ce0fe30"
+  },
+  "issues": {
+    "accepted": ["P7.6 observations are limited to the specified host environment.", "P7.7 has no fair quantitative baseline evidence.", "P7.8 runner/CLI completion required primary-agent intervention after the implementation handoff paused; frozen evidence was unaffected."],
+    "governance_deviations": ["P76-PROC-01 remains an owner-accepted governance deviation."],
+    "open": ["No proof correctness or proof parity evidence is established.", "No real-hardware acquisition overhead evidence is established."]
+  },
+  "no_mutation": {
+    "checked_paths": ["collector", "desktop/evidence_export.py", "parser/evidence_models.py", "spec/schema", "spec/assets/schema"],
+    "status": "pass"
+  },
+  "phase7_closeout_version": "p7.8-closeout-v1",
+  "protected_p6": {"canonical_sha256": "fe6bb93191fc72e9584339878c0418b1005f3631f0e213e92b8dcbeb2bd2811e", "freeze_commit": "d3bcee0e40dbe7da933b067f1a6affb740fef26f"},
+  "regression": {
+    "focused_command": "PYTHONPATH=. python3 -m pytest tests/python/test_phase7_closeout_models.py -q",
+    "focused_exit_code": 0,
+    "focused_failed": 0,
+    "focused_passed": 22,
+    "full_command": "PYTHONPATH=. python3 -m pytest tests/python -q -ra",
+    "full_exit_code": 0,
+    "full_failed": 0,
+    "full_passed": 843
+  },
+  "reproducibility": {
+    "clean_checkout_required": true,
+    "commands": ["PYTHONPATH=. python3 -m pytest tests/python/test_phase7_closeout_models.py -q", "python3 tool/run_phase7_closeout_audit.py --manifest tests/python/fixtures/phase7_closeout/valid_manifest.json"]
+  },
+  "schema_mirrors": {
+    "paths": ["spec/schema/phase7_closeout_manifest.schema.json", "spec/assets/schema/phase7_closeout_manifest.schema.json"],
+    "sha256": "1aa08d8dd2ae396679cb5ab6e56267be8d0b9a2f9a68cb0d028e30716bab4984",
+    "status": "byte_identical"
+  }
+}
