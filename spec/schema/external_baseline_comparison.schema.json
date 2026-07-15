@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P7.7 External Baseline Comparison",
+  "type": "object",
+  "required": ["external_baseline_comparison_version", "inventory", "gates", "comparison_status", "raw_results", "summaries"],
+  "properties": {
+    "external_baseline_comparison_version": {"const": "p7.7-external-baseline-v1"},
+    "inventory": {"type": "array", "items": {"$ref": "#/$defs/inventory"}},
+    "gates": {"type": "array", "minItems": 7, "maxItems": 7, "prefixItems": [
+      {"$ref": "#/$defs/gate_trace"}, {"$ref": "#/$defs/gate_case"}, {"$ref": "#/$defs/gate_scope"}, {"$ref": "#/$defs/gate_truth"}, {"$ref": "#/$defs/gate_environment"}, {"$ref": "#/$defs/gate_metric"}, {"$ref": "#/$defs/gate_failure"}
+    ], "items": false},
+    "comparison_status": {"enum": ["quantitative", "capability_only", "not_comparable", "not_applicable", "not_evaluated"]},
+    "raw_results": {"type": "array", "items": {"$ref": "#/$defs/raw_result"}},
+    "summaries": {"type": "array", "items": {"$ref": "#/$defs/summary"}}
+  },
+  "allOf": [
+    {"if": {"properties": {"comparison_status": {"const": "quantitative"}}}, "then": {"properties": {"raw_results": {"minItems": 1}, "summaries": {"minItems": 1}}}, "else": {"properties": {"summaries": {"maxItems": 0}}}}
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "pattern": "^[^/\\\\\\u0000\\r\\n]+$"},
+    "evidence": {"type": "object", "required": ["value", "reason"], "properties": {"value": {"type": ["string", "null"]}, "reason": {"type": ["string", "null"]}}, "additionalProperties": false},
+    "capability": {"type": "object", "required": ["name", "status", "reason"], "properties": {"name": {"$ref": "#/$defs/text"}, "status": {"enum": ["supported", "unsupported", "not_applicable", "not_evaluated"]}, "reason": {"type": ["string", "null"]}}, "additionalProperties": false},
+    "inventory": {"type": "object", "required": ["baseline_id", "category", "candidate_status", "source", "version", "license", "availability", "capabilities"], "properties": {"baseline_id": {"$ref": "#/$defs/text"}, "category": {"enum": ["rtos_trace_viewer", "trace_compass", "perfetto", "rtos_vendor_tool", "custom_full_trace", "no_evidence_package"]}, "candidate_status": {"const": "not_evaluated"}, "source": {"$ref": "#/$defs/evidence"}, "version": {"$ref": "#/$defs/evidence"}, "license": {"$ref": "#/$defs/evidence"}, "availability": {"$ref": "#/$defs/evidence"}, "capabilities": {"type": "array", "items": {"$ref": "#/$defs/capability"}}}, "additionalProperties": false},
+    "gate": {"type": "object", "required": ["name", "status", "reason"], "properties": {"name": {"enum": ["same_raw_trace_sha256", "same_case_workload", "same_input_scope", "matched_truth_boundary", "same_or_approved_equivalent_environment", "same_metric_unit_statistics", "same_failure_exclusion_policy"]}, "status": {"enum": ["pass", "nonpass"]}, "reason": {"type": ["string", "null"]}}, "additionalProperties": false},
+    "gate_trace": {"allOf": [{"$ref": "#/$defs/gate"}, {"properties": {"name": {"const": "same_raw_trace_sha256"}}}]},
+    "gate_case": {"allOf": [{"$ref": "#/$defs/gate"}, {"properties": {"name": {"const": "same_case_workload"}}}]},
+    "gate_scope": {"allOf": [{"$ref": "#/$defs/gate"}, {"properties": {"name": {"const": "same_input_scope"}}}]},
+    "gate_truth": {"allOf": [{"$ref": "#/$defs/gate"}, {"properties": {"name": {"const": "matched_truth_boundary"}}}]},
+    "gate_environment": {"allOf": [{"$ref": "#/$defs/gate"}, {"properties": {"name": {"const": "same_or_approved_equivalent_environment"}}}]},
+    "gate_metric": {"allOf": [{"$ref": "#/$defs/gate"}, {"properties": {"name": {"const": "same_metric_unit_statistics"}}}]},
+    "gate_failure": {"allOf": [{"$ref": "#/$defs/gate"}, {"properties": {"name": {"const": "same_failure_exclusion_policy"}}}]},
+    "metric": {"type": "object", "required": ["name", "unit", "value"], "properties": {"name": {"$ref": "#/$defs/text"}, "unit": {"$ref": "#/$defs/text"}, "value": {"type": "number", "minimum": 0}}, "additionalProperties": false},
+    "raw_result": {"type": "object", "required": ["sample_id", "status", "failure_reason", "metrics"], "properties": {"sample_id": {"$ref": "#/$defs/text"}, "status": {"enum": ["success", "failure"]}, "failure_reason": {"type": ["string", "null"]}, "metrics": {"type": "array", "items": {"$ref": "#/$defs/metric"}}}, "additionalProperties": false},
+    "summary": {"type": "object", "required": ["metric_name", "unit", "sample_count", "median", "mad", "minimum", "maximum", "failure_count"], "properties": {"metric_name": {"$ref": "#/$defs/text"}, "unit": {"$ref": "#/$defs/text"}, "sample_count": {"type": "integer", "minimum": 1}, "median": {"type": "number", "minimum": 0}, "mad": {"type": "number", "minimum": 0}, "minimum": {"type": "number", "minimum": 0}, "maximum": {"type": "number", "minimum": 0}, "failure_count": {"type": "integer", "minimum": 0}}, "additionalProperties": false}
+  }
+}
