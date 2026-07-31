@@ -1,0 +1,5 @@
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=IRQ_SMOKE build_hash=h3-alientek-elite-irq-20260729 session=alientek-elite-irq-20260729T123610Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 CAPTURE_ARMED source=swd_gate
+RTD1 EPOCH_BEGIN seq=1 tick=30525 variant=IRQ_SMOKE
+RTD1 EPOCH_END seq=1 tick=30530
+RTD1 H

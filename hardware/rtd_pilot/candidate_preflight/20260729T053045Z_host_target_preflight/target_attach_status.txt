@@ -1,0 +1,6 @@
+preflight_time_utc=2026-07-29T05:30:45Z
+scope=nonformal-electrical-link
+operation=read-only SWD attach and status; attach mode does not request reset or halt
+command=pyocd commander --no-config --no-wait --connect attach --uid 0001A0000001 --target stm32f103ze --command status
+
+Core 0 (Cortex-M3):  Running

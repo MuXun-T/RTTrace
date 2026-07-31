@@ -1,0 +1,7 @@
+This attempted session is retained but not used for H3 evidence.
+
+After the H3 BOOT/configuration was observed with no pre-gate trace records,
+the target was intentionally halted for a read-only PC diagnosis before any
+DSView arming or gate release. PC was in the FreeRTOS Idle task. The deliberate
+halt breaks the required continuous capture session, so this directory has no
+formal Observer or collector result. A new hash-bound session is required.

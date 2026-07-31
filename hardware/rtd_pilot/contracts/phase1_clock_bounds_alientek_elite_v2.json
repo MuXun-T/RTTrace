@@ -1,0 +1,19 @@
+{
+  "schema_version": "phase1-clock-bounds-v1",
+  "status": "operator-approved",
+  "approved_at": "2026-07-29",
+  "authority": "workspace operator",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "capture_profile": "calibration_20mhz",
+  "source_captures": [
+    "20260729T092604Z_formal_task_smoke_alientek_elite_v2_retry1",
+    "20260729T120049Z_formal_mutex_smoke_alientek_elite_v2_retry1",
+    "20260729T131225Z_formal_gpio_uart_recorder_alientek_elite_v2_retry1"
+  ],
+  "bounds": {
+    "max_absolute_drift_ppm": 314.0699999999488,
+    "max_ch1_period_absolute_error_s": 7.499999999998827e-07,
+    "max_alignment_residual_s": 0.0
+  },
+  "rationale": "Each bound is the maximum from the first three chronologically accepted independent Alientek calibration sessions; no later capture relaxes it."
+}

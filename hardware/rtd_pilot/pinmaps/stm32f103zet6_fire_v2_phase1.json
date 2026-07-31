@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase1-pinmap-v2",
+  "status": "photo-audited-preflash",
+  "board": "Wildfire Fire STM32F103ZET6 V2",
+  "logic_voltage": "3.3V",
+  "observer": "DSLogic / DSView",
+  "photo_orientation": "Top view: RJ45 at upper-left, microSD at upper-right, main GPIO header horizontal between the RTC area and LCD.",
+  "channels": {
+    "0": {"role": "EPOCH", "gpio": "PC2", "header": "main GPIO header, LCD-side row, silk PC2", "board_load": "none confirmed", "physical_active_level": "high", "logical_active_level": "high"},
+    "1": {"role": "CALIBRATION_TIMER", "gpio": "PC3", "header": "main GPIO header, RTC/SD-card-side row, silk PC3", "board_load": "none confirmed", "physical_active_level": "high", "logical_active_level": "high"},
+    "2": {"role": "TASK_A_RUNNING", "gpio": "PC4", "header": "main GPIO header, LCD-side row, silk PC4", "board_load": "none confirmed", "physical_active_level": "high", "logical_active_level": "high"},
+    "3": {"role": "TASK_B_RUNNING", "gpio": "PC5", "header": "main GPIO header, RTC/SD-card-side row, silk PC5", "board_load": "none confirmed", "physical_active_level": "high", "logical_active_level": "high"},
+    "4": {"role": "MUTEX_HOLD", "gpio": "PC6", "header": "main GPIO header, LCD-side row, silk PC6", "board_load": "none confirmed", "physical_active_level": "high", "logical_active_level": "high"},
+    "5": {"role": "MUTEX_WAIT", "gpio": "PC7", "header": "main GPIO header, RTC/SD-card-side row, silk PC7", "board_load": "none confirmed", "physical_active_level": "high", "logical_active_level": "high"},
+    "6": {"role": "IRQ_ACTIVE", "gpio": "PB5", "header": "main GPIO header, silk PB5", "board_load": "board RGB red LED, low level lights LED", "physical_active_level": "high", "logical_active_level": "high", "led_correlation": "logical_active=LED_off"},
+    "7": {"role": "RECORDER_PRESSURE", "gpio": "PB0", "header": "main GPIO header, silk PB0", "board_load": "board RGB green LED, low level lights LED", "physical_active_level": "high", "logical_active_level": "high", "led_correlation": "logical_active=LED_off"}
+  },
+  "uart": {"peripheral": "USART1", "tx_gpio": "PA9", "rx_gpio": "PA10", "device": "/dev/ttyUSB0", "format": "115200 8N1 no-flow-control", "header": "on-board CH340 route; photo-visible UART jumper block must select USART1 PA9/PA10"},
+  "excluded": ["PC0", "PC1", "PB10", "PA13/SWDIO", "PA14/SWCLK", "NRST", "BOOT0", "BOOT1", "HSE/LSE crystal pins", "3V3 rails", "5V rails", "LCD/FSMC/SDRAM/SDIO/Ethernet pins not explicitly audited"],
+  "ground": "DSLogic GND to any board GND pin on the main GPIO header; never connect a DSLogic channel to a power rail.",
+  "notes": ["PC2-PC7 are photo-audited exposed GPIO header signals. STM32CubeF1 family pin definitions confirm their GPIO capability; board photo is the authority for physical location.", "PB5 and PB0 are intentionally retained despite LED loads. Observer logical active is physical high; this is anti-correlated with the low-active LEDs and must be retained in metadata.", "PC0, PC1, PB10, USART3 and phase1-pinmap-v1 are retired and fail validation."]
+}

@@ -1,0 +1,11 @@
+This UART attempt is retained as invalid pre-gate evidence.
+
+Observed: the first H3 implementation allowed TIM4 and H3 workload tasks to
+emit collector traffic before `capture_armed`. The raw log contains an old
+firmware BOOT followed by H3 BOOT/configuration and pre-gate, interleaved trace
+fragments. No DSView capture was armed, no gate write was issued, and this log
+is not H3 evidence.
+
+Disposition: rejected before manual capture. The replacement firmware gates
+all H3 marker and collector production on `h3_enabled`, set only after the
+single-use SWD release.

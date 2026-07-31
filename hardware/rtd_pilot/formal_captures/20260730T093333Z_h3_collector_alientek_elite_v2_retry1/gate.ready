@@ -1,0 +1,8 @@
+schema_version=phase1-gate-ready-v1
+boot_observed=1
+variant=H3_COLLECTOR_SMOKE
+build_hash=h3-alientek-elite-20260730T093333Z
+session=alientek-elite-h3-20260730T093333Z
+elf_sha256=891eb0c090f5b1c02526339cff0371aaae69d17f78211ae09912acef12b690bf
+capture_gate_symbol=capture_armed
+capture_gate_address=0x20000000

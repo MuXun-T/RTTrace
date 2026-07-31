@@ -1,0 +1,23 @@
+{
+  "schema_version": "phase1-pinmap-v2",
+  "status": "manual-and-operator-frozen",
+  "board": "ALIENTEK ATK-DNF103 V2 STM32F103ZET6",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "logic_voltage": "3.3V",
+  "observer": "DSLogic Plus / DSView",
+  "physical_mapping_authority": "Operator-confirmed wiring, 2026-07-29; board resources and loads cross-checked against 精英 V2 硬件参考手册 V1.0.",
+  "channels": {
+    "0": {"role": "EPOCH", "gpio": "PC2", "header": "P1/P2 main I/O headers, PC2 / OV_D2", "board_load": "OLED/camera D2 net", "physical_active_level": "high", "logical_active_level": "high"},
+    "1": {"role": "CALIBRATION_TIMER", "gpio": "PC3", "header": "P1/P2 main I/O headers, PC3 / OV_D3", "board_load": "OLED/camera D3 net", "physical_active_level": "high", "logical_active_level": "high"},
+    "2": {"role": "TASK_A_RUNNING", "gpio": "PC4", "header": "P1/P2 main I/O headers, PC4 / OV_D4", "board_load": "OLED/camera D4 net", "physical_active_level": "high", "logical_active_level": "high"},
+    "3": {"role": "TASK_B_RUNNING", "gpio": "PC5", "header": "P1/P2 main I/O headers, PC5 / OV_D5", "board_load": "OLED/camera D5 net", "physical_active_level": "high", "logical_active_level": "high"},
+    "4": {"role": "MUTEX_HOLD", "gpio": "PC6", "header": "P1/P2 main I/O headers, PC6 / OV_D6", "board_load": "OLED/camera D6 net", "physical_active_level": "high", "logical_active_level": "high"},
+    "5": {"role": "MUTEX_WAIT", "gpio": "PC7", "header": "P1/P2 main I/O headers, PC7 / OV_D7", "board_load": "OLED/camera D7 net", "physical_active_level": "high", "logical_active_level": "high"},
+    "6": {"role": "IRQ_ACTIVE", "gpio": "PB5", "header": "DS0 / LED0 red LED net; operator-confirmed probe point", "board_load": "on-board DS0 red LED, low-active", "physical_active_level": "high", "logical_active_level": "high", "led_correlation": "logical_active=LED_off"},
+    "7": {"role": "RECORDER_PRESSURE", "gpio": "PB0", "header": "P1/P2 main I/O headers, PB0 / LCD_BL", "board_load": "TFTLCD backlight control (LCD_BL); connected LCD module state is setup-specific", "physical_active_level": "high", "logical_active_level": "high"}
+  },
+  "uart": {"peripheral": "USART1", "tx_gpio": "PA9", "rx_gpio": "PA10", "device": "/dev/ttyUSB0", "format": "115200 8N1 no-flow-control", "header": "P3 PA9/PA10 jumper block; operator-confirmed CH340C route"},
+  "excluded": ["PA13/SWDIO", "PA14/SWCLK", "NRST", "BOOT0", "BOOT1", "HSE/LSE crystal pins", "3V3 rails", "5V rails"],
+  "ground": "DSLogic GND to the operator-confirmed board GND point; never connect a DSLogic channel to a power rail.",
+  "manual_basis": ["Table 1.2.2.1: PC2-PC7 are fully independent and connected to OV_D2 through OV_D7.", "Table 1.2.2.1 and section 2.1.16: PB5 drives the low-active red DS0 LED; PE5 is the green LED.", "Table 1.2.2.1 and section 2.1.5: PB0 is LCD_BL, not a green LED.", "Sections 1.2.1 and 2.1.3: P3 exposes PA9/PA10 and connects USART1 to CH340C when jumpered."]
+}

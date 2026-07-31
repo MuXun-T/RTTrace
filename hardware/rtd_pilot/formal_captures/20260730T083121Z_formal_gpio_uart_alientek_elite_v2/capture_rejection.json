@@ -1,0 +1,15 @@
+{
+  "schema_version": "phase1-capture-rejection-v1",
+  "capture_id": "20260730T083121Z-formal-gpio-uart-alientek-elite-v2",
+  "session_id": "alientek-elite-gpio-uart-20260730T083121Z",
+  "firmware_variant": "GPIO_UART",
+  "status": "REJECTED_BEFORE_FLASH",
+  "reasons": ["formal CH340 reader preserved mask 0x00000006 rather than required 0x00000002; no target flash or reset followed"],
+  "preflash_metadata_file": "gpio_uart_preflash_metadata.json",
+  "preflash_metadata_sha256": "b28996ebd2a8f5add4cfe7c86e7a6352dfaa266cc3042e310c5e187dc85941b4",
+  "reader_ready_file": "uart.ready",
+  "reader_ready_sha256": "b8435e945ff506a07531c7aa0c821d535b1c0cfca8dbcb646a6d0997e9045c21",
+  "reader_raw_file": "uart_raw.log",
+  "reader_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "raw_data_retention": "retain-even-if-invalid"
+}

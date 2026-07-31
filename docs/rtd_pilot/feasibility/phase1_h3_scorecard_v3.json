@@ -1,0 +1,62 @@
+{
+  "schema_version": "phase1-h3-corrective-scorecard-v3",
+  "scorecard_id": "h3-alientek-elite-v3-corrective-20260731",
+  "status": "PHASE1_CORRECTIVE_READY_TO_FREEZE",
+  "supersedes_for_current_h3_gate_only": "docs/rtd_pilot/feasibility/phase1_h3_scorecard_v2.json",
+  "original_author": "SELF_REVIEW",
+  "independent_reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL",
+  "configuration_evidence_ref": "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_preflash_metadata.json",
+  "exact_configuration": {
+    "configuration_id": "C0",
+    "board": "ALIENTEK ATK-DNF103 V2",
+    "mcu": "STM32F103ZET6",
+    "target": "stm32f103ze",
+    "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+    "probe_uid": "0001A0000001",
+    "rtos": "FreeRTOS V10.3.1",
+    "bsp": "STM32CubeF1 v1.8.7",
+    "firmware_variant": "H3_COLLECTOR_SMOKE",
+    "firmware_sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+    "elf_sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+    "build_configuration_sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+    "toolchain": "Arm GNU Toolchain 15.2.1; CMake 3.22.1; Ninja 1.13.0",
+    "uart": "USART1 PA9/PA10, 115200 8N1, no flow control",
+    "collector": "capacity=64; drop_new; irq_decimation=20",
+    "observer": "A: CH0-CH7, 20 MHz, 5 s; B: CH0/CH1/CH6, 100 MHz, 500 ms; threshold 1.6 V"
+  },
+  "pin_map": {
+    "machine_ref": "hardware/rtd_pilot/pinmaps/stm32f103zet6_alientek_elite_v2_phase1_v3.json",
+    "semantic_prose": "PB0=LCD_BL; PE5=green LED; CH7=PB0 high recorder-pressure marker",
+    "resolution": "CLOSED"
+  },
+  "marker_semantics": {
+    "F1": {"markers": ["PC4 target-ready/dispatch", "PC5 higher-priority interference"], "evidence_ref": "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md"},
+    "F2": {"markers": ["PC6 mutex holder", "PC7 mutex waiter"], "evidence_ref": "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md"},
+    "F3": {"markers": ["PB5 TIM3 IRQ activity"], "evidence_ref": "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md"}
+  },
+  "uart_transport": {"configuration": "USART1 PA9/PA10, 115200 8N1, no flow control", "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/uart_raw.log", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_collector_uart_validation_final.json"]},
+  "observer_isolation": {"status": "REVIEWED", "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_observer_protocol.md", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json"]},
+  "alignment": {
+    "review_ref": "docs/rtd_pilot/feasibility/phase1_h3_alignment_final_audit_v3_20260731.json",
+    "frozen_bound_ref": "hardware/rtd_pilot/contracts/phase1_h3_timer_bounds_alientek_elite_v2_v2.json",
+    "status": "PASS_V2_PROSPECTIVE",
+    "required_independent_h3_sessions": 3,
+    "available_aligned_h3_sessions": 3,
+    "observed_max_ch1_period_absolute_error_s": 1.0000000000001327e-06,
+    "frozen_max_ch1_period_absolute_error_s": 1.5e-06
+  },
+  "release_route": {"status": "OWNER_CONTROLLED_RESEARCH_ACCESS", "evidence_ref": "docs/rtd_pilot/feasibility/phase1_h3_controlled_release_route.md"},
+  "items": [
+    {"dimension": "physical_availability", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json"], "semantic_review": "Exact C0 hardware witness remains hash-bound.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "Limited to C0."},
+    {"dimension": "license", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_license_audit.md"], "semantic_review": "Controlled access route is recorded.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "Not third-party legal advice."},
+    {"dimension": "toolchain_reproducibility", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_preflash_metadata.json"], "semantic_review": "Recorded build metadata binds the retained ELF.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "Only recorded environment is evidenced."},
+    {"dimension": "GPIO", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["hardware/rtd_pilot/pinmaps/stm32f103zet6_alientek_elite_v2_phase1_v3.json"], "semantic_review": "PB0 is LCD_BL; PE5 is green LED.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "Legacy prose remains historical."},
+    {"dimension": "hardware_timer", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_h3_alignment_final_audit_v3_20260731.json", "hardware/rtd_pilot/contracts/phase1_h3_timer_bounds_alientek_elite_v2_v2.json", "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T110847Z-session01-v2/integrity_audit_receipt.json", "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T112454Z-session02-v2/integrity_audit_receipt.json", "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T120337Z-session03-recapture01-v2/integrity_audit_receipt.json"], "semantic_review": "Three independent v2 sessions pass the 1.50 us prospective limit with complete hash-bound raw/secondary evidence and zero alignment residual.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "Acceptance is a C0 engineering baseline, not a generalized timing guarantee."},
+    {"dimension": "UART_transport", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_collector_uart_validation_final.json"], "semantic_review": "The retained UART slice establishes transport behavior.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "Limited to recorded slice."},
+    {"dimension": "priority_control", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_h3_marker_capability_map.md"], "semantic_review": "F1 markers are source-bound.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "No diagnosis claim."},
+    {"dimension": "mutex_support", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_h3_marker_capability_map.md"], "semantic_review": "F2 markers are source-bound.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "No generalized timing claim."},
+    {"dimension": "controllable_IRQ", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_b_irq_precision.json"], "semantic_review": "F3 PB5/TIM3 is source-bound.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "Pulse-width witness only."},
+    {"dimension": "observer_isolation", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_observer_protocol.md"], "semantic_review": "Observer remains external to product truth paths.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "Normalized CSV is partial."},
+    {"dimension": "data_release_rights", "numeric_score": 2, "exact_configuration": "C0", "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_data_release_decision.md"], "semantic_review": "Controlled research access is documented.", "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_FINAL", "decision": "PASS", "remaining_risk": "External release still needs review."}
+  ]
+}

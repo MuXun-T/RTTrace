@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDLedgerSessionSeal",
+  "type": "object",
+  "required": ["schema_version", "seal_record_id", "session_id", "capture_count", "first_append_sequence", "last_append_sequence", "last_record_digest", "ledger_file_sha256", "timestamp", "prior_seal_ref", "record_digest"],
+  "properties": {
+    "schema_version": {"type": "string"}, "seal_record_id": {"type": "string"}, "session_id": {"type": "string"}, "capture_count": {"type": "integer", "minimum": 1}, "first_append_sequence": {"type": "integer", "minimum": 1}, "last_append_sequence": {"type": "integer", "minimum": 1}, "last_record_digest": {"type": "string"}, "ledger_file_sha256": {"type": "string"}, "timestamp": {"type": "string"}, "record_digest": {"type": "string"}, "prior_seal_ref": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,169 @@
+{
+  "schema_version": "phase1-h3-corrective-scorecard-v2",
+  "scorecard_id": "h3-alientek-elite-v2-corrective-20260731",
+  "status": "CORRECTIVE_CLOSEOUT_BLOCKED",
+  "original_author": "SELF_REVIEW",
+  "independent_reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+  "configuration_evidence_ref": "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_preflash_metadata.json",
+  "exact_configuration": {
+    "configuration_id": "C0",
+    "board": "ALIENTEK ATK-DNF103 V2",
+    "mcu": "STM32F103ZET6",
+    "target": "stm32f103ze",
+    "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+    "probe_uid": "0001A0000001",
+    "rtos": "FreeRTOS V10.3.1",
+    "bsp": "STM32CubeF1 v1.8.7",
+    "firmware_variant": "H3_COLLECTOR_SMOKE",
+    "firmware_sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+    "elf_sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+    "build_configuration_sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+    "toolchain": "Arm GNU Toolchain 15.2.1; CMake 3.22.1; Ninja 1.13.0",
+    "uart": "USART1 PA9/PA10, 115200 8N1, no flow control",
+    "collector": "capacity=64; drop_new; irq_decimation=20",
+    "observer": "A: CH0-CH7, 20 MHz, 5 s; B: CH0/CH1/CH6, 100 MHz, 500 ms; threshold 1.6 V"
+  },
+  "pin_map": {
+    "machine_ref": "hardware/rtd_pilot/pinmaps/stm32f103zet6_alientek_elite_v2_phase1_v3.json",
+    "semantic_prose": "PB0=LCD_BL; PE5=green LED; CH7=PB0 high recorder-pressure marker",
+    "resolution": "CLOSED"
+  },
+  "marker_semantics": {
+    "F1": {"markers": ["PC4 target-ready/dispatch", "PC5 higher-priority interference"], "evidence_ref": "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md"},
+    "F2": {"markers": ["PC6 mutex holder", "PC7 mutex waiter"], "evidence_ref": "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md"},
+    "F3": {"markers": ["PB5 TIM3 IRQ activity"], "evidence_ref": "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md"}
+  },
+  "uart_transport": {
+    "configuration": "USART1 PA9/PA10, 115200 8N1, no flow control",
+    "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/uart_raw.log", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_collector_uart_validation_final.json"]
+  },
+  "observer_isolation": {
+    "status": "REVIEWED",
+    "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_observer_protocol.md", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json"]
+  },
+  "alignment": {
+    "review_ref": "docs/rtd_pilot/feasibility/phase1_h3_offline_alignment_review.json",
+    "frozen_bound_ref": "hardware/rtd_pilot/contracts/phase1_clock_bounds_alientek_elite_v2.json",
+    "status": "DEFER",
+    "required_independent_h3_sessions": 3,
+    "available_aligned_h3_sessions": 1,
+    "observed_max_ch1_period_absolute_error_s": 0.0000011000000000030083,
+    "frozen_max_ch1_period_absolute_error_s": 7.499999999998827e-07
+  },
+  "release_route": {
+    "status": "OWNER_CONTROLLED_RESEARCH_ACCESS",
+    "evidence_ref": "docs/rtd_pilot/feasibility/phase1_h3_controlled_release_route.md"
+  },
+  "items": [
+    {
+      "dimension": "physical_availability",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/gate_receipt.json", "docs/rtd_pilot/feasibility/phase1_data_release_inventory.json"],
+      "semantic_review": "Hash-bound UART, DSView manifest, gate receipt, and retained inventory identify the exact C0 hardware witness; they do not certify other boards.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "The receipt is candidate-preflight scoped and is not an independent hardware identity certification."
+    },
+    {
+      "dimension": "license",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_license_audit.md", "docs/rtd_pilot/feasibility/phase1_h3_controlled_release_route.md", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_preflash_metadata.json"],
+      "semantic_review": "FreeRTOS, CubeF1/CMSIS/HAL, toolchain notices, controlled access, and no-third-party-redistribution limits are documented for C0.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "This is a recorded release route, not legal advice from third-party rightsholders."
+    },
+    {
+      "dimension": "toolchain_reproducibility",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_preflash_metadata.json", "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md", "hardware/rtd_pilot/tests/test_tools.py"],
+      "semantic_review": "Recorded C0 build metadata and the offline clean build hash reproduction bind the retained BIN and ELF to the declared toolchain; no general host reproducibility is claimed.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "Only the recorded external build environment is evidenced."
+    },
+    {
+      "dimension": "GPIO",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["hardware/rtd_pilot/pinmaps/stm32f103zet6_alientek_elite_v2_phase1_v3.json", "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json"],
+      "semantic_review": "The corrective machine map, firmware binding, and raw CH7 witness resolve PB0 as LCD_BL high voltage marker; PE5, not PB0, is the green LED. F1/F2/F3 GPIO semantics are separately bounded below.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "Legacy Fire V2 prose and the historical PB0 LED comment remain retained as superseded errors."
+    },
+    {
+      "dimension": "hardware_timer",
+      "numeric_score": 1,
+      "exact_configuration": "C0",
+      "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_h3_offline_alignment_review.json", "hardware/rtd_pilot/contracts/phase1_clock_bounds_alientek_elite_v2.json", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_a_observer_epochs.json"],
+      "semantic_review": "CH1 activity and a single matched Epoch are real offline observations, but 1.10 us exceeds the frozen 0.75 us period-error bound and only one of three required independent aligned H3 sessions exists.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "DEFER",
+      "remaining_risk": "New, explicitly authorized H3 sessions are required; documentation cannot make this score 2."
+    },
+    {
+      "dimension": "UART_transport",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/uart_raw.log", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_collector_uart_validation_final.json", "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md"],
+      "semantic_review": "The retained UART slice contains C0 BOOT, configuration, gate, Epoch, trace, and pressure counters; validator evidence establishes transport behavior only, not marker semantics.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "The raw UART file contains early attempts and two Epochs, so closeout limits reliance to the identified H3 slice."
+    },
+    {
+      "dimension": "priority_control",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_h3_marker_capability_map.md", "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json"],
+      "semantic_review": "F1 PC4 target-ready/dispatch and PC5 higher-priority interference are source-bound and waveformed in Capture A; an open PC4 interval is not inferred to be execution.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "This is the bounded H3 smoke capability, not a fault or diagnosis result."
+    },
+    {
+      "dimension": "mutex_support",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_h3_marker_capability_map.md", "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json"],
+      "semantic_review": "F2 PC6 mutex-holder and PC7 waiter intervals are source-bound to the same registered mutex and overlap in Capture A.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "The witness does not establish fault truth, diagnosis, or generalized timing guarantees."
+    },
+    {
+      "dimension": "controllable_IRQ",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_b_irq_precision.json", "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json"],
+      "semantic_review": "F3 PB5/TIM3 is source-bound; Capture B records 57 high pulses at 100 MHz with a 5.12 us minimum.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "Capture B lacks a CH0 Epoch and is only an IRQ pulse-width witness."
+    },
+    {
+      "dimension": "observer_isolation",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_observer_protocol.md", "docs/rtd_pilot/feasibility/phase1_semantic_evidence_review.md", "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json"],
+      "semantic_review": "DSView A/B are external-clock Observer artifacts; the protocol and read-only scripts exclude parser, metric, lineage, diagnoser, Agent, CCM, CIR, OAR, CVR, and Ledger from the observer truth path.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "Normalized CSV is partial; marker review relies on the hash-bound external raw CSV."
+    },
+    {
+      "dimension": "data_release_rights",
+      "numeric_score": 2,
+      "exact_configuration": "C0",
+      "evidence_refs": ["docs/rtd_pilot/feasibility/phase1_data_release_decision.md", "docs/rtd_pilot/feasibility/phase1_data_release_inventory.json", "docs/rtd_pilot/feasibility/phase1_h3_controlled_release_route.md"],
+      "semantic_review": "OWNER_CONTROLLED_RESEARCH_ACCESS records raw retention, controlled review, redaction, and third-party non-redistribution limits for C0 evidence.",
+      "reviewer": "INDEPENDENT_READ_ONLY_H3_AUDIT_RETRY",
+      "decision": "PASS",
+      "remaining_risk": "Controlled access is not automatic publication; any external release still requires redaction review."
+    }
+  ]
+}

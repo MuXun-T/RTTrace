@@ -1,0 +1,91 @@
+{
+  "schema_version": "phase1-final-freeze-receipt-v1",
+  "receipt_id": "20260730T103123Z-alientek-elite-v2-final-freeze",
+  "phase": "P1",
+  "freeze_status": "FROZEN",
+  "review_status": "SELF_REVIEW_COMPLETED",
+  "approval_authority": "OWNER_APPROVAL",
+  "approval_status": "OWNER_APPROVED",
+  "platform_selection_status": "SELECTED",
+  "data_release_route": "OWNER_CONTROLLED_RESEARCH_ACCESS",
+  "data_release_rights": "PASS",
+  "P2_authorization_status": "OWNER_AUTHORIZED",
+  "bindings": [
+    {
+      "role": "final freeze decision",
+      "file": "docs/rtd_pilot/feasibility/phase1_final_freeze_decision.md",
+      "sha256": "76eeff546ea87fc73b026859212baeaee9203f644be2198d447eced76fdca4af"
+    },
+    {
+      "role": "frozen supplement manifest",
+      "file": "hardware/rtd_pilot/phase1_freeze_supplements/20260730T103123Z_alientek_elite_v2/phase1_final_freeze_supplement_manifest.json",
+      "sha256": "357cc703cb8068e95c19b2b788867c2cb975512dc092d761708cc4f5548fb89a"
+    },
+    {
+      "role": "H3 scorecard",
+      "file": "docs/rtd_pilot/feasibility/phase1_h3_mandatory_scorecard.md",
+      "sha256": "8866be2602b795f05ecde2b0a97ab04c48accfe0b77bfbcb569eb6001eb1be61"
+    },
+    {
+      "role": "H3 scorecard machine record",
+      "file": "docs/rtd_pilot/feasibility/phase1_h3_mandatory_scorecard.json",
+      "sha256": "ff3e9151ece86991b4e766f7081b388836521e4780f6911ea9e8cbe8457c6c60"
+    },
+    {
+      "role": "platform selection decision",
+      "file": "docs/rtd_pilot/feasibility/phase1_platform_selection_decision.md",
+      "sha256": "babebec8524eebd477206057587e8969eb21ec893fd85b1e2860c48d62525b46"
+    },
+    {
+      "role": "data release decision",
+      "file": "docs/rtd_pilot/feasibility/phase1_data_release_decision.md",
+      "sha256": "3022914ceecbbafc99ef7bad2db16ff8dccbfec1149d79082d683f84ff1c0b63"
+    },
+    {
+      "role": "data release inventory",
+      "file": "docs/rtd_pilot/feasibility/phase1_data_release_inventory.json",
+      "sha256": "1cc331b15eea53d7e6b8b14038d59e7d26af0fc320caccc9003ea04824c669a9"
+    },
+    {
+      "role": "owner self-review approval",
+      "file": "hardware/rtd_pilot/phase1_freeze_supplements/20260730T103123Z_alientek_elite_v2/owner_self_review_approval.json",
+      "sha256": "712b99ee96936d5f0869f8bee86105213bb50d6fb2bf144ba060c8cc33aab976"
+    },
+    {
+      "role": "Phase 2 owner authorization",
+      "file": "docs/rtd_pilot/contracts/phase2_owner_authorization.md",
+      "sha256": "21a7edf81aec75b7e54d18492d116a23b5484cae0f3e2669ce05402d7781ba07"
+    }
+  ],
+  "historical_evidence_unchanged": [
+    {
+      "file": "hardware/rtd_pilot/phase1_freeze/20260730T084803Z_alientek_elite_v2/freeze_manifest.json",
+      "sha256": "40c0b109cacf626dbe8ec9541e7407394e8541c5e232916e9eb0605714e575bb"
+    },
+    {
+      "file": "hardware/rtd_pilot/phase1_freeze/20260730T084803Z_alientek_elite_v2/freeze_submission_receipt.json",
+      "sha256": "b640675c4f50dac7be6cb7c6e11d1bc105a8205b21c80e3449245db30d80762e"
+    },
+    {
+      "file": "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_evidence_manifest.json",
+      "sha256": "854335aa6b61804e516087c0292b851c6176d84f2d62a4e6b97b619f0d200be8"
+    }
+  ],
+  "external_raw_dsview": [
+    {
+      "capture": "A",
+      "filename": "DSLogic PLus-la-260730-175831.dsl",
+      "sha256": "c047680c3c9e912b1c28c4b0630e883bfa2858a474e86029821af1c8356b25b6"
+    },
+    {
+      "capture": "B",
+      "filename": "DSLogic PLus-la-260730-180245.dsl",
+      "sha256": "183b319ddead9d5e04ab1cd51297bc9923cf92698e2f37b487278e3e62d99ed1"
+    }
+  ],
+  "scope_exclusions": [
+    "No automatic raw-data publication.",
+    "No Phase 2 implementation or validation claim.",
+    "No Ledger, CCM, CIR, Case, fault truth, diagnoser, or experiment result."
+  ]
+}

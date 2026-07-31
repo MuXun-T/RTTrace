@@ -1,0 +1,115 @@
+{
+  "schema_version": "phase1-freeze-manifest-v1",
+  "freeze_id": "20260730T084803Z-alientek-elite-v2",
+  "status": "READY_FOR_FREEZE_SUBMISSION",
+  "scope": "Phase 1 H2 hardware feasibility evidence only",
+  "board": {
+    "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "mcu_uid_words": [
+      "0x05d7ff34",
+      "0x334e5630",
+      "0x43057222"
+    ],
+    "pinmap": {
+      "file": "hardware/rtd_pilot/pinmaps/stm32f103zet6_alientek_elite_v2_phase1.json",
+      "sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e"
+    }
+  },
+  "contracts": [
+    {
+      "file": "hardware/rtd_pilot/pinmaps/phase1_board_contracts.json",
+      "sha256": "782e18dab164c7f7bf274ae78ea59e12e7768208685ecc421cd975e7d88ceaf2"
+    },
+    {
+      "file": "hardware/rtd_pilot/contracts/phase1_clock_bounds_alientek_elite_v2.json",
+      "sha256": "19635275497daf107ecbd5ca5c275186d3798ea4063254cd56d3a61233de6e15"
+    },
+    {
+      "file": "hardware/rtd_pilot/contracts/phase1_combined_smoke_alientek_dslogic_plus.json",
+      "sha256": "9ed7ef40edbe2355a16b9763e90d3d9b81bb179f030be4320b3749a774eff853"
+    }
+  ],
+  "tools": [
+    {
+      "file": "hardware/rtd_pilot/scripts/validate_capture.py",
+      "sha256": "99c76ee9df64be0823c7cfc71915cc6dab5b37d4c1e74ac29a3d724ebc405944"
+    },
+    {
+      "file": "hardware/rtd_pilot/scripts/analyze_clock.py",
+      "sha256": "910c99d6f2590df92a185a6e394e0e42eca67e527953789aa511cf2f7a8527d5"
+    },
+    {
+      "file": "hardware/rtd_pilot/scripts/analyze_perturbation.py",
+      "sha256": "839ce0c92cdd050b1eaf7783f0487e10be6652b955f9f7833cb973989113429d"
+    }
+  ],
+  "validated_captures": [
+    {
+      "directory": "hardware/rtd_pilot/formal_captures/20260729T092604Z_formal_task_smoke_alientek_elite_v2_retry1",
+      "variant": "TASK_SMOKE",
+      "capture_metadata_sha256": "c88de2ea628e4ff0dbca78575f04035e37bf508a70dd5d7d38cfdfd478fbcd2d"
+    },
+    {
+      "directory": "hardware/rtd_pilot/formal_captures/20260729T120049Z_formal_mutex_smoke_alientek_elite_v2_retry1",
+      "variant": "MUTEX_SMOKE",
+      "capture_metadata_sha256": "55c13b720578b66264ca5236aff42c68e2509cb3df7f85f20ce61a44ab341b9d"
+    },
+    {
+      "directory": "hardware/rtd_pilot/formal_captures/20260729T123610Z_formal_irq_smoke_alientek_elite_v2",
+      "variant": "IRQ_SMOKE",
+      "capture_metadata_sha256": "d4cdf69022ba41430c4d2a44784782f282e944bf94ca729061fae8a637b5da81"
+    },
+    {
+      "directory": "hardware/rtd_pilot/formal_captures/20260729T131225Z_formal_gpio_uart_recorder_alientek_elite_v2_retry1",
+      "variant": "GPIO_UART_RECORDER",
+      "capture_metadata_sha256": "21c57a00819789034a30db144bbd0c7c017f0c674c8d6a294f50f037bebdeb56"
+    },
+    {
+      "directory": "hardware/rtd_pilot/formal_captures/20260729T133954Z_formal_combined_smoke_alientek_elite_v2",
+      "variant": "COMBINED_SMOKE",
+      "capture_metadata_sha256": "0a919457a257bf11ab023aed3c1023f89740713ec78bc0ff17020b1cb3ea5721"
+    },
+    {
+      "directory": "hardware/rtd_pilot/formal_captures/20260730T080622Z_formal_base_alientek_elite_v2",
+      "variant": "BASE",
+      "capture_metadata_sha256": "a47f42d56e6704dcd530c9f5f8eecb2fdb64ceb9822e6b568e05d76f41baf485"
+    },
+    {
+      "directory": "hardware/rtd_pilot/formal_captures/20260730T082425Z_formal_gpio_only_alientek_elite_v2_retry1",
+      "variant": "GPIO_ONLY",
+      "capture_metadata_sha256": "9f6b0f622851426bd417df83f7d2ba18965f5506366e0c99bb913d5f09652de5"
+    },
+    {
+      "directory": "hardware/rtd_pilot/formal_captures/20260730T083627Z_formal_gpio_uart_alientek_elite_v2_retry2",
+      "variant": "GPIO_UART",
+      "capture_metadata_sha256": "391bf4fcf0d31f4fef7bade620758eea336b05e9d00b8402dcf1c29128c1730d"
+    }
+  ],
+  "perturbation": {
+    "inputs": {
+      "BASE.json": "7003ae3af2157e9f5be8846757f99c27562e3c6a8f18deb5d5a899890c6bf3d0",
+      "GPIO_ONLY.json": "45db15eabb273d52d3e1deac6302f594831619436fa06dedf608bf3a0cb5080f",
+      "GPIO_UART.json": "684afc4e6addc325fb91cd1db173a7d6d4d11b9fab783801beff77e0cd90b706",
+      "GPIO_UART_RECORDER.json": "dd5773305132e19e1c27fc4fd7b1fc8064725ba904f3bb66998cedb8c97246e8"
+    },
+    "output": {
+      "file": "perturbation_summary.json",
+      "sha256": "c67283d40341f4c3fefa0274f362b4a753dda09060e4bd8865190805d790ec32",
+      "reproducible": true
+    }
+  },
+  "retained_rejected_capture_dirs": [
+    "hardware/rtd_pilot/formal_captures/20260730T081737Z_formal_gpio_only_alientek_elite_v2",
+    "hardware/rtd_pilot/formal_captures/20260730T083121Z_formal_gpio_uart_alientek_elite_v2",
+    "hardware/rtd_pilot/formal_captures/20260730T083348Z_formal_gpio_uart_alientek_elite_v2_retry1"
+  ],
+  "scope_exclusions": [
+    "No H3 platform-selection claim.",
+    "No Phase 2 entry, parser, diagnoser, CCM, Ledger, lineage, Case, or Agent result.",
+    "No fault-injection, fault-truth, or paper-experiment claim.",
+    "No relative perturbation performance claim where BASE is not observable.",
+    "No commit or tag is created by this manifest."
+  ]
+}

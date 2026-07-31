@@ -1,0 +1,59 @@
+{
+  "schema_version": "phase1-h3-alignment-session-v1",
+  "h3_alignment_session_id": "h3-alignment-20260731T102530Z-session02-recapture01",
+  "case_id_created": false,
+  "scope": "Phase 1 H3 timer/alignment evidence only; excludes Phase 2 changes, Phase 3, formal Case creation, and fault experiments.",
+  "authorization": {
+    "source": "explicit user authorization for bounded H3 recapture",
+    "dsview_operation": "manual-only"
+  },
+  "operator": {
+    "dsview": "workspace operator",
+    "uart_swd_and_evidence_processing": "Codex main Agent"
+  },
+  "timing": {
+    "uart_recording_started_at_utc": "2026-07-31T10:26:43Z",
+    "uart_recording_ended_at_utc": "2026-07-31T10:29:43Z",
+    "independent_start_method": "persistent read-only UART reader opened before one UID-pinned pyOCD reset; a no-reset SWD attach wrote the one permitted capture gate before DSView was confirmed armed",
+    "swd_gate_command": "write32 0x20000000 0x00000001"
+  },
+  "frozen_configuration": {
+    "board": "ALIENTEK ATK-DNF103 V2",
+    "mcu": "STM32F103ZET6",
+    "rtos": "FreeRTOS V10.3.1",
+    "firmware_variant": "H3_COLLECTOR_SMOKE",
+    "firmware_sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+    "elf_sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+    "build_configuration_sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+    "semantic_review_pinmap_version": "phase1-pinmap-v3-corrective",
+    "pin_channel_semantics": "CH0=PC2 EPOCH; CH1=PC3 CALIBRATION_TIMER; CH2=PC4; CH3=PC5; CH4=PC6; CH5=PC7; CH6=PB5; CH7=PB0 LCD_BL; green LED=PE5.",
+    "observer_profile": "CH0-CH7; 20 MHz; 5 s; CH0 rising; threshold 1.6 V; no external sampling clock",
+    "alignment_error_bound_limit_s": 7.5e-07,
+    "frozen_algorithm": {
+      "prepare_dsview_observer_py_sha256": "0e06a0dbf9086b8fbee23aaad31d8060b5cf50060ec13b4e16dc6eff21a9e8dd",
+      "analyze_clock_py_sha256": "910c99d6f2590df92a185a6e394e0e42eca67e527953789aa511cf2f7a8527d5"
+    }
+  },
+  "raw_artifacts": {
+    "uart_raw": {"file": "uart_raw.log", "sha256": "44c7232460440ad24560786a5b8184cc16e372a683430ca25bb14db491cd8d6d"},
+    "uart_reader_ready": {"file": "uart_reader.ready", "sha256": "8695cc29452fa2dcdb6803d14208a6058f8a18f24a84d4c6027db2edae589a9e"},
+    "gate_ready": {"file": "gate.ready", "sha256": "a187c1635f0fca7ac45c43d8b0cd22f1bdd6241605299486f5349450bad45bc9"},
+    "gate_verified": {"file": "gate.verified", "sha256": "c4222af13036695f44b2eb9c958b68d42b7e5e805db1cec03bd71b465705a7c4"},
+    "gate_receipt": {"file": "gate_receipt.json", "sha256": "7f2c7eb05c841e4e669f4593b17862c1a71c3d294a368a1caaef4b1b17e57791"},
+    "dsview_dsl": {"status": "MISSING"},
+    "dsview_csv": {"status": "MISSING"},
+    "dsview_screenshot": {"status": "MISSING"}
+  },
+  "pre_capture_audit": {"file": "session02_failure_audit.json", "sha256": "e291efefe513fe256db81bdafe53ff623a50f22c1485fd5ad199286d0ba11d11"},
+  "acceptance": {
+    "shared_epoch_unique_and_unambiguous": {"status": "PASS", "evidence": "gate receipt and UART record one verified epoch sequence=1"},
+    "observer_complete_and_parseable": {"status": "FAIL", "evidence": "DSView was not confirmed armed before the one-time gate; no DSL, CSV, or screenshot was produced"},
+    "trace_or_secondary_record_complete": {"status": "PASS", "evidence": "UART raw and gate receipt are retained"},
+    "pin_channel_semantics_phase1_pinmap_v3": {"status": "FAIL", "evidence": "No Observer capture exists to verify channel semantics"},
+    "alignment_error_bound_recomputable": {"status": "FAIL", "evidence": "No Observer CSV exists"},
+    "alignment_error_bound_within_limit": {"status": "FAIL", "evidence": "No alignment bound exists"},
+    "raw_and_calculation_bound": {"status": "FAIL", "evidence": "Observer raw artifacts and calculation inputs are absent"},
+    "result": "FAIL",
+    "failure_reason": "DSView was not confirmed armed before the single gate write, so the CH0 epoch was missed. This failed attempt is retained and excluded from the H3 passing-session count."
+  }
+}

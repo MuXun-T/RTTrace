@@ -1,0 +1,17 @@
+{
+  "schema_version": "phase1-h3-recapture-corrective-action-v1",
+  "h3_alignment_session_id": "h3-alignment-20260731T104432Z-session02-recapture03",
+  "source_failure_session_id": "h3-alignment-20260731T103111Z-session02-recapture02",
+  "source_failure_bound_us": 1.2500000000073217,
+  "finding": "The source failure had coherent frozen DSView configuration, raw artifact hashes, UART epoch binding, and byte-identical main recomputation. No configuration, parser, algorithm, threshold, pin map, firmware, ELF, or build change is a permitted corrective action.",
+  "permitted_corrective_action": "Perform a new independent start with unchanged frozen assets. Require manual confirmation that DSView is armed on CH0 rising before the one-time SWD gate write.",
+  "forbidden_actions": [
+    "discarding or filtering CH1 edges",
+    "changing the alignment algorithm",
+    "relaxing the 0.75 us threshold",
+    "changing DSView sample rate, channel set, trigger, threshold, or clock source",
+    "changing firmware, ELF, build configuration, pin map, or Phase 2 code"
+  ],
+  "source_failure_retained": true,
+  "case_id_created": false
+}

@@ -1,0 +1,146 @@
+{
+  "schema_version": "phase1-owner-controlled-data-release-inventory-v1",
+  "decision": {
+    "route": "OWNER_CONTROLLED_RESEARCH_ACCESS",
+    "rights": "PASS",
+    "approval_authority": "OWNER_APPROVAL",
+    "approval_status": "OWNER_APPROVED",
+    "reviewer": "SELF_REVIEW",
+    "approver": "PROJECT_OWNER",
+    "date": "2026-07-30"
+  },
+  "raw_artifacts": [
+    {
+      "artifact_id": "h3_capture_a_dsl",
+      "capture_id": "alientek-elite-h3-20260730T095442Z-capture-a",
+      "filename": "DSLogic PLus-la-260730-175831.dsl",
+      "artifact_type": "DSView raw capture",
+      "size_bytes": 484159,
+      "sha256": "c047680c3c9e912b1c28c4b0630e883bfa2858a474e86029821af1c8356b25b6",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_EVIDENCE_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "ORIGINAL_NOT_REDACTED"
+    },
+    {
+      "artifact_id": "h3_capture_a_csv",
+      "capture_id": "alientek-elite-h3-20260730T095442Z-capture-a",
+      "filename": "DSLogic PLus-la-260730-175831.csv",
+      "artifact_type": "DSView complete CSV export",
+      "size_bytes": 268655,
+      "sha256": "af6d70efb0366180eb97787fa93778115e9abd439347a6f46fc9fce7ec7df7b4",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_EVIDENCE_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "ORIGINAL_NOT_REDACTED"
+    },
+    {
+      "artifact_id": "h3_capture_a_screenshot",
+      "capture_id": "alientek-elite-h3-20260730T095442Z-capture-a",
+      "filename": "DSView-260730-175928.png",
+      "artifact_type": "DSView screenshot",
+      "size_bytes": 51604,
+      "sha256": "a50ece2491efb55767e282055b09ba391a9dfc4f5df20dcd09ccd92aa65edc58",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_EVIDENCE_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "REDACT_DERIVATIVE_IF_EXTERNALLY_SHARED"
+    },
+    {
+      "artifact_id": "h3_capture_b_dsl",
+      "capture_id": "alientek-elite-h3-20260730T095442Z-capture-b",
+      "filename": "DSLogic PLus-la-260730-180245.dsl",
+      "artifact_type": "DSView raw capture",
+      "size_bytes": 88974,
+      "sha256": "183b319ddead9d5e04ab1cd51297bc9923cf92698e2f37b487278e3e62d99ed1",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_EVIDENCE_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "ORIGINAL_NOT_REDACTED"
+    },
+    {
+      "artifact_id": "h3_capture_b_csv",
+      "capture_id": "alientek-elite-h3-20260730T095442Z-capture-b",
+      "filename": "DSLogic PLus-la-260730-180245.csv",
+      "artifact_type": "DSView complete CSV export",
+      "size_bytes": 18985,
+      "sha256": "cf36ea3ed05d061f4d3d55c236850ef8a578137df7910636ebf8447770abd764",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_EVIDENCE_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "ORIGINAL_NOT_REDACTED"
+    },
+    {
+      "artifact_id": "h3_capture_b_screenshot",
+      "capture_id": "alientek-elite-h3-20260730T095442Z-capture-b",
+      "filename": "DSView-260730-180338.png",
+      "artifact_type": "DSView screenshot",
+      "size_bytes": 49472,
+      "sha256": "078deb07b105460c8cb07bf5c2fd1a39dec36eab2532bda38fbbd8a8a03a0a5d",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_EVIDENCE_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "REDACT_DERIVATIVE_IF_EXTERNALLY_SHARED"
+    },
+    {
+      "artifact_id": "h3_uart_raw_log",
+      "capture_id": "alientek-elite-h3-20260730T095442Z",
+      "filename": "uart_raw.log",
+      "artifact_type": "UART raw log",
+      "size_bytes": 7639,
+      "sha256": "1c8af397d84d79c6ad701a3efcfb3a6b8819f625a1b9bcc549723c31b92a7595",
+      "retention_location_class": "OWNER_CONTROLLED_PHASE1_EVIDENCE_DIRECTORY",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "ORIGINAL_NOT_REDACTED"
+    },
+    {
+      "artifact_id": "h3_gate_receipt",
+      "capture_id": "alientek-elite-h3-20260730T095442Z",
+      "filename": "gate_receipt.json",
+      "artifact_type": "gate receipt",
+      "size_bytes": 935,
+      "sha256": "2b1b22be04e1538b83ac0d8f93455ee7c251d0f96b18ce7025cbaaa8751357d6",
+      "retention_location_class": "OWNER_CONTROLLED_PHASE1_EVIDENCE_DIRECTORY",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "REDACT_DERIVATIVE_IF_EXTERNALLY_SHARED"
+    },
+    {
+      "artifact_id": "h3_preflash_metadata",
+      "capture_id": "alientek-elite-h3-20260730T095442Z",
+      "filename": "h3_preflash_metadata.json",
+      "artifact_type": "flash and build metadata record",
+      "size_bytes": 2406,
+      "sha256": "373fe0ba489b2de88e9b66e7be7a1ebbcd5ef6487e7f3525e284aa2f00968ab8",
+      "retention_location_class": "OWNER_CONTROLLED_PHASE1_EVIDENCE_DIRECTORY",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "REDACT_DERIVATIVE_IF_EXTERNALLY_SHARED"
+    },
+    {
+      "artifact_id": "h3_firmware_bin",
+      "capture_id": "alientek-elite-h3-20260730T095442Z",
+      "filename": "rtd_phase1_freertos_H3_COLLECTOR_SMOKE.bin",
+      "artifact_type": "firmware binary",
+      "size_bytes": 9168,
+      "sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_BUILD_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "NOT_APPLICABLE"
+    },
+    {
+      "artifact_id": "h3_elf",
+      "capture_id": "alientek-elite-h3-20260730T095442Z",
+      "filename": "rtd_phase1_freertos_H3_COLLECTOR_SMOKE.elf",
+      "artifact_type": "ELF with possible debug symbols",
+      "size_bytes": 27488,
+      "sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_BUILD_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "REDACT_DERIVATIVE_IF_EXTERNALLY_SHARED"
+    },
+    {
+      "artifact_id": "h3_build_configuration",
+      "capture_id": "alientek-elite-h3-20260730T095442Z",
+      "filename": "CMakeCache.txt",
+      "artifact_type": "build configuration",
+      "size_bytes": 15118,
+      "sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+      "retention_location_class": "OWNER_CONTROLLED_EXTERNAL_BUILD_STORE",
+      "access_level": "OWNER_CONTROLLED",
+      "redaction_status": "REDACT_DERIVATIVE_IF_EXTERNALLY_SHARED"
+    }
+  ]
+}

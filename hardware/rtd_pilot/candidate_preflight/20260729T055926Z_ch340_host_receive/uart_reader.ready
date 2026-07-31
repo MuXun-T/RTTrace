@@ -1,0 +1,7 @@
+candidate_label=alientek-elite-stm32f103ze-candidate
+port=/dev/ttyUSB0
+baud=115200
+format=8N1
+flow_control=none
+access_mode=read-only
+modem_lines=not_modified

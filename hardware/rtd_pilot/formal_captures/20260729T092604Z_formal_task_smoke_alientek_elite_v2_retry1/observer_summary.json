@@ -1,0 +1,21 @@
+{
+  "capture_complete": true,
+  "discarded_leading_epoch_count": 0,
+  "discarded_leading_epoch_timestamps_s": [],
+  "epoch_begin_sequences": [
+    1
+  ],
+  "epoch_end_sequences": [
+    1
+  ],
+  "nonflat_channels": [
+    "0",
+    "1",
+    "2",
+    "3"
+  ],
+  "normalized_observer_file_sha256": "c92ab1574b723693f219a619237f515a08ec8094052bbfc93c4fb938a1978094",
+  "observer_file_sha256": "30fbc88cea26d6648bf5a93826943868eef39fe67f15e520d28685a55dbf3732",
+  "schema_version": "phase1-observer-summary-v1",
+  "source_csv_sha256": "4847f84f38bfbc8a603f6a0d222c62d87e371574b8c180ea97fff8428ca6b3ae"
+}

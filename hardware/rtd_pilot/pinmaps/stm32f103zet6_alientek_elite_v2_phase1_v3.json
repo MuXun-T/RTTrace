@@ -1,0 +1,36 @@
+{
+  "schema_version": "phase1-pinmap-v3-corrective",
+  "status": "corrective-semantic-map",
+  "supersedes": "stm32f103zet6_alientek_elite_v2_phase1.json (phase1-pinmap-v2; retained unchanged for the captured firmware binding)",
+  "correction_id": "phase1-h3-pb0-semantics-20260731",
+  "board": "ALIENTEK ATK-DNF103 V2 STM32F103ZET6",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "capture_firmware_pinmap_version": "phase1-pinmap-v2",
+  "channels": {
+    "0": {"role": "EPOCH", "gpio": "PC2", "physical_active_level": "high", "semantic_source": "H3 source observer_gpio.c + Capture A"},
+    "1": {"role": "CALIBRATION_TIMER", "gpio": "PC3", "physical_active_level": "high", "semantic_source": "TIM2 ISR + Capture A"},
+    "2": {"role": "F1_TARGET_READY_DISPATCH", "gpio": "PC4", "physical_active_level": "high", "semantic_source": "TIM4 target notification + Capture A"},
+    "3": {"role": "F1_HIGHER_PRIORITY_INTERFERENCE", "gpio": "PC5", "physical_active_level": "high", "semantic_source": "interferer task + Capture A"},
+    "4": {"role": "F2_MUTEX_HOLD", "gpio": "PC6", "physical_active_level": "high", "semantic_source": "holder task + Capture A"},
+    "5": {"role": "F2_MUTEX_WAIT", "gpio": "PC7", "physical_active_level": "high", "semantic_source": "waiter task + Capture A"},
+    "6": {"role": "F3_IRQ_ACTIVE", "gpio": "PB5", "physical_active_level": "high", "board_load": "DS0 red LED, low-active", "led_correlation": "marker high means LED off", "semantic_source": "TIM3 ISR + Capture B"},
+    "7": {"role": "H3_RECORDER_PRESSURE_INTERVAL", "gpio": "PB0", "physical_active_level": "high", "board_load": "TFTLCD LCD_BL; attached LCD state is setup-specific", "led_correlation": null, "semantic_source": "H3 heartbeat task + Capture A"}
+  },
+  "uart": {"peripheral": "USART1", "tx_gpio": "PA9", "rx_gpio": "PA10", "format": "115200 8N1 no-flow-control", "physical_route": "P3 jumper block to CH340C"},
+  "pb0_resolution": {
+    "decision": "CLOSED",
+    "PB0_is": "LCD_BL, not the green RGB LED",
+    "green_LED_gpio": "PE5",
+    "firmware_behavior": "GPIOB pin 0 is driven high for OBSERVER_RECORDER_OR_PRESSURE; this is a voltage marker, not an LED polarity claim",
+    "evidence_basis": [
+      "Elite V2 manual basis retained in phase1-pinmap-v2: PB0=LCD_BL and PE5=green LED",
+      "H3 observer_gpio.c binds OBSERVER_RECORDER_OR_PRESSURE to GPIOB PIN(0)",
+      "Capture A raw CSV has non-flat CH7 and its hash is bound by the H3 evidence manifest"
+    ],
+    "retained_conflicts": [
+      "phase1_pin_map.md and phase1_pin_conflict_audit.md contain Fire V2 prose and are not evidence for the selected Elite V2 board",
+      "the historical H3 source comment that calls PB0 a low-active LED is false prose; no firmware binary is rewritten"
+    ]
+  },
+  "scope": "Corrective interpretation only. This file does not alter the phase1-pinmap-v2 hash embedded in the captured H3 firmware, does not create a Case or Capture, and does not assert fault truth."
+}

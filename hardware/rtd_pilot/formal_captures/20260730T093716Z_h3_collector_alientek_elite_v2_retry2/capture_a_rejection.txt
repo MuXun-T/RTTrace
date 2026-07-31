@@ -1,0 +1,11 @@
+This attempt is retained as invalid H3 pre-capture evidence.
+
+The operator manually armed DSView Capture A. The H3 gate write was sent once
+through the UID-pinned SWD session, and UART recorded
+`RTD1 CAPTURE_ARMED source=swd_gate`, but no `EPOCH_BEGIN` followed. The
+operator manually cancelled DSView. No DSView raw file, CSV, or screenshot is
+claimed for this attempt.
+
+Root cause: the H3 higher-priority interferer could starve the lower-priority
+heartbeat that owns the gate/Epoch transition. The replacement makes the H3
+heartbeat priority 4 and bounds the interferer workload at 8,000 iterations.

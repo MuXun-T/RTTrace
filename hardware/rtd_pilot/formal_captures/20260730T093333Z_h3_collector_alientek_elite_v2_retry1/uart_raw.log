@@ -1,0 +1,10 @@
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T092522Z session=alientek-elite-h3-20260730T092522Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 TRARTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T093333Z session=alientek-elite-h3-20260730T093333Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T093333Z session=alientek-elite-h3-20260730T093333Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T093333Z session=alientek-elite-h3-20260730T093333Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T093333Z session=alientek-elite-h3-20260730T093333Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20

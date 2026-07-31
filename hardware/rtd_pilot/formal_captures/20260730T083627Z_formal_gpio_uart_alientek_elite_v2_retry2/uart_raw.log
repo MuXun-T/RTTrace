@@ -1,0 +1,11 @@
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=GPIO_UART build_hash=h9-alientek-elite-gpio-uart-20260730T083348Z session=alientek-elite-gpio-uart-20260730T083348Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=GPIO_UART build_hash=h10-alientek-elite-gpio-uart-20260730T083627Z session=alientek-elite-gpio-uart-20260730T083627Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=GPIO_UART build_hash=h10-alientek-elite-gpio-uart-20260730T083627Z session=alientek-elite-gpio-uart-20260730T083627Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=GPIO_UART build_hash=h10-alientek-elite-gpio-uart-20260730T083627Z session=alientek-elite-gpio-uart-20260730T083627Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=GPIO_UART build_hash=h10-alientek-elite-gpio-uart-20260730T083627Z session=alientek-elite-gpio-uart-20260730T083627Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=GPIO_UART build_hash=h10-alientek-elite-gpio-uart-20260730T083627Z session=alientek-elite-gpio-uart-20260730T083627Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=GPIO_UART build_hash=h10-alientek-elite-gpio-uart-20260730T083627Z session=alientek-elite-gpio-uart-20260730T083627Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 CAPTURE_ARMED source=swd_gate
+RTD1 EPOCH_BEGIN seq=1 tick=156 variant=GPIO_UART
+RTD1 EPOCH_END seq=1 tick=161
+RTD1 HEARTBEAT seq=1 tick=163

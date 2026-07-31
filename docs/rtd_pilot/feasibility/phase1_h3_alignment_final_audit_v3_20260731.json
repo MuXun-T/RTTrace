@@ -1,0 +1,107 @@
+{
+  "schema_version": "phase1-h3-alignment-final-audit-v3",
+  "audit_id": "phase1-h3-alignment-final-audit-20260731T122534Z",
+  "status": "PASS",
+  "scope": "Phase 1 H3 timer/alignment evidence only. No Phase 2 production-code change, formal Case creation, fault experiment, or Phase 3 work is authorized by this record.",
+  "hardware_authorization": "The workspace operator explicitly authorized the Session 3 recapture after the failed UART hash-chain audit.",
+  "exact_configuration": {
+    "board": "Alientek ATK-DNF103 V2",
+    "mcu": "STM32F103ZET6",
+    "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+    "rtos": "FreeRTOS V10.3.1",
+    "firmware_variant": "H3_COLLECTOR_SMOKE",
+    "firmware_sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+    "elf_sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+    "build_configuration_sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+    "pin_semantics": "phase1-pinmap-v3-corrective: PB0=LCD_BL; green LED=PE5.",
+    "observer": "DSView/libsigrok4DSL 0.2.0 export; CH0-CH7; 20 MHz; 5 s; CH0 rising; threshold 1.6 V; no external sampling clock.",
+    "algorithm": "analyze_clock.py --period-s 0.001 --calibration-column CH1"
+  },
+  "acceptance_contract": {
+    "path": "hardware/rtd_pilot/contracts/phase1_h3_timer_bounds_alientek_elite_v2_v2.json",
+    "sha256": "245ebc1412a44b26b26019cd23e31e06d1fb3af3b647144278c1fd22704820ef",
+    "decision_id": "phase1-h3-timer-bound-v2-20260731T110045Z",
+    "effective_not_before_utc": "2026-07-31T11:00:45Z",
+    "alignment_error_bound_limit_us": 1.5,
+    "non_retroactive": true
+  },
+  "alignment_status": "PASS_V2_PROSPECTIVE",
+  "required_independent_h3_sessions": 3,
+  "available_aligned_h3_sessions": 3,
+  "sessions": [
+    {
+      "h3_alignment_session_id": "h3-alignment-20260731T110847Z-session01-v2",
+      "capture_started_at_utc": "2026-07-31T11:11:11.505Z",
+      "manifest": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T110847Z-session01-v2/session_manifest.json",
+      "manifest_sha256": "6d7da193f8a1805f1b4e9c337012d64be37ff2bd3ad69661d3de0cdb9b68eeb3",
+      "integrity_audit_receipt": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T110847Z-session01-v2/integrity_audit_receipt.json",
+      "integrity_audit_receipt_sha256": "32ae5c1d216fb810356387505ce86c0bd876f80577e27959711d9f0dfcee3e79",
+      "alignment_error_bound_us": 0.9000000000267475,
+      "result": "PASS"
+    },
+    {
+      "h3_alignment_session_id": "h3-alignment-20260731T112454Z-session02-v2",
+      "capture_started_at_utc": "2026-07-31T11:25:43.936Z",
+      "manifest": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T112454Z-session02-v2/session_manifest.json",
+      "manifest_sha256": "5a91826fb81b65969ced01c359e8b5df8c82a578d74c8039d5534fffb4a028a2",
+      "integrity_audit_receipt": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T112454Z-session02-v2/integrity_audit_receipt.json",
+      "integrity_audit_receipt_sha256": "747f4207eaeabd0a1a5aa87fac798d2e6dfe4e53d5df4203d6dc8d61d3d9d7d1",
+      "alignment_error_bound_us": 0.9500000000004297,
+      "result": "PASS"
+    },
+    {
+      "h3_alignment_session_id": "h3-alignment-20260731T120337Z-session03-recapture01-v2",
+      "capture_started_at_utc": "2026-07-31T12:07:14.827Z",
+      "manifest": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T120337Z-session03-recapture01-v2/session_manifest.json",
+      "manifest_sha256": "afe49d9ee31b3e90527bbe3c3a3426ce91616b599168af43f30aba57b4a363d3",
+      "integrity_audit_receipt": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T120337Z-session03-recapture01-v2/integrity_audit_receipt.json",
+      "integrity_audit_receipt_sha256": "6d47e2b73458c9641fe446832841df88ab44babddb7d6fe844a7ab1bf0a11f93",
+      "alignment_error_bound_us": 1.0000000000001328,
+      "result": "PASS"
+    }
+  ],
+  "independent_recalculation": {
+    "method": "The frozen algorithm was run twice for each session. The main recomputation output is byte-identical to its first calculation; direct audit rechecks the retained inputs, one shared epoch, zero residual, and all eight non-flat channels.",
+    "maximum_observed_alignment_error_bound_us": 1.0000000000001328,
+    "maximum_alignment_residual_s": 0,
+    "result": "PASS"
+  },
+  "integrity_control": {
+    "verifier": "hardware/rtd_pilot/scripts/verify_h3_alignment_session.py",
+    "verifier_sha256": "144cab0bafd3fe6d1d09f64e8f7eebdac9c408253e1e81ca00a5811e55e2075b",
+    "result": "All three candidate manifests and their write-once integrity audit receipts verify."
+  },
+  "retained_failures": {
+    "failed_v2_session_id": "h3-alignment-20260731T113323Z-session03-v2",
+    "manifest": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T113323Z-session03-v2/session_manifest.json",
+    "manifest_sha256": "f8a6d1b7eae5e9b80008da989c10bc33937862c6529ad62fbe44e934f744af64",
+    "disposition": "FAIL: verifier rejects the malformed 65-character UART SHA-256 and the resulting gate/clock UART-hash disagreements. This retained session is not counted.",
+    "historical_1_10us_record": "docs/rtd_pilot/feasibility/phase1_h3_offline_alignment_review.json",
+    "historical_1_10us_record_sha256": "49c69ae637e4fe4c1bfcea956bffacd2721f72e6b9f58ccfdfff0f577417debc"
+  },
+  "independent_read_only_review": {
+    "requested_model": "gpt-5.6-terra high",
+    "serving_model_identity": "not verifiable from the available environment",
+    "blocking": 0,
+    "major": 0,
+    "minor": 1,
+    "minor_detail": "The recapture manifest retains a stale verifier-hash field; the write-once integrity receipt is the authoritative current control binding.",
+    "conclusion": "PASS: the recapture counts as the third independent v2 session."
+  },
+  "post_h3_phase2_regression": {
+    "focused_contract_tests": "58 passed",
+    "external_case_evidence_model_tests": "4 passed; 16 subtests passed",
+    "truth_boundary_tests": "11 passed; 43 deselected",
+    "schema_mirrors": "9 Phase 2 rtd_*.schema.json source/asset pairs are byte-identical",
+    "serial_regression_sentinel": "1 failed: invalid trace magic. This exactly matches the documented START_HEAD inherited deterministic baseline and the call path does not invoke Phase 2 contract or schema code.",
+    "phase2_surface_changed_by_this_audit": false,
+    "conclusion": "Existing Phase 2 implementation remains technically ready under its recorded baseline disposition; no Phase 2 freeze or new authorization is asserted."
+  },
+  "gate_decision": {
+    "timer_alignment_score": 2,
+    "phase1": "PHASE 1 CORRECTIVE READY TO FREEZE",
+    "phase2": "TECHNICALLY_READY after focused regression; no Phase 2 freeze, feature change, formal Case, or expanded authority is asserted.",
+    "phase3": "NOT AUTHORIZED",
+    "formal_case": "NOT CREATED"
+  }
+}

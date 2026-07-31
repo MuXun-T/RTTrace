@@ -1,0 +1,25 @@
+{
+  "capture_complete": true,
+  "captured_channels": [
+    "0",
+    "1",
+    "6"
+  ],
+  "discarded_leading_epoch_count": 0,
+  "discarded_leading_epoch_timestamps_s": [],
+  "epoch_begin_sequences": [
+    1
+  ],
+  "epoch_end_sequences": [
+    1
+  ],
+  "nonflat_channels": [
+    "0",
+    "1",
+    "6"
+  ],
+  "normalized_observer_file_sha256": "864d4478534df253365535f6779c7f269aa4cea95ff3f6b2db4e954c271e024d",
+  "observer_file_sha256": "413cd536c02f0ff1ed87fdbe8f2ea37f2e9847dce6c2c9956fcc2d826a49320c",
+  "schema_version": "phase1-observer-summary-v1",
+  "source_csv_sha256": "580646a975bb5b503d6adf92394c79d3cf21b8304ca0406658030001c075886d"
+}

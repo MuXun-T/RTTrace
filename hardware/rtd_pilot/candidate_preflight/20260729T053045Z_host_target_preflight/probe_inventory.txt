@@ -1,0 +1,9 @@
+preflight_time_utc=2026-07-29T05:30:45Z
+scope=nonformal-electrical-link
+operation=read-only host/probe inventory; no target attach, reset, halt, erase, or flash
+command=pyocd list --probes --no-header; pyocd list --targets --name stm32f103ze --no-header
+
+  #   Probe/Board                       Unique ID      Target
+---------------------------------------------------------------
+  0   CMSIS-DAP by ARM Fire CMSIS-DAP   0001A0000001   n/a
+  stm32f103ze   STMicroelectronics   STM32F103ZE   STM32F1 Series, STM32F103   pack

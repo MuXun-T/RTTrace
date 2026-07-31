@@ -1,0 +1,12 @@
+preflight_time_utc=2026-07-29T05:49:00Z
+scope=nonformal-electrical-link
+operation=brief SWD halt/read/resume diagnosis after zero-byte UART attempt
+command=pyocd commander --no-config --no-wait --connect halt --uid 0001A0000001 --target stm32f103ze --command 'reg pc msp xpsr' --command 'read32 0x08000000' --command 'read32 0x08000004' --command status --command continue
+pc=0x1ffff3b2
+msp=0x200000c4
+xpsr=0xa1000000
+flash_vector_msp=0x20010000
+flash_vector_reset=0x08000679
+core_state_before_resume=Halted
+core_state_after_resume=Running
+interpretation=PC is in STM32F1 System Boot ROM; the candidate Flash image is not the current execution image. This is not evidence of a PA9 or CH340 electrical fault.

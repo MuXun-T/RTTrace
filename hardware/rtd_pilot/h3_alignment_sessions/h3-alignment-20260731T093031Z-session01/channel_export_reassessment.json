@@ -1,0 +1,44 @@
+{
+  "schema_version": "phase1-h3-channel-export-reassessment-v1",
+  "h3_alignment_session_id": "h3-alignment-20260731T093031Z-session01",
+  "scope": "Reassesses only Capture A channel-export eligibility; all original raw and derived artifacts remain unchanged.",
+  "authorization": "Current-session workspace-operator authorization to clarify the frozen Capture A channel-export condition.",
+  "original_conservative_assessment": {
+    "manifest": "session_manifest.json",
+    "result": "FAIL",
+    "reason": "The raw CSV header is Channels (16/16), whereas the historical raw H3 Capture A CSV is Channels (8/16).",
+    "retention": "The original manifest is retained unchanged."
+  },
+  "clarified_condition": {
+    "required_observation_channels": ["0", "1", "2", "3", "4", "5", "6", "7"],
+    "additional_export_channels_permitted_only_if": [
+      "they are physically unconnected to the target",
+      "they are constant across the complete raw CSV",
+      "the raw CSV and its SHA-256 are retained",
+      "the required CH0-CH7 profile, semantics, rate, duration, trigger, and frozen calculation are unchanged"
+    ],
+    "basis": "prepare_dsview_observer.py verifies that requested channels are a subset of the CSV header and derives facts only for its explicit --channels input."
+  },
+  "session1_evidence": {
+    "raw_csv_external_path": "/home/zzq/embedded/ds/session1/DSLogic PLus-la-260731-173712.csv",
+    "raw_csv_sha256": "d9fd3e3dc0388889bddd579c68945ee0fde1b831487f8b8d540ad0c79005c206",
+    "csv_header": "Channels (16/16); Time(s), 0 through 15",
+    "data_rows_scanned": 10151,
+    "required_channels_present": ["0", "1", "2", "3", "4", "5", "6", "7"],
+    "required_channels_nonflat": ["0", "1", "2", "3", "4", "5", "6", "7"],
+    "extra_channels_scanned": ["8", "9", "10", "11", "12", "13", "14", "15"],
+    "extra_channels_nonzero_count": 0,
+    "frozen_profile_preserved": {
+      "sample_rate_hz": 20000000,
+      "observer_duration_s": 4.99974765,
+      "epoch_sequence": 1,
+      "alignment_error_bound_s": 7.499999999929438e-07,
+      "alignment_error_bound_limit_s": 7.5e-07
+    }
+  },
+  "final_reassessment": {
+    "channel_export_eligibility": "PASS",
+    "session_h3_alignment_eligibility": "PASS",
+    "reason": "All required channels are present and non-flat; all additionally exported channels are inert; no frozen timing or alignment calculation input changed."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "phase1-preflash-v1",
+  "pin_map_version": "phase1-pinmap-v2",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "firmware_variant": "GPIO_UART",
+  "session_id": "alientek-elite-gpio-uart-20260730T083121Z",
+  "firmware_sha256": "f298c861a2d8ab66b504b01d8ed8ef0f0c331c225051551018b263cf386a4de6",
+  "firmware_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_20260730T083121Z_arm/artifacts/rtd_phase1_freertos_GPIO_UART.bin",
+  "elf_sha256": "1995751328baf7a18f5035f533f51c044d60919084e407d706a36fe2a44db78e",
+  "elf_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_20260730T083121Z_arm/artifacts/rtd_phase1_freertos_GPIO_UART.elf",
+  "build_config_sha256": "5dc24782b0703dd1375d0f79bf708baf2ea6819718857442086d61f6fea1278c",
+  "build_config_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_20260730T083121Z_arm/CMakeCache.txt",
+  "pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+  "target": {
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"]
+  },
+  "firmware": {
+    "variant": "GPIO_UART",
+    "build_hash": "h8-alientek-elite-gpio-uart-20260730T083121Z",
+    "session_id": "alientek-elite-gpio-uart-20260730T083121Z",
+    "elf_sha256": "1995751328baf7a18f5035f533f51c044d60919084e407d706a36fe2a44db78e",
+    "capture_gate": {"symbol": "capture_armed", "address": "0x20000004", "mode": "single_use_swd_with_uart"}
+  }
+}

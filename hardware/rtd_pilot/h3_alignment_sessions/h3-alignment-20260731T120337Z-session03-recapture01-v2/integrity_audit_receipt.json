@@ -1,0 +1,17 @@
+{
+  "h3_alignment_session_id": "h3-alignment-20260731T120337Z-session03-recapture01-v2",
+  "result": {
+    "errors": [],
+    "valid": true
+  },
+  "schema_version": "phase1-h3-integrity-audit-receipt-v1",
+  "session_manifest": {
+    "file": "session_manifest.json",
+    "sha256": "afe49d9ee31b3e90527bbe3c3a3426ce91616b599168af43f30aba57b4a363d3"
+  },
+  "validated_at_utc": "2026-07-31T12:23:30Z",
+  "verification_control": {
+    "repo_path": "hardware/rtd_pilot/scripts/verify_h3_alignment_session.py",
+    "sha256": "144cab0bafd3fe6d1d09f64e8f7eebdac9c408253e1e81ca00a5811e55e2075b"
+  }
+}

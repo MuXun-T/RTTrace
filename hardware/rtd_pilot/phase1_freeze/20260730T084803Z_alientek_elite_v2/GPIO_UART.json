@@ -1,0 +1,19 @@
+{
+  "schema_version": "phase1-perturbation-input-v2",
+  "variant": "GPIO_UART",
+  "timer_period_mean_s": 0.000999970924184837,
+  "timer_period_p95_s": 0.0010001000000001703,
+  "timer_period_stddev_s": 8.571583829931415e-08,
+  "isr_duration_mean_s": null,
+  "execution_window_mean_s": null,
+  "execution_window_stddev_s": null,
+  "uart_drop_count": null,
+  "trace_drop_count": null,
+  "overflow_count": null,
+  "observation_scope": "CH1 timer and one matching UART epoch only; no in-band UART, trace, or overflow counter exists.",
+  "artifact_hashes": {
+    "capture_metadata_sha256": "391bf4fcf0d31f4fef7bade620758eea336b05e9d00b8402dcf1c29128c1730d",
+    "observer_summary_sha256": "c87127d230b6940499bdb7e989c60c5e5c462faffa1b82cd685d135e3c5ef88a",
+    "clock_analysis_sha256": "c35e1fc89fbe63aa8f28d04ac951979455c758cd33488c44d8f2d3e63040d5f3"
+  }
+}

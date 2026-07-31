@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase1-preflash-v1",
+  "pin_map_version": "phase1-pinmap-v2",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "firmware_variant": "IRQ_SMOKE",
+  "session_id": "alientek-elite-irq-20260729T123610Z",
+  "firmware_sha256": "cade4f404489efcfe628f0562743fa5e357b4575f206046a727f8fb465910afd",
+  "firmware_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_irq_smoke_20260729T123610Z_arm/artifacts/rtd_phase1_freertos_IRQ_SMOKE.bin",
+  "elf_sha256": "b7640b52eab0e757ab3ecaee836665f77672d66e0e447780d47fd9a69400a479",
+  "elf_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_irq_smoke_20260729T123610Z_arm/artifacts/rtd_phase1_freertos_IRQ_SMOKE.elf",
+  "build_config_sha256": "3a0cbf38d30f88313f1880140e60582ff0603cc5da267a923a4e015db5a6df0b",
+  "build_config_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_irq_smoke_20260729T123610Z_arm/CMakeCache.txt",
+  "pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+  "target": {"target": "stm32f103ze", "probe_uid": "0001A0000001", "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"]},
+  "firmware": {
+    "variant": "IRQ_SMOKE",
+    "build_hash": "h3-alientek-elite-irq-20260729",
+    "session_id": "alientek-elite-irq-20260729T123610Z",
+    "elf_sha256": "b7640b52eab0e757ab3ecaee836665f77672d66e0e447780d47fd9a69400a479",
+    "capture_gate": {"symbol": "capture_armed", "address": "0x20000004", "mode": "single_use_swd"}
+  }
+}

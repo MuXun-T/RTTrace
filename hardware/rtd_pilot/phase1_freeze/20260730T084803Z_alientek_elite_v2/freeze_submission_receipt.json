@@ -1,0 +1,26 @@
+{
+  "schema_version": "phase1-freeze-submission-receipt-v1",
+  "submission_id": "20260730T084803Z-alientek-elite-v2-freeze-submission",
+  "submitted_at": "2026-07-30",
+  "submitted_by": "workspace operator",
+  "status": "SUBMITTED_FOR_FREEZE_REVIEW",
+  "review_status": "PENDING_INDEPENDENT_REVIEW",
+  "freeze_manifest": {
+    "file": "freeze_manifest.json",
+    "sha256": "40c0b109cacf626dbe8ec9541e7407394e8541c5e232916e9eb0605714e575bb"
+  },
+  "validation_summary": {
+    "capture_validator": "8/8 VALID",
+    "tool_regression": "37 tests passed",
+    "perturbation_output_reproducible": true,
+    "perturbation_summary_sha256": "c67283d40341f4c3fefa0274f362b4a753dda09060e4bd8865190805d790ec32"
+  },
+  "scope": "Phase 1 H2 hardware feasibility evidence only",
+  "not_promoted": [
+    "H3 platform selection",
+    "Phase 2",
+    "parser, diagnoser, CCM, Ledger, or lineage implementation",
+    "fault truth, Case data, or paper-experiment result"
+  ],
+  "git_commit_or_tag_created": false
+}

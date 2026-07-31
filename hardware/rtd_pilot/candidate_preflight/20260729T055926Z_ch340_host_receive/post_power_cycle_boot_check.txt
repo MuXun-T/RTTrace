@@ -1,0 +1,19 @@
+preflight_time_utc=2026-07-29T05:59:26Z
+scope=nonformal-electrical-link
+operation=read-only post-power-cycle SWD boot and peripheral check
+initial_result=Flash execution confirmed before UART attempt
+initial_pc=0x080006d0
+initial_flash_vector_msp=0x20010000
+initial_flash_vector_reset=0x08000679
+initial_gpioa_crh=0x888444b4
+initial_usart1_brr=0x00000045
+initial_usart1_cr1=0x0000200c
+ch340=USB VID:PID 1a86:7523 at /dev/ttyUSB0
+
+after_read_only_uart_and_gate_attempt:
+pc=0x1ffff3b2
+gpioa_crh=0x888444b4 before later transition, then 0x444444b4
+usart1_brr=0x00000000
+usart1_cr1=0x00000000
+rcc_apb2enr=0x00004004
+interpretation=target returned to STM32F1 System Boot ROM during/after the attempt; zero host bytes cannot be attributed to PA9 or CH340. Check BOOT0/reset/control-line behavior before another UART attempt.

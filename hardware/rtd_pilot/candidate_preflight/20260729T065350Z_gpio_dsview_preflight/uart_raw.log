@@ -1,0 +1,1 @@
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=TASK_SMOKE build_hash=h2-alientek-elite-candidate-20260728 session=alientek-elite-candidate-task01 pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1

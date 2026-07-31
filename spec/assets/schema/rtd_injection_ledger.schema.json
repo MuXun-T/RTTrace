@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDInjectionLedger",
+  "type": "object",
+  "required": ["schema_version", "ledger_record_id", "append_sequence", "previous_record_digest", "record_digest", "case_id", "scenario_template_id", "fault_family", "fault_variant", "control_type", "board_id", "session_id", "capture_id", "firmware_hash", "ELF_hash", "config_hash", "source_commit", "RTOS_name", "RTOS_version", "compiler", "compiler_flags", "workload_seed", "injection_definition", "injection_version", "injection_parameters", "collector_config_hash", "injection_status", "injection_enable_epoch", "observer_adjudication_ref", "observer_adjudication_digest", "capture_validity_record_ref", "capture_validity_record_digest", "operator", "timestamp", "ledger_version", "prior_ledger_ref"],
+  "properties": {
+    "schema_version": {"type": "string"}, "ledger_record_id": {"type": "string"}, "append_sequence": {"type": "integer", "minimum": 1}, "previous_record_digest": {"type": ["string", "null"]}, "record_digest": {"type": "string"},
+    "case_id": {"type": "string", "pattern": "^case:[A-Za-z0-9][A-Za-z0-9._-]*$"}, "scenario_template_id": {"type": "string", "pattern": "^scenario:[A-Za-z0-9][A-Za-z0-9._-]*$"}, "fault_family": {"type": "string"}, "fault_variant": {"type": "string"}, "control_type": {"type": "string", "enum": ["healthy_control", "near_miss", "wrong_entity", "fault"]}, "board_id": {"type": "string"}, "session_id": {"type": "string"}, "capture_id": {"type": "string", "pattern": "^capture:[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "firmware_hash": {"type": "string"}, "ELF_hash": {"type": "string"}, "config_hash": {"type": "string"}, "source_commit": {"type": "string"}, "RTOS_name": {"type": "string"}, "RTOS_version": {"type": "string"}, "compiler": {"type": "string"}, "compiler_flags": {"type": "string"}, "workload_seed": {"type": "string"},
+    "injection_definition": {"type": "string"}, "injection_version": {"type": "string"}, "injection_parameters": {"type": "object"}, "collector_config_hash": {"type": "string"}, "injection_status": {"type": "string", "enum": ["not_applicable", "configured", "enabled", "enable_marker_missing", "failed"]}, "injection_enable_epoch": {"type": ["object", "null"]},
+    "observer_adjudication_ref": {"type": "string"}, "observer_adjudication_digest": {"type": "string"}, "capture_validity_record_ref": {"type": "string"}, "capture_validity_record_digest": {"type": "string"}, "operator": {"type": "string"}, "timestamp": {"type": "string"}, "ledger_version": {"type": "string"}, "prior_ledger_ref": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

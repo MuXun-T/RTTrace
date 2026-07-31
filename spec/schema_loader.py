@@ -104,4 +104,13 @@ def load_specs() -> dict[str, dict[str, Any]]:
         "formal_schedule_plan": load_schema("formal_schedule_plan.schema.json"),
         "benchmark_report": load_schema("benchmark_report.schema.json"),
         "runtime_optimization_product_evidence": load_schema("runtime_optimization_product_evidence.schema.json"),
+        "rtd_injection_ledger": load_schema("rtd_injection_ledger.schema.json"),
+        "rtd_ledger_session_seal": load_schema("rtd_ledger_session_seal.schema.json"),
+        "rtd_collector_config_snapshot": load_schema("rtd_collector_config_snapshot.schema.json"),
+        "rtd_capture_capability_manifest": load_schema("rtd_capture_capability_manifest.schema.json"),
+        "rtd_capture_integrity_record": load_schema("rtd_capture_integrity_record.schema.json"),
+        "rtd_case_definition": load_schema("rtd_case_definition.schema.json"),
+        "rtd_observer_record": load_schema("rtd_observer_record.schema.json"),
+        "rtd_raw_artifact_inventory": load_schema("rtd_raw_artifact_inventory.schema.json"),
+        "rtd_capture_validity_record": load_schema("rtd_capture_validity_record.schema.json"),
     }

@@ -1,0 +1,5 @@
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=TASK_SMOKE build_hash=h2-alientek-elite-candidate-20260728 session=alientek-elite-candidate-task01 pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 CAPTURE_ARMED source=swd_gate
+RTD1 EPOCH_BEGIN seq=1 tick=22370 variant=TASK_SMOKE
+RTD1 EPOCH_END seq=1 tick=22378
+RTD1 HEARTBEAT seq=1 tick=22383

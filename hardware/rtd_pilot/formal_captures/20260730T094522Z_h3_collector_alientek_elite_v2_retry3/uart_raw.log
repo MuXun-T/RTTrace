@@ -1,0 +1,82 @@
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T093716Z session=alientek-elite-h3-20260730T093716Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T094522Z session=alientek-elite-h3-20260730T094522Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T094522Z session=alientek-elite-h3-20260730T094522Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T094522Z session=alientek-elite-h3-20260730T094522Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T094522Z session=alientek-elite-h3-20260730T094522Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 BOOT firmware=phase1-freertos version=phase1-pinmap-v2 variant=H3_COLLECTOR_SMOKE build_hash=h3-alientek-elite-20260730T094522Z session=alientek-elite-h3-20260730T094522Z pinmap=phase1-pinmap-v2 uart=USART1_PA9_115200_8N1
+RTD1 COLLECTOR_CONFIG version=h3-smoke-v1 capacity=64 transport=USART1_115200 drop_policy=drop_new irq_decimation=20
+RTD1 CAPTURE_ARMED source=swd_gate
+RTD1 EPOCH_BEGIN seq=1 tick=61563 variant=H3_COLLECTOR_SMOKE
+RTD1 EPOCH_END seq=1 tick=61579
+RTD1 HEARTBEAT seq=1 tick=61581
+RTD1 TRTD1 COLLECTOR_STATUS stage=post_pressure next_seq=127 queued=64 high_watermark=64 dropped=62 overflow=62
+RACE seq=1 tick=61561 kind=2
+RTD1 TRACE seq=2 tick=61561 kind=1
+RTD1 TRACE seq=3 tick=61566 kind=3
+RTD1 TRACE seq=4 tick=61566 kind=90
+RTD1 TRACE seq=5 tick=61566 kind=90
+RTD1 TRACE seq=6 tick=61566 kind=90
+RTD1 TRACE seq=7 tick=61566 kind=90
+RTD1 TRACE seq=8 tick=61566 kind=90
+RTD1 TRACE seq=9 tick=61566 kind=90
+RTD1 TRACE seq=10 tick=61566 kind=90
+RTD1 TRACE seq=11 tick=61566 kind=90
+RTD1 TRACE seq=12 tick=61566 kind=90
+RTD1 TRACE seq=13 tick=61566 kind=90
+RTD1 TRACE seq=14 tick=61566 kind=90
+RTD1 TRACE seq=15 tick=61566 kind=90
+RTD1 TRACE seq=16 tick=61566 kind=90
+RTD1 TRACE seq=17 tick=61566 kind=90
+RTD1 TRACE seq=18 tick=61566 kind=90
+RTD1 TRACE seq=19 tick=61566 kind=90
+RTD1 TRACE seq=20 tick=61566 kind=90
+RTD1 TRACE seq=21 tick=61566 kind=90
+RTD1 TRACE seq=22 tick=61566 kind=90
+RTD1 TRACE seq=23 tick=61566 kind=90
+RTD1 TRACE seq=24 tick=61566 kind=90
+RTD1 TRACE seq=25 tick=61566 kind=90
+RTD1 TRACE seq=26 tick=61566 kind=90
+RTD1 TRACE seq=27 tick=61566 kind=90
+RTD1 TRACE seq=28 tick=61566 kind=90
+RTD1 TRACE seq=29 tick=61566 kind=90
+RTD1 TRACE seq=30 tick=61566 kind=90
+RTD1 TRACE seq=31 tick=61566 kind=90
+RTD1 TRACE seq=32 tick=61566 kind=90
+RTD1 TRACE seq=33 tick=61566 kind=90
+RTD1 TRACE seq=34 tick=61566 kind=90
+RTD1 TRACE seq=35 tick=61566 kind=90
+RTD1 TRACE seq=36 tick=61566 kind=90
+RTD1 TRACE seq=37 tick=61566 kind=90
+RTD1 TRACE seq=38 tick=61566 kind=90
+RTD1 TRACE seq=39 tick=61566 kind=90
+RTD1 TRACE seq=40 tick=61566 kind=90
+RTD1 TRACE seq=41 tick=61566 kind=90
+RTD1 TRACE seq=42 tick=61566 kind=90
+RTD1 TRACE seq=43 tick=61566 kind=90
+RTD1 TRACE seq=44 tick=61566 kind=90
+RTD1 TRACE seq=45 tick=61566 kind=90
+RTD1 TRACE seq=46 tick=61566 kind=90
+RTD1 TRACE seq=47 tick=61566 kind=90
+RTD1 TRACE seq=48 tick=61566 kind=90
+RTD1 TRACE seq=49 tick=61566 kind=90
+RTD1 TRACE seq=50 tick=61566 kind=90
+RTD1 TRACE seq=51 tick=61566 kind=90
+RTD1 TRACE seq=52 tick=61566 kind=90
+RTD1 TRACE seq=53 tick=61566 kind=90
+RTD1 TRACE seq=54 tick=61566 kind=90
+RTD1 TRACE seq=55 tick=61566 kind=90
+RTD1 TRACE seq=56 tick=61566 kind=90
+RTD1 TRACE seq=57 tick=61566 kind=90
+RTD1 TRACE seq=58 tick=61566 kind=90
+RTD1 TRACE seq=59 tick=61566 kind=90
+RTD1 TRACE seq=60 tick=61566 kind=90
+RTD1 TRACE seq=61 tick=61566 kind=90
+RTD1 TRACE seq=62 tick=61566 kind=90
+RTD1 TRACE seq=63 tick=61566 kind=90
+RTD1 TRACE seq=64 tick=61566 kind=90
+RTD1 TRACE seq=108 tick=61584 kind=13

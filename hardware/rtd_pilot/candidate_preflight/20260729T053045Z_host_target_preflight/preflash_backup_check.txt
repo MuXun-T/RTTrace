@@ -1,0 +1,6 @@
+preflight_time_utc=2026-07-29T05:30:45Z
+scope=nonformal-electrical-link
+operation=read-only hash verification of the candidate's preserved pre-flash backup
+file=/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/evidence/h2_20260728T082308Z_baremetal_gpio_uart_alignment_fix/alientek_elite_candidate_preflight/preflash_new_board_20260728.bin
+bytes=524288
+sha256=7519da4a6e67b7898e308c80b307d9deca673809480da2fb9e152c0fa5d78c33

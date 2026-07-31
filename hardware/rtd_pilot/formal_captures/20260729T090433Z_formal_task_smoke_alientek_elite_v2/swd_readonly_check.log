@@ -1,0 +1,9 @@
+timestamp_utc=2026-07-29T09:19:43Z
+scope=failed-attempt-read-only-swd-diagnosis
+pyocd_pid=1365084
+target=stm32f103ze
+probe_uid=0001A0000001
+attach_mode=existing-interactive-attach-reused
+commands_sent=status; reg pc
+prohibited_actions_not_taken=reset,flash,erase,detach,new_attach,capture_armed_write
+output_location=operator_existing_pyocd_terminal_/dev/pts/2

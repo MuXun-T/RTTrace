@@ -1,0 +1,13 @@
+{
+  "schema_version": "phase1-h3-alignment-review-disposition-v1",
+  "h3_alignment_session_id": "h3-alignment-20260731T093031Z-session01",
+  "reviewed_artifact": "channel_export_reassessment.json",
+  "review_mode": "different read-only sub-agent independent review",
+  "model_requested": "gpt-5.6-terra high",
+  "model_identity_attested": false,
+  "review_result": {"blocking": 1, "major": 1},
+  "disposition": "REJECTED_FOR_FROZEN_H3_SCORING",
+  "effective_session_result": "FAIL",
+  "reason": "The original manifest remains a frozen-card FAIL. A post-capture interpretation cannot establish that CH8-CH15 were physically unconnected; the raw CSV proves only that they were constant zero. The reassessment and its underlying raw evidence remain retained without overwrite.",
+  "h3_score_after_disposition": 1
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "phase1-perturbation-input-v2",
+  "variant": "GPIO_ONLY",
+  "timer_period_mean_s": 0.0010000328165633127,
+  "timer_period_p95_s": 0.0010002000000000066,
+  "timer_period_stddev_s": 8.686660394090779e-08,
+  "isr_duration_mean_s": null,
+  "execution_window_mean_s": null,
+  "execution_window_stddev_s": null,
+  "uart_drop_count": null,
+  "trace_drop_count": null,
+  "overflow_count": null,
+  "observation_scope": "CH1 rising-edge timer statistics only; GPIO_ONLY has no UART alignment or drop counter.",
+  "artifact_hashes": {
+    "capture_metadata_sha256": "9f6b0f622851426bd417df83f7d2ba18965f5506366e0c99bb913d5f09652de5",
+    "observer_summary_sha256": "95b44c8c4bca042bcdb89a72ff5ae769725a810f9805c78bf084d1b821320d85",
+    "timer_analysis_sha256": "dc4052623e2e966a4a31f8bd491bf90ed398c66b66a9a706ec1e9184160cf22b"
+  }
+}

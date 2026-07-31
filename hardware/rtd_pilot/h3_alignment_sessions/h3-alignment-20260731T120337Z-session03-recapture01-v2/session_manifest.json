@@ -1,0 +1,163 @@
+{
+  "schema_version": "phase1-h3-alignment-session-v2",
+  "h3_alignment_session_id": "h3-alignment-20260731T120337Z-session03-recapture01-v2",
+  "result": "PASS_V2_PROSPECTIVE",
+  "operator": "workspace operator",
+  "authorization": "user explicitly authorized Session 3 recapture after the failed UART hash-chain audit",
+  "capture_started_at_utc": "2026-07-31T12:07:14.827Z",
+  "capture_ended_at_utc": "2026-07-31T12:08:14.180Z",
+  "independence": {
+    "status": "PASS",
+    "method": "new v2-bound recapture after the failed Session 3; persistent read-only UART reader opened before one UID-pinned hardware reset, fresh DSView capture manually armed, then one no-reset SWD gate write",
+    "prior_session_reuse": false,
+    "shared_epoch_new": true,
+    "binding_record": "v2_contract_binding.json",
+    "binding_sha256": "8cd26c325fd002bc7a5a45ab41a5aff1593895d24d6a120080eca22594462248",
+    "reset_receipt": "reset_action_receipt.json",
+    "reset_receipt_sha256": "4c62c2fb65d2c5e68de21b8f8fb341c7ec3d1a6d006985f46f70be970b7f658d"
+  },
+  "v2_contract_binding": {
+    "decision_id": "phase1-h3-timer-bound-v2-20260731T110045Z",
+    "effective_not_before_utc": "2026-07-31T11:00:45Z",
+    "v2_contract_path": "hardware/rtd_pilot/contracts/phase1_h3_timer_bounds_alientek_elite_v2_v2.json",
+    "v2_contract_sha256": "245ebc1412a44b26b26019cd23e31e06d1fb3af3b647144278c1fd22704820ef",
+    "capture_start_after_effective_boundary": true,
+    "pre_gate_binding": true
+  },
+  "frozen_configuration": {
+    "board": "Alientek ATK-DNF103 V2",
+    "mcu": "STM32F103ZET6",
+    "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "rtos": "FreeRTOS V10.3.1",
+    "bsp": "STM32CubeF1 v1.8.7",
+    "firmware_variant": "H3_COLLECTOR_SMOKE",
+    "build_hash": "h3-alientek-elite-20260730T095442Z",
+    "firmware_sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+    "elf_sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+    "build_configuration_sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+    "capture_firmware_pinmap_version": "phase1-pinmap-v2",
+    "capture_firmware_pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+    "semantic_review_pinmap_version": "phase1-pinmap-v3-corrective",
+    "pin_channel_semantics": "CH0=PC2 EPOCH; CH1=PC3 CALIBRATION_TIMER; CH2=PC4; CH3=PC5; CH4=PC6; CH5=PC7; CH6=PB5; CH7=PB0 LCD_BL. Green LED=PE5.",
+    "uart": "USART1 PA9/PA10, 115200 8N1, no flow control; explicit-mask-0x00000002",
+    "dsview_software": "DSView export identifies libsigrok4DSL 0.2.0",
+    "observer_profile": "CH0-CH7; 20 MHz; 5 s; CH0 rising; threshold 1.6 V; no external sampling clock",
+    "algorithm": "analyze_clock.py --period-s 0.001 --calibration-column CH1",
+    "v2_alignment_error_bound_limit_s": 1.5e-06,
+    "v2_alignment_error_bound_limit_us": 1.5
+  },
+  "raw_artifacts": {
+    "dsview_dsl": {
+      "external_path": "/home/zzq/embedded/ds/session3/re/DSLogic PLus-la-260731-193506.dsl",
+      "sha256": "16c37496bb7a0c7574303946c6ab983d14aad90239766f051600d9e77fd87d62",
+      "bytes": 484509
+    },
+    "dsview_csv": {
+      "external_path": "/home/zzq/embedded/ds/session3/re/DSLogic PLus-la-260731-200650.csv",
+      "sha256": "8a7bf04ba84381b301a3d54e0c770fe210f39e90da06c0b4941d13ba53ccf9dd",
+      "bytes": 267983,
+      "header": "Channels (8/16); Sample rate 20 MHz; Time(s), 0 through 7"
+    },
+    "dsview_screenshot": {
+      "external_path": "/home/zzq/embedded/ds/session3/re/DSView-260731-193612.png",
+      "sha256": "12f8ef12bb61c78179812fa15cef3d5689c18098701a1a552d03e59ea30bd001",
+      "bytes": 52155
+    },
+    "uart_raw": {
+      "file": "uart_raw.log",
+      "sha256": "a3234d2ea146a4052d070c3a97906fe11f4865ea356a0a8b31bbde66f996f9fd"
+    },
+    "uart_reader_ready": {
+      "file": "uart_reader.ready",
+      "sha256": "8695cc29452fa2dcdb6803d14208a6058f8a18f24a84d4c6027db2edae589a9e"
+    },
+    "gate_ready": {
+      "file": "gate.ready",
+      "sha256": "a187c1635f0fca7ac45c43d8b0cd22f1bdd6241605299486f5349450bad45bc9"
+    },
+    "gate_verified": {
+      "file": "gate.verified",
+      "sha256": "c4222af13036695f44b2eb9c958b68d42b7e5e805db1cec03bd71b465705a7c4"
+    },
+    "gate_receipt": {
+      "file": "gate_receipt.json",
+      "sha256": "9865a356ff5c217fe2a41daf5d6d2dbcf292e4e988f9af84fa2e5dabf0c8aacc"
+    },
+    "v2_contract_binding": {
+      "file": "v2_contract_binding.json",
+      "sha256": "8cd26c325fd002bc7a5a45ab41a5aff1593895d24d6a120080eca22594462248"
+    }
+  },
+  "derived_artifacts": {
+    "observer_normalized": {
+      "file": "observer_normalized.csv",
+      "sha256": "626a361b3368ec512ec01ed955ddc463b327cf7b59e07775b6020dbfcbf6ae8f"
+    },
+    "observer_summary": {
+      "file": "observer_summary.json",
+      "sha256": "4a00f208434f9d691955df8679d2c5882d2253376f0349a02b96eaa766c93504"
+    },
+    "observer_epochs": {
+      "file": "observer_epochs.json",
+      "sha256": "a05807aee8cb6b9a41ec175c3aabf452c17138c0b10b99d92f83f45db7cb9e07"
+    },
+    "clock_analysis": {
+      "file": "clock_analysis.json",
+      "sha256": "bcb06a77c23c53e68c425e6f06a0ed662f06dcb63f20899289b628197b1b254e"
+    },
+    "clock_analysis_main_recompute": {
+      "file": "clock_analysis_main_recompute.json",
+      "sha256": "bcb06a77c23c53e68c425e6f06a0ed662f06dcb63f20899289b628197b1b254e",
+      "byte_identical_to_clock_analysis": true
+    },
+    "prepare_dsview_observer_py_sha256": "0e06a0dbf9086b8fbee23aaad31d8060b5cf50060ec13b4e16dc6eff21a9e8dd",
+    "analyze_clock_py_sha256": "910c99d6f2590df92a185a6e394e0e42eca67e527953789aa511cf2f7a8527d5",
+    "verify_h3_alignment_session_py_sha256": "d55f7e2aac85481f5ba6950ba7037b7fbc8ffc6efd09a20bc9956215eb9934a6",
+    "v1_clock_bounds_contract_sha256": "19635275497daf107ecbd5ca5c275186d3798ea4063254cd56d3a61233de6e15"
+  },
+  "calculation": {
+    "command_inputs": {
+      "period_s": 0.001,
+      "calibration_column": "CH1",
+      "epoch_sequence_start": 1,
+      "expected_duration_s": 5,
+      "observer_channels_interpreted": ["0", "1", "2", "3", "4", "5", "6", "7"]
+    },
+    "intermediate_results": {
+      "observer_duration_s": 4.99975285,
+      "observer_nonflat_channels": ["0", "1", "2", "3", "4", "5", "6", "7"],
+      "observer_epoch_timestamp_s": 0.0500026,
+      "uart_epoch_sequence": 1,
+      "calibration_samples": 4999,
+      "drift_ppm": -0.6801360271638259,
+      "alignment_residual_max_s": 0
+    },
+    "outputs": {
+      "absolute_error_max_s": 1.0000000000001327e-06,
+      "absolute_error_max_us": 1.0000000000001328,
+      "max_interval_s": 0.0010008499999999976,
+      "mean_interval_s": 0.0009999993198639729,
+      "median_interval_s": 0.0009999999999998899,
+      "p95_interval_s": 0.0010001499999998664,
+      "stddev_s": 9.48743272076279e-08,
+      "relative_error_max_ppm": 1000.0000000001327,
+      "alignment_residual_max_s": 0
+    }
+  },
+  "acceptance": {
+    "v2_contract_binding_before_gate": {"status": "PASS", "evidence": "v2_contract_binding.json retained and hashed before the one gate write"},
+    "capture_started_after_v2_effective_boundary": {"status": "PASS", "evidence": "2026-07-31T12:07:14.827Z >= 2026-07-31T11:00:45Z"},
+    "shared_epoch_unique_and_unambiguous": {"status": "PASS", "evidence": "gate receipt, observer epoch, and UART each retain exactly sequence 1"},
+    "observer_complete_and_parseable": {"status": "PASS", "evidence": "CSV, normalized observer, summary, and epochs are present; capture_complete=true"},
+    "trace_or_secondary_record_complete": {"status": "PASS", "evidence": "UART raw and gate receipt retain matching BOOT, CAPTURE_ARMED, EPOCH_BEGIN, and EPOCH_END"},
+    "pin_channel_semantics_phase1_pinmap_v3": {"status": "PASS", "evidence": "raw CSV declares CH0-CH7, all eight channels are non-flat, and the reviewed semantic map is retained"},
+    "alignment_error_bound_recomputable": {"status": "PASS", "evidence": "frozen algorithm hashes and all calculation input/output hashes are retained; two computations are byte-identical"},
+    "alignment_error_bound_within_v2_limit": {"status": "PASS", "evidence": "1.0000000000001328 us <= 1.50 us"},
+    "raw_and_calculation_bound": {"status": "PASS", "evidence": "verify_h3_alignment_session.py recomputes all raw and derived hashes and cross-checks UART hash agreement across manifest, gate receipt, and both calculations"},
+    "v1_historical_disposition": {"status": "FAIL_UNDER_V1_ONLY", "evidence": "1.0000000000001328 us > 0.75 us; this is a new v2 recapture and does not alter v1 records"},
+    "result": "PASS_V2_PROSPECTIVE"
+  },
+  "gate_note": "This replaces neither the failed prior Session 3 nor any v1 evidence. It may be counted only after final main audit and independent review."
+}

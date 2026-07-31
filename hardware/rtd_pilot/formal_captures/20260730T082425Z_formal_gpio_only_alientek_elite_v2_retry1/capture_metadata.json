@@ -1,0 +1,47 @@
+{
+  "schema_version": "phase1-capture-v2",
+  "pin_map_version": "phase1-pinmap-v2",
+  "capture_id": "20260730T082425Z-formal-gpio-only-alientek-elite-v2-retry1",
+  "session_id": "alientek-elite-gpio-only-20260730T082425Z",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "platform": "freertos-stm32f103zet6-alientek-elite-v2",
+  "firmware_variant": "GPIO_ONLY",
+  "firmware_sha256": "32fb1c64e72a70264234a3ae07c880905902322e11f3fa99897eff6a4be062f4",
+  "firmware_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_only_20260730T082425Z_arm/artifacts/rtd_phase1_freertos_GPIO_ONLY.bin",
+  "elf_sha256": "0d85fbe5d32f78a8f85789c1d5d266e761ef6fd46b7240271819e8c72d94a82e",
+  "elf_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_only_20260730T082425Z_arm/artifacts/rtd_phase1_freertos_GPIO_ONLY.elf",
+  "build_config_sha256": "28ef38faf849725bd29b1945040a33e68198351fd9c55d00026b317ca80411cd",
+  "build_config_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_only_20260730T082425Z_arm/CMakeCache.txt",
+  "pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+  "observer_file": "/home/zzq/embedded/ds/gpio_only_retry1/DSLogic PLus-la-260730-162640.dsl",
+  "observer_sha256": "d182c0eb1eeab7306916b17554c105fede7994481a284bc09fa714ce62f66754",
+  "normalized_observer_file": "observer_normalized.csv",
+  "normalized_observer_sha256": "a6ec1caac317de6cb772da3aa127867475bfd296f8f16238525fc2c8e7e2ba48",
+  "observer_summary_file": "observer_summary.json",
+  "observer_summary_sha256": "95b44c8c4bca042bcdb89a72ff5ae769725a810f9805c78bf084d1b821320d85",
+  "observer": {
+    "device": "DSLogic Plus",
+    "sample_rate_hz": 20000000,
+    "capture_profile": "calibration_20mhz",
+    "expected_duration_s": 5.0,
+    "threshold_volts": 1.6,
+    "channels": {
+      "0": {"role": "EPOCH", "gpio": "PC2"}, "1": {"role": "CALIBRATION_TIMER", "gpio": "PC3"},
+      "2": {"role": "TASK_A_RUNNING", "gpio": "PC4"}, "3": {"role": "TASK_B_RUNNING", "gpio": "PC5"},
+      "4": {"role": "MUTEX_HOLD", "gpio": "PC6"}, "5": {"role": "MUTEX_WAIT", "gpio": "PC7"},
+      "6": {"role": "IRQ_ACTIVE", "gpio": "PB5"}, "7": {"role": "RECORDER_PRESSURE", "gpio": "PB0"}
+    }
+  },
+  "uart": {"device": "/dev/ttyUSB0", "peripheral": "USART1", "tx_gpio": "PA9", "rx_gpio": "PA10", "format": "115200 8N1 no-flow-control"},
+  "target": {"target": "stm32f103ze", "probe_uid": "0001A0000001", "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"], "reset_observed": false, "halt_or_fault_observed": false},
+  "capture_gate": {"release_log_file": "gate_release.log", "release_log_sha256": "dd94819bced093bc3a3fc2e8081c09824d0234fd4bfe1256eced95d9ce4e8068", "symbol": "capture_armed", "address": "0x20000004", "command": "write32 0x20000004 0x00000001; continue", "epoch_sequence": 1},
+  "raw_dsview": {
+    "dsl_file": "/home/zzq/embedded/ds/gpio_only_retry1/DSLogic PLus-la-260730-162640.dsl", "dsl_sha256": "d182c0eb1eeab7306916b17554c105fede7994481a284bc09fa714ce62f66754",
+    "csv_file": "/home/zzq/embedded/ds/gpio_only_retry1/DSLogic PLus-la-260730-162640.csv", "csv_sha256": "3bf37ff682ba052f44c5ac90f7aa753f7726732f232ad31978bb653825d94104",
+    "screenshot_file": "/home/zzq/embedded/ds/gpio_only_retry1/DSView-260730-162745.png", "screenshot_sha256": "ea3973598da1a650a5e3fa27cbffa008c61c7095bd2defbf8d19f2c2288eee71",
+    "captured_channels": ["0", "1", "2", "3", "4", "5", "6", "7"]
+  },
+  "declared_changes": [],
+  "injection": {"enabled": false, "manifest_status": "not-applicable"},
+  "raw_data_retention": "retain-even-if-invalid"
+}

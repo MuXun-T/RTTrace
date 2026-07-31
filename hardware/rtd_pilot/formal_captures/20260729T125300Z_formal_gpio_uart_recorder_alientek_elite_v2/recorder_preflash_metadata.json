@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase1-preflash-v1",
+  "pin_map_version": "phase1-pinmap-v2",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "firmware_variant": "GPIO_UART_RECORDER",
+  "session_id": "alientek-elite-recorder-20260729T125300Z",
+  "firmware_sha256": "84be4402174aa4a22be5f24929fd39e2982fa66f68f70a28247971268ba780f6",
+  "firmware_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_recorder_20260729T125300Z_arm/artifacts/rtd_phase1_freertos_GPIO_UART_RECORDER.bin",
+  "elf_sha256": "8ec7654018c4fcc7e3aa9b5009577610811b982ba05c0f31f4cb3b5c3d9634a7",
+  "elf_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_recorder_20260729T125300Z_arm/artifacts/rtd_phase1_freertos_GPIO_UART_RECORDER.elf",
+  "build_config_sha256": "652fcf2d360186bdf4c4c7d1cdf48f9f1cae536a7e82e75d2cdc88d70e4865f7",
+  "build_config_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_recorder_20260729T125300Z_arm/CMakeCache.txt",
+  "pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+  "target": {"target": "stm32f103ze", "probe_uid": "0001A0000001", "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"]},
+  "firmware": {
+    "variant": "GPIO_UART_RECORDER",
+    "build_hash": "h3-alientek-elite-recorder-20260729",
+    "session_id": "alientek-elite-recorder-20260729T125300Z",
+    "elf_sha256": "8ec7654018c4fcc7e3aa9b5009577610811b982ba05c0f31f4cb3b5c3d9634a7",
+    "capture_gate": {"symbol": "capture_armed", "address": "0x20000004", "mode": "single_use_swd"}
+  }
+}

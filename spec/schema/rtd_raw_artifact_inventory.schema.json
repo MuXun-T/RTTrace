@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDRawArtifactInventory",
+  "type": "object",
+  "required": ["schema_version", "inventory_record_id", "capture_id", "session_id", "artifacts", "prior_inventory_ref", "record_digest"],
+  "properties": {
+    "schema_version": {"type": "string"}, "inventory_record_id": {"type": "string"}, "capture_id": {"type": "string", "pattern": "^capture:[A-Za-z0-9][A-Za-z0-9._-]*$"}, "session_id": {"type": "string"}, "artifacts": {"type": "array", "items": {"type": "object", "required": ["artifact_id", "kind", "availability", "size", "hash", "logical_name", "storage_class", "retention"], "properties": {"artifact_id": {"type": "string"}, "kind": {"type": "string"}, "availability": {"type": "string", "enum": ["available", "missing"]}, "size": {"type": "integer", "minimum": 0}, "hash": {"type": ["string", "null"]}, "logical_name": {"type": "string"}, "storage_class": {"type": "string"}, "retention": {"type": "string"}}, "additionalProperties": false}}, "record_digest": {"type": "string"}, "prior_inventory_ref": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

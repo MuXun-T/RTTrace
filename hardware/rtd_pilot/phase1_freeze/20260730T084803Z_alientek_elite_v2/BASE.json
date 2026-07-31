@@ -1,0 +1,18 @@
+{
+  "schema_version": "phase1-perturbation-input-v2",
+  "variant": "BASE",
+  "timer_period_mean_s": null,
+  "timer_period_p95_s": null,
+  "timer_period_stddev_s": null,
+  "isr_duration_mean_s": null,
+  "execution_window_mean_s": null,
+  "execution_window_stddev_s": null,
+  "uart_drop_count": null,
+  "trace_drop_count": null,
+  "overflow_count": null,
+  "observation_scope": "BASE intentionally compiles out GPIO, UART, recorder, tasks, mutex, and IRQ markers.",
+  "artifact_hashes": {
+    "capture_metadata_sha256": "a47f42d56e6704dcd530c9f5f8eecb2fdb64ceb9822e6b568e05d76f41baf485",
+    "observer_summary_sha256": "82060086838e231e3fdbb862ade2222e870c8d2abff258604d6fcad7f191ac26"
+  }
+}

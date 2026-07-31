@@ -1,0 +1,43 @@
+{
+  "schema_version": "phase1-h3-evidence-manifest-v1",
+  "status": "TECHNICAL_EVIDENCE_READY_FOR_INDEPENDENT_H3_REVIEW",
+  "scope": "Phase 1 feasibility only; excludes CCM, CIR, Ledger, diagnosis, fault truth, and Phase 2.",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "firmware_variant": "H3_COLLECTOR_SMOKE",
+  "preflash_metadata_sha256": "373fe0ba489b2de88e9b66e7be7a1ebbcd5ef6487e7f3525e284aa2f00968ab8",
+  "uart": {
+    "file": "uart_raw.log",
+    "sha256": "1c8af397d84d79c6ad701a3efcfb3a6b8819f625a1b9bcc549723c31b92a7595",
+    "gate_ready_sha256": "a187c1635f0fca7ac45c43d8b0cd22f1bdd6241605299486f5349450bad45bc9",
+    "gate_verified_sha256": "c4222af13036695f44b2eb9c958b68d42b7e5e805db1cec03bd71b465705a7c4",
+    "collector_validation": "h3_collector_uart_validation_final.json",
+    "collector_validation_sha256": "3ff7f8b055e533ddafd3e33448e1e5b813d505c657d114ce06dd7855236f58df",
+    "gate_receipt": "gate_receipt.json",
+    "gate_receipt_sha256": "2b1b22be04e1538b83ac0d8f93455ee7c251d0f96b18ce7025cbaaa8751357d6"
+  },
+  "capture_a": {
+    "purpose": "CH0--CH7 F1/F2/F3 marker-capability witness",
+    "raw_observer": "/home/zzq/embedded/ds/h3_a/retry1/DSLogic PLus-la-260730-175831.dsl",
+    "raw_observer_sha256": "c047680c3c9e912b1c28c4b0630e883bfa2858a474e86029821af1c8356b25b6",
+    "source_csv": "/home/zzq/embedded/ds/h3_a/retry1/DSLogic PLus-la-260730-175831.csv",
+    "source_csv_sha256": "af6d70efb0366180eb97787fa93778115e9abd439347a6f46fc9fce7ec7df7b4",
+    "screenshot_sha256": "a50ece2491efb55767e282055b09ba391a9dfc4f5df20dcd09ccd92aa65edc58",
+    "observer_summary": "h3_a_observer_summary.json",
+    "observer_summary_sha256": "ceb44c0faf91b784ddafc91b841795941c51d929a5b94fd1c7a66b3fec5391f8"
+  },
+  "capture_b": {
+    "purpose": "CH6 100 MHz F3 pulse-width witness",
+    "raw_observer": "/home/zzq/embedded/ds/h3_b/retry1/DSLogic PLus-la-260730-180245.dsl",
+    "raw_observer_sha256": "183b319ddead9d5e04ab1cd51297bc9923cf92698e2f37b487278e3e62d99ed1",
+    "source_csv": "/home/zzq/embedded/ds/h3_b/retry1/DSLogic PLus-la-260730-180245.csv",
+    "source_csv_sha256": "cf36ea3ed05d061f4d3d55c236850ef8a578137df7910636ebf8447770abd764",
+    "screenshot_sha256": "078deb07b105460c8cb07bf5c2fd1a39dec36eab2532bda38fbbd8a8a03a0a5d",
+    "observer_summary": "h3_b_observer_summary_retry1.json",
+    "observer_summary_sha256": "a2453afe06b308299a5c8c48fce1c68b28bfc08bee50d8bd92c5b0bdb2e23890",
+    "irq_precision": "h3_b_irq_precision.json"
+  },
+  "retained_non-evidence": [
+    "h3_collector_uart_validation.json: superseded validator pairing defect; retry2 is valid.",
+    "h3_b_observer_normalized.csv: partial output from an intentionally rejected no-CH0 Epoch interpretation; retry1 explicitly records the static IRQ role."
+  ]
+}

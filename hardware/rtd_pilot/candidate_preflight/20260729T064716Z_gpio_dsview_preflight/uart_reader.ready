@@ -1,0 +1,11 @@
+candidate_label=alientek-elite-stm32f103ze-candidate
+stable_port=/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
+resolved_port=/dev/ttyUSB0
+baud=115200
+format=8N1
+flow_control=none
+access_mode=read-only
+modem_policy=explicit-mask-0x00000002
+modem_lines_after_open=0x00000006
+modem_lines_after_configure=0x00000006
+modem_lines_after_policy=0x00000002

@@ -1,0 +1,25 @@
+{
+  "epochs": [
+    {
+      "sequence": 1,
+      "timestamp_s": 0.05000305
+    },
+    {
+      "sequence": 2,
+      "timestamp_s": 1.04994875
+    },
+    {
+      "sequence": 3,
+      "timestamp_s": 2.04978305
+    },
+    {
+      "sequence": 4,
+      "timestamp_s": 3.0495667
+    },
+    {
+      "sequence": 5,
+      "timestamp_s": 4.0493219
+    }
+  ],
+  "schema_version": "phase1-observer-epochs-v1"
+}

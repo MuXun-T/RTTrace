@@ -1,0 +1,14 @@
+{
+  "schema_version": "phase1-h3-reset-action-receipt-v1",
+  "h3_alignment_session_id": "h3-alignment-20260731T120337Z-session03-recapture01-v2",
+  "recorded_at_utc": "2026-07-31T12:05:02Z",
+  "action": "one UID-pinned pyOCD hardware reset after persistent UART reader opened",
+  "command": "pyocd commander --no-config --no-wait --uid 0001A0000001 --target stm32f103ze --connect attach --command 'reset hardware' --command exit",
+  "target": "stm32f103ze",
+  "probe_uid": "0001A0000001",
+  "result": "Resetting target",
+  "gate_write_excluded": true,
+  "flash_excluded": true,
+  "reset_count": 1,
+  "notes": "The only later SWD action may be one no-reset attach and one capture_armed write after the operator confirms DSView is armed."
+}

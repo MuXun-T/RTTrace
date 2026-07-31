@@ -1,0 +1,21 @@
+{
+  "absolute_error_max_s": 7.499999999998827e-07,
+  "alignment_residual_max_s": 0.0,
+  "alignment_residuals_s": [
+    0.0
+  ],
+  "drift_ppm": -144.78000000002794,
+  "input_hashes": {
+    "calibration_csv_sha256": "35a4622d0a92186a5902810c8319ab7466abd6e320a01a7bc2a559d684fbc73d",
+    "observer_epochs_sha256": "60bbeb36602efa3266c97ef44dbb16e1734ecf3535fab188a5a96215fd040637",
+    "uart_log_sha256": "4fad0cb042a1adc76ea7a2b2351923d0661598f2e73f16a35dd8d64f76783819"
+  },
+  "max_s": 0.0010005000000000153,
+  "mean_s": 0.00099985522,
+  "median_s": 0.0009998499999999688,
+  "p95_s": 0.0010000000000000009,
+  "relative_error_max_ppm": 749.9999999998827,
+  "samples": 5000,
+  "stddev_s": 9.301334256953602e-08,
+  "theoretical_period_s": 0.001
+}

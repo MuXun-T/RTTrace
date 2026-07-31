@@ -1,0 +1,191 @@
+{
+  "schema_version": "phase1-h3-timer-bounds-v2",
+  "status": "operator-authorized-prospective-baseline",
+  "decision_id": "phase1-h3-timer-bound-v2-20260731T110045Z",
+  "authorized_at_utc": "2026-07-31T11:00:45Z",
+  "effective_not_before_utc": "2026-07-31T11:00:45Z",
+  "authority": "workspace operator explicit threshold-reassessment authorization",
+  "scope": "Phase 1 H3 timer-period acceptance only; does not alter Phase 2, Phase 3, formal Case, or fault-experiment scope.",
+  "supersedes_for_new_h3_sessions_only": "hardware/rtd_pilot/contracts/phase1_clock_bounds_alientek_elite_v2.json",
+  "non_retroactive": true,
+  "exact_configuration": {
+    "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "rtos": "FreeRTOS V10.3.1",
+    "firmware_variant": "H3_COLLECTOR_SMOKE",
+    "firmware_sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+    "elf_sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+    "build_configuration_sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+    "pin_semantic_review": "phase1-pinmap-v3-corrective",
+    "observer_profile": "CH0-CH7; 20 MHz; 5 s; CH0 rising; threshold 1.6 V; no external sampling clock",
+    "algorithm": "analyze_clock.py --period-s 0.001 --calibration-column CH1"
+  },
+  "excluded_noncomparable_evidence": [
+    {
+      "path": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/evidence/h2_20260728T071237Z_baremetal_gpio_uart/session01_calibration/formal_session01/clock_analysis.json",
+      "reason": "Fire F103ZET6 V2 bare-metal GPIO_UART session; it is neither the Alientek board nor the H3 firmware/configuration, and its own period maximum/error is not a qualifying H3 calibration observation."
+    }
+  ],
+  "excluded_h3_evidence": [
+    {
+      "session_id": "h3-alignment-20260731T095215Z-session02",
+      "manifest": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T095215Z-session02/session_manifest.json",
+      "manifest_sha256": "2c5b3d0b7ab3dc68eaac13a03ed98a59a0d4ae52064f058969d4e9c68c52cd3d",
+      "absolute_error_max_s": 8.499999999958194e-07,
+      "reason": "The manifest and derived observer files are retained, but the referenced raw DSView CSV, DSL, and screenshot are no longer present at their recorded external paths. It remains a v1 FAIL and is not eligible as a v2 calibration source."
+    }
+  ],
+  "source_h3_sessions": [
+    {
+      "session_id": "h3-alignment-20260731T100657Z-session01-recapture01",
+      "absolute_error_max_s": 7.499999999998827e-07,
+      "source_evidence": {
+        "session_manifest": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T100657Z-session01-recapture01/session_manifest.json",
+          "sha256": "063dc28382115f11ab25b0ac9c194f10ae2f84cd5629c595cba4b6704c6eb52f"
+        },
+        "clock_analysis": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T100657Z-session01-recapture01/clock_analysis.json",
+          "sha256": "a80050113ba0f2d16c17b281728584ee1188064e9daed377f12d580be9b03b1f"
+        },
+        "observer_normalized_csv": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T100657Z-session01-recapture01/observer_normalized.csv",
+          "sha256": "35a4622d0a92186a5902810c8319ab7466abd6e320a01a7bc2a559d684fbc73d"
+        },
+        "raw_dsview_csv": {
+          "path": "/home/zzq/embedded/ds/session1/DSLogic PLus-la-260731-180854.csv",
+          "sha256": "c233ffd453faeb6ce27aedd66cc361103304480c04a95dd97545ac5b8f8d6a2e"
+        },
+        "raw_dsview_dsl": {
+          "path": "/home/zzq/embedded/ds/session1/DSLogic PLus-la-260731-180854.dsl",
+          "sha256": "1f8a24306b724eeb265dfb3465402f312abfc54e78cecfc1d239ffc1ed6ffaf0"
+        },
+        "raw_dsview_screenshot": {
+          "path": "/home/zzq/embedded/ds/session1/DSView-260731-181258.png",
+          "sha256": "00ebec8f54c66f9a00f3b3791058e76f11091410d6d6b5f1c49a6d31d81f5b88"
+        },
+        "uart_raw": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T100657Z-session01-recapture01/uart_raw.log",
+          "sha256": "4fad0cb042a1adc76ea7a2b2351923d0661598f2e73f16a35dd8d64f76783819"
+        },
+        "gate_receipt": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T100657Z-session01-recapture01/gate_receipt.json",
+          "sha256": "a9ce6c849762c08d13ed51006f425e2f608583dc1e6a7244abca4fdf1c6df3d7"
+        }
+      }
+    },
+    {
+      "session_id": "h3-alignment-20260731T103111Z-session02-recapture02",
+      "absolute_error_max_s": 1.2500000000073216e-06,
+      "source_evidence": {
+        "session_manifest": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T103111Z-session02-recapture02/session_manifest.json",
+          "sha256": "0451835e6a5d57d8f4387ba6c0a584bbdd9897eaf3d35b14107def41e683aac5"
+        },
+        "clock_analysis": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T103111Z-session02-recapture02/clock_analysis.json",
+          "sha256": "e4440819cb2f85b43dcd8c65a86351adde2943e74844a23f9b541b76cd50f41b"
+        },
+        "observer_normalized_csv": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T103111Z-session02-recapture02/observer_normalized.csv",
+          "sha256": "250060c324919647a47aaf7de010b04a8881b00d8b062ceeea570eed8762eef3"
+        },
+        "raw_dsview_csv": {
+          "path": "/home/zzq/embedded/ds/session2/re/DSLogic PLus-la-260731-183228.csv",
+          "sha256": "59f9b9cb787448029932935836cb8f35087a4a0c219408476a00fc800665e138"
+        },
+        "raw_dsview_dsl": {
+          "path": "/home/zzq/embedded/ds/session2/re/DSLogic PLus-la-260731-183228.dsl",
+          "sha256": "b299351042b1ec66fa94d3c21daf7ee7278b95dabc3fe49f8b3b02215743a01a"
+        },
+        "raw_dsview_screenshot": {
+          "path": "/home/zzq/embedded/ds/session2/re/DSView-260731-183346.png",
+          "sha256": "209f149cddd785fda6444a2fab9672da713d4098c1b632df6288bdc86ae4c59d"
+        },
+        "uart_raw": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T103111Z-session02-recapture02/uart_raw.log",
+          "sha256": "6454e563e8d8bd48442fbf228de6418020f24775443e0fc237d546ea49d8b4cf"
+        },
+        "gate_receipt": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T103111Z-session02-recapture02/gate_receipt.json",
+          "sha256": "3066ed6c8df29d670e3425beab35bfe65cf13a2068d59fc71c3ab4f9edbe8cc4"
+        }
+      }
+    },
+    {
+      "session_id": "h3-alignment-20260731T104432Z-session02-recapture03",
+      "absolute_error_max_s": 8.999999999989919e-07,
+      "source_evidence": {
+        "session_manifest": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T104432Z-session02-recapture03/session_manifest.json",
+          "sha256": "67a8fb9f56b4a23b5e1343af3b5bb6df79064d6cc8fe6ba00a8823770afe00a9"
+        },
+        "clock_analysis": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T104432Z-session02-recapture03/clock_analysis.json",
+          "sha256": "1230b9d93c1486f53a32351c9d7ac19345a7521368853cf8b31d59b4f09f6006"
+        },
+        "observer_normalized_csv": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T104432Z-session02-recapture03/observer_normalized.csv",
+          "sha256": "6f979efb5bb829981289602020e45dec4016a234af04e89dfaa6f97b45b53ae1"
+        },
+        "raw_dsview_csv": {
+          "path": "/home/zzq/embedded/ds/session2/re1/DSLogic PLus-la-260731-184611.csv",
+          "sha256": "37fb9dba1cab3a36369d6464b10333f23fe8c6d4df8485fbf38558fd1396fa4b"
+        },
+        "raw_dsview_dsl": {
+          "path": "/home/zzq/embedded/ds/session2/re1/DSLogic PLus-la-260731-184611.dsl",
+          "sha256": "85651c3c41cf4149eb151378cc3f98c07a912d20653f3dfb6e437d5631903aae"
+        },
+        "raw_dsview_screenshot": {
+          "path": "/home/zzq/embedded/ds/session2/re1/DSView-260731-184724.png",
+          "sha256": "a4c7493bd400c99ee8257c73c53cdbc1fbdd9919a590b1d202e7587862ddd8d2"
+        },
+        "uart_raw": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T104432Z-session02-recapture03/uart_raw.log",
+          "sha256": "c32652a8246c8bf5e7d146ac441187c97a573b2dd1bb4d0c4f958611f94828c3"
+        },
+        "gate_receipt": {
+          "path": "hardware/rtd_pilot/h3_alignment_sessions/h3-alignment-20260731T104432Z-session02-recapture03/gate_receipt.json",
+          "sha256": "ac83f8b29921f26cef1d5237b27e541e5cc2cbd191a14046b6fcd86df898571e"
+        }
+      }
+    }
+  ],
+  "derivation": {
+    "session_count": 3,
+    "observed_session_maximum_s": 1.2500000000073216e-06,
+    "logic_analyzer_sample_period_s": 5e-08,
+    "forward_margin_sample_ticks": 5,
+    "forward_margin_s": 2.5e-07,
+    "unrounded_candidate_limit_s": 1.5000000000073216e-06,
+    "published_limit_s": 1.5e-06,
+    "published_limit_us": 1.5,
+    "rationale": "The new prospective limit covers the maximum observed complete same-configuration H3 session plus five 20 MHz sample ticks. It is an engineering acceptance baseline, not a statistical confidence bound or a generalized timer guarantee."
+  },
+  "bounds": {
+    "max_ch1_period_absolute_error_s": 1.5e-06,
+    "max_alignment_residual_s": 0.0,
+    "max_absolute_drift_ppm": 314.0699999999488
+  },
+  "acceptance_rule_for_new_sessions": {
+    "minimum_new_independent_sessions": 3,
+    "each_session_must": [
+      "use the exact_configuration above",
+      "record a capture_started_at_utc at or after effective_not_before_utc, with a pre-gate contract-binding record",
+      "bind this decision_id, effective_not_before_utc, and the SHA-256 of this exact contract file in the new session manifest before the one-time gate write",
+      "retain raw DSL, CSV, screenshot, UART, and gate records with hashes",
+      "have one unambiguous shared epoch and reproducible frozen-algorithm calculation",
+      "satisfy max_ch1_period_absolute_error_s <= 1.5e-06",
+      "be retained regardless of pass or fail"
+    ],
+    "disallowed": [
+      "reclassifying v1 failures",
+      "dropping calibration edges",
+      "changing the analysis algorithm after capture",
+      "using the Fire H2 session as an H3 calibration input"
+    ],
+    "prospective_boundary_audit": "A session without the pre-gate contract binding, a capture_started_at_utc at or after effective_not_before_utc, and a matching contract SHA-256 is a FAIL and cannot be counted as a v2 session. This prevents same-day historical sessions from being retrospectively relabelled."
+  },
+  "gate_limit": "This contract alone does not change H3 score, authorize Phase 2 completion, or authorize Phase 3. A separate prospective three-session result and independent review remain required."
+}

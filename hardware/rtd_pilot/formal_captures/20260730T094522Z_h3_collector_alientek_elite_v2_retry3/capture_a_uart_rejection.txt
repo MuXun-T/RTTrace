@@ -1,0 +1,14 @@
+Capture A raw DSView evidence is retained at:
+
+- /home/zzq/embedded/ds/h3_a/DSLogic PLus-la-260730-174958.dsl
+- /home/zzq/embedded/ds/h3_a/DSLogic PLus-la-260730-174958.csv
+- /home/zzq/embedded/ds/h3_a/DSView-260730-175213.png
+
+Observer review: CH0--CH7 are non-flat; CH0 has one rising/falling Epoch;
+CH7 encloses the H3 interval; F1, F2 and F3 channels are active. This does not
+complete H3 because the UART output interleaved a partial `RTD1 TRACE` prefix
+with `RTD1 COLLECTOR_STATUS`. The fail-closed collector validator therefore
+cannot parse the post-pressure status line. No formal H3 score is assigned.
+
+The replacement serializes each exported trace line in a FreeRTOS critical
+section and requires a fresh hash-bound Capture A.

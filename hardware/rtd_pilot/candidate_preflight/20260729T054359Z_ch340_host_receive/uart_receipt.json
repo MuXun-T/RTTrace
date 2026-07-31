@@ -1,0 +1,14 @@
+{
+  "access_mode": "read-only",
+  "baud": 115200,
+  "bytes_received": 0,
+  "candidate_label": "alientek-elite-stm32f103ze-candidate",
+  "ended_at_unix": 1785303867.7612114,
+  "flow_control": "none",
+  "format": "8N1",
+  "modem_lines": "not_modified",
+  "port": "/dev/ttyUSB0",
+  "scope": "nonformal-electrical-link",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "started_at_unix": 1785303847.750005
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "phase1-h3-offline-alignment-review-v1",
+  "review_id": "h3-alientek-offline-alignment-20260731",
+  "configuration_id": "h3-alientek-elite-v2-20260730T095442Z",
+  "method": "prepare_dsview_observer.py followed by analyze_clock.py over the retained Capture A CSV, UART log, and observer epoch record; no hardware was connected",
+  "input_refs": [
+    {"external_path": "/home/zzq/embedded/ds/h3_a/retry1/DSLogic PLus-la-260730-175831.csv", "sha256": "af6d70efb0366180eb97787fa93778115e9abd439347a6f46fc9fce7ec7df7b4"},
+    {"repo_path": "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/uart_raw.log", "sha256": "1c8af397d84d79c6ad701a3efcfb3a6b8819f625a1b9bcc549723c31b92a7595"},
+    {"repo_path": "hardware/rtd_pilot/formal_captures/20260730T095442Z_h3_collector_alientek_elite_v2_retry4/h3_a_observer_epochs.json", "sha256": "fc649bbc9e1b0ed28e0c65251fc9ca0e7e95d430dd560fe28041b4159e10919b"}
+  ],
+  "computed_observation": {
+    "calibration_samples": 5001,
+    "theoretical_period_s": 0.001,
+    "absolute_error_max_s": 0.0000011000000000030083,
+    "drift_ppm": -259.93801239761524,
+    "single_anchor_alignment_residual_s": 0.0,
+    "alignment_bound_s": 0.0000011000000000030083
+  },
+  "alignment_status": "DEFER",
+  "reason": "Only Capture A supplies a matched H3 GPIO Epoch and UART sequence. Capture B is an IRQ pulse-width witness with no CH0 Epoch. The Phase 1 protocol requires three independent real sessions before a frozen allowable alignment bound may be accepted.",
+  "required_independent_h3_sessions": 3,
+  "available_aligned_h3_sessions": 1,
+  "interpretation_limit": "The numeric field is a reproducible one-session calibration observation, not an accepted multi-session alignment bound and not a Phase 2 or fault-truth input."
+}

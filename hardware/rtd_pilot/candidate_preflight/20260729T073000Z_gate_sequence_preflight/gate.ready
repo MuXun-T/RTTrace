@@ -1,0 +1,8 @@
+schema_version=phase1-gate-ready-v1
+boot_observed=1
+variant=TASK_SMOKE
+build_hash=h2-alientek-elite-candidate-20260728
+session=alientek-elite-candidate-task01
+elf_sha256=7610d46374472c9b42e1c6e4fecd99680a428433d4306c299c78cbf8896be518
+capture_gate_symbol=capture_armed
+capture_gate_address=0x20000004

@@ -1,0 +1,49 @@
+{
+  "schema_version": "phase1-capture-v2",
+  "pin_map_version": "phase1-pinmap-v2",
+  "capture_id": "20260730T083627Z-formal-gpio-uart-alientek-elite-v2-retry2",
+  "session_id": "alientek-elite-gpio-uart-20260730T083627Z",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "platform": "freertos-stm32f103zet6-alientek-elite-v2",
+  "firmware_variant": "GPIO_UART",
+  "firmware_sha256": "76706abc05e1b426e1471c4067ea3447e5a5d2dbeaa5c060c9c2aaba715b550e",
+  "firmware_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_20260730T083627Z_arm/artifacts/rtd_phase1_freertos_GPIO_UART.bin",
+  "elf_sha256": "669d58493ed79913dc8e13229c4a4db513802963bad43f86906a88d6bc61c709",
+  "elf_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_20260730T083627Z_arm/artifacts/rtd_phase1_freertos_GPIO_UART.elf",
+  "build_config_sha256": "bfbfc95390adef3caf203e08c99a6a55e1eb30d5f2f99e09dfd0bb994b992a52",
+  "build_config_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_gpio_uart_20260730T083627Z_arm/CMakeCache.txt",
+  "pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+  "observer_file": "/home/zzq/embedded/ds/gpio_uart_retry2/DSLogic PLus-la-260730-163911.dsl",
+  "observer_sha256": "d454d119ef42221bf92cb24639061dd10485b459e780b7f9e8b89fc7afe38a4f",
+  "normalized_observer_file": "observer_normalized.csv",
+  "normalized_observer_sha256": "3bd813c5da88b83bd41b841b49c07d0bb42ccee875f52bd6b891ba57796fd127",
+  "uart_file": "uart_raw.log",
+  "uart_sha256": "c5da9f018443fa761810f0428697636b994aaf6d9c053c86556d693fbfa5defd",
+  "observer_summary_file": "observer_summary.json",
+  "observer_summary_sha256": "c87127d230b6940499bdb7e989c60c5e5c462faffa1b82cd685d135e3c5ef88a",
+  "clock_analysis_file": "clock_analysis_calibration_rise.json",
+  "clock_analysis_sha256": "c35e1fc89fbe63aa8f28d04ac951979455c758cd33488c44d8f2d3e63040d5f3",
+  "observer": {
+    "device": "DSLogic Plus", "sample_rate_hz": 20000000, "capture_profile": "calibration_20mhz", "expected_duration_s": 5.0, "threshold_volts": 1.6,
+    "channels": {
+      "0": {"role": "EPOCH", "gpio": "PC2"}, "1": {"role": "CALIBRATION_TIMER", "gpio": "PC3"},
+      "2": {"role": "TASK_A_RUNNING", "gpio": "PC4"}, "3": {"role": "TASK_B_RUNNING", "gpio": "PC5"},
+      "4": {"role": "MUTEX_HOLD", "gpio": "PC6"}, "5": {"role": "MUTEX_WAIT", "gpio": "PC7"},
+      "6": {"role": "IRQ_ACTIVE", "gpio": "PB5"}, "7": {"role": "RECORDER_PRESSURE", "gpio": "PB0"}
+    }
+  },
+  "uart": {"device": "/dev/ttyUSB0", "peripheral": "USART1", "tx_gpio": "PA9", "rx_gpio": "PA10", "format": "115200 8N1 no-flow-control"},
+  "uart_reader": {"ready_file": "uart.ready", "ready_sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f", "modem_policy": "explicit-mask-0x00000002", "selected_boot_identity": "h10-alientek-elite-gpio-uart-20260730T083627Z"},
+  "target": {"target": "stm32f103ze", "probe_uid": "0001A0000001", "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"], "reset_observed": false, "halt_or_fault_observed": false},
+  "capture_gate": {"release_log_file": "gate_release.log", "release_log_sha256": "dd94819bced093bc3a3fc2e8081c09824d0234fd4bfe1256eced95d9ce4e8068", "symbol": "capture_armed", "address": "0x20000004", "command": "write32 0x20000004 0x00000001; continue", "epoch_sequence": 1},
+  "rejected_derived_artifacts": {"clock_analysis.json": {"sha256": "625eaba325ea7d946b645f08668771a2009afb3cb086f9b2d10bb93dc2034217", "reason": "omitted --calibration-column CH1 and therefore analyzed alternating half-period edges"}},
+  "raw_dsview": {
+    "dsl_file": "/home/zzq/embedded/ds/gpio_uart_retry2/DSLogic PLus-la-260730-163911.dsl", "dsl_sha256": "d454d119ef42221bf92cb24639061dd10485b459e780b7f9e8b89fc7afe38a4f",
+    "csv_file": "/home/zzq/embedded/ds/gpio_uart_retry2/DSLogic PLus-la-260730-163911.csv", "csv_sha256": "619e6ae4444fc94a42c9640bf32260f0f622dc9f4729c46271932e4f2505ca05",
+    "screenshot_file": "/home/zzq/embedded/ds/gpio_uart_retry2/DSView-260730-164036.png", "screenshot_sha256": "003239fe98c602c3b3be865fed4d936e2d9d3a394319e09a114cd68cc59b6cfe",
+    "captured_channels": ["0", "1", "2", "3", "4", "5", "6", "7"]
+  },
+  "declared_changes": [],
+  "injection": {"enabled": false, "manifest_status": "not-applicable"},
+  "raw_data_retention": "retain-even-if-invalid"
+}

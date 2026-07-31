@@ -1,0 +1,21 @@
+{
+  "metadata_sha256": "373fe0ba489b2de88e9b66e7be7a1ebbcd5ef6487e7f3525e284aa2f00968ab8",
+  "observed": {
+    "collector_status": {
+      "dropped": 62,
+      "high_watermark": 64,
+      "next_sequence": 127,
+      "overflow": 62,
+      "queued": 64
+    },
+    "trace_count": 65,
+    "trace_first_sequence": 1,
+    "trace_last_sequence": 108
+  },
+  "reasons": [
+    "boot_config_order_mismatch"
+  ],
+  "schema_version": "phase1-h3-collector-uart-validation-v1",
+  "uart_sha256": "2a34266d5d1c43b9eb8191de9f80ffe9169f2b2d4fb8c8d8db8ebe57d03b9aa8",
+  "valid": false
+}

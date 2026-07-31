@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDObserverAdjudicationRecord",
+  "type": "object",
+  "required": ["schema_version", "observer_adjudication_id", "case_id", "capture_id", "session_id", "observer_artifact_hash", "observer_status", "manifestation_status", "manifestation_interval", "manifestation_predicate_id", "manifestation_predicate_version", "alignment_error_bound", "adjudicator", "adjudication_timestamp", "prior_adjudication_ref", "record_digest"],
+  "properties": {
+    "schema_version": {"type": "string"}, "observer_adjudication_id": {"type": "string"}, "case_id": {"type": "string", "pattern": "^case:[A-Za-z0-9][A-Za-z0-9._-]*$"}, "capture_id": {"type": "string", "pattern": "^capture:[A-Za-z0-9][A-Za-z0-9._-]*$"}, "session_id": {"type": "string"}, "observer_artifact_hash": {"type": ["string", "null"]}, "observer_status": {"type": "string", "enum": ["complete", "partial", "corrupt", "missing", "unalignable"]}, "manifestation_status": {"type": "string", "enum": ["manifested", "not_manifested", "not_assessable"]}, "manifestation_interval": {"type": ["object", "null"]}, "manifestation_predicate_id": {"type": "string"}, "manifestation_predicate_version": {"type": "string"}, "alignment_error_bound": {"type": ["number", "null"], "minimum": 0}, "adjudicator": {"type": "string"}, "adjudication_timestamp": {"type": "string"}, "prior_adjudication_ref": {"type": ["string", "null"]}, "record_digest": {"type": "string"}
+  },
+  "additionalProperties": false
+}

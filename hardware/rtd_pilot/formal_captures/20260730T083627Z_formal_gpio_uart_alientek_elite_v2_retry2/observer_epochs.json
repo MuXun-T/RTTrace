@@ -1,0 +1,9 @@
+{
+  "epochs": [
+    {
+      "sequence": 1,
+      "timestamp_s": 0.0500008
+    }
+  ],
+  "schema_version": "phase1-observer-epochs-v1"
+}

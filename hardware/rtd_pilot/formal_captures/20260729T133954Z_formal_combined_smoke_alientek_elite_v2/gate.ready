@@ -1,0 +1,8 @@
+schema_version=phase1-gate-ready-v1
+boot_observed=1
+variant=COMBINED_SMOKE
+build_hash=h4-alientek-elite-combined-20260729T133954Z
+session=alientek-elite-combined-20260729T133954Z
+elf_sha256=c34a6a79ac475a1e9c2fdf7b8774f9b512031b37791a15e036136ece4fc63ae0
+capture_gate_symbol=capture_armed
+capture_gate_address=0x20000004

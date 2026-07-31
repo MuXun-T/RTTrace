@@ -1,0 +1,64 @@
+{
+  "schema_version": "phase1-h3-session02-failure-audit-v1",
+  "source_session_id": "h3-alignment-20260731T095215Z-session02",
+  "source_result": "FAIL",
+  "scope": "Audit only; no Phase 2 or Phase 3 changes; no formal Case; no fault experiment.",
+  "audit_method": {
+    "raw_dsview_csv": "/home/zzq/.local/share/Trash/files/DSLogic PLus-la-260731-175424.csv",
+    "raw_dsview_dsl": "/home/zzq/.local/share/Trash/files/DSLogic PLus-la-260731-175424.dsl",
+    "raw_csv_sha256": "3d1e517e229e2e798f0b1c8639b425ef6c0c1caf4e5cee7a2d1dfc0721fd7811",
+    "raw_dsl_sha256": "a2b32b94229248b23d2fd317deb5dbc24df6b686904d11dad26f87e7c9611e43",
+    "raw_screenshot": "/home/zzq/.local/share/Trash/files/DSView-260731-175628.png",
+    "raw_screenshot_sha256": "8b13ef2c1f3433de31bb0b476c0fc96ebcef9ccae9bdd030aba75bd19cd03abc",
+    "normalized_csv_sha256": "4a4b5f8c44b94cbceafbfa7f430311f9fce866f05ccb5b861707d4985dd6a2c2",
+    "analysis_sha256": "483ed83f613510c500bdd1609437ddf47db611fa193afa7ddb0b10a093b229b3",
+    "independent_recompute_sha256": "same byte output as source clock_analysis.json",
+    "algorithm": "analyze_clock.py --period-s 0.001 --calibration-column CH1",
+    "threshold_us": 0.75
+  },
+  "frozen_dsview_config_verified": {
+    "channels": ["0", "1", "2", "3", "4", "5", "6", "7"],
+    "sample_rate_hz": 20000000,
+    "sample_count": 100000768,
+    "trigger_channel": "0",
+    "trigger_slope": "rising",
+    "threshold_v": 1.6,
+    "external_clock": false,
+    "config_source": "DSL session/header"
+  },
+  "offending_intervals": [
+    {
+      "previous_rising_timestamp_s": 0.16524,
+      "rising_timestamp_s": 0.16623915,
+      "interval_s": 0.00099915,
+      "error_us": -0.85,
+      "classification": "maximum absolute error"
+    },
+    {
+      "previous_rising_timestamp_s": 0.16623915,
+      "rising_timestamp_s": 0.1672397,
+      "interval_s": 0.00100055,
+      "error_us": 0.55,
+      "classification": "adjacent compensating interval"
+    }
+  ],
+  "recomputed_result": {
+    "samples": 5000,
+    "mean_s": 0.00099984194,
+    "median_s": 0.0009998499999999133,
+    "stddev_s": 8.571175940960608e-08,
+    "max_s": 0.001000549999999989,
+    "absolute_error_max_s": 8.499999999958194e-07,
+    "alignment_error_bound_us": 0.8499999999958194,
+    "drift_ppm": -158.06000000005588,
+    "alignment_residual_max_s": 0.0,
+    "result": "FAIL"
+  },
+  "cause_and_fix_disposition": {
+    "cause": "A retained CH1 edge interval exceeded the frozen bound; raw DSL metadata shows no channel, rate, threshold, trigger, or external-clock mismatch.",
+    "not_permitted": ["discarding the edge", "changing the period algorithm", "relaxing 0.75 us", "modifying audited firmware"],
+    "in_scope_fix": "Repeat an independently reset and rearmed capture with explicit frozen DSView configuration verification and unchanged firmware/ELF/configuration.",
+    "source_failure_retained": true,
+    "source_external_files_currently_in_trash": true
+  }
+}

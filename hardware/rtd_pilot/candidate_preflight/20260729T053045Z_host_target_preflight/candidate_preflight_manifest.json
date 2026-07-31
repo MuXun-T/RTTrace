@@ -1,0 +1,116 @@
+{
+  "schema_version": "phase1-candidate-preflight-v1",
+  "preflight_scope": "nonformal-electrical-link",
+  "candidate_label": "alientek-elite-stm32f103ze-candidate",
+  "formal_capture_started": false,
+  "freeze_requested": false,
+  "selected_uart_witness": "ch340_host_witness_v1",
+  "target": {
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "dbgmcu_idcode": "0x10036414",
+    "flash_kib": 512,
+    "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"]
+  },
+  "artifacts": [
+    {
+      "id": "probe_inventory",
+      "file": "probe_inventory.txt",
+      "sha256": "46213b9367fb6b6860d7668a6fb2f2a16c21181b5cca3495a20ff673ad1a622d"
+    },
+    {
+      "id": "usb_inventory",
+      "file": "usb_inventory.txt",
+      "sha256": "5baea53b140bbf66cafd7d0d190a67ace767f9406d0239fc0380cb0270f8f95b"
+    },
+    {
+      "id": "target_attach_status",
+      "file": "target_attach_status.txt",
+      "sha256": "c830a736044d9ad663663f1af4e1f91835a0b8bca26ec36cca1dba9df827d20d"
+    },
+    {
+      "id": "preflash_backup_check",
+      "file": "preflash_backup_check.txt",
+      "sha256": "ae7e734a923fa9d0ca85df1866813d3d3b0068a74d25ec6d947f62584be5cdf9"
+    },
+    {
+      "id": "preflash_backup_external",
+      "file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/evidence/h2_20260728T082308Z_baremetal_gpio_uart_alignment_fix/alientek_elite_candidate_preflight/preflash_new_board_20260728.bin",
+      "sha256": "7519da4a6e67b7898e308c80b307d9deca673809480da2fb9e152c0fa5d78c33"
+    },
+    {
+      "id": "ch340_host_attempt_20260729_054359",
+      "file": "../20260729T054359Z_ch340_host_receive/uart_receipt.json",
+      "sha256": "7629ea1c8cada8c885274866006513638c7898ff923920d5f018d1dac366199d"
+    },
+    {
+      "id": "ch340_host_attempt_20260729_054631",
+      "file": "../20260729T054631Z_ch340_host_receive/uart_receipt.json",
+      "sha256": "c211ba4454d7899e7c3acbb4276972596dd7fb5a4c0cc61386d2349175e2d863"
+    },
+    {
+      "id": "target_execution_location_20260729_054900",
+      "file": "../20260729T054631Z_ch340_host_receive/target_execution_location.txt",
+      "sha256": "8de12fb085945519a04b16eea4445fa850b8e19b5a516be75166d7ad8f1bbc1e"
+    },
+    {
+      "id": "post_power_cycle_boot_check_20260729_055926",
+      "file": "../20260729T055926Z_ch340_host_receive/post_power_cycle_boot_check.txt",
+      "sha256": "8efaa892f7ddff19a9d20c24e4b186abaa56f8dafbc3384d50726841029fb92d"
+    },
+    {
+      "id": "candidate_ch340_mask02_raw_20260729_062311",
+      "file": "../20260729T062311Z_ch340_mask02_preflight/uart_raw.log",
+      "sha256": "3612a8443dc11091f8f80d7c1e8a97b572753405bf3bfcafe6ba21ff3b5091fb"
+    },
+    {
+      "id": "candidate_ch340_mask02_ready_20260729_062311",
+      "file": "../20260729T062311Z_ch340_mask02_preflight/uart_reader.ready",
+      "sha256": "edbf1949e08cedac478958be7cfeaededd026be6367103056719bbf66d5d9822"
+    },
+    {
+      "id": "candidate_ch340_mask02_receipt_20260729_062311",
+      "file": "../20260729T062311Z_ch340_mask02_preflight/uart_receipt.json",
+      "sha256": "36ac16207731353a375562d66d7117c910607c34a0f0a4ed94b64a06a000f55e"
+    },
+    {
+      "id": "candidate_ch340_mask02_report_20260729_062311",
+      "file": "../20260729T062311Z_ch340_mask02_preflight/README.md",
+      "sha256": "390b34fd5bec6ca9cdb7a8e45d168d3cf3df81f02e8686a8d907223cd1975890"
+    },
+    {
+      "id": "current_board_photo_attestation_20260729_063816",
+      "file": "../20260729T063816Z_board_photo_source/board_photo_attestation.md",
+      "sha256": "5b162eb1d5664f8339c99197f168939ff9b0883f935b7db03e07a53b77fd11b1"
+    },
+    {
+      "id": "gpio_dsview_attempt_20260729_064716_raw",
+      "file": "../20260729T064716Z_gpio_dsview_preflight/uart_raw.log",
+      "sha256": "fbef9acfee9b7ffa855f40dc01bcfaa3456361683d6583250533c7f679dce34f"
+    },
+    {
+      "id": "gpio_dsview_attempt_20260729_064716_ready",
+      "file": "../20260729T064716Z_gpio_dsview_preflight/uart_reader.ready",
+      "sha256": "edbf1949e08cedac478958be7cfeaededd026be6367103056719bbf66d5d9822"
+    },
+    {
+      "id": "gpio_dsview_attempt_20260729_064716_receipt",
+      "file": "../20260729T064716Z_gpio_dsview_preflight/uart_receipt.json",
+      "sha256": "913f686a9c2d5e4e5a7adce1407299f19cd8c986d29d81253911c4539b0fad65"
+    },
+    {
+      "id": "gpio_dsview_attempt_20260729_064716_report",
+      "file": "../20260729T064716Z_gpio_dsview_preflight/README.md",
+      "sha256": "393c61a29b46b5f2671d54ab58c2ad9dea5897f8b01f12649335cfed610ce5bf"
+    }
+  ],
+  "findings": {
+    "physical_mapping": {"status": "pending", "evidence_ids": ["current_board_photo_attestation_20260729_063816"]},
+    "pa9_tx": {"status": "pending", "evidence_ids": []},
+    "ch340_path": {"status": "pending", "evidence_ids": []},
+    "host_serial": {"status": "pass", "evidence_ids": ["candidate_ch340_mask02_raw_20260729_062311", "candidate_ch340_mask02_ready_20260729_062311", "candidate_ch340_mask02_receipt_20260729_062311", "candidate_ch340_mask02_report_20260729_062311"]},
+    "gpio_observer": {"status": "pending", "evidence_ids": []},
+    "independent_transport": {"status": "pending", "evidence_ids": []}
+  },
+  "notes": "Nonformal candidate CH340 host receive is proven only under the retained explicit modem mask 0x00000002 and one persistent SWD session. No DSView, formal Capture, board ID, pin map, Capture metadata, or validator was created. This does not prove PA9 waveform, PA9--CH340 path, or GPIO observer mapping."
+}

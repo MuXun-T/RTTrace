@@ -1,0 +1,25 @@
+{
+  "schema_version": "phase1-candidate-preflight-v1",
+  "preflight_scope": "nonformal-electrical-link",
+  "candidate_label": "alientek-elite-stm32f103ze-candidate",
+  "formal_capture_started": false,
+  "freeze_requested": false,
+  "selected_uart_witness": "undecided",
+  "target": {
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "dbgmcu_idcode": "0x10036414",
+    "flash_kib": 512,
+    "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"]
+  },
+  "artifacts": [],
+  "findings": {
+    "physical_mapping": {"status": "pending", "evidence_ids": []},
+    "pa9_tx": {"status": "pending", "evidence_ids": []},
+    "ch340_path": {"status": "pending", "evidence_ids": []},
+    "host_serial": {"status": "pending", "evidence_ids": []},
+    "gpio_observer": {"status": "pending", "evidence_ids": []},
+    "independent_transport": {"status": "pending", "evidence_ids": []}
+  },
+  "notes": "Preflight only. Do not add board_id, pin_map_version, capture_id, or formal Capture metadata."
+}

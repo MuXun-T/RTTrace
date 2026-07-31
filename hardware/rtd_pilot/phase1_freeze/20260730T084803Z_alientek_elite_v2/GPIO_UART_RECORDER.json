@@ -1,0 +1,19 @@
+{
+  "schema_version": "phase1-perturbation-input-v2",
+  "variant": "GPIO_UART_RECORDER",
+  "timer_period_mean_s": 0.0009997105600000002,
+  "timer_period_p95_s": 0.0009998499999999133,
+  "timer_period_stddev_s": 7.861121004067867e-08,
+  "isr_duration_mean_s": null,
+  "execution_window_mean_s": null,
+  "execution_window_stddev_s": null,
+  "uart_drop_count": null,
+  "trace_drop_count": null,
+  "overflow_count": null,
+  "observation_scope": "CH1 timer, matching UART epoch, and CH7 recorder marker; no drop or overflow counter exists.",
+  "artifact_hashes": {
+    "capture_metadata_sha256": "21c57a00819789034a30db144bbd0c7c017f0c674c8d6a294f50f037bebdeb56",
+    "observer_summary_sha256": "0402d432b2c90b0d3d35051104a428b6b224c6fe2725a339718966846c823ca0",
+    "clock_analysis_sha256": "7e3297af46d4f30a0ce0f8e582e55dc6309618b6c677366dca1b5c341801bfd9"
+  }
+}

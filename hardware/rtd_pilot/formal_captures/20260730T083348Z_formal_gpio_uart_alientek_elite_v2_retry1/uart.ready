@@ -1,0 +1,3 @@
+uart_open_configured=1
+uart_modem_lines_before=0x00000006
+uart_modem_lines_after=0x00000006

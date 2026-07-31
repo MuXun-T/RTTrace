@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Any
 
 
@@ -27,6 +28,11 @@ def _validate(schema: dict[str, Any], value: Any, path: str) -> str | None:
         enum_values = list(schema.get("enum") or [])
         if not any(_json_equal(value, candidate) for candidate in enum_values):
             return _format_reason(path, f"expected one of {enum_values!r}")
+
+    if "pattern" in schema and isinstance(value, str):
+        pattern = schema["pattern"]
+        if not isinstance(pattern, str) or re.search(pattern, value) is None:
+            return _format_reason(path, f"does not match pattern {pattern!r}")
 
     if _is_number_instance(value):
         if "minimum" in schema and float(value) < float(schema["minimum"]):

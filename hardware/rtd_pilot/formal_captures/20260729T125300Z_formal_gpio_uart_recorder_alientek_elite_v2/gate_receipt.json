@@ -1,0 +1,25 @@
+{
+  "boot_observed": true,
+  "bytes_received": 363,
+  "candidate_label": "alientek-elite-stm32f103ze-candidate",
+  "capture_armed_observed": true,
+  "ended_at_unix": 1785329883.4663818,
+  "epoch_sequence": 1,
+  "gate_sequence_verified": true,
+  "identity": {
+    "build_hash": "h3-alientek-elite-recorder-20260729",
+    "elf_sha256": "8ec7654018c4fcc7e3aa9b5009577610811b982ba05c0f31f4cb3b5c3d9634a7",
+    "gate_address": "0x20000004",
+    "gate_symbol": "capture_armed",
+    "probe_uid": "0001A0000001",
+    "session": "alientek-elite-recorder-20260729T125300Z",
+    "target": "stm32f103ze",
+    "variant": "GPIO_UART_RECORDER"
+  },
+  "modem_lines_before_close": "0x00000002",
+  "modem_policy": "explicit-mask-0x00000002",
+  "schema_version": "phase1-candidate-gate-receipt-v1",
+  "scope": "candidate-preflight",
+  "started_at_unix": 1785329749.0480928,
+  "uart_sha256": "45bff9531e4b825c568302cec4c5190d04f8447bad2d0b5d605443c117f38d2d"
+}

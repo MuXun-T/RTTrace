@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDCaseDefinition",
+  "type": "object",
+  "required": ["schema_version", "case_definition_id", "case_id", "scenario_template_id", "fault_family", "fault_variant", "control_type", "injection_definition", "injection_version", "injection_parameters", "entity_binding", "workload_seed", "manifestation_predicate_id", "manifestation_predicate_version", "config_snapshot_id", "config_hash", "example_only", "prior_case_definition_ref", "record_digest"],
+  "properties": {
+    "schema_version": {"type": "string"}, "case_definition_id": {"type": "string"}, "case_id": {"type": "string", "pattern": "^case:[A-Za-z0-9][A-Za-z0-9._-]*$"}, "scenario_template_id": {"type": "string", "pattern": "^scenario:[A-Za-z0-9][A-Za-z0-9._-]*$"}, "fault_family": {"type": "string"}, "fault_variant": {"type": "string"}, "control_type": {"type": "string", "enum": ["healthy_control", "near_miss", "wrong_entity", "fault"]}, "injection_definition": {"type": "string"}, "injection_version": {"type": "string"}, "injection_parameters": {"type": "object"}, "entity_binding": {"type": "object"}, "workload_seed": {"type": "string"}, "manifestation_predicate_id": {"type": "string"}, "manifestation_predicate_version": {"type": "string"}, "config_snapshot_id": {"type": "string"}, "config_hash": {"type": "string"}, "example_only": {"type": "boolean"}, "record_digest": {"type": "string"}, "prior_case_definition_ref": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,3 @@
+# Phase 1 clock and alignment protocol
+
+Use normalized DSLogic CH1/PC3 rising-edge CSV timestamps with `analyze_clock.py --period-s 0.001 --calibration-column CH1`. The STM32 TIM2 tick is 2000 Hz; use the firmware-declared tick rate, never an assumed 1000 Hz value. It reports mean, median, standard deviation, maximum, P95, absolute/relative error, and elapsed-window drift ppm. Align CH0/PC2 epochs to the matching contiguous subset of USART1/PA9 UART `EPOCH_BEGIN`/`EPOCH_END` sequence records, then record residuals. Freeze the allowable drift/error bound only after three independent real reset/session captures; no preselected or post-hoc relaxed bound is permitted.

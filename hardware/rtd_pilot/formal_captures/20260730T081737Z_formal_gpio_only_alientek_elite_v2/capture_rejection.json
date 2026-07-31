@@ -1,0 +1,19 @@
+{
+  "schema_version": "phase1-capture-rejection-v1",
+  "capture_id": "20260730T081737Z-formal-gpio-only-alientek-elite-v2",
+  "session_id": "alientek-elite-gpio-only-20260730T081737Z",
+  "firmware_variant": "GPIO_ONLY",
+  "status": "REJECTED",
+  "reasons": ["observer_channel_activity_mismatch: CH6 changed from high to low at 0.04839025 s before the first CH0 epoch at 0.05000305 s"],
+  "observer_summary_file": "rejected_observer_summary.json",
+  "observer_summary_sha256": "4f4c4089b81a7b744e6548982a73e5811436cc295dc74609485a3b8f0e536315",
+  "raw_dsview": {
+    "dsl_file": "/home/zzq/embedded/ds/gpio_only/DSLogic PLus-la-260730-162001.dsl",
+    "dsl_sha256": "3af659e278e3b67b87dc21a8c48468af5844aae02135a4fdc3dabd87cc2c4407",
+    "csv_file": "/home/zzq/embedded/ds/gpio_only/DSLogic PLus-la-260730-162001.csv",
+    "csv_sha256": "f3245d36ff62381e8a78d94557714313dc045678656bc909b2a86395196d1aef",
+    "screenshot_file": "/home/zzq/embedded/ds/gpio_only/DSView-260730-162117.png",
+    "screenshot_sha256": "42766d9a27072024f23084cef97994e3b4975e48859c062d59d5d2139208e617"
+  },
+  "raw_data_retention": "retain-even-if-invalid"
+}

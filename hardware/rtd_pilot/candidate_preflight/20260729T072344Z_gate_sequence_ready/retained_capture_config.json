@@ -1,0 +1,60 @@
+{
+  "schema_version": "phase1-candidate-capture-config-v1",
+  "scope": "candidate-preflight",
+  "status": "GATE_SEQUENCE_IMPLEMENTATION_PENDING_VALIDATION",
+  "candidate_label": "alientek-elite-stm32f103ze-candidate",
+  "formal_capture_started": false,
+  "dsview": {
+    "device": "DSLogic Plus",
+    "sample_rate_hz": 20000000,
+    "sample_count": 100000768,
+    "window_s": 5.0,
+    "threshold_v": 1.6,
+    "trigger_channel": "CH0",
+    "trigger_slope": "rising",
+    "trigger_position_samples": 1000012,
+    "channels_enabled": ["CH0", "CH1", "CH2", "CH3", "CH4", "CH5", "CH6", "CH7"]
+  },
+  "mapping_under_test": {
+    "CH0": {"gpio": "PC2", "role": "EPOCH"},
+    "CH1": {"gpio": "PC3", "role": "CALIBRATION_TIMER"},
+    "CH2": {"gpio": "PC4", "role": "TASK_A_RUNNING"},
+    "CH3": {"gpio": "PC5", "role": "TASK_B_RUNNING"},
+    "CH4": {"gpio": "PC6", "role": "MUTEX_HOLD"},
+    "CH5": {"gpio": "PC7", "role": "MUTEX_WAIT"},
+    "CH6": {"gpio": "PB5", "role": "IRQ_ACTIVE"},
+    "CH7": {"gpio": "PB0", "role": "RECORDER_PRESSURE"}
+  },
+  "uart": {
+    "stable_port": "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0",
+    "resolved_port": "/dev/ttyUSB0",
+    "format": "115200 8N1 no-flow-control",
+    "access_mode": "read-only",
+    "modem_policy": "explicit-mask-0x00000002"
+  },
+  "firmware": {
+    "variant": "TASK_SMOKE",
+    "build_hash": "h2-alientek-elite-candidate-20260728",
+    "session_id": "alientek-elite-candidate-task01",
+    "capture_gate_symbol": "capture_armed",
+    "capture_gate_address": "0x20000004",
+    "elf_sha256": "7610d46374472c9b42e1c6e4fecd99680a428433d4306c299c78cbf8896be518"
+  },
+  "retained_inputs": [
+    {"path": "/home/zzq/embedded/ds/DSLogic PLus-la-260729-145318.dsl", "sha256": "0f4b5cb083d092bc10ea1cbc9b21793d2f1570431d0d5a2b60f249c24cccc05f"},
+    {"path": "/home/zzq/embedded/ds/DSLogic PLus-la-260729-145318.csv", "sha256": "7adebb31cf0a60967135a917cdbf573d29d30c8c71c3cefe5f8c803a0211ee83"},
+    {"path": "/home/zzq/embedded/ds/DSView-260729-145832.png", "sha256": "7d5c72842bf21606f37d6c23b87dad78b5d6dfd180813443c28fe0ccb0a74bfb"},
+    {"path": "../20260729T065350Z_gpio_dsview_preflight/uart_raw.log", "sha256": "fbef9acfee9b7ffa855f40dc01bcfaa3456361683d6583250533c7f679dce34f"},
+    {"path": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_candidate_task_smoke/artifacts/rtd_phase1_freertos_TASK_SMOKE.elf", "sha256": "7610d46374472c9b42e1c6e4fecd99680a428433d4306c299c78cbf8896be518"},
+    {"path": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_candidate_task_smoke/CMakeCache.txt", "sha256": "c0f977fcc865ede0ed0bb85e4e61594d173d9b3cf9469b232b907a555fc16c31"},
+    {"path": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/evidence/h2_20260728T082308Z_baremetal_gpio_uart_alignment_fix/alientek_elite_candidate_preflight/candidate_preflash_metadata.json", "sha256": "846dc0f5508278072ebc8a265526b306e5ec38f11c2a715a4a12e3e898609952"}
+  ],
+  "gate_order": [
+    "open_and_configure_persistent_uart_reader",
+    "arm_dsview_waiting_for_ch0_rising_trigger",
+    "allow_explicit_candidate_modem_policy_boot_boundary",
+    "wait_for_matching_rtd1_boot",
+    "attach_without_reset_and_enter_swd_write32_only_after_gate_ready",
+    "require_capture_armed_then_matching_epoch_begin_and_end"
+  ]
+}

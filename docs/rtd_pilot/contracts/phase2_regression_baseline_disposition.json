@@ -1,0 +1,60 @@
+{
+  "schema_version": "phase2-regression-baseline-disposition-v1",
+  "start_head": "c5ea276758d4aa372ae51a3ab16771d306065ee5",
+  "evidence_root": "/tmp/rtd-pilot-baseline.U58PBf",
+  "environment": {
+    "python": "python3 with pytest 9.0.3",
+    "cpp": "GNU 11.4.0, /usr/bin/c++, CMake, Ninja, Release -O3 -DNDEBUG"
+  },
+  "python_serial_channel": {
+    "test": "tests/python/test_online_channel.py::OnlineChannelTests::test_serial_channel_matches_offline_dataset",
+    "input": "multi_core scenario over POSIX PTY; read_size=29; timeout_s=1.0; baudrate=115200",
+    "current_runs": [
+      {"run": 1, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/current-python3-1.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"},
+      {"run": 2, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/current-python3-2.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"},
+      {"run": 3, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/current-python3-3.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"},
+      {"run": 4, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/current-python3-4.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"},
+      {"run": 5, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/current-python3-5.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"}
+    ],
+    "start_head_runs": [
+      {"run": 1, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/start-python3-1.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"},
+      {"run": 2, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/start-python3-2.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"},
+      {"run": 3, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/start-python3-3.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"},
+      {"run": 4, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/start-python3-4.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"},
+      {"run": 5, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/start-python3-5.log", "failure": "AssertionError: invalid trace magic at test_online_channel.py:119"}
+    ],
+    "failure_rate": {"current": "5/5", "start_head": "5/5"},
+    "call_path": "test_online_channel -> WorkspaceController.viz_LoadDatasetFromChannel -> load_dataset_from_chunks -> parser",
+    "phase2_files_in_call_path": false,
+    "excluded_invalid_samples": "current-python-{1..5}.log and start-python-{1..5}.log used /usr/local/bin/python without pytest and did not execute the test.",
+    "classification": "INHERITED_DETERMINISTIC_BASELINE_FAILURE",
+    "phase2_regression_delta": 0
+  },
+  "cpp_async_flush": {
+    "test": "trace_collector_tests via ctest in the same Release/Ninja configuration",
+    "start_head_runs": [
+      {"run": 1, "result": "PASS"}, {"run": 2, "result": "PASS"}, {"run": 3, "result": "PASS"}, {"run": 4, "result": "PASS"}, {"run": 5, "result": "PASS"},
+      {"run": 6, "result": "FAIL", "log": "/tmp/rtd-pilot-baseline.U58PBf/start-cpp-6.log", "failure": "FAIL: fallback async flushed"},
+      {"run": 7, "result": "PASS"}, {"run": 8, "result": "PASS"}, {"run": 9, "result": "PASS"}, {"run": 10, "result": "PASS"},
+      {"run": 11, "result": "PASS"}, {"run": 12, "result": "PASS"}, {"run": 13, "result": "PASS"}, {"run": 14, "result": "PASS"}, {"run": 15, "result": "PASS"},
+      {"run": 16, "result": "PASS"}, {"run": 17, "result": "PASS"}, {"run": 18, "result": "PASS"}, {"run": 19, "result": "PASS"}, {"run": 20, "result": "PASS"}
+    ],
+    "current_runs": [
+      {"run": 1, "result": "PASS"}, {"run": 2, "result": "PASS"}, {"run": 3, "result": "PASS"}, {"run": 4, "result": "PASS"}, {"run": 5, "result": "PASS"},
+      {"run": 6, "result": "PASS"}, {"run": 7, "result": "PASS"}, {"run": 8, "result": "PASS"}, {"run": 9, "result": "PASS"}, {"run": 10, "result": "PASS"},
+      {"run": 11, "result": "PASS"}, {"run": 12, "result": "PASS"}, {"run": 13, "result": "PASS"}, {"run": 14, "result": "PASS"}, {"run": 15, "result": "PASS"},
+      {"run": 16, "result": "PASS"}, {"run": 17, "result": "PASS"}, {"run": 18, "result": "PASS"}, {"run": 19, "result": "PASS"}, {"run": 20, "result": "PASS"}
+    ],
+    "failure_rate": {"current": "0/20", "start_head": "1/20"},
+    "classification": "INHERITED_FLAKY_BASELINE_RISK",
+    "current_new_failure_patterns": [],
+    "phase2_regression_delta": 0,
+    "disposition": "Do not modify collector or weaken the async-flush assertion in Phase 2. Retain the START_HEAD failure as an accepted inherited risk and investigate only if a new current-tree failure pattern appears."
+  },
+  "overall": {
+    "focused_phase2_delta": 0,
+    "new_failure_delta": 0,
+    "full_repository_result": "CURRENT_FULL_PYTHON: 1 failed, 908 passed, 1195 subtests passed in 161.49s; the sole failure is the inherited serial-channel assertion. START_HEAD also has one C++ flaky failure in the repeated comparison.",
+    "disposition": "INHERITED_ACCEPTED_RISK_PENDING_PHASE1_GATE"
+  }
+}

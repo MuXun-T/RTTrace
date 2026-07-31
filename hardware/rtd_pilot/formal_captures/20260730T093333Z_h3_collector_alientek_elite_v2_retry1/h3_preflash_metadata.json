@@ -1,0 +1,35 @@
+{
+  "schema_version": "phase1-h3-collector-capture-v1",
+  "status": "PREPARED_NOT_CAPTURED",
+  "capture_id": "alientek-elite-h3-20260730T093333Z",
+  "session_id": "alientek-elite-h3-20260730T093333Z",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "pin_map_version": "phase1-pinmap-v2",
+  "firmware_variant": "H3_COLLECTOR_SMOKE",
+  "firmware_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_h3_collector_20260730T093333Z_arm/artifacts/rtd_phase1_freertos_H3_COLLECTOR_SMOKE.bin",
+  "firmware_sha256": "bc2afccaf20cadb08ba1950e7c0c14665f0d66f513e708cfc44dc3ad205135ac",
+  "elf_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_h3_collector_20260730T093333Z_arm/artifacts/rtd_phase1_freertos_H3_COLLECTOR_SMOKE.elf",
+  "elf_sha256": "891eb0c090f5b1c02526339cff0371aaae69d17f78211ae09912acef12b690bf",
+  "build_config_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_h3_collector_20260730T093333Z_arm/CMakeCache.txt",
+  "build_config_sha256": "b8cd40d153376977707b39af7a57c50a78d193c3724913f231d093907f37c2fc",
+  "pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+  "firmware": {
+    "variant": "H3_COLLECTOR_SMOKE",
+    "build_hash": "h3-alientek-elite-20260730T093333Z",
+    "session_id": "alientek-elite-h3-20260730T093333Z",
+    "elf_sha256": "891eb0c090f5b1c02526339cff0371aaae69d17f78211ae09912acef12b690bf",
+    "capture_gate": {"symbol": "capture_armed", "address": "0x20000000", "mode": "single_use_swd"}
+  },
+  "target": {
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"]
+  },
+  "collector": {"capacity": 64, "transport": "USART1_115200", "drop_policy": "drop_new", "irq_decimation": 20},
+  "observer_captures": {
+    "A": {"purpose": "F1/F2/F3 marker-capability witness", "channels": ["0", "1", "2", "3", "4", "5", "6", "7"], "sample_rate_hz": 20000000, "duration_s": 5.0, "trigger": "CH0 rising", "threshold_v": 1.6},
+    "B": {"purpose": "F3 IRQ pulse-width witness", "channels": ["0", "1", "6"], "sample_rate_hz": 100000000, "duration_s": 0.5, "trigger": "CH6 rising", "threshold_v": 1.6}
+  },
+  "dsview_operation": "manual-only",
+  "raw_data_retention": "retain-even-if-invalid"
+}

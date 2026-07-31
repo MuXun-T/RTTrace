@@ -1,0 +1,113 @@
+{
+  "schema_version": "phase1-capture-v2",
+  "pin_map_version": "phase1-pinmap-v2",
+  "capture_id": "20260729T133954Z-formal-combined-smoke-alientek-elite-v2",
+  "session_id": "alientek-elite-combined-20260729T133954Z",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "platform": "freertos-stm32f103zet6-alientek-elite-v2",
+  "firmware_variant": "COMBINED_SMOKE",
+  "firmware_sha256": "cccaa42a60dff4e31c58423e2244a1b7475113eaec2a1d82420624375f359110",
+  "firmware_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_combined_smoke_20260729T133954Z_arm/artifacts/rtd_phase1_freertos_COMBINED_SMOKE.bin",
+  "elf_sha256": "c34a6a79ac475a1e9c2fdf7b8774f9b512031b37791a15e036136ece4fc63ae0",
+  "elf_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_combined_smoke_20260729T133954Z_arm/artifacts/rtd_phase1_freertos_COMBINED_SMOKE.elf",
+  "build_config_sha256": "78d6b0d3bb870770717cb31b193b892248f7ee1c703241fbc674ce64cc7dcf7b",
+  "build_config_file": "/home/zzq/embedded/stm32f103_env/workspace/rtd_phase1_feasibility/rtos_smoke/build/alientek_elite_formal_combined_smoke_20260729T133954Z_arm/CMakeCache.txt",
+  "pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+  "observer_file": "/home/zzq/embedded/ds/COMBINED/DSLogic PLus-la-260729-214917.dsl",
+  "observer_sha256": "ed9d72299de7bd0201ca9c856c5349a382fe5dc6b2c180ec96338aca08764ffa",
+  "normalized_observer_file": "observer_normalized.csv",
+  "normalized_observer_sha256": "2c5bbe910271c845b41b223db60aafcbe1dfea6611ca15affdb42bbd2045cac4",
+  "uart_file": "uart_raw.log",
+  "uart_sha256": "e315930c3eaa8a27c9cd603e5e37e329571deb56b1493a6c7f2072c17e6bf097",
+  "observer_summary_file": "observer_summary.json",
+  "observer_summary_sha256": "0745fe2f7f10a04143180a28a7d31dd4396d3167d6d0ce4c0a17ae0f6ad3036a",
+  "clock_analysis_file": "clock_analysis.json",
+  "clock_analysis_sha256": "8c89582985fe3c4242b975b0a44b0a2a7db35af75d1213768cae59462c3ec04d",
+  "observer": {
+    "device": "DSLogic Plus",
+    "sample_rate_hz": 20000000,
+    "capture_profile": "calibration_20mhz",
+    "expected_duration_s": 5.0,
+    "channels": {
+      "0": {
+        "role": "EPOCH",
+        "gpio": "PC2"
+      },
+      "1": {
+        "role": "CALIBRATION_TIMER",
+        "gpio": "PC3"
+      },
+      "2": {
+        "role": "TASK_A_RUNNING",
+        "gpio": "PC4"
+      },
+      "3": {
+        "role": "TASK_B_RUNNING",
+        "gpio": "PC5"
+      },
+      "4": {
+        "role": "MUTEX_HOLD",
+        "gpio": "PC6"
+      },
+      "5": {
+        "role": "MUTEX_WAIT",
+        "gpio": "PC7"
+      },
+      "6": {
+        "role": "IRQ_ACTIVE",
+        "gpio": "PB5"
+      },
+      "7": {
+        "role": "RECORDER_PRESSURE",
+        "gpio": "PB0"
+      }
+    }
+  },
+  "uart": {
+    "device": "/dev/ttyUSB0",
+    "peripheral": "USART1",
+    "tx_gpio": "PA9",
+    "rx_gpio": "PA10",
+    "format": "115200 8N1 no-flow-control"
+  },
+  "target": {
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "mcu_uid_words": [
+      "0x05d7ff34",
+      "0x334e5630",
+      "0x43057222"
+    ],
+    "reset_observed": false,
+    "halt_or_fault_observed": false
+  },
+  "capture_gate": {
+    "receipt_file": "gate_receipt.json",
+    "receipt_sha256": "b13913073dedfec3f0331d5b564d41603ccc79397074c5ad7df06daaf598fe06",
+    "epoch_sequence": 1
+  },
+  "raw_dsview": {
+    "dsl_file": "/home/zzq/embedded/ds/COMBINED/DSLogic PLus-la-260729-214917.dsl",
+    "dsl_sha256": "ed9d72299de7bd0201ca9c856c5349a382fe5dc6b2c180ec96338aca08764ffa",
+    "csv_file": "/home/zzq/embedded/ds/COMBINED/DSLogic PLus-la-260729-214917.csv",
+    "csv_sha256": "52e2269c0baf75ce79e29c1729457d6a7a39552dd63b52b5f1afb32d898d213f",
+    "screenshot_file": "/home/zzq/embedded/ds/COMBINED/DSView-260729-215404.png",
+    "screenshot_sha256": "57854ed50c8d148c62f2b92057995f9fef565f81016515b32c796a552fd6c201",
+    "captured_channels": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7"
+    ]
+  },
+  "declared_changes": [],
+  "injection": {
+    "enabled": false,
+    "manifest_status": "not-applicable"
+  },
+  "raw_data_retention": "retain-even-if-invalid"
+}

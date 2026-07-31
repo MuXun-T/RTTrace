@@ -1,0 +1,25 @@
+{
+  "boot_observed": true,
+  "bytes_received": 350,
+  "candidate_label": "alientek-elite-stm32f103ze-candidate",
+  "capture_armed_observed": true,
+  "ended_at_unix": 1785326950.4738102,
+  "epoch_sequence": 1,
+  "gate_sequence_verified": true,
+  "identity": {
+    "build_hash": "h3-alientek-elite-mutex-20260729",
+    "elf_sha256": "16f2d797b18c9eed107d82f5370261eb95722c9f9a0787eaa6e68cc2f80f806b",
+    "gate_address": "0x20000004",
+    "gate_symbol": "capture_armed",
+    "probe_uid": "0001A0000001",
+    "session": "alientek-elite-mutex-20260729T111309Z",
+    "target": "stm32f103ze",
+    "variant": "MUTEX_SMOKE"
+  },
+  "modem_lines_before_close": "0x00000002",
+  "modem_policy": "explicit-mask-0x00000002",
+  "schema_version": "phase1-candidate-gate-receipt-v1",
+  "scope": "candidate-preflight",
+  "started_at_unix": 1785326578.7671685,
+  "uart_sha256": "41683d34d61ef26bb529525a8b604bf556308c72ed58751892ce6a91599a47e0"
+}

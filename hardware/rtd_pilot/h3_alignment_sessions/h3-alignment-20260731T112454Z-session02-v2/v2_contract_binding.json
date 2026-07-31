@@ -1,0 +1,29 @@
+{
+  "schema_version": "phase1-h3-v2-pre-gate-binding-v1",
+  "status": "BOUND_BEFORE_CAPTURE",
+  "h3_alignment_session_id": "h3-alignment-20260731T112454Z-session02-v2",
+  "binding_created_at_utc": "2026-07-31T11:24:54Z",
+  "operator": "workspace operator",
+  "authorization": "explicit limited H3 hardware capture authorization in current task",
+  "v2_decision_id": "phase1-h3-timer-bound-v2-20260731T110045Z",
+  "v2_effective_not_before_utc": "2026-07-31T11:00:45Z",
+  "v2_contract_path": "hardware/rtd_pilot/contracts/phase1_h3_timer_bounds_alientek_elite_v2_v2.json",
+  "v2_contract_sha256": "245ebc1412a44b26b26019cd23e31e06d1fb3af3b647144278c1fd22704820ef",
+  "exact_configuration": {
+    "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "rtos": "FreeRTOS V10.3.1",
+    "firmware_variant": "H3_COLLECTOR_SMOKE",
+    "firmware_sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+    "elf_sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+    "build_configuration_sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+    "pin_semantic_review": "phase1-pinmap-v3-corrective",
+    "observer_profile": "CH0-CH7; 20 MHz; 5 s; CH0 rising; threshold 1.6 V; no external sampling clock",
+    "algorithm": "analyze_clock.py --period-s 0.001 --calibration-column CH1",
+    "acceptance_limit_us": 1.5
+  },
+  "capture_start_requirement": "The capture_started_at_utc and all gate/observer actions must occur at or after v2_effective_not_before_utc. The final session manifest must retain this binding and the contract hash before the one-time gate write.",
+  "raw_retention_requirement": "Retain every raw DSL, CSV, screenshot, UART, gate, and derived calculation artifact regardless of result.",
+  "phase_scope": "Phase 1 H3 timer/alignment evidence only; no Phase 2 change, Phase 3 action, formal Case, or fault experiment."
+}

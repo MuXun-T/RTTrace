@@ -1,0 +1,24 @@
+{
+  "capture_complete": true,
+  "captured_channels": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "discarded_leading_epoch_count": 0,
+  "discarded_leading_epoch_timestamps_s": [],
+  "duration_s": 5.0384,
+  "duration_source": "dsview-sample-count-and-rate",
+  "epoch_begin_sequences": [],
+  "epoch_end_sequences": [],
+  "nonflat_channels": [],
+  "normalized_observer_file_sha256": "0e387c915709240ba0a4e0a298f490925ba2b743c2d9fa033a9a620c037475ad",
+  "observer_file_sha256": "f7164ef4631137b2e701c79d99e2dd2ab2e13107440f601d658ee13c74e3c8c4",
+  "schema_version": "phase1-observer-summary-v1",
+  "source_csv_sha256": "6db6ffd7cb6dc6158ca65d237feaa08fe1a2cf6c7e81a9f485ac428bd3ffb969"
+}

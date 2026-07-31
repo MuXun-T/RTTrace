@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDCollectorConfigSnapshot",
+  "type": "object",
+  "required": ["schema_version", "config_snapshot_id", "source_format", "source_metadata_digest", "adapter_version", "config_hash", "event_types_enabled", "task_filter", "resource_filter", "irq_filter", "core_filter", "sampling_configuration", "buffer_capacity", "flush_policy", "timestamp_source", "clock_resolution", "payload_fields", "dictionary_version", "mapping_version", "collector_version", "trace_start_boundary", "trace_end_boundary", "prior_snapshot_ref", "record_digest"],
+  "properties": {
+    "schema_version": {"type": "string"}, "config_snapshot_id": {"type": "string"}, "source_format": {"type": "string"}, "source_metadata_digest": {"type": "string"}, "adapter_version": {"type": "string"}, "config_hash": {"type": "string"},
+    "event_types_enabled": {"type": "array", "items": {"type": "string"}}, "task_filter": {"type": "array", "items": {"type": "string"}}, "resource_filter": {"type": "array", "items": {"type": "string"}}, "irq_filter": {"type": "array", "items": {"type": "string"}}, "core_filter": {"type": "array", "items": {"type": "string"}},
+    "sampling_configuration": {"type": "object"}, "buffer_capacity": {"type": "integer", "minimum": 1}, "flush_policy": {"type": "string"}, "timestamp_source": {"type": "string"}, "clock_resolution": {"type": "integer", "minimum": 1}, "payload_fields": {"type": "array", "items": {"type": "string"}}, "dictionary_version": {"type": "string"}, "mapping_version": {"type": "string"}, "collector_version": {"type": "string"}, "trace_start_boundary": {"type": "string"}, "trace_end_boundary": {"type": "string"}, "record_digest": {"type": "string"}, "prior_snapshot_ref": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

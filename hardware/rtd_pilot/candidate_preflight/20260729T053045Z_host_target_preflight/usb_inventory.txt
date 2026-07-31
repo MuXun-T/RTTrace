@@ -1,0 +1,18 @@
+preflight_time_utc=2026-07-29T05:30:45Z
+scope=nonformal-electrical-link
+operation=read-only USB and udev inventory; /dev/ttyUSB0 was not opened
+commands=lsusb -d 2a0e:0034; lsusb -d 1a86:7523; udevadm info --query=property --name=/dev/ttyUSB0
+
+Bus 001 Device 111: ID 2a0e:0034 Shenzhen DreamSource Technology Co., Ltd. USB-based DSL Instrument v2
+Bus 001 Device 112: ID 1a86:7523 QinHeng Electronics CH340 serial converter
+DEVPATH=/devices/pci0000:00/0000:00:02.1/0000:01:00.0/usb1/1-3/1-3:1.0/ttyUSB0/tty/ttyUSB0
+DEVNAME=/dev/ttyUSB0
+ID_BUS=usb
+ID_VENDOR_ID=1a86
+ID_MODEL_ID=7523
+ID_MODEL=USB_Serial
+ID_SERIAL=1a86_USB_Serial
+ID_USB_DRIVER=ch341
+ttyUSB0=character_device
+ttyUSB0_major_minor=bc:0 mode=660 owner=root:dialout
+operator_groups=zzq adm dialout cdrom sudo dip plugdev lpadmin lxd sambashare

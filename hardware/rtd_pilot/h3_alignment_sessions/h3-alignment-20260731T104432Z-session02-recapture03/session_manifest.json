@@ -1,0 +1,87 @@
+{
+  "schema_version": "phase1-h3-alignment-session-v1",
+  "h3_alignment_session_id": "h3-alignment-20260731T104432Z-session02-recapture03",
+  "case_id_created": false,
+  "scope": "Phase 1 H3 timer/alignment evidence only; excludes Phase 2 changes, Phase 3, formal Case creation, and fault experiments.",
+  "authorization": {
+    "source": "explicit user authorization for bounded H3 recapture",
+    "dsview_operation": "manual-only"
+  },
+  "operator": {
+    "dsview": "workspace operator",
+    "uart_swd_and_evidence_processing": "Codex main Agent"
+  },
+  "timing": {
+    "uart_recording_started_at_utc": "2026-07-31T10:45:09Z",
+    "uart_recording_ended_at_utc": "2026-07-31T10:49:09Z",
+    "dsview_trigger_time_utc": "2026-07-31T10:46:11.943Z",
+    "independent_start_method": "persistent read-only UART reader opened before one UID-pinned pyOCD reset; matching BOOT/gate.ready observed; DSView manually armed and confirmed before one write in a separately persistent no-reset SWD attach session",
+    "swd_gate_command": "write32 0x20000000 0x00000001"
+  },
+  "frozen_configuration": {
+    "board": "ALIENTEK ATK-DNF103 V2",
+    "mcu": "STM32F103ZET6",
+    "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+    "target": "stm32f103ze",
+    "probe_uid": "0001A0000001",
+    "rtos": "FreeRTOS V10.3.1",
+    "bsp": "STM32CubeF1 v1.8.7",
+    "firmware_variant": "H3_COLLECTOR_SMOKE",
+    "firmware_sha256": "e67583ad9fb4adf1d8c1c719b24718046eb0e9e87576d69c2992ea3b3390dfe3",
+    "elf_sha256": "574d91f7a3841ec4fde19355b8836ae5d61dd92cf2051d13e3ae294154c0895e",
+    "build_configuration_sha256": "3db978368eea1976acd14c665c902410a073aeda8e9e1b4b35ebfeecd0aec5f1",
+    "capture_firmware_pinmap_version": "phase1-pinmap-v2",
+    "capture_firmware_pinmap_sha256": "7cbaf03a539d01df94062d0061b58adef71eb622cbf7d754c3c9a9254bdfc04e",
+    "semantic_review_pinmap_version": "phase1-pinmap-v3-corrective",
+    "semantic_review_pinmap_sha256": "4715819064611330498f20cfb1a9be36fa71f1ad7d44f75319be446fc7006c10",
+    "pin_channel_semantics": "CH0=PC2 EPOCH; CH1=PC3 CALIBRATION_TIMER; CH2=PC4; CH3=PC5; CH4=PC6; CH5=PC7; CH6=PB5; CH7=PB0 LCD_BL. Green LED=PE5.",
+    "uart": "USART1 PA9/PA10, 115200 8N1, no flow control; retained modem policy explicit-mask-0x00000002",
+    "dsview_software": "DSView 1.3.2 frozen baseline; export identifies libsigrok4DSL 0.2.0",
+    "observer_profile": "CH0-CH7; 20 MHz; 5 s; CH0 rising; threshold 1.6 V; no external sampling clock",
+    "alignment_error_bound_limit_s": 7.5e-07,
+    "frozen_algorithm": {
+      "prepare_dsview_observer_py_sha256": "0e06a0dbf9086b8fbee23aaad31d8060b5cf50060ec13b4e16dc6eff21a9e8dd",
+      "analyze_clock_py_sha256": "910c99d6f2590df92a185a6e394e0e42eca67e527953789aa511cf2f7a8527d5",
+      "clock_bounds_contract_sha256": "19635275497daf107ecbd5ca5c275186d3798ea4063254cd56d3a61233de6e15"
+    }
+  },
+  "raw_artifacts": {
+    "dsview_dsl": {"external_path": "/home/zzq/embedded/ds/session2/re1/DSLogic PLus-la-260731-184611.dsl", "sha256": "85651c3c41cf4149eb151378cc3f98c07a912d20653f3dfb6e437d5631903aae", "bytes": 484147},
+    "dsview_csv": {"external_path": "/home/zzq/embedded/ds/session2/re1/DSLogic PLus-la-260731-184611.csv", "sha256": "37fb9dba1cab3a36369d6464b10333f23fe8c6d4df8485fbf38558fd1396fa4b", "bytes": 267998, "header": "Channels (8/16); Time(s), 0 through 7"},
+    "dsview_screenshot": {"external_path": "/home/zzq/embedded/ds/session2/re1/DSView-260731-184724.png", "sha256": "a4c7493bd400c99ee8257c73c53cdbc1fbdd9919a590b1d202e7587862ddd8d2", "bytes": 51689},
+    "uart_raw": {"file": "uart_raw.log", "sha256": "c32652a8246c8bf5e7d146ac441187c97a573b2dd1bb4d0c4f958611f94828c3"},
+    "uart_reader_ready": {"file": "uart_reader.ready", "sha256": "8695cc29452fa2dcdb6803d14208a6058f8a18f24a84d4c6027db2edae589a9e"},
+    "gate_ready": {"file": "gate.ready", "sha256": "a187c1635f0fca7ac45c43d8b0cd22f1bdd6241605299486f5349450bad45bc9"},
+    "gate_verified": {"file": "gate.verified", "sha256": "c4222af13036695f44b2eb9c958b68d42b7e5e805db1cec03bd71b465705a7c4"},
+    "gate_receipt": {"file": "gate_receipt.json", "sha256": "ac83f8b29921f26cef1d5237b27e541e5cc2cbd191a14046b6fcd86df898571e"}
+  },
+  "derived_artifacts": {
+    "observer_normalized": {"file": "observer_normalized.csv", "sha256": "6f979efb5bb829981289602020e45dec4016a234af04e89dfaa6f97b45b53ae1"},
+    "observer_summary": {"file": "observer_summary.json", "sha256": "34c8593ecd7d19607ade2a57b090224c9060c9afdfdc918f63975078eac68a08"},
+    "observer_epochs": {"file": "observer_epochs.json", "sha256": "ef2c9c0b1dc3832d466bbb8cb1b97fa18c4e37a745bfc49bef1dbe8e480c1df1"},
+    "clock_analysis": {"file": "clock_analysis.json", "sha256": "1230b9d93c1486f53a32351c9d7ac19345a7521368853cf8b31d59b4f09f6006"},
+    "clock_analysis_main_recompute": {"file": "clock_analysis_main_recompute.json", "sha256": "1230b9d93c1486f53a32351c9d7ac19345a7521368853cf8b31d59b4f09f6006"}
+  },
+  "calculation": {
+    "command_inputs": {"period_s": 0.001, "calibration_column": "CH1", "epoch_sequence_start": 1, "expected_duration_s": 5.0, "observer_channels_interpreted": ["0", "1", "2", "3", "4", "5", "6", "7"]},
+    "intermediate_results": {"observer_duration_s": 4.99966235, "observer_nonflat_channels": ["0", "1", "2", "3", "4", "5", "6", "7"], "observer_epoch_timestamp_s": 0.05000025, "uart_epoch_sequence": 1, "calibration_samples": 5000, "drift_ppm": -120.64999999979045, "alignment_residual_max_s": 0.0},
+    "offending_intervals": [
+      {"previous_rising_timestamp_s": 0.1692469, "rising_timestamp_s": 0.1702478, "interval_s": 0.0010009, "error_us": 0.9},
+      {"previous_rising_timestamp_s": 0.3132304, "rising_timestamp_s": 0.3142296, "interval_s": 0.0009992, "error_us": -0.8}
+    ],
+    "alignment_error_bound_s": 8.999999999989919e-07,
+    "alignment_error_bound_us": 0.8999999999989919,
+    "limit_s": 7.5e-07
+  },
+  "acceptance": {
+    "shared_epoch_unique_and_unambiguous": {"status": "PASS", "evidence": "one gate receipt epoch_sequence=1; one observer epoch sequence=1; UART contains one EPOCH_BEGIN and one paired EPOCH_END for sequence 1"},
+    "observer_complete_and_parseable": {"status": "PASS", "evidence": "DSL, CSV, screenshot, normalized CSV, and observer summary are present; summary capture_complete=true"},
+    "trace_or_secondary_record_complete": {"status": "PASS", "evidence": "UART raw plus gate receipt contain matching BOOT, CAPTURE_ARMED, EPOCH_BEGIN, EPOCH_END, collector status, and trace records"},
+    "pin_channel_semantics_phase1_pinmap_v3": {"status": "PASS", "evidence": "CH0-CH7 raw CSV header and non-flat facts match the reviewed v3 semantic map"},
+    "alignment_error_bound_recomputable": {"status": "PASS", "evidence": "frozen scripts and all hashed inputs/outputs are bound above; main Agent recomputation is byte-identical"},
+    "alignment_error_bound_within_limit": {"status": "FAIL", "evidence": "0.8999999999989919 us > 0.75 us"},
+    "raw_and_calculation_bound": {"status": "PASS", "evidence": "external raw paths/hashes and every derived file/hash are recorded"},
+    "result": "FAIL",
+    "failure_reason": "Frozen v1 alignment error bound exceeded. This session remains a v1 FAIL and is not retrospectively reclassified by a later v2 threshold decision."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": "phase1-combined-smoke-contract-v1",
+  "status": "operator-approved",
+  "approved_at": "2026-07-29",
+  "authority": "workspace operator",
+  "board_id": "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222",
+  "firmware_variant": "COMBINED_SMOKE",
+  "supersedes": {"capture_profile": "irq_precision_100mhz", "minimum_sample_rate_hz": 100000000},
+  "observer": {"capture_profile": "calibration_20mhz", "minimum_sample_rate_hz": 20000000, "expected_duration_s": 5.0, "captured_channels": ["0", "1", "2", "3", "4", "5", "6", "7"]},
+  "rationale": "DSLogic Plus supports at most three channels at 100 MHz; all eight frozen observer channels require 20 MHz. IRQ_SMOKE remains the separate 100 MHz precision witness for CH6."
+}

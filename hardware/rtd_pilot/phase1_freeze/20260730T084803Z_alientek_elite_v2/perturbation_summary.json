@@ -1,0 +1,219 @@
+{
+  "comparisons": {
+    "BASE": {
+      "artifact_hashes": {
+        "capture_metadata_sha256": "a47f42d56e6704dcd530c9f5f8eecb2fdb64ceb9822e6b568e05d76f41baf485",
+        "observer_summary_sha256": "82060086838e231e3fdbb862ade2222e870c8d2abff258604d6fcad7f191ac26"
+      },
+      "execution_window_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "execution_window_stddev_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "isr_duration_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "overflow_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "timer_period_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "timer_period_p95_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "timer_period_stddev_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "trace_drop_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "uart_drop_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      }
+    },
+    "GPIO_ONLY": {
+      "artifact_hashes": {
+        "capture_metadata_sha256": "9f6b0f622851426bd417df83f7d2ba18965f5506366e0c99bb913d5f09652de5",
+        "observer_summary_sha256": "95b44c8c4bca042bcdb89a72ff5ae769725a810f9805c78bf084d1b821320d85",
+        "timer_analysis_sha256": "dc4052623e2e966a4a31f8bd491bf90ed398c66b66a9a706ec1e9184160cf22b"
+      },
+      "execution_window_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "execution_window_stddev_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "isr_duration_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "overflow_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "timer_period_mean_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 0.0010000328165633127
+      },
+      "timer_period_p95_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 0.0010002000000000066
+      },
+      "timer_period_stddev_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 8.686660394090779e-08
+      },
+      "trace_drop_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "uart_drop_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      }
+    },
+    "GPIO_UART": {
+      "artifact_hashes": {
+        "capture_metadata_sha256": "391bf4fcf0d31f4fef7bade620758eea336b05e9d00b8402dcf1c29128c1730d",
+        "clock_analysis_sha256": "c35e1fc89fbe63aa8f28d04ac951979455c758cd33488c44d8f2d3e63040d5f3",
+        "observer_summary_sha256": "c87127d230b6940499bdb7e989c60c5e5c462faffa1b82cd685d135e3c5ef88a"
+      },
+      "execution_window_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "execution_window_stddev_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "isr_duration_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "overflow_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "timer_period_mean_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 0.000999970924184837
+      },
+      "timer_period_p95_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 0.0010001000000001703
+      },
+      "timer_period_stddev_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 8.571583829931415e-08
+      },
+      "trace_drop_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "uart_drop_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      }
+    },
+    "GPIO_UART_RECORDER": {
+      "artifact_hashes": {
+        "capture_metadata_sha256": "21c57a00819789034a30db144bbd0c7c017f0c674c8d6a294f50f037bebdeb56",
+        "clock_analysis_sha256": "7e3297af46d4f30a0ce0f8e582e55dc6309618b6c677366dca1b5c341801bfd9",
+        "observer_summary_sha256": "0402d432b2c90b0d3d35051104a428b6b224c6fe2725a339718966846c823ca0"
+      },
+      "execution_window_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "execution_window_stddev_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "isr_duration_mean_s": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "overflow_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "timer_period_mean_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 0.0009997105600000002
+      },
+      "timer_period_p95_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 0.0009998499999999133
+      },
+      "timer_period_stddev_s": {
+        "relative_to_base": null,
+        "status": "baseline_not_observable",
+        "value": 7.861121004067867e-08
+      },
+      "trace_drop_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      },
+      "uart_drop_count": {
+        "relative_to_base": null,
+        "status": "not_observable",
+        "value": null
+      }
+    }
+  },
+  "input_summary_sha256": {
+    "hardware/rtd_pilot/phase1_freeze/20260730T084803Z_alientek_elite_v2/BASE.json": "7003ae3af2157e9f5be8846757f99c27562e3c6a8f18deb5d5a899890c6bf3d0",
+    "hardware/rtd_pilot/phase1_freeze/20260730T084803Z_alientek_elite_v2/GPIO_ONLY.json": "45db15eabb273d52d3e1deac6302f594831619436fa06dedf608bf3a0cb5080f",
+    "hardware/rtd_pilot/phase1_freeze/20260730T084803Z_alientek_elite_v2/GPIO_UART.json": "684afc4e6addc325fb91cd1db173a7d6d4d11b9fab783801beff77e0cd90b706",
+    "hardware/rtd_pilot/phase1_freeze/20260730T084803Z_alientek_elite_v2/GPIO_UART_RECORDER.json": "dd5773305132e19e1c27fc4fd7b1fc8064725ba904f3bb66998cedb8c97246e8"
+  },
+  "schema_version": "phase1-perturbation-v2",
+  "source": "real-observer-summary-inputs"
+}

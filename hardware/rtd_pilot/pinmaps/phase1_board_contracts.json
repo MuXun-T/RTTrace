@@ -1,0 +1,36 @@
+{
+  "schema_version": "phase1-board-contracts-v1",
+  "profiles": {
+    "fire-f103zet6-v2-1": {
+      "pin_map_version": "phase1-pinmap-v2",
+      "pinmap_file": "stm32f103zet6_fire_v2_phase1.json",
+      "target": {
+        "probe_uid": "0001A0000001",
+        "target": "stm32f103ze"
+      }
+    },
+    "alientek-atk-dnf103-v2-f103zet6-05d7ff34-334e5630-43057222": {
+      "authorization": {
+        "approved_at": "2026-07-29",
+        "authority": "workspace operator",
+        "scope": "formal Phase 1 capture alongside the retained Fire V2 profile"
+      },
+      "evidence": {
+        "manual_file": "/home/zzq/文档/精英V2 硬件参考手册_V1.0.pdf",
+        "manual_sha256": "98875a12485301dbf4dff3e59fba2b93efe2f7954e198bd19c1d9f69e45d9932",
+        "task_smoke_dsl_sha256": "cb7659419b218b1588cedcfb19d06e9479c1fac70651ba46b6faf45533dc25a5",
+        "task_smoke_csv_sha256": "aa40de13e7b1619be957bda1f80f22ea23ef18c83193674f486394fe2068031b",
+        "task_smoke_screenshot_sha256": "b446690ec18c1327f96063bef55d3aec4a015253b752c45aa903faab64db70d1",
+        "task_smoke_uart_raw_sha256": "66c9d7abba497bc1965c27ca72692f03915a6167ce09fcdbe46b30cc3875afff",
+        "task_smoke_gate_receipt_sha256": "ad2797f097bc330de942cc35d9287f72249dbe602727a1c715c67e0917e7e61f"
+      },
+      "pin_map_version": "phase1-pinmap-v2",
+      "pinmap_file": "stm32f103zet6_alientek_elite_v2_phase1.json",
+      "target": {
+        "mcu_uid_words": ["0x05d7ff34", "0x334e5630", "0x43057222"],
+        "probe_uid": "0001A0000001",
+        "target": "stm32f103ze"
+      }
+    }
+  }
+}
