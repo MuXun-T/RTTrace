@@ -271,7 +271,7 @@ class SpecModelsCompatTests(unittest.TestCase):
         self.assertEqual(sorted(full_signature_drift), sorted(FULL_SIGNATURE_DRIFT_WAIVERS), full_signature_drift)
         if not FULL_SIGNATURE_DRIFT_WAIVERS:
             self.assertEqual(full_signature_drift, {})
-        self.assertEqual(len(spec.CANONICAL_PEER_MODEL_NAMES), 26)
+        self.assertEqual(len(spec.CANONICAL_PEER_MODEL_NAMES), 28)
         self.assertEqual(len(full_signature_drift), 0)
 
     def test_all_canonical_peers_match_full_signature_or_are_explicitly_waived(self) -> None:
@@ -306,9 +306,39 @@ class SpecModelsCompatTests(unittest.TestCase):
     def test_rebuild_bundle_matches_canonical_runtime_signature(self) -> None:
         self.assertCanonicalRuntimeSignatureMatches("RebuildBundle")
         self.assertEqual(
-            [item.name for item in fields(spec_models.RebuildBundle)][-4:],
-            ["alignment", "segment_metas", "header", "index_bundle"],
+            [item.name for item in fields(spec_models.RebuildBundle)][-9:],
+            [
+                "alignment",
+                "segment_metas",
+                "header",
+                "index_bundle",
+                "capture_id",
+                "capture_capability_manifest_ref",
+                "capture_integrity_record_ref",
+                "ready_not_running_intervals",
+                "lineage_registry",
+            ],
         )
+
+    def test_typed_resource_edge_retains_mapping_compatibility(self) -> None:
+        self.assertCanonicalRuntimeSignatureMatches("ResourceEdge")
+        self.assertCanonicalRuntimeSignatureMatches("ReadyNotRunningInterval")
+        edge = parser_models.ResourceEdge(
+            edge_id="edge:one",
+            edge_kind="hold",
+            task_id=1,
+            obj_id=2,
+            owner_task_id=1,
+            obj_type=3,
+            t_begin=10.0,
+            t_end=20.0,
+            lineage_id="lineage:one",
+            evidence_ref="evt:unit:0:1",
+        )
+        self.assertEqual(edge["from_task"], 1)
+        self.assertEqual(edge.get("to_obj"), 2)
+        self.assertEqual(dict(edge)["owner_task"], 1)
+        self.assertEqual(edge["lineage_id"], "lineage:one")
 
     def test_index_bundle_matches_formal_contract(self) -> None:
         self.assertCanonicalRuntimeSignatureMatches("IndexBundle")

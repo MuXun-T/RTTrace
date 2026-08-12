@@ -18,6 +18,7 @@ from .index import idx_Build
 from .models import DatasetArtifact, GlobalHeader, LoadPreview, ReadinessState, TaskStatePreview, dataclass_to_dict
 from .rebuild import rb_Rebuild
 from .result import Result, err_result, ok_result
+from .rtd_lineage import CaptureLineageContext, LineageValidationError, validate_capture_lineage_context
 from .runtime_cost_graph import build_pipeline_runtime_cost_graph
 from .telemetry import StageObserver, add_stage_timing, emit_stage_update, memory_snapshot
 
@@ -30,6 +31,7 @@ class ParserSession:
     stage_observer: StageObserver | None = None
     stage_timings: dict[str, float] | None = None
     materialize_events: bool = True
+    expected_capture_id: str | None = None
     decoder: TraceDecodeSession = field(init=False)
 
     def __post_init__(self) -> None:
@@ -39,6 +41,7 @@ class ParserSession:
             stage_observer=self.stage_observer,
             stage_timings=self.stage_timings,
             materialize_events=self.materialize_events,
+            expected_capture_id=self.expected_capture_id,
         )
 
 
@@ -49,6 +52,7 @@ def prs_Init(
     stage_observer: StageObserver | None = None,
     stage_timings: dict[str, float] | None = None,
     materialize_events: bool = True,
+    expected_capture_id: str | None = None,
 ) -> Result[ParserSession]:
     config = dict(cfg or {})
     dataset_id = config.get("dataset_id")
@@ -62,6 +66,7 @@ def prs_Init(
             stage_observer=stage_observer,
             stage_timings=stage_timings,
             materialize_events=materialize_events,
+            expected_capture_id=expected_capture_id,
         )
     )
 
@@ -125,6 +130,7 @@ def _artifact_from_parsed_details(
     experimental_parallel_rebuild: bool = False,
     rebuild_morsel_size: int | None = None,
     rebuild_parallel_workers: int | None = None,
+    lineage_context: CaptureLineageContext | None = None,
 ) -> Result[dict[str, object]]:
     if not parsed.ok:
         return Result(
@@ -133,6 +139,14 @@ def _artifact_from_parsed_details(
             warnings=parsed.warnings,
             untrusted_windows=parsed.untrusted_windows,
         )
+    if lineage_context is not None:
+        header = parsed.data.get("header")
+        trace_capture_id = getattr(header, "run_id", None)
+        if trace_capture_id != lineage_context.capture_id:
+            return err_result(
+                "INVALID_ARG",
+                "capture lineage context does not match trace header capture identity",
+            )
     summary = parsed.data.get("summary")
     dataset_id = getattr(summary, "dataset_id", None) or Path(str(source)).stem or "stream"
     timings = dict(stage_timings or {})
@@ -197,6 +211,7 @@ def _artifact_from_parsed_details(
         experimental_parallel_rebuild=experimental_parallel_rebuild,
         morsel_size=rebuild_morsel_size,
         parallel_workers=rebuild_parallel_workers,
+        lineage_context=lineage_context,
     )
     rebuild_stage_seconds = round(time.perf_counter() - rebuild_started, 6)
     timings["rb_Rebuild_seconds"] = rebuild_stage_seconds
@@ -276,8 +291,15 @@ def _artifact_from_parsed_details(
 def _artifact_from_parsed(
     parsed: Result[dict[str, object]],
     source: str | Path,
+    *,
+    lineage_context: CaptureLineageContext | None = None,
 ) -> Result[DatasetArtifact]:
-    detailed = _artifact_from_parsed_details(parsed, source, materialize_event_stream=True)
+    detailed = _artifact_from_parsed_details(
+        parsed,
+        source,
+        materialize_event_stream=True,
+        lineage_context=lineage_context,
+    )
     if not detailed.ok:
         return Result(
             code=detailed.code,
@@ -369,6 +391,30 @@ def _iter_trace_file_chunks(path: Path, read_size: int, segment_index: int) -> I
             yield payload
 
 
+def _validate_capture_bound_segment_header(
+    path: Path,
+    expected_capture_id: str,
+    read_size: int,
+) -> Result[None]:
+    try:
+        with path.open("rb") as handle:
+            raw_header = _read_prefix(handle, GLOBAL_HEADER_STRUCT.size, read_size)
+    except OSError as exc:
+        return err_result("INVALID_ARG", f"trace segment unavailable: {path}: {exc}")
+    if len(raw_header) != GLOBAL_HEADER_STRUCT.size:
+        return err_result("INVALID_ARG", f"capture lineage context requires a trace header for segment: {path}")
+    header_tuple = GLOBAL_HEADER_STRUCT.unpack_from(raw_header, 0)
+    if header_tuple[0] != TRACE_FORMAT_MAGIC:
+        return err_result("INVALID_ARG", f"capture lineage context requires a trace header for segment: {path}")
+    try:
+        header = _global_header_from_tuple(header_tuple)
+    except (UnicodeDecodeError, ValueError):
+        return err_result("INVALID_ARG", f"capture lineage context requires a valid UTF-8 identity for segment: {path}")
+    if header.run_id != expected_capture_id:
+        return err_result("INVALID_ARG", "capture lineage context does not match trace header capture identity")
+    return ok_result(None)
+
+
 def _global_header_from_tuple(header_tuple: tuple[int, ...]) -> GlobalHeader:
     (
         magic,
@@ -389,8 +435,8 @@ def _global_header_from_tuple(header_tuple: tuple[int, ...]) -> GlobalHeader:
         clock_source=1,
         format_ver=format_ver,
         dict_ver=dict_ver,
-        producer_ver=producer_ver.decode("utf-8", errors="ignore").rstrip("\0"),
-        run_id=run_id.decode("utf-8", errors="ignore").rstrip("\0") or None,
+        producer_ver=producer_ver.decode("utf-8").rstrip("\0"),
+        run_id=run_id.decode("utf-8").rstrip("\0") or None,
     )
 
 
@@ -793,6 +839,7 @@ def prs_Load(
     stage_observer: StageObserver | None = None,
     stage_timings: dict[str, float] | None = None,
     materialize_events: bool = True,
+    expected_capture_id: str | None = None,
 ) -> Result[dict[str, object]]:
     if read_size <= 0:
         return err_result("INVALID_ARG", "read_size must be positive")
@@ -808,6 +855,7 @@ def prs_Load(
         stage_observer=stage_observer,
         stage_timings=stage_timings,
         materialize_events=materialize_events,
+        expected_capture_id=expected_capture_id,
     )
     session = init.data
     load_start_snapshot = memory_snapshot("prs_Load_start")
@@ -820,6 +868,24 @@ def prs_Load(
     )
     load_started = time.perf_counter()
     for index, path in enumerate(paths):
+        if expected_capture_id is not None:
+            header_validation = _validate_capture_bound_segment_header(path, expected_capture_id, read_size)
+            if not header_validation.ok:
+                load_seconds = time.perf_counter() - load_started
+                add_stage_timing(stage_timings, "prs_Load_seconds", load_seconds)
+                emit_stage_update(
+                    stage_observer,
+                    "prs_Load",
+                    status="failed",
+                    seconds=load_seconds,
+                    stage_timings=stage_timings,
+                )
+                return Result(
+                    code=header_validation.code,
+                    message=header_validation.message,
+                    warnings=header_validation.warnings,
+                    untrusted_windows=header_validation.untrusted_windows,
+                )
         for chunk in _iter_trace_file_chunks(path, read_size, index):
             fed = prs_FeedChunk(session, None, chunk)
             if not fed.ok:
@@ -864,8 +930,15 @@ def prs_LoadChunks(
     *,
     stage_observer: StageObserver | None = None,
     stage_timings: dict[str, float] | None = None,
+    expected_capture_id: str | None = None,
 ) -> Result[dict[str, object]]:
-    init = prs_Init(cfg, dictionary, stage_observer=stage_observer, stage_timings=stage_timings)
+    init = prs_Init(
+        cfg,
+        dictionary,
+        stage_observer=stage_observer,
+        stage_timings=stage_timings,
+        expected_capture_id=expected_capture_id,
+    )
     if not init.ok:
         return init
     session = init.data
@@ -892,6 +965,7 @@ def prs_Verify(
     stage_observer: StageObserver | None = None,
     stage_timings: dict[str, float] | None = None,
     materialize_events: bool = True,
+    expected_capture_id: str | None = None,
 ) -> Result[dict[str, object]]:
     loaded = prs_Load(
         source,
@@ -899,6 +973,7 @@ def prs_Verify(
         stage_observer=stage_observer,
         stage_timings=stage_timings,
         materialize_events=materialize_events,
+        expected_capture_id=expected_capture_id,
     )
     if not loaded.ok:
         return loaded
@@ -939,9 +1014,20 @@ def prs_Align(
 def load_dataset(
     source: str | Path | Iterable[str | Path],
     dictionary: dict[str, Any] | str | Path | None = None,
+    *,
+    lineage_context: CaptureLineageContext | None = None,
 ) -> Result[DatasetArtifact]:
-    verified = prs_Verify(source, dictionary=dictionary)
-    return _artifact_from_parsed(verified, source)
+    if lineage_context is not None:
+        try:
+            validate_capture_lineage_context(lineage_context)
+        except LineageValidationError as exc:
+            return err_result("INVALID_ARG", str(exc))
+    verified = prs_Verify(
+        source,
+        dictionary=dictionary,
+        expected_capture_id=None if lineage_context is None else lineage_context.capture_id,
+    )
+    return _artifact_from_parsed(verified, source, lineage_context=lineage_context)
 
 
 def load_dataset_with_timings(
@@ -953,7 +1039,13 @@ def load_dataset_with_timings(
     experimental_parallel_rebuild: bool = False,
     rebuild_morsel_size: int | None = None,
     rebuild_parallel_workers: int | None = None,
+    lineage_context: CaptureLineageContext | None = None,
 ) -> Result[dict[str, object]]:
+    if lineage_context is not None:
+        try:
+            validate_capture_lineage_context(lineage_context)
+        except LineageValidationError as exc:
+            return err_result("INVALID_ARG", str(exc))
     memory_snapshots = [memory_snapshot("parse_start")]
     stage_timings: dict[str, float] = {}
     emit_stage_update(
@@ -970,6 +1062,7 @@ def load_dataset_with_timings(
         stage_observer=stage_observer,
         stage_timings=stage_timings,
         materialize_events=False,
+        expected_capture_id=None if lineage_context is None else lineage_context.capture_id,
     )
     parse_seconds = round(time.perf_counter() - parse_started, 6)
     stage_timings["prs_Verify_seconds"] = parse_seconds
@@ -1010,6 +1103,7 @@ def load_dataset_with_timings(
         experimental_parallel_rebuild=experimental_parallel_rebuild,
         rebuild_morsel_size=rebuild_morsel_size,
         rebuild_parallel_workers=rebuild_parallel_workers,
+        lineage_context=lineage_context,
     )
     if not detailed.ok:
         return Result(
@@ -1076,8 +1170,19 @@ def load_dataset_from_chunks(
     source: str = "channel",
     cfg: dict[str, Any] | None = None,
     dictionary: dict[str, Any] | None = None,
+    lineage_context: CaptureLineageContext | None = None,
 ) -> Result[DatasetArtifact]:
+    if lineage_context is not None:
+        try:
+            validate_capture_lineage_context(lineage_context)
+        except LineageValidationError as exc:
+            return err_result("INVALID_ARG", str(exc))
     config = dict(cfg or {})
     config.setdefault("online_mode", True)
-    parsed = prs_LoadChunks(chunks, config, dictionary)
-    return _artifact_from_parsed(parsed, source)
+    parsed = prs_LoadChunks(
+        chunks,
+        config,
+        dictionary,
+        expected_capture_id=None if lineage_context is None else lineage_context.capture_id,
+    )
+    return _artifact_from_parsed(parsed, source, lineage_context=lineage_context)

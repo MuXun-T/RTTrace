@@ -30,6 +30,7 @@ from parser.agent_contract import (
 )
 from parser.pipeline import load_dataset_with_timings
 from parser.result import Result, ok_result
+from parser.rtd_lineage import CaptureLineageContext, LineageValidationError, validate_capture_lineage_context
 from spec.io import serialize
 from spec.io import checksum_file
 from spec.schema_loader import DICTIONARY_PATH
@@ -37,6 +38,7 @@ from spec.schema_loader import DICTIONARY_PATH
 
 PARSER_PROCESS_AGENT_NAME = "ParserProcessAgent"
 PARSER_PROCESS_ARTIFACT_VERSION = "parser-process-artifact-v1"
+CAPTURE_LINEAGE_BINDING_POLICY_VERSION = "capture-lineage-header-binding-v3"
 
 
 def _iso_now() -> str:
@@ -179,7 +181,10 @@ def build_parser_cache_bindings(
     schema_version: str | None,
     index_build_mode: str,
     materialize_event_stream: bool,
+    lineage_context: CaptureLineageContext | None = None,
 ) -> dict[str, str]:
+    if lineage_context is not None:
+        validate_capture_lineage_context(lineage_context)
     resolved_dictionary_path = (
         Path(dictionary_path).expanduser().resolve()
         if dictionary_path is not None
@@ -200,6 +205,8 @@ def build_parser_cache_bindings(
             "index_build_mode": str(index_build_mode or "full"),
             "materialize_event_stream": bool(materialize_event_stream),
             "schema_version": schema_version_text,
+            "lineage_context": None if lineage_context is None else lineage_context.to_dict(),
+            "capture_lineage_binding_policy_version": CAPTURE_LINEAGE_BINDING_POLICY_VERSION,
         }
     )
     return {
@@ -226,6 +233,7 @@ class ParserProcessAgent:
         load_artifact: bool = True,
         artifact_policy: dict[str, Any] | None = None,
         cancel_path: str | Path | None = None,
+        lineage_context: CaptureLineageContext | None = None,
     ) -> Result[dict[str, Any]]:
         policy = dict(artifact_policy or {})
         if artifact_dir is None and policy.get("artifact_dir") is not None:
@@ -267,6 +275,8 @@ class ParserProcessAgent:
         artifact_path = root / "parse_rebuild_artifact.pickle"
         result_path = root / "parse_rebuild_result.json"
         artifact_handle = {"path": str(artifact_path), "kind": artifact_format, "role": "parse_rebuild_artifact"}
+        lineage_context_payload: dict[str, Any] | None = None
+        lineage_context_path: Path | None = None
         effective_materialize_event_stream = bool(materialize_event_stream)
         effective_index_build_mode = index_build_mode
         trace_checksum = ""
@@ -291,11 +301,13 @@ class ParserProcessAgent:
         }
 
         def _refresh_root(target_root: Path) -> None:
-            nonlocal root, artifact_path, result_path, artifact_handle
+            nonlocal root, artifact_path, result_path, artifact_handle, lineage_context_path
             root = target_root.expanduser().resolve()
             artifact_path = root / "parse_rebuild_artifact.pickle"
             result_path = root / "parse_rebuild_result.json"
             artifact_handle = {"path": str(artifact_path), "kind": artifact_format, "role": "parse_rebuild_artifact"}
+            if lineage_context_payload is not None:
+                lineage_context_path = root / "capture_lineage_context.json"
             artifact_policy_payload["artifact_dir"] = str(root)
 
         def _cache_fields(*, cache_hit: bool) -> dict[str, Any]:
@@ -307,6 +319,19 @@ class ParserProcessAgent:
                 "cache_key": cache_key,
                 "cache_hit": bool(cache_hit),
             }
+
+        def _has_current_lineage(
+            value: Any,
+            expected_context: CaptureLineageContext | None,
+        ) -> bool:
+            bundle = getattr(value, "bundle", None)
+            registry = getattr(bundle, "lineage_registry", None)
+            raw_events = getattr(registry, "raw_events", None)
+            if not (hasattr(registry, "registry_scope") and isinstance(raw_events, dict) and all(
+                hasattr(binding, "observed_timestamps") for binding in raw_events.values()
+            )):
+                return False
+            return expected_context is None or getattr(registry, "capture_context", None) == expected_context
 
         def _result_data(payload: dict[str, Any] | None, *, cache_hit: bool) -> dict[str, Any]:
             return {
@@ -375,9 +400,34 @@ class ParserProcessAgent:
             cleanup_error = _cleanup_pickle_artifact(artifact_path)
             if cleanup_error:
                 self.contract.telemetry["artifact_cleanup_error"] = cleanup_error
+            if lineage_context_path is not None:
+                request_cleanup_error = _cleanup_pickle_artifact(lineage_context_path)
+                if request_cleanup_error:
+                    self.contract.telemetry["lineage_context_cleanup_error"] = request_cleanup_error
 
         self.contract.transition(AGENT_VALIDATING_INPUT)
         self.contract.add_input_ref(source, kind="trace", role="parse_source")
+        if lineage_context is not None:
+            try:
+                validate_capture_lineage_context(lineage_context)
+            except LineageValidationError as exc:
+                message = f"invalid capture lineage context: {exc}"
+                self.contract.fail("INVALID_ARG", message)
+                _cleanup_if_requested()
+                return Result(
+                    "INVALID_ARG",
+                    message,
+                    data={
+                        **_cache_fields(cache_hit=False),
+                        "artifact_handle": artifact_handle,
+                        "parser_process_artifact": _parser_process_artifact(),
+                        "result_path": str(result_path),
+                        "agent_contract": self.contract.to_dict(),
+                        "child_agent_contract": {},
+                    },
+                )
+            lineage_context_payload = lineage_context.to_dict()
+            lineage_context_path = root / "capture_lineage_context.json"
         if artifact_format != "pickle":
             message = f"unsupported parser artifact format: {artifact_format}"
             self.contract.fail(ERR_PARSER_PROCESS_FAILED, message)
@@ -419,6 +469,7 @@ class ParserProcessAgent:
                 schema_version=schema_version,
                 index_build_mode=index_build_mode,
                 materialize_event_stream=materialize_event_stream,
+                lineage_context=lineage_context,
             )
             trace_checksum = str(bindings["trace_checksum"])
             dictionary_checksum = str(bindings["dictionary_checksum"])
@@ -473,11 +524,11 @@ class ParserProcessAgent:
                 if cache_matches:
                     cached_artifact: Any = None
                     cached_pickle_valid = False
-                    if load_artifact:
+                    if load_artifact or lineage_context is not None:
                         try:
                             with artifact_path.open("rb") as handle:
                                 cached_artifact = pickle.load(handle)
-                            cached_pickle_valid = True
+                            cached_pickle_valid = _has_current_lineage(cached_artifact, lineage_context)
                         except (OSError, pickle.PickleError, EOFError, AttributeError, ValueError):
                             cached_pickle_valid = False
                     else:
@@ -559,6 +610,29 @@ class ParserProcessAgent:
         if cancel_file is not None:
             cmd.extend(["--cancel-path", str(cancel_file)])
         cmd.extend(["--index-build-mode", index_build_mode])
+        if lineage_context_path is not None:
+            try:
+                lineage_context_path.write_text(
+                    json.dumps(lineage_context_payload, ensure_ascii=True, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+            except OSError as exc:
+                message = f"parser lineage context request unavailable: {lineage_context_path}: {exc}"
+                self.contract.fail(ERR_PARSER_PROCESS_FAILED, message)
+                _cleanup_if_requested()
+                return Result(
+                    ERR_PARSER_PROCESS_FAILED,
+                    message,
+                    data={
+                        **_cache_fields(cache_hit=False),
+                        "artifact_handle": artifact_handle,
+                        "parser_process_artifact": _parser_process_artifact(),
+                        "result_path": str(result_path),
+                        "agent_contract": self.contract.to_dict(),
+                        "child_agent_contract": {},
+                    },
+                )
+            cmd.extend(["--lineage-context-path", str(lineage_context_path)])
         if progress_path is not None:
             cmd.extend(["--progress-path", str(progress_path)])
         started = time.perf_counter()
@@ -770,17 +844,46 @@ def _worker_main(argv: list[str]) -> int:
     parser.add_argument("--dictionary-path")
     parser.add_argument("--index-build-mode", default="full")
     parser.add_argument("--progress-path")
+    parser.add_argument("--lineage-context-path")
     args = parser.parse_args(argv)
     contract = AgentJobContract(agent_name=PARSER_PROCESS_AGENT_NAME)
     artifact_path = Path(args.artifact_path).expanduser().resolve()
     result_path = Path(args.result_path).expanduser().resolve()
     cancel_path = Path(args.cancel_path).expanduser().resolve() if args.cancel_path else None
     progress_path = Path(args.progress_path).expanduser().resolve() if args.progress_path else None
+    lineage_context: CaptureLineageContext | None = None
 
     def _stage_observer(stage: str, payload: dict[str, object]) -> None:
         _append_progress_event(progress_path, stage, payload)
 
     contract.transition(AGENT_VALIDATING_INPUT, rss_mb=_rss_mb())
+    if args.lineage_context_path:
+        context_path = Path(args.lineage_context_path).expanduser().resolve()
+        try:
+            context_raw = json.loads(context_path.read_text(encoding="utf-8"))
+            lineage_context = CaptureLineageContext.from_dict(context_raw)
+        except (OSError, TypeError, ValueError, json.JSONDecodeError, LineageValidationError) as exc:
+            message = f"invalid capture lineage context request: {exc}"
+            contract.fail("INVALID_ARG", message)
+            payload = {
+                "code": "INVALID_ARG",
+                "message": message,
+                "data": _stable_result_timing_fields(
+                    None,
+                    index_build_mode=str(args.index_build_mode or "full"),
+                    materialize_event_stream=args.materialize_event_stream == "1",
+                ),
+                "warnings": [],
+                "untrusted_windows": [],
+                "peak_rss_mb": _rss_mb(),
+                "agent_contract": contract.to_dict(),
+            }
+            result_path.parent.mkdir(parents=True, exist_ok=True)
+            result_path.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            return 2
     if cancel_path is not None and cancel_path.exists():
         contract.fail(ERR_AGENT_CANCELLED, f"parser process cancelled before parse: {cancel_path}", cancelled=True)
         payload = {
@@ -807,6 +910,7 @@ def _worker_main(argv: list[str]) -> int:
         stage_observer=_stage_observer if progress_path is not None else None,
         materialize_event_stream=args.materialize_event_stream == "1",
         index_build_mode=str(args.index_build_mode or "full"),
+        lineage_context=lineage_context,
     )
     if cancel_path is not None and cancel_path.exists():
         contract.fail(ERR_AGENT_CANCELLED, f"parser process cancelled after parse: {cancel_path}", cancelled=True)
@@ -890,5 +994,10 @@ def run_isolated_parse(
     *,
     artifact_policy: dict[str, Any] | None = None,
     job_id: str | None = None,
+    lineage_context: CaptureLineageContext | None = None,
 ) -> Result[dict[str, Any]]:
-    return ParserProcessAgent(job_id=job_id).parse_rebuild(source, artifact_policy=artifact_policy)
+    return ParserProcessAgent(job_id=job_id).parse_rebuild(
+        source,
+        artifact_policy=artifact_policy,
+        lineage_context=lineage_context,
+    )

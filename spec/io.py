@@ -69,8 +69,14 @@ def checksum_file(path: str | Path) -> str:
 
 
 def serialize(data: Any) -> Any:
+    to_dict = getattr(data, "to_dict", None)
+    if callable(to_dict):
+        return serialize(to_dict())
     if dataclasses.is_dataclass(data):
-        return serialize(dataclasses.asdict(data))
+        return {
+            field.name: serialize(getattr(data, field.name))
+            for field in dataclasses.fields(data)
+        }
     if isinstance(data, Path):
         return str(data)
     if isinstance(data, dict):

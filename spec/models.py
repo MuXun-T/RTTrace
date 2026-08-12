@@ -9,6 +9,7 @@ legacy-only compatibility exports.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from collections.abc import Iterator, Mapping
 from typing import Any
 
 import parser.models as canonical_models
@@ -33,6 +34,8 @@ CANONICAL_PEER_MODEL_NAMES = frozenset(
         "MetricResult",
         "PlaybackState",
         "RebuildBundle",
+        "ReadyNotRunningInterval",
+        "ResourceEdge",
         "ResourceGraph",
         "SegmentMeta",
         "TaskStateQuery",
@@ -197,10 +200,11 @@ class ExecSlice:
     t_begin: float
     t_end: float
     start_event: str
-    end_event: str
+    end_event: str | None
     preempted_by: int | None
     run_reason: str | None
     trusted: bool
+    lineage_id: str | None = None
 
 
 @dataclass
@@ -215,13 +219,71 @@ class TaskStateSeg:
     cause_event: str
     related_obj: int | None
     trusted: bool
+    lineage_id: str | None = None
+
+
+TaskStateSegment = TaskStateSeg
+
+
+@dataclass
+class ResourceEdge(Mapping[str, Any]):
+    edge_id: str
+    edge_kind: str
+    task_id: int | None
+    obj_id: int | None
+    owner_task_id: int | None
+    obj_type: int | None
+    t_begin: float
+    t_end: float
+    lineage_id: str | None = None
+    evidence_ref: str | None = None
+    trusted: bool = True
+
+    @property
+    def from_task(self) -> int | None:
+        return self.task_id
+
+    @property
+    def to_obj(self) -> int | None:
+        return self.obj_id
+
+    @property
+    def owner_task(self) -> int | None:
+        return self.owner_task_id
+
+    def _compatibility_mapping(self) -> dict[str, Any]:
+        return {
+            "edge_id": self.edge_id,
+            "edge_kind": self.edge_kind,
+            "task_id": self.task_id,
+            "obj_id": self.obj_id,
+            "owner_task_id": self.owner_task_id,
+            "obj_type": self.obj_type,
+            "t_begin": self.t_begin,
+            "t_end": self.t_end,
+            "lineage_id": self.lineage_id,
+            "evidence_ref": self.evidence_ref,
+            "trusted": self.trusted,
+            "from_task": self.from_task,
+            "to_obj": self.to_obj,
+            "owner_task": self.owner_task,
+        }
+
+    def __getitem__(self, key: str) -> Any:
+        return self._compatibility_mapping()[key]
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._compatibility_mapping())
+
+    def __len__(self) -> int:
+        return len(self._compatibility_mapping())
 
 
 @dataclass
 class ResourceGraph:
     nodes: list[dict[str, Any]] = field(default_factory=list)
-    hold_edges: list[dict[str, Any]] = field(default_factory=list)
-    wait_edges: list[dict[str, Any]] = field(default_factory=list)
+    hold_edges: list[ResourceEdge] = field(default_factory=list)
+    wait_edges: list[ResourceEdge] = field(default_factory=list)
     hotspot_stats: list[dict[str, Any]] = field(default_factory=list)
 
 
@@ -235,6 +297,22 @@ class IrqSpan:
     t_end: float
     delayed_task: int | None
     trusted: bool
+    enter_event_id: str | None = None
+    exit_event_id: str | None = None
+    lineage_id: str | None = None
+
+
+@dataclass
+class ReadyNotRunningInterval:
+    interval_id: str
+    task_id: int
+    core_id: int | None
+    t_begin: float
+    t_end: float
+    competing_exec_slice_ids: list[str] = field(default_factory=list)
+    competing_irq_span_ids: list[str] = field(default_factory=list)
+    lineage_id: str | None = None
+    trusted: bool = True
 
 
 @dataclass
@@ -271,6 +349,11 @@ class RebuildBundle:
     segment_metas: list[SegmentMeta] = field(default_factory=list)
     header: GlobalHeader | None = None
     index_bundle: IndexBundle | None = None
+    capture_id: str | None = None
+    capture_capability_manifest_ref: str | None = None
+    capture_integrity_record_ref: str | None = None
+    ready_not_running_intervals: list[ReadyNotRunningInterval] = field(default_factory=list)
+    lineage_registry: Any | None = None
 
 
 @dataclass

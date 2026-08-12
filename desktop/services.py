@@ -78,6 +78,8 @@ from parser.models import (
     PlaybackState,
     ReadinessState,
     RebuildBundle,
+    ReadyNotRunningInterval,
+    ResourceEdge,
     ResourceGraph,
     SegmentMeta,
     SwitchPoint,
@@ -93,6 +95,13 @@ from parser.models import (
     event_ref_key_for,
 )
 from parser.result import Result, err_result, ok_result
+from parser.rtd_lineage import (
+    CaptureLineageContext,
+    LineageRegistry,
+    LineageValidationError,
+    validate_capture_lineage_context,
+    validate_rebuild_bundle_lineage,
+)
 from spec.io import checksum_file, json_dump, json_load, jsonl_dump, serialize
 from spec.schema_loader import DICTIONARY_PATH, SCHEMA_DIR, load_specs
 
@@ -672,6 +681,9 @@ def _write_json_array_streaming(path: Path, rows: Iterable[Any]) -> int:
 
 
 def _json_default(value: Any) -> Any:
+    to_dict = getattr(value, "to_dict", None)
+    if callable(to_dict):
+        return to_dict()
     if is_dataclass(value):
         return {
             field_info.name: getattr(value, field_info.name)
@@ -799,6 +811,25 @@ def _collect_direct_event_ref_keys(bundle: RebuildBundle) -> set[str]:
         if ref_key is not None:
             refs.add(ref_key)
     return refs
+
+
+def _lineage_registry_subset(bundle: RebuildBundle) -> LineageRegistry | None:
+    registry = getattr(bundle, "lineage_registry", None)
+    if not isinstance(registry, LineageRegistry):
+        return None
+    lineage_ids = [
+        item.lineage_id
+        for item in (
+            list(bundle.task_states)
+            + list(bundle.exec_slices)
+            + list(bundle.resource_graph.hold_edges)
+            + list(bundle.resource_graph.wait_edges)
+            + list(bundle.irq_spans)
+            + list(getattr(bundle, "ready_not_running_intervals", []))
+        )
+        if getattr(item, "lineage_id", None) is not None
+    ]
+    return registry.subset(lineage_ids)
 
 
 def _collect_event_ref_keys_from_alerts(alerts: list[Alert] | None) -> set[str]:
@@ -1154,6 +1185,46 @@ def _irq_span_from_dict(raw: dict[str, Any]) -> IrqSpan:
     return IrqSpan(**raw)
 
 
+def _resource_edge_from_dict(raw: dict[str, Any], *, edge_kind: str, index: int) -> ResourceEdge:
+    payload = dict(raw)
+    task_id = payload.get("task_id", payload.get("from_task"))
+    obj_id = payload.get("obj_id", payload.get("to_obj"))
+    owner_task_id = payload.get("owner_task_id", payload.get("owner_task"))
+    return ResourceEdge(
+        edge_id=str(payload.get("edge_id") or f"legacy-edge:{edge_kind}:{index}"),
+        edge_kind=str(payload.get("edge_kind") or edge_kind),
+        task_id=None if task_id is None else int(task_id),
+        obj_id=None if obj_id is None else int(obj_id),
+        owner_task_id=None if owner_task_id is None else int(owner_task_id),
+        obj_type=None if payload.get("obj_type") is None else int(payload["obj_type"]),
+        t_begin=float(payload.get("t_begin", 0.0)),
+        t_end=float(payload.get("t_end", payload.get("t_begin", 0.0))),
+        lineage_id=payload.get("lineage_id"),
+        evidence_ref=payload.get("evidence_ref"),
+        trusted=bool(payload.get("trusted", True)),
+    )
+
+
+def _resource_graph_from_dict(raw: dict[str, Any]) -> ResourceGraph:
+    payload = dict(raw or {})
+    return ResourceGraph(
+        nodes=list(payload.get("nodes") or []),
+        hold_edges=[
+            _resource_edge_from_dict(item, edge_kind="hold", index=index)
+            for index, item in enumerate(list(payload.get("hold_edges") or []))
+        ],
+        wait_edges=[
+            _resource_edge_from_dict(item, edge_kind="wait", index=index)
+            for index, item in enumerate(list(payload.get("wait_edges") or []))
+        ],
+        hotspot_stats=list(payload.get("hotspot_stats") or []),
+    )
+
+
+def _ready_not_running_from_dict(raw: dict[str, Any]) -> ReadyNotRunningInterval:
+    return ReadyNotRunningInterval(**raw)
+
+
 def _window_from_dict(raw: dict[str, Any]) -> UntrustedWindow:
     return UntrustedWindow(**raw)
 
@@ -1206,13 +1277,35 @@ def _bundle_from_dict(
     alignment = _alignment_from_dict(raw.get("alignment"))
     if alignment is None:
         alignment = _alignment_from_events(event_stream, capability_flags=capability_flags)
-    return RebuildBundle(
+    registry_raw = raw.get("lineage_registry")
+    try:
+        registry = None if registry_raw is None else LineageRegistry.from_dict(registry_raw)
+    except LineageValidationError as exc:
+        raise ValueError(f"invalid lineage registry payload: {exc}") from exc
+    if registry is not None and registry.capture_context is not None:
+        context = registry.capture_context
+        for label, actual, expected in (
+            ("capture_id", raw.get("capture_id"), context.capture_id),
+            (
+                "capture_capability_manifest_ref",
+                raw.get("capture_capability_manifest_ref"),
+                context.capture_capability_manifest_ref,
+            ),
+            (
+                "capture_integrity_record_ref",
+                raw.get("capture_integrity_record_ref"),
+                context.capture_integrity_record_ref,
+            ),
+        ):
+            if actual != expected:
+                raise ValueError(f"lineage registry {label} does not match rebuild bundle")
+    bundle = RebuildBundle(
         bundle_id=raw["bundle_id"],
         dataset_id=raw["dataset_id"],
         event_stream=event_stream,
         task_states=[_task_state_from_dict(item) for item in raw["task_states"]],
         exec_slices=[_exec_slice_from_dict(item) for item in raw["exec_slices"]],
-        resource_graph=ResourceGraph(**raw["resource_graph"]),
+        resource_graph=_resource_graph_from_dict(raw["resource_graph"]),
         irq_spans=[_irq_span_from_dict(item) for item in raw["irq_spans"]],
         untrusted_windows=[_window_from_dict(item) for item in raw["untrusted_windows"]],
         rebuild_rev=raw["rebuild_rev"],
@@ -1221,7 +1314,60 @@ def _bundle_from_dict(
         segment_metas=[_segment_meta_from_dict(item) for item in raw.get("segment_metas", [])],
         header=header,
         index_bundle=None,
+        capture_id=raw.get("capture_id"),
+        capture_capability_manifest_ref=raw.get("capture_capability_manifest_ref"),
+        capture_integrity_record_ref=raw.get("capture_integrity_record_ref"),
+        ready_not_running_intervals=[
+            _ready_not_running_from_dict(item)
+            for item in raw.get("ready_not_running_intervals", [])
+        ],
+        lineage_registry=registry,
     )
+    try:
+        validate_rebuild_bundle_lineage(
+            bundle,
+            raw_events=event_stream,
+            require_complete_raw_event_set=bool(
+                event_stream
+                and registry is not None
+                and getattr(registry, "registry_scope", "full_capture") == "full_capture"
+            ),
+        )
+    except LineageValidationError as exc:
+        raise ValueError(f"invalid rebuild bundle lineage bindings: {exc}") from exc
+    return bundle
+
+
+def _capture_lineage_context_from_bundle_payload(raw: dict[str, Any]) -> CaptureLineageContext | None:
+    registry_raw = raw.get("lineage_registry")
+    if registry_raw is None:
+        return None
+    try:
+        registry = LineageRegistry.from_dict(registry_raw)
+    except LineageValidationError as exc:
+        raise ValueError(f"invalid lineage registry payload: {exc}") from exc
+    return registry.capture_context
+
+
+def _validate_requested_capture_context(
+    bundle: RebuildBundle,
+    lineage_context: CaptureLineageContext | None,
+    *,
+    source_kind: str,
+) -> Result[None] | None:
+    if lineage_context is None:
+        return None
+    try:
+        validate_capture_lineage_context(lineage_context)
+    except LineageValidationError as exc:
+        return err_result("INVALID_ARG", str(exc))
+    bundle_context = getattr(getattr(bundle, "lineage_registry", None), "capture_context", None)
+    if bundle_context != lineage_context:
+        return err_result(
+            "INVALID_ARG",
+            f"capture lineage context does not match {source_kind} capture identity",
+        )
+    return None
 
 
 def _alignment_from_dict(raw: Any) -> AlignmentSummary | None:
@@ -1315,6 +1461,7 @@ def _isolated_load_dataset_artifact(
     job_id_prefix: str,
     materialize_event_stream: bool = True,
     index_build_mode: str = "full",
+    lineage_context: CaptureLineageContext | None = None,
 ) -> Result[DatasetArtifact]:
     with tempfile.TemporaryDirectory(prefix="rttrace-package-parse-") as artifact_dir:
         parser_agent = ParserProcessAgent(job_id=f"{job_id_prefix}-{uuid.uuid4().hex}")
@@ -1328,6 +1475,7 @@ def _isolated_load_dataset_artifact(
                 "load_artifact": True,
                 "retain_artifact": False,
             },
+            lineage_context=lineage_context,
         )
     if not parsed.ok:
         return Result(
@@ -1482,6 +1630,10 @@ def _load_validated_package(package_path: str | Path) -> Result[dict[str, Any]]:
     if not rebuild_path.exists():
         return err_result("INVALID_ARG", "package missing rebuild bundle")
     raw_bundle = _load_cached_rebuild_bundle(target, bundle_cache)
+    try:
+        lineage_context = _capture_lineage_context_from_bundle_payload(raw_bundle)
+    except ValueError as exc:
+        return err_result("INVALID_ARG", str(exc))
     dict_ref = meta.get("dict_ref") or {}
     dict_path = target / dict_ref.get("path", "reference/dictionary.json")
     dictionary_info = dict(meta.get("dictionary_status") or {})
@@ -1514,6 +1666,7 @@ def _load_validated_package(package_path: str | Path) -> Result[dict[str, Any]]:
                 event_trace_path,
                 dictionary_path=dict_path,
                 job_id_prefix="package-rebuild-load",
+                lineage_context=lineage_context,
             )
             if not reconstructed.ok:
                 return Result(
@@ -2627,6 +2780,7 @@ class WorkspaceController:
         parser_cancel_path: str | Path | None = None,
         parser_process_timeout_s: float | None = None,
         payload_callback: Callable[[dict[str, Any]], None] | None = None,
+        lineage_context: CaptureLineageContext | None = None,
     ) -> Result[dict[str, Any]]:
         path = Path(source)
         if path.is_dir() and (path / "manifest.json").exists() and (path / "meta.json").exists():
@@ -2634,6 +2788,13 @@ class WorkspaceController:
             if not loaded_package.ok:
                 return loaded_package
             bundle = loaded_package.data["bundle"]
+            context_validation = _validate_requested_capture_context(
+                bundle,
+                lineage_context,
+                source_kind="package",
+            )
+            if context_validation is not None:
+                return context_validation
             dataset_role = loaded_package.data["dataset_role"]
             header = bundle.header or GlobalHeader(
                 magic="0x0",
@@ -2676,6 +2837,7 @@ class WorkspaceController:
             cancel_path=parser_cancel_path,
             timeout_s=parser_process_timeout_s,
             payload_callback=payload_callback,
+            lineage_context=lineage_context,
         )
 
     def _parse_trace_source_isolated(
@@ -2688,6 +2850,7 @@ class WorkspaceController:
         cancel_path: str | Path | None = None,
         timeout_s: float | None = None,
         payload_callback: Callable[[dict[str, Any]], None] | None = None,
+        lineage_context: CaptureLineageContext | None = None,
     ) -> Result[dict[str, Any]]:
         source_path = Path(source)
         dictionary_path = _resolve_evidence_dictionary_source_path(str(source_path))
@@ -2716,6 +2879,7 @@ class WorkspaceController:
                 schema_version=PARSER_CACHE_SCHEMA_VERSION,
                 index_build_mode=str(runtime_load_effective_plan_payload.get("index_build_mode") or "full"),
                 materialize_event_stream=bool(runtime_load_effective_plan_payload.get("materialize_event_stream", True)),
+                lineage_context=lineage_context,
             )
         except (OSError, ValueError):
             parser_probe = None
@@ -2765,6 +2929,7 @@ class WorkspaceController:
                 "load_artifact": load_artifact,
                 "retain_artifact": True,
             },
+            lineage_context=lineage_context,
         )
         parser_artifact_payload = (parsed.data or {}).get("parser_process_artifact") if parsed.data else None
         if (
@@ -2913,8 +3078,13 @@ class WorkspaceController:
             }
         )
 
-    def viz_LoadDataset(self, source: str) -> Result[str]:
-        loaded = self._load_artifact_from_source(source)
+    def viz_LoadDataset(
+        self,
+        source: str,
+        *,
+        lineage_context: CaptureLineageContext | None = None,
+    ) -> Result[str]:
+        loaded = self._load_artifact_from_source(source, lineage_context=lineage_context)
         if not loaded.ok:
             return loaded
         registered = self._register_artifact(
@@ -2926,7 +3096,12 @@ class WorkspaceController:
             return registered
         return ok_result(registered.data, warnings=loaded.warnings, untrusted_windows=loaded.untrusted_windows)
 
-    def viz_LoadDatasetAsync(self, source: str) -> Result[dict[str, Any]]:
+    def viz_LoadDatasetAsync(
+        self,
+        source: str,
+        *,
+        lineage_context: CaptureLineageContext | None = None,
+    ) -> Result[dict[str, Any]]:
         source_path = str(Path(source))
         preview_result = self._build_load_preview(source_path)
         if not preview_result.ok:
@@ -2987,6 +3162,7 @@ class WorkspaceController:
                 parser_cancel_path=job_payload.get("parser_cancel_path"),
                 parser_process_timeout_s=job_payload.get("parser_process_timeout_s"),
                 payload_callback=lambda payload: self.jobs.update_payload(job_id, payload),
+                lineage_context=lineage_context,
             )
             if isinstance(loaded.data, dict):
                 self.jobs.update_payload(
@@ -3053,7 +3229,13 @@ class WorkspaceController:
             untrusted_windows=loaded.untrusted_windows,
         )
 
-    def viz_LoadDatasetFromChannel(self, channel_type: str, config: dict[str, Any]) -> Result[str]:
+    def viz_LoadDatasetFromChannel(
+        self,
+        channel_type: str,
+        config: dict[str, Any],
+        *,
+        lineage_context: CaptureLineageContext | None = None,
+    ) -> Result[str]:
         try:
             if channel_type == "file":
                 source = FileChunkSource(
@@ -3089,6 +3271,7 @@ class WorkspaceController:
                 "dataset_id": config.get("dataset_id"),
                 "online_mode": True,
             },
+            lineage_context=lineage_context,
         )
         if not loaded.ok:
             return Result(
@@ -4057,7 +4240,13 @@ class CompareService:
         dataset_id = self.repository.add(DatasetRecord(artifact=artifact, metric_session=session))
         return ok_result(dataset_id)
 
-    def _parse_trace_source_isolated(self, source: str | Path, *, job_id: str) -> Result[dict[str, Any]]:
+    def _parse_trace_source_isolated(
+        self,
+        source: str | Path,
+        *,
+        job_id: str,
+        lineage_context: CaptureLineageContext | None = None,
+    ) -> Result[dict[str, Any]]:
         parser_agent = ParserProcessAgent(job_id=job_id)
         parsed = parser_agent.parse_rebuild(
             source,
@@ -4066,6 +4255,7 @@ class CompareService:
                 "load_artifact": True,
                 "retain_artifact": True,
             },
+            lineage_context=lineage_context,
         )
         if not parsed.ok:
             return Result(
@@ -4086,20 +4276,38 @@ class CompareService:
             untrusted_windows=parsed.untrusted_windows,
         )
 
-    def _resolve_dataset_ref(self, ref: str, role: str) -> Result[str]:
+    def _resolve_dataset_ref(
+        self,
+        ref: str,
+        role: str,
+        *,
+        lineage_context: CaptureLineageContext | None = None,
+    ) -> Result[str]:
         if self.repository.has(ref):
-            target_id = _role_dataset_id(self.repository.get(ref).artifact.dataset_id, role)
+            record = self.repository.get(ref)
+            context_validation = _validate_requested_capture_context(
+                record.artifact.bundle,
+                lineage_context,
+                source_kind="dataset",
+            )
+            if context_validation is not None:
+                return context_validation
+            target_id = _role_dataset_id(record.artifact.dataset_id, role)
             if self.repository.has(target_id):
                 return ok_result(target_id)
             return self._register_bundle(
-                self.repository.get(ref).artifact.bundle,
-                self.repository.get(ref).artifact.source,
+                record.artifact.bundle,
+                record.artifact.source,
                 role,
-                dictionary_info=self.repository.get(ref).artifact.dictionary_info,
+                dictionary_info=record.artifact.dictionary_info,
             )
         path = Path(ref)
         if path.is_file():
-            loaded = self._parse_trace_source_isolated(path, job_id=f"resolve-{role}-{uuid.uuid4().hex}")
+            loaded = self._parse_trace_source_isolated(
+                path,
+                job_id=f"resolve-{role}-{uuid.uuid4().hex}",
+                lineage_context=lineage_context,
+            )
             if not loaded.ok:
                 return Result(
                     code=loaded.code,
@@ -4123,6 +4331,13 @@ class CompareService:
             if not loaded_package.ok:
                 return loaded_package
             bundle = loaded_package.data["bundle"]
+            context_validation = _validate_requested_capture_context(
+                bundle,
+                lineage_context,
+                source_kind="package",
+            )
+            if context_validation is not None:
+                return context_validation
             dataset_id = _role_dataset_id(bundle.dataset_id, role)
             if self.repository.has(dataset_id):
                 return ok_result(dataset_id)
@@ -4134,9 +4349,24 @@ class CompareService:
             )
         return err_result("INVALID_ARG", f"compare dataset not found: {ref}")
 
-    def cmp_LoadPair(self, baseline_id: str, candidate_id: str) -> Result[str]:
-        baseline_ref = self._resolve_dataset_ref(baseline_id, "baseline")
-        candidate_ref = self._resolve_dataset_ref(candidate_id, "candidate")
+    def cmp_LoadPair(
+        self,
+        baseline_id: str,
+        candidate_id: str,
+        *,
+        baseline_lineage_context: CaptureLineageContext | None = None,
+        candidate_lineage_context: CaptureLineageContext | None = None,
+    ) -> Result[str]:
+        baseline_ref = self._resolve_dataset_ref(
+            baseline_id,
+            "baseline",
+            lineage_context=baseline_lineage_context,
+        )
+        candidate_ref = self._resolve_dataset_ref(
+            candidate_id,
+            "candidate",
+            lineage_context=candidate_lineage_context,
+        )
         if not baseline_ref.ok:
             return baseline_ref
         if not candidate_ref.ok:
@@ -4987,7 +5217,7 @@ class ExportService:
         untrusted_windows = [
             item for item in bundle.untrusted_windows if item.t_begin < time_window[1] and item.t_end > time_window[0]
         ]
-        return RebuildBundle(
+        export_bundle = RebuildBundle(
             bundle_id=bundle.bundle_id,
             dataset_id=bundle.dataset_id,
             event_stream=list(events),
@@ -5002,7 +5232,28 @@ class ExportService:
             segment_metas=list(bundle.segment_metas),
             header=bundle.header,
             index_bundle=None,
+            capture_id=bundle.capture_id,
+            capture_capability_manifest_ref=bundle.capture_capability_manifest_ref,
+            capture_integrity_record_ref=bundle.capture_integrity_record_ref,
+            ready_not_running_intervals=[
+                item
+                for item in bundle.ready_not_running_intervals
+                if item.t_begin < time_window[1] and item.t_end > time_window[0]
+            ],
+            lineage_registry=getattr(bundle, "lineage_registry", None),
         )
+        registry = _lineage_registry_subset(export_bundle)
+        if registry is not None:
+            export_bundle.lineage_registry = registry
+            required_window_ids = set(registry.window_integrity_bindings)
+            existing_window_ids = {item.window_id for item in export_bundle.untrusted_windows}
+            export_bundle.untrusted_windows.extend(
+                item
+                for item in bundle.untrusted_windows
+                if item.window_id in required_window_ids and item.window_id not in existing_window_ids
+            )
+            export_bundle.untrusted_windows.sort(key=lambda item: (item.t_begin, item.t_end, item.window_id))
+        return export_bundle
 
     def _source_alignment_offsets_from_bundle(self, bundle: RebuildBundle) -> Result[dict[str, Any]] | None:
         alignment = bundle.alignment
@@ -6023,6 +6274,9 @@ class ExportService:
             "alignment": export_bundle.alignment,
             "bundle_id": export_bundle.bundle_id,
             "capability_flags": export_bundle.capability_flags,
+            "capture_capability_manifest_ref": export_bundle.capture_capability_manifest_ref,
+            "capture_id": export_bundle.capture_id,
+            "capture_integrity_record_ref": export_bundle.capture_integrity_record_ref,
             "dataset_id": export_bundle.dataset_id,
             "event_stream": export_bundle.event_stream,
             "exec_slices": export_bundle.exec_slices,
@@ -6030,9 +6284,11 @@ class ExportService:
             "index_bundle": export_bundle.index_bundle,
             "irq_spans": export_bundle.irq_spans,
             "rebuild_rev": export_bundle.rebuild_rev,
+            "ready_not_running_intervals": export_bundle.ready_not_running_intervals,
             "resource_graph": export_bundle.resource_graph,
             "segment_metas": export_bundle.segment_metas,
             "task_states": export_bundle.task_states,
+            "lineage_registry": export_bundle.lineage_registry,
             "untrusted_windows": window_rows,
         }
         _measure_export_write(

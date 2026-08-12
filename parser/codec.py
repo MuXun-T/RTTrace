@@ -339,6 +339,11 @@ def _header_from_tuple(header_tuple: tuple[int, ...]) -> GlobalHeader:
         producer_ver,
         run_id,
     ) = header_tuple
+    try:
+        producer_ver_text = producer_ver.decode("utf-8")
+        run_id_text = run_id.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError("trace header contains invalid UTF-8 identity") from exc
     return GlobalHeader(
         magic=hex(magic),
         endian=endian,
@@ -346,8 +351,8 @@ def _header_from_tuple(header_tuple: tuple[int, ...]) -> GlobalHeader:
         clock_source=1,
         format_ver=format_ver,
         dict_ver=dict_ver,
-        producer_ver=producer_ver.decode("utf-8", errors="ignore").rstrip("\0"),
-        run_id=run_id.decode("utf-8", errors="ignore").rstrip("\0") or None,
+        producer_ver=producer_ver_text.rstrip("\0"),
+        run_id=run_id_text.rstrip("\0") or None,
     )
 
 
@@ -683,6 +688,7 @@ class TraceDecodeSession:
         stage_observer: StageObserver | None = None,
         stage_timings: dict[str, float] | None = None,
         materialize_events: bool = True,
+        expected_capture_id: str | None = None,
     ) -> None:
         self._requested_dataset_id = dataset_id
         self.dataset_id = dataset_id or "stream"
@@ -699,6 +705,7 @@ class TraceDecodeSession:
         self.payload_cache: dict[tuple[int, tuple[tuple[str, Any], ...]], dict[str, Any]] = {}
         self.chunk_index = 0
         self.materialize_events = bool(materialize_events)
+        self.expected_capture_id = expected_capture_id
         self.stage_observer = stage_observer
         self.stage_timings = stage_timings
         self.hotspot_tracker = (
@@ -792,6 +799,9 @@ class TraceDecodeSession:
         if header_tuple[0] != TRACE_FORMAT_MAGIC:
             raise ValueError("invalid trace magic" if self.header is None else "invalid segment header")
         segment_header = _header_from_tuple(header_tuple)
+        # P3 callers provide this only from a validated CaptureLineageContext.
+        if self.expected_capture_id is not None and segment_header.run_id != self.expected_capture_id:
+            raise ValueError("capture lineage context does not match trace header capture identity")
         if self.header is None:
             self.header = segment_header
             if self.header.run_id and self._requested_dataset_id in {None, "", "stream"}:
