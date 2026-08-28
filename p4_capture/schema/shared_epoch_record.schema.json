@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTD-Pilot P4 Shared Epoch Record",
+  "type": "object",
+  "required": ["schema_version", "shared_epoch_id", "capture_id", "session_id", "epoch_id", "trace_sequence", "trace_timestamp", "observer_timestamp", "test_only", "record_digest"],
+  "properties": {
+    "schema_version": {"const": "rtd-phase4-prehardware-v1.0"},
+    "trace_sequence": {"type": ["integer", "null"], "minimum": 0},
+    "trace_timestamp": {"type": ["integer", "null"], "minimum": 0},
+    "observer_timestamp": {"type": ["number", "null"]},
+    "test_only": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

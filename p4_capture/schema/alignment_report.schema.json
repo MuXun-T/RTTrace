@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTD-Pilot P4 Alignment Report",
+  "type": "object",
+  "required": ["schema_version", "alignment_report_id", "capture_id", "session_id", "observer_inventory_ref", "observer_inventory_digest", "shared_epoch_ref", "shared_epoch_digest", "state", "alignment_error_bound", "algorithm", "test_only", "record_digest"],
+  "properties": {
+    "schema_version": {"const": "rtd-phase4-prehardware-v1.0"},
+    "state": {"enum": ["pending", "missing", "partial", "corrupt", "unalignable", "test_only", "aligned"]},
+    "alignment_error_bound": {"type": ["number", "null"], "minimum": 0},
+    "test_only": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

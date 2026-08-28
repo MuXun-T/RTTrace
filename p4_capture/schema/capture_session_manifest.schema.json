@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDP4CaptureSessionManifest",
+  "type": "object",
+  "required": ["schema_version", "session_manifest_id", "capture_id", "session_id", "case_id", "capture_mode", "test_only", "buffer_capacity_unit", "buffer_high_watermark_unit", "collector_config_export_ref", "collector_config_export_digest", "board_ref", "platform_ref", "pinmap_ref", "firmware_hash", "elf_hash", "build_config_hash", "source_commit", "prepared_at", "prior_session_manifest_ref", "record_digest"],
+  "properties": {
+    "schema_version": {"const": "rtd-phase4-prehardware-v1.0"},
+    "capture_id": {"type": "string", "pattern": "^capture:[A-Za-z0-9][A-Za-z0-9._-]*$", "maxLength": 32},
+    "test_only": {"type": "boolean"},
+    "buffer_capacity_unit": {"const": "records"},
+    "buffer_high_watermark_unit": {"const": "records"},
+    "record_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}

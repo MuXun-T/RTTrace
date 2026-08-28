@@ -1109,6 +1109,7 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         )
         self.assertTrue(first.ok, first.message)
         self.assertFalse(first.data["cache_hit"])
+        self.assertEqual(first.data["artifact"].dictionary_info["requested_source"], "default")
 
         with mock.patch("parser.parser_process_agent.subprocess.Popen", side_effect=AssertionError("worker should be skipped on cache hit")):
             second = ParserProcessAgent(job_id="parse-cache-worker-second").parse_rebuild(
@@ -1125,6 +1126,7 @@ class RuntimeOptimizationAgentTests(unittest.TestCase):
         self.assertTrue(second.ok, second.message)
         self.assertTrue(second.data["cache_hit"])
         self.assertTrue(second.data["parser_process_artifact"]["cache_hit"])
+        self.assertEqual(second.data["artifact"].dictionary_info["requested_source"], "default")
         self.assertGreater(len(second.data["artifact"].bundle.event_stream), 0)
 
     def test_parser_process_agent_metadata_cache_hit_skips_pickle_load(self) -> None:

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDP4HardwareArtifactLayout",
+  "type": "object",
+  "required": ["schema_version", "layout_version", "canonical_root", "board_id", "session_id", "capture_mode", "capture_id", "case_id", "session_manifest_digest", "collector_config_export_digest", "record_digest"],
+  "properties": {
+    "schema_version": {"const": "rtd-p4-hardware-artifact-layout-v1"},
+    "layout_version": {"const": "rtd-p4-hardware-smoke-layout-v1"},
+    "capture_mode": {"const": "hardware_smoke_noncase"},
+    "case_id": {"type": "null"},
+    "capture_id": {"type": "string", "pattern": "^capture:[A-Za-z0-9][A-Za-z0-9._-]*$", "maxLength": 32},
+    "record_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": false
+}

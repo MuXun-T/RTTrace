@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTD-Pilot P4 Observer Artifact Inventory",
+  "type": "object",
+  "required": ["schema_version", "observer_inventory_id", "capture_id", "session_id", "observer_artifact_hash", "logical_name", "state", "test_only", "record_digest"],
+  "properties": {
+    "schema_version": {"const": "rtd-phase4-prehardware-v1.0"},
+    "state": {"enum": ["pending", "missing", "partial", "corrupt", "unalignable", "test_only", "aligned"]},
+    "test_only": {"type": "boolean"},
+    "observer_artifact_hash": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

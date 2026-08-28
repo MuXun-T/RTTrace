@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDP4DecoderIntegrityReport",
+  "type": "object",
+  "required": ["schema_version", "decoder_report_id", "capture_id", "session_id", "config_export_ref", "config_export_digest", "raw_trace_id", "raw_trace_hash", "raw_state", "header_capture_id", "decoder_state", "sequence_continuity", "sequence_gaps", "loss", "lost_count", "overflow", "overflow_count", "truncation", "corruption", "mapping_mismatch", "affected_intervals", "reason_codes", "decoded_event_count", "buffer_capacity_unit", "buffer_high_watermark_unit", "test_only", "record_digest"],
+  "properties": {"schema_version": {"const": "rtd-phase4-prehardware-v1.0"}, "buffer_capacity_unit": {"const": "records"}, "buffer_high_watermark_unit": {"const": "records"}, "test_only": {"type": "boolean"}},
+  "additionalProperties": true
+}

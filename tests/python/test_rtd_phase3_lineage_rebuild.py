@@ -3,10 +3,12 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import replace
 import json
+from pathlib import Path
 
 from desktop.services import _bundle_from_dict
 from parser.models import DecodedEvent, ResourceEdge, UntrustedWindow
 from parser.rebuild import rb_Rebuild
+from parser import encode_trace, load_dataset
 from parser.rtd_lineage import (
     CAPABILITY_UNSUPPORTED_REASON,
     MAPPING_INVALID_REASON,
@@ -101,6 +103,19 @@ def _context(*, event_types: tuple[str, ...] = EVENT_TYPES) -> CaptureLineageCon
         }
     )
     return CaptureLineageContext.from_p2_records(ccm, cir)
+
+
+def test_timestamp_wraparound_keeps_untrusted_windows_ordered(tmp_path: Path) -> None:
+    trace_path = tmp_path / "wrap.trace"
+    events = [
+        {"core_id": 0, "event_id": 0x1001, "seq": 1, "timestamp": 100, "payload": {"task_id": 1, "prio": 1, "core_hint": 0, "reason": 1}},
+        {"core_id": 0, "event_id": 0x4001, "seq": 3, "timestamp": 10, "payload": {"core_id": 0, "lost_count": 1, "reason": 1}},
+    ]
+    encode_trace(trace_path, events, producer_ver="wrap-test", run_id="capture:production-a")
+    loaded = load_dataset(trace_path)
+    assert loaded.ok, loaded.message
+    assert loaded.data is not None
+    assert all(window.t_begin <= window.t_end for window in loaded.data.bundle.untrusted_windows)
 
 
 def _event(seq: int, timestamp: float, event_name: str, payload: dict[str, int], *, core_id: int = 0) -> DecodedEvent:

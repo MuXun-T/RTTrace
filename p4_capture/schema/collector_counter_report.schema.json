@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDP4CollectorCounterReport",
+  "type": "object",
+  "required": ["schema_version", "counter_report_id", "capture_id", "session_id", "config_export_ref", "config_export_digest", "raw_trace_id", "raw_trace_hash", "observation_state", "lost_total", "overflow_total", "io_backpressure_total", "written_records", "flushed_records", "buffer_high_watermark", "buffer_capacity_unit", "buffer_high_watermark_unit", "natural_overflow", "counter_source", "collector_version", "test_only", "record_digest"],
+  "properties": {"schema_version": {"const": "rtd-phase4-prehardware-v1.0"}, "buffer_capacity_unit": {"const": "records"}, "buffer_high_watermark_unit": {"const": "records"}, "test_only": {"type": "boolean"}},
+  "additionalProperties": true
+}

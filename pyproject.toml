@@ -26,7 +26,8 @@ rttrace-gui = "desktop.app.gui:main"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["spec", "parser", "metric", "desktop"]
+include = ["spec", "parser", "metric", "desktop", "p4_capture"]
 
 [tool.setuptools.package-data]
 spec = ["assets/*.json", "dictionary/*.json", "schema/*.json"]
+p4_capture = ["schema/*.json"]

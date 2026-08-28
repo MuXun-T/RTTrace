@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDP4AlignmentInput",
+  "type": "object",
+  "required": ["schema_version", "alignment_input_id", "capture_id", "session_id", "observer_inventory_ref", "observer_inventory_digest", "shared_epoch_ref", "shared_epoch_digest", "raw_trace_id", "raw_trace_hash", "algorithm_id", "algorithm_version", "test_only", "record_digest"],
+  "properties": {
+    "schema_version": {"const": "rtd-phase4-prehardware-v1.0"},
+    "test_only": {"type": "boolean"},
+    "alignment_error_bound": {"type": ["number", "null"], "minimum": 0}
+  },
+  "additionalProperties": true
+}

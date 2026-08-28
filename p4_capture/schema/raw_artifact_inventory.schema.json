@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RTDP4RawArtifactInventory",
+  "type": "object",
+  "required": ["schema_version", "p4_raw_inventory_id", "capture_id", "session_id", "test_only", "artifacts", "retention_policy", "prior_raw_inventory_ref", "record_digest"],
+  "properties": {
+    "schema_version": {"const": "rtd-phase4-prehardware-v1.0"},
+    "capture_id": {"type": "string", "pattern": "^capture:[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "test_only": {"type": "boolean"},
+    "retention_policy": {"const": "retain_failed_capture"},
+    "record_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}

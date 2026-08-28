@@ -548,13 +548,15 @@ def _decode_chunk(
             trusted_tags: list[str] = EMPTY_TRUST_TAGS
             previous_seq = seq_by_core.get(core_id)
             if core_id in seq_by_core and seq != seq_by_core[core_id][0] + 1:
+                gap_start = float(seq_by_core[core_id][1])
+                gap_end = float(ts)
                 windows.append(
                     UntrustedWindow(
                         window_id=f"uw:{dataset_name}:seq_gap:{core_id}:{seq}",
                         source="seq_gap",
                         scope="event",
-                        t_begin=float(seq_by_core[core_id][1]),
-                        t_end=float(ts),
+                        t_begin=min(gap_start, gap_end),
+                        t_end=max(gap_start, gap_end),
                         reason_code="SEQ_GAP",
                         severity="warning",
                     )
@@ -571,13 +573,15 @@ def _decode_chunk(
                 count_key = "lost_count" if event_name == "LOSS" else "overflow_count"
                 count = int(payload.get(count_key, 1) or 1)
                 trusted_tags = _with_trust_tag(trusted_tags, source)
+                marker_start = float(previous_seq[1]) if previous_seq is not None else float(ts)
+                marker_end = float(ts)
                 windows.append(
                     UntrustedWindow(
                         window_id=f"uw:{dataset_name}:{source}:{core_id}:{seq}",
                         source=source,
                         scope="event",
-                        t_begin=float(previous_seq[1]) if previous_seq is not None else float(ts),
-                        t_end=float(ts),
+                        t_begin=min(marker_start, marker_end),
+                        t_end=max(marker_start, marker_end),
                         reason_code=reason_code,
                         severity="warning",
                     )

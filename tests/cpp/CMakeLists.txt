@@ -7,3 +7,14 @@ target_include_directories(trace_collector_tests PRIVATE ${PROJECT_SOURCE_DIR}/c
 target_compile_features(trace_collector_tests PRIVATE cxx_std_17)
 
 add_test(NAME trace_collector_tests COMMAND trace_collector_tests)
+
+add_executable(rtd_p4_target_contract_tests
+  test_rtd_p4_target_contract.cpp
+)
+target_link_libraries(rtd_p4_target_contract_tests PRIVATE rtd_p4_target_contract)
+target_include_directories(rtd_p4_target_contract_tests PRIVATE
+  ${PROJECT_SOURCE_DIR}/collector/include
+  ${PROJECT_SOURCE_DIR}/collector/target/freertos_stm32f103
+)
+target_compile_features(rtd_p4_target_contract_tests PRIVATE cxx_std_17)
+add_test(NAME rtd_p4_target_contract_tests COMMAND rtd_p4_target_contract_tests)

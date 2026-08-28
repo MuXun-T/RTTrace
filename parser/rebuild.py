@@ -926,6 +926,11 @@ def rb_Rebuild(
                 close_event_id=draft["close_event_id"],
                 reason_codes=tuple(dict.fromkeys(context_reasons)),
             )
+            # Window intersections must be computed before LOSS_AFFECTED can
+            # be validated.  Keep the provisional record structurally
+            # valid, then derive the final status from the resolved windows.
+            if provisional_status is LineageStatus.LOSS_AFFECTED:
+                provisional_status = LineageStatus.COMPLETE
             provisional = EvidenceLineage(
                 lineage_id=draft["lineage_id"],
                 derived_object_id=draft["object_id"],

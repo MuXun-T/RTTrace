@@ -168,6 +168,27 @@ def _trace_checksum(source: str | Path) -> str:
     return digest.hexdigest()
 
 
+def _normalize_loaded_artifact_dictionary_info(
+    artifact: Any,
+    *,
+    source: str | Path,
+    dictionary_path: Path,
+) -> Any:
+    if not (dataclasses.is_dataclass(artifact) and hasattr(artifact, "source")):
+        return artifact
+    info = dict(getattr(artifact, "dictionary_info", {}) or {})
+    using_default_dictionary = dictionary_path == DICTIONARY_PATH.expanduser().resolve()
+    info["requested_source"] = "default" if using_default_dictionary else "external_path"
+    info["requested_path"] = None if using_default_dictionary else str(dictionary_path)
+    info["resolved_source"] = "default" if using_default_dictionary else "external"
+    info["reference_path"] = str(dictionary_path)
+    return dataclasses.replace(
+        artifact,
+        source=str(Path(source).expanduser()),
+        dictionary_info=info,
+    )
+
+
 def _stable_cache_key(payload: dict[str, Any]) -> str:
     stable_json = json.dumps(serialize(payload), ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(stable_json.encode("utf-8")).hexdigest()
@@ -534,17 +555,11 @@ class ParserProcessAgent:
                     else:
                         cached_pickle_valid = artifact_path.is_file()
                     if cached_pickle_valid:
-                        if load_artifact and dataclasses.is_dataclass(cached_artifact) and hasattr(cached_artifact, "source"):
-                            refreshed_dictionary_info = dict(getattr(cached_artifact, "dictionary_info", {}) or {})
-                            using_default_dictionary = resolved_dictionary_path == DICTIONARY_PATH.expanduser().resolve()
-                            refreshed_dictionary_info["requested_source"] = "default" if using_default_dictionary else "external_path"
-                            refreshed_dictionary_info["requested_path"] = None if using_default_dictionary else str(resolved_dictionary_path)
-                            refreshed_dictionary_info["resolved_source"] = "default" if using_default_dictionary else "external"
-                            refreshed_dictionary_info["reference_path"] = str(resolved_dictionary_path)
-                            cached_artifact = dataclasses.replace(
+                        if load_artifact:
+                            cached_artifact = _normalize_loaded_artifact_dictionary_info(
                                 cached_artifact,
-                                source=str(Path(source).expanduser()),
-                                dictionary_info=refreshed_dictionary_info,
+                                source=source,
+                                dictionary_path=resolved_dictionary_path,
                             )
                         stable_fields = _stable_result_timing_fields(
                             cached_data,
@@ -798,6 +813,11 @@ class ParserProcessAgent:
                         "child_agent_contract": child_contract,
                     },
                 )
+            artifact = _normalize_loaded_artifact_dictionary_info(
+                artifact,
+                source=source,
+                dictionary_path=resolved_dictionary_path,
+            )
         self.contract.transition(AGENT_ARTIFACT_WRITTEN)
         self.contract.add_artifact(artifact_path, kind="pickle", role="parse_rebuild_artifact")
         self.contract.add_artifact(result_path, kind="json", role="parse_rebuild_result")
