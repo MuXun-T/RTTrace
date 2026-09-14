@@ -1,0 +1,20 @@
+{
+  "append_only": true,
+  "created_at": "2026-09-14T16:00:00Z",
+  "decision": "P7_FROZEN",
+  "hardware_action": false,
+  "p5_p6_inputs_modified": false,
+  "record_id": "record:p7-freeze-20260914T160000Z",
+  "record_type": "P7_FREEZE_RECORD",
+  "schema": "rtd-p7-freeze-record-v1",
+  "source_refs": [
+    {"path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_sha256_manifest.json", "sha256": "4daaf3b8b38e756d1e939acc0826ba7da565e157a0471cf688351e8595a478b3"},
+    {"path": "docs/rtd_pilot/p7_manifest_correction_20260914T153000Z/p7_sha256_manifest.json", "sha256": "f443cdf20e8da704c9ba6d7da7e0d2278041e625be58010aa3063edbad8f8902"}
+  ],
+  "status": "FROZEN",
+  "truth_boundary": "P5 Observer/OAR/CVR are Observer truth; P7 deterministic outputs are derived and observer_truth=false.",
+  "p7_run": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z",
+  "admission": "PASS",
+  "evaluation": "PASS",
+  "lineage": {"parent_record_id": "record:p7-evaluation-audit-p7_execution_20260914T150718123749304Z", "episode": null}
+}

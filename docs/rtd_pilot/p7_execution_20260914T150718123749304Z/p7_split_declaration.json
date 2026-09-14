@@ -1,0 +1,56 @@
+{
+  "append_only": true,
+  "assignments": {
+    "F1-C-H": "evaluation",
+    "F1-C-N": "development",
+    "F1-C-W": "development",
+    "F1-P01": "development",
+    "F1-P02": "development",
+    "F1-P03": "evaluation",
+    "F1-P04": "development",
+    "F2-C-H": "development",
+    "F2-C-N": "development",
+    "F2-C-W": "development",
+    "F2-P01": "evaluation",
+    "F2-P02": "development",
+    "F2-P03": "development",
+    "F2-P04": "development",
+    "F3-C-H": "development",
+    "F3-C-N": "evaluation",
+    "F3-C-W": "development",
+    "F3-P01": "development",
+    "F3-P02": "development",
+    "F3-P03": "development",
+    "F3-P04": "evaluation"
+  },
+  "checks": {
+    "capture_leakage": false,
+    "case_exclusive": true,
+    "complete": true
+  },
+  "created_at": "2026-09-14T15:07:18.168952Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "assignment": "lexicographic_case_id",
+    "seed": "rtd-p7-v1",
+    "split_unit": "registry_case"
+  },
+  "lineage": {
+    "parent_record_id": "record:p7-admission-p7_execution_20260914T150718123749304Z"
+  },
+  "phase": "P7",
+  "record_id": "record:p7-split-p7_execution_20260914T150718123749304Z",
+  "record_type": "P7_SPLIT_DECLARATION",
+  "schema": "rtd-p7-split-v1",
+  "schema_version": "rtd-p7-v1",
+  "source_refs": [
+    {
+      "path": "p7_admission_record.json",
+      "role": "admitted captures",
+      "sha256": "6dac369676f32b603a4a3d6e507c27e5f91aafac54ab2204e023b1cf3bf92760"
+    }
+  ],
+  "status": "PASS",
+  "truth_boundary": "P5 Observer/OAR/CVR only; derived outputs are not Observer truth"
+}

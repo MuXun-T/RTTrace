@@ -1,0 +1,47 @@
+{
+  "append_only": true,
+  "created_at": "2026-09-14T15:07:41.499433Z",
+  "episode": "derived:CaptureEpisode:p5-f3-p04-20260908-r16",
+  "evaluation_split": "evaluation",
+  "hardware_action": false,
+  "identity": {
+    "capture_id": "capture:p5-f3-p04-20260908-r16",
+    "input_sha256": "eb6e4c981c32307d5999d1e92fd9fe9b793f0067a55be5258ef85d21f0fe9d5a",
+    "method": "sha256-length-v1",
+    "registry_case_id": "F3-P04"
+  },
+  "input_sha256": "eb6e4c981c32307d5999d1e92fd9fe9b793f0067a55be5258ef85d21f0fe9d5a",
+  "lineage": {
+    "episode_record_id": "derived:CaptureEpisode:p5-f3-p04-20260908-r16",
+    "parent_record_id": "record:p7-admission-p7_execution_20260914T150718123749304Z"
+  },
+  "observer_truth": false,
+  "output": {
+    "byte_length": null,
+    "digest_prefix": "eb6e4c981c32307d",
+    "observation": "derived_digest_only"
+  },
+  "phase": "P7",
+  "record_id": "record:p7-output-167d94c66a9dbd141eb9621e",
+  "record_type": "P7_METHOD_OUTPUT",
+  "schema": "rtd-p7-method-output-v1",
+  "source_refs": [
+    {
+      "path": "../p7_admission_record.json",
+      "role": "admission",
+      "sha256": "6dac369676f32b603a4a3d6e507c27e5f91aafac54ab2204e023b1cf3bf92760"
+    },
+    {
+      "path": "../p7_split_declaration.json",
+      "role": "split",
+      "sha256": "2e7f96c73fe33e250ac67df916d1f300a308d072110fb166e8db4ff017715e55"
+    },
+    {
+      "path": "p5_raw_hash:eb6e4c981c32307d5999d1e92fd9fe9b793f0067a55be5258ef85d21f0fe9d5a",
+      "role": "admitted raw hash",
+      "sha256": "eb6e4c981c32307d5999d1e92fd9fe9b793f0067a55be5258ef85d21f0fe9d5a"
+    }
+  ],
+  "status": "VALID",
+  "truth_boundary": "derived method output; not Observer truth"
+}

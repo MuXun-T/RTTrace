@@ -1,0 +1,33 @@
+{
+  "append_only": true,
+  "conclusion": "P5 Observer truth is present and admissible; prior absence premise corrected. Missing eligible method output remains a separate criterion.",
+  "correction_of": "record:p7-blocked-20260914T125324506974433Z",
+  "created_at": "2026-09-14T15:07:18.168952Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "p5_freeze_record_id": "record:p5-freeze-20260914T181500Z"
+  },
+  "lineage": {
+    "parent_record_id": "record:p5-freeze-20260914T181500Z"
+  },
+  "phase": "P7",
+  "record_id": "record:p7-correction-p7_execution_20260914T150718123749304Z",
+  "record_type": "P7_CORRECTION",
+  "schema": "rtd-p7-correction-v1",
+  "schema_version": "rtd-p7-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/full_p5_capture_evidence_manifest.json",
+      "role": "canonical P5 truth admission",
+      "sha256": "f4f315bb6350b3312b64052c989a60e034a19e1bd27e526acb40295e92a975c7"
+    },
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/p5_freeze_record_20260914T181500Z.json",
+      "role": "P5 freeze",
+      "sha256": "5450db9e58bc8ef89d3b1f6297c9aaa746fa3af05090ca0cbc1448c8776f639a"
+    }
+  ],
+  "status": "CORRECTED_PREMISE",
+  "truth_boundary": "P5 Observer/OAR/CVR only; derived outputs are not Observer truth"
+}
