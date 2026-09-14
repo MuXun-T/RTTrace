@@ -1,0 +1,35 @@
+{
+  "schema": "rtd-p5-freeze-record-v1",
+  "record_type": "P5_FREEZE_RECORD",
+  "record_id": "record:p5-freeze-20260914T181500Z",
+  "created_at": "2026-09-14T18:15:00Z",
+  "append_only": true,
+  "authority": "user-authorized-project-manager-final-arbiter",
+  "decision": "P5_FROZEN",
+  "p5_frozen": true,
+  "collection_gate": {
+    "positive_cases": 12,
+    "control_cases": 9,
+    "captures": 63,
+    "all_positive_three_of_three": true,
+    "all_control_three_of_three": true,
+    "blocking": 0,
+    "major": 0
+  },
+  "freeze_inputs": {
+    "full_manifest": {"path": "p5_7_freeze_candidate_20260914T181000Z/full_p5_capture_evidence_manifest.json", "sha256": "f4f315bb6350b3312b64052c989a60e034a19e1bd27e526acb40295e92a975c7"},
+    "p5_7_audit": {"path": "p5_7_freeze_candidate_20260914T181000Z/p5_7_final_audit.json", "sha256": "ffa5eb8cd1cf7240ed63edd3e753f7e790f9d999e69c85999ab706664d77b588"},
+    "identity_hash_audit": {"path": "p5_7_freeze_candidate_20260914T181000Z/identity_hash_cross_case_audit.json", "sha256": "dd40c740d3f420d7d3e073142ce991b5a33fa96574bc8dfec8306c316f5b5578"},
+    "lineage_inventory": {"path": "p5_7_freeze_candidate_20260914T181000Z/lineage_episode_inventory.json", "sha256": "fc4d7b9fb0709a43b0c2a42421fd4be366646a87950802865766f7b093322048"},
+    "registry_sha256": "b0b82a0e0e1f018683f9e8d5cb7296e7b0fb2a7ced6b77c3c56391784aac216d",
+    "f1_profile_sha256": "519360a461591c15505259e240a308d683223d65530a55b9e235a2031bb1d723",
+    "f2_threshold_sha256": "c72b849b282780f15759b2ea728ccd239986fbfd95710ca9bfb651b6bb460c1d",
+    "f3_threshold_freeze_sha256": "516961bca82a4ec3e31eed811d11dfb33787d18f6010909a34e5e9a8c66a664a",
+    "wrong_entity_profile_sha256": "cf275cc1d9ac7c9c750af54ef24ee7e9cbde2e3e148898e640ccd7eafd3d81a3"
+  },
+  "identity_correction": "f1_p01_a11_a12_identity_correction_20260914T160000Z.json",
+  "f3_c_w_alternate_truth": ["TIM3_IRQHandler", "alt_target_task", "CH6/PB5"],
+  "retention": {"invalid_failed_retry_correction_records_retained": true, "historical_evidence_modified": false, "new_hardware_capture": false},
+  "truth_boundary": "Observer/OAR/CVR and retained raw/hash/seal evidence only; D6/parser/diagnoser/Agent/screenshot excluded as Observer truth.",
+  "post_freeze_rule": "Any amendment requires a new append-only post-freeze record; frozen inputs and historical raw evidence are never overwritten."
+}

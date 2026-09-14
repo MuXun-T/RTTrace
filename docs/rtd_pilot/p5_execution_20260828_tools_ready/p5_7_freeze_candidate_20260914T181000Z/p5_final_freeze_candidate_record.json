@@ -1,0 +1,14 @@
+{
+  "append_only": true,
+  "audit_sha256": "ffa5eb8cd1cf7240ed63edd3e753f7e790f9d999e69c85999ab706664d77b588",
+  "decision": "P5_READY_FOR_FINAL_FREEZE",
+  "gaps": [],
+  "hardware_action": false,
+  "historical_evidence_modified": false,
+  "manifest_sha256": "f4f315bb6350b3312b64052c989a60e034a19e1bd27e526acb40295e92a975c7",
+  "p5_control_collection_complete": true,
+  "p5_pilot_complete": true,
+  "p5_ready_for_final_freeze": true,
+  "record_type": "P5_FINAL_FREEZE_CANDIDATE",
+  "schema": "rtd-p5-final-freeze-candidate-v1"
+}

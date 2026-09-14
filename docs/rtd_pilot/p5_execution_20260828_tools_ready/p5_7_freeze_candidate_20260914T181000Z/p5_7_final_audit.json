@@ -1,0 +1,22 @@
+{
+  "F3_C_W_alternate_truth": [
+    "TIM3_IRQHandler",
+    "alt_target_task",
+    "CH6/PB5"
+  ],
+  "P4_H8_anchor": "retained existing anchors; no anchor modified",
+  "append_only": true,
+  "checks": {
+    "cross_case": true,
+    "duplicate": true,
+    "hash": true,
+    "no_overwrite": true,
+    "schema": true,
+    "split": true,
+    "stale_binding": true
+  },
+  "gaps": [],
+  "manifest_sha256": "f4f315bb6350b3312b64052c989a60e034a19e1bd27e526acb40295e92a975c7",
+  "record_type": "P5_7_FINAL_AUDIT",
+  "schema": "rtd-p5-7-final-audit-v1"
+}

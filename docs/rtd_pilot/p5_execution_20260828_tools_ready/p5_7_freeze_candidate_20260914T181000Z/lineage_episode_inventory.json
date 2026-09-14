@@ -1,0 +1,321 @@
+{
+  "append_only": true,
+  "captures": [
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p01-20260910-a11",
+      "capture_id": "capture:p5-f1-p01-20260910-a11",
+      "lineage_record_id": "derived:lineage:p5-f1-p01-20260910-a11"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p01-20260910-a12",
+      "capture_id": "capture:p5-f1-p01-20260910-a12",
+      "lineage_record_id": "derived:lineage:p5-f1-p01-20260910-a12"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p01-20260910-a16",
+      "capture_id": "capture:p5-f1-p01-20260910-a16",
+      "lineage_record_id": "derived:lineage:p5-f1-p01-20260910-a16"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p02-20260911-a16",
+      "capture_id": "capture:p5-f1-p02-20260911-a16",
+      "lineage_record_id": "derived:lineage:p5-f1-p02-20260911-a16"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p02-20260911-a17",
+      "capture_id": "capture:p5-f1-p02-20260911-a17",
+      "lineage_record_id": "derived:lineage:p5-f1-p02-20260911-a17"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p02-20260911-a18",
+      "capture_id": "capture:p5-f1-p02-20260911-a18",
+      "lineage_record_id": "derived:lineage:p5-f1-p02-20260911-a18"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p03-20260911-a01",
+      "capture_id": "capture:p5-f1-p03-20260911-a01",
+      "lineage_record_id": "derived:lineage:p5-f1-p03-20260911-a01"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p03-20260911-a02",
+      "capture_id": "capture:p5-f1-p03-20260911-a02",
+      "lineage_record_id": "derived:lineage:p5-f1-p03-20260911-a02"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p03-20260911-a03",
+      "capture_id": "capture:p5-f1-p03-20260911-a03",
+      "lineage_record_id": "derived:lineage:p5-f1-p03-20260911-a03"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p04-20260911-a01",
+      "capture_id": "capture:p5-f1-p04-20260911-a01",
+      "lineage_record_id": "derived:lineage:p5-f1-p04-20260911-a01"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p04-20260911-a02",
+      "capture_id": "capture:p5-f1-p04-20260911-a02",
+      "lineage_record_id": "derived:lineage:p5-f1-p04-20260911-a02"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-p04-20260911-a03",
+      "capture_id": "capture:p5-f1-p04-20260911-a03",
+      "lineage_record_id": "derived:lineage:p5-f1-p04-20260911-a03"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p01-20260908-a01",
+      "capture_id": "capture:p5-f2-p01-20260908-a01",
+      "lineage_record_id": "derived:lineage:p5-f2-p01-20260908-a01"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p01-20260908-a02b",
+      "capture_id": "capture:p5-f2-p01-20260908-a02b",
+      "lineage_record_id": "derived:lineage:p5-f2-p01-20260908-a02b"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p01-20260908-a03c",
+      "capture_id": "capture:p5-f2-p01-20260908-a03c",
+      "lineage_record_id": "derived:lineage:p5-f2-p01-20260908-a03c"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p02-20260908-a01",
+      "capture_id": "capture:p5-f2-p02-20260908-a01",
+      "lineage_record_id": "derived:lineage:p5-f2-p02-20260908-a01"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p02-20260908-a02r1",
+      "capture_id": "capture:p5-f2-p02-20260908-a02r1",
+      "lineage_record_id": "derived:lineage:p5-f2-p02-20260908-a02r1"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p02-20260908-a03r1",
+      "capture_id": "capture:p5-f2-p02-20260908-a03r1",
+      "lineage_record_id": "derived:lineage:p5-f2-p02-20260908-a03r1"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p03-20260909-a02",
+      "capture_id": "capture:p5-f2-p03-20260909-a02",
+      "lineage_record_id": "derived:lineage:p5-f2-p03-20260909-a02"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p03-20260909-a04",
+      "capture_id": "capture:p5-f2-p03-20260909-a04",
+      "lineage_record_id": "derived:lineage:p5-f2-p03-20260909-a04"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p03-20260909-a05",
+      "capture_id": "capture:p5-f2-p03-20260909-a05",
+      "lineage_record_id": "derived:lineage:p5-f2-p03-20260909-a05"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p04-20260909-a10",
+      "capture_id": "capture:p5-f2-p04-20260909-a10",
+      "lineage_record_id": "derived:lineage:p5-f2-p04-20260909-a10"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p04-20260909-a11",
+      "capture_id": "capture:p5-f2-p04-20260909-a11",
+      "lineage_record_id": "derived:lineage:p5-f2-p04-20260909-a11"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-p04-20260909-a12",
+      "capture_id": "capture:p5-f2-p04-20260909-a12",
+      "lineage_record_id": "derived:lineage:p5-f2-p04-20260909-a12"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p01-20260907-r04",
+      "capture_id": "capture:p5-f3-p01-20260907-r04",
+      "lineage_record_id": "derived:lineage:p5-f3-p01-20260907-r04"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p01-20260907-r08",
+      "capture_id": "capture:p5-f3-p01-20260907-r08",
+      "lineage_record_id": "derived:lineage:p5-f3-p01-20260907-r08"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p01-20260907-r11",
+      "capture_id": "capture:p5-f3-p01-20260907-r11",
+      "lineage_record_id": "derived:lineage:p5-f3-p01-20260907-r11"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p02-20260907-r01",
+      "capture_id": "capture:p5-f3-p02-20260907-r01",
+      "lineage_record_id": "derived:lineage:p5-f3-p02-20260907-r01"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p02-20260907-r02",
+      "capture_id": "capture:p5-f3-p02-20260907-r02",
+      "lineage_record_id": "derived:lineage:p5-f3-p02-20260907-r02"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p02-20260907-r03",
+      "capture_id": "capture:p5-f3-p02-20260907-r03",
+      "lineage_record_id": "derived:lineage:p5-f3-p02-20260907-r03"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p03-20260907-r01",
+      "capture_id": "capture:p5-f3-p03-20260907-r01",
+      "lineage_record_id": "derived:lineage:p5-f3-p03-20260907-r01"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p03-20260907-r07",
+      "capture_id": "capture:p5-f3-p03-20260907-r07",
+      "lineage_record_id": "derived:lineage:p5-f3-p03-20260907-r07"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p03-20260908-r11",
+      "capture_id": "capture:p5-f3-p03-20260908-r11",
+      "lineage_record_id": "derived:lineage:p5-f3-p03-20260908-r11"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p04-20260908-r13",
+      "capture_id": "capture:p5-f3-p04-20260908-r13",
+      "lineage_record_id": "derived:lineage:p5-f3-p04-20260908-r13"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p04-20260908-r16",
+      "capture_id": "capture:p5-f3-p04-20260908-r16",
+      "lineage_record_id": "derived:lineage:p5-f3-p04-20260908-r16"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-p04-20260908-r17",
+      "capture_id": "capture:p5-f3-p04-20260908-r17",
+      "lineage_record_id": "derived:lineage:p5-f3-p04-20260908-r17"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-h-20260912-a09",
+      "capture_id": "capture:p5-f1-c-h-20260912-a09",
+      "lineage_record_id": "derived:lineage:p5-f1-c-h-20260912-a09"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-h-20260912-a11",
+      "capture_id": "capture:p5-f1-c-h-20260912-a11",
+      "lineage_record_id": "derived:lineage:p5-f1-c-h-20260912-a11"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-h-20260912-a12",
+      "capture_id": "capture:p5-f1-c-h-20260912-a12",
+      "lineage_record_id": "derived:lineage:p5-f1-c-h-20260912-a12"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-n-20260913-a03",
+      "capture_id": "capture:p5-f1-c-n-20260913-a03",
+      "lineage_record_id": "derived:lineage:p5-f1-c-n-20260913-a03"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-n-20260913-a16",
+      "capture_id": "capture:p5-f1-c-n-20260913-a16",
+      "lineage_record_id": "derived:lineage:p5-f1-c-n-20260913-a16"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-n-20260913-a17",
+      "capture_id": "capture:p5-f1-c-n-20260913-a17",
+      "lineage_record_id": "derived:lineage:p5-f1-c-n-20260913-a17"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-w-20260914-a01",
+      "capture_id": "capture:p5-f1-c-w-20260914-a01",
+      "lineage_record_id": "derived:lineage:p5-f1-c-w-20260914-a01"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-w-20260914-a02",
+      "capture_id": "capture:p5-f1-c-w-20260914-a02",
+      "lineage_record_id": "derived:lineage:p5-f1-c-w-20260914-a02"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f1-c-w-20260914-a03",
+      "capture_id": "capture:p5-f1-c-w-20260914-a03",
+      "lineage_record_id": "derived:lineage:p5-f1-c-w-20260914-a03"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-h-20260914-a05",
+      "capture_id": "capture:p5-f2-c-h-20260914-a05",
+      "lineage_record_id": "derived:lineage:p5-f2-c-h-20260914-a05"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-h-20260914-a06",
+      "capture_id": "capture:p5-f2-c-h-20260914-a06",
+      "lineage_record_id": "derived:lineage:p5-f2-c-h-20260914-a06"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-h-20260914-a07",
+      "capture_id": "capture:p5-f2-c-h-20260914-a07",
+      "lineage_record_id": "derived:lineage:p5-f2-c-h-20260914-a07"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-n-20260914-a01",
+      "capture_id": "capture:p5-f2-c-n-20260914-a01",
+      "lineage_record_id": "derived:lineage:p5-f2-c-n-20260914-a01"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-n-20260914-a02",
+      "capture_id": "capture:p5-f2-c-n-20260914-a02",
+      "lineage_record_id": "derived:lineage:p5-f2-c-n-20260914-a02"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-n-20260914-a03",
+      "capture_id": "capture:p5-f2-c-n-20260914-a03",
+      "lineage_record_id": "derived:lineage:p5-f2-c-n-20260914-a03"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-w-20260914-a03",
+      "capture_id": "capture:p5-f2-c-w-20260914-a03",
+      "lineage_record_id": "derived:lineage:p5-f2-c-w-20260914-a03"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-w-20260914-a04",
+      "capture_id": "capture:p5-f2-c-w-20260914-a04",
+      "lineage_record_id": "derived:lineage:p5-f2-c-w-20260914-a04"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f2-c-w-20260914-a05",
+      "capture_id": "capture:p5-f2-c-w-20260914-a05",
+      "lineage_record_id": "derived:lineage:p5-f2-c-w-20260914-a05"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-h-20260914-a02",
+      "capture_id": "capture:p5-f3-c-h-20260914-a02",
+      "lineage_record_id": "derived:lineage:p5-f3-c-h-20260914-a02"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-h-20260914-a04",
+      "capture_id": "capture:p5-f3-c-h-20260914-a04",
+      "lineage_record_id": "derived:lineage:p5-f3-c-h-20260914-a04"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-h-20260914-a05",
+      "capture_id": "capture:p5-f3-c-h-20260914-a05",
+      "lineage_record_id": "derived:lineage:p5-f3-c-h-20260914-a05"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-n-20260914-a04",
+      "capture_id": "capture:p5-f3-c-n-20260914-a04",
+      "lineage_record_id": "derived:lineage:p5-f3-c-n-20260914-a04"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-n-20260914-a05",
+      "capture_id": "capture:p5-f3-c-n-20260914-a05",
+      "lineage_record_id": "derived:lineage:p5-f3-c-n-20260914-a05"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-n-20260914-a06",
+      "capture_id": "capture:p5-f3-c-n-20260914-a06",
+      "lineage_record_id": "derived:lineage:p5-f3-c-n-20260914-a06"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-w-20260914-a05",
+      "capture_id": "capture:p5-f3-c-w-20260914-a05",
+      "lineage_record_id": "derived:lineage:p5-f3-c-w-20260914-a05"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-w-20260914-a06",
+      "capture_id": "capture:p5-f3-c-w-20260914-a06",
+      "lineage_record_id": "derived:lineage:p5-f3-c-w-20260914-a06"
+    },
+    {
+      "capture_episode_record_id": "derived:CaptureEpisode:p5-f3-c-w-20260914-a07",
+      "capture_id": "capture:p5-f3-c-w-20260914-a07",
+      "lineage_record_id": "derived:lineage:p5-f3-c-w-20260914-a07"
+    }
+  ],
+  "record_type": "P5_LINEAGE_EPISODE_INVENTORY"
+}
