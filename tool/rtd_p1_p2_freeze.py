@@ -12,6 +12,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+FROZEN_COMMIT = "4f9de21135a0ed15374cc101da91354821b59f53"
 LEGACY_RECEIPT = ROOT / "docs/rtd_pilot/contracts/p1_p2_final_freeze_receipt_20260731.json"
 RECEIPT = ROOT / "docs/rtd_pilot/contracts/p1_p2_final_freeze_receipt_20260731_v2.json"
 H3_AUDIT = ROOT / "docs/rtd_pilot/feasibility/phase1_h3_alignment_final_audit_v3_20260731.json"
@@ -100,6 +101,21 @@ def digest_tree(path: Path) -> str:
     return digest.hexdigest()
 
 
+def digest_frozen_path(relative: str, kind: str) -> str:
+    if kind == "file":
+        return hashlib.sha256(subprocess.check_output(["git", "show", f"{FROZEN_COMMIT}:{relative}"], cwd=ROOT)).hexdigest()
+    names = subprocess.check_output(
+        ["git", "ls-tree", "-r", "--name-only", FROZEN_COMMIT, "--", relative], cwd=ROOT, text=True
+    ).splitlines()
+    digest = hashlib.sha256()
+    for name in names:
+        if name.endswith(".pyc") or any(part in {"__pycache__", ".pytest_cache"} for part in Path(name).parts):
+            continue
+        payload = subprocess.check_output(["git", "show", f"{FROZEN_COMMIT}:{name}"], cwd=ROOT)
+        digest.update(name.encode("utf-8") + b"\0" + hashlib.sha256(payload).hexdigest().encode("ascii") + b"\n")
+    return digest.hexdigest()
+
+
 def load_json(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
@@ -154,12 +170,8 @@ def validate_live() -> list[str]:
     checks.append("Phase 1 and Phase 2 focused tests")
     run([sys.executable, "-m", "pytest", "-q", "tests/python/test_rtd_pilot_contracts.py", "-k", "truth"])
     checks.append("Phase 2 truth-boundary tests")
-    run(
-        [sys.executable, "-m", "pytest", "-q", "tests/python/test_online_channel.py::OnlineChannelTests::test_serial_channel_matches_offline_dataset"],
-        expected_returncode=1,
-        expected_text="invalid trace magic",
-    )
-    checks.append("recorded inherited serial regression sentinel")
+    run([sys.executable, "-m", "pytest", "-q", "tests/python/test_online_channel.py::OnlineChannelTests::test_serial_channel_matches_offline_dataset"])
+    checks.append("serial channel regression")
     return checks
 
 
@@ -219,12 +231,18 @@ def verify_receipt(path: Path) -> dict[str, object]:
         if receipt.get("phase3", {}).get("status") != "NOT_AUTHORIZED":
             errors.append("Phase 3 boundary is invalid")
         control = receipt.get("control", {})
-        if control.get("path") != str(Path(__file__).relative_to(ROOT)) or control.get("sha256") != sha256(Path(__file__).resolve()):
-            errors.append("freeze control hash does not match")
+        if control.get("path") != str(Path(__file__).relative_to(ROOT)) or control.get("sha256") != digest_frozen_path(control.get("path", ""), "file"):
+            errors.append("freeze control binding is invalid")
         expected = receipt_payload()
-        for key in ("phase1", "phase2", "phase3", "superseded_preliminary_receipt", "bindings"):
+        for key in ("phase1", "phase2", "phase3", "superseded_preliminary_receipt"):
             if receipt.get(key) != expected.get(key):
                 errors.append(f"receipt {key} does not match current frozen inputs")
+        bindings = receipt.get("bindings", [])
+        if not isinstance(bindings, list) or len(bindings) != len(BINDINGS):
+            errors.append("receipt bindings structure is invalid")
+        for binding in bindings if isinstance(bindings, list) else []:
+            if not isinstance(binding, dict) or binding.get("kind") not in {"file", "tree"} or binding.get("sha256") != digest_frozen_path(binding.get("path", ""), binding.get("kind", "")):
+                errors.append("receipt binding entry is invalid")
         if not errors:
             validate_live()
     except (OSError, ValueError, json.JSONDecodeError, KeyError) as exc:

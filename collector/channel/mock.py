@@ -80,7 +80,14 @@ class SerialChunkSource:
         try:
             with pyserial.Serial(self.device, baudrate=self.baudrate, timeout=self.timeout_s) as handle:
                 while True:
-                    payload = handle.read(self.read_size)
+                    try:
+                        payload = handle.read(self.read_size)
+                    except Exception as exc:
+                        # PTY peers report EOF as a readiness-with-no-data
+                        # SerialException; treat that as normal stream end.
+                        if "device reports readiness to read but returned no data" in str(exc):
+                            break
+                        raise
                     if not payload:
                         break
                     yield ChannelChunk(payload=payload, core_id=self.core_id)

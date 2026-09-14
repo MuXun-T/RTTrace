@@ -26,6 +26,7 @@ class OnlineChannelTests(unittest.TestCase):
     def _start_serial_writer(fd: int, payload: bytes, chunk_size: int = 17, delay_s: float = 0.001) -> threading.Thread:
         def _writer() -> None:
             try:
+                time.sleep(0.2)
                 cursor = 0
                 while cursor < len(payload):
                     end = min(cursor + chunk_size, len(payload))
@@ -34,7 +35,7 @@ class OnlineChannelTests(unittest.TestCase):
                     if delay_s > 0:
                         time.sleep(delay_s)
             finally:
-                os.close(fd)
+                pass
 
         thread = threading.Thread(target=_writer, daemon=True)
         thread.start()
@@ -103,8 +104,9 @@ class OnlineChannelTests(unittest.TestCase):
 
         master_fd, slave_fd = pty.openpty()
         serial_device = os.ttyname(slave_fd)
-        os.close(slave_fd)
-        writer = self._start_serial_writer(master_fd, trace_path.read_bytes())
+        # Give the reader a moment to open the PTY; bytes written before a
+        # slave is opened are discarded by the kernel's PTY line discipline.
+        writer = self._start_serial_writer(master_fd, trace_path.read_bytes(), delay_s=0.01)
 
         controller = WorkspaceController()
         loaded = controller.viz_LoadDatasetFromChannel(
@@ -119,6 +121,8 @@ class OnlineChannelTests(unittest.TestCase):
         self.assertTrue(loaded.ok, loaded.message)
         writer.join(timeout=5.0)
         self.assertFalse(writer.is_alive())
+        os.close(slave_fd)
+        os.close(master_fd)
 
         online_bundle = controller.repository.get(loaded.data).artifact.bundle
         offline_bundle = offline.data.bundle

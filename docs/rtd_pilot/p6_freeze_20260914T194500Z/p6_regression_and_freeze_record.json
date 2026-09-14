@@ -1,0 +1,35 @@
+{
+  "append_only": true,
+  "created_at": "2026-09-14T19:45:00Z",
+  "decision": "P6_FROZEN",
+  "hardware_action": false,
+  "historical_evidence_modified": false,
+  "p5_binding": {
+    "commit": "a6758f1068b99d921cdc0c5e02df82605ab3345f",
+    "freeze_directory_modified": false,
+    "tree": "4fc20e150562b5a5e9ae461b9c5c8b6be6b30f78"
+  },
+  "record_id": "record:p6-freeze-20260914T194500Z",
+  "record_type": "P6_REGRESSION_AND_FREEZE_RECORD",
+  "regression": {
+    "command": "python3 -m pytest tests/python -q",
+    "failures": 0,
+    "passed": 1079,
+    "status": "PASS",
+    "subtests_passed": 1197
+  },
+  "schema": "rtd-p6-regression-and-freeze-record-v1",
+  "source_refs": [
+    {"path": "docs/rtd_pilot/p6_freeze_20260914T194500Z/p6_duplicate_run_disposition.json", "sha256": "3be44b81ced52d23939e51aeb020676139934fc8f8cd3d78d1d7f0b1f5994c83"},
+    {"path": "docs/rtd_pilot/p6_post_freeze_audit_20260914T182500Z/p6_frozen_input_inventory.json", "sha256": "3715fed34c26f760940c104a50e7ce7bd95b14483ee434f7900bcd4cf1dbd526"},
+    {"path": "docs/rtd_pilot/p6_post_freeze_audit_20260914T182500Z/p6_integrity_audit.json", "sha256": "e83671174064e0b3d17db65deffad9705bbd4c28c954bdbf45360db2f9cb5a7b"},
+    {"path": "docs/rtd_pilot/p6_post_freeze_audit_20260914T182500Z/p6_execution_record.json", "sha256": "932191eae77ed86252ca11ba0ae5d19fe813a3270e9c6b9534545310a76aa800"},
+    {"path": "docs/rtd_pilot/p6_post_freeze_audit_20260914T182500Z/p6_sha256_manifest.json", "sha256": "28228f82171b8d353e4811e95321f11a6749cea2061e7a8b82c99f6efc3966de"},
+    {"path": "collector/channel/mock.py", "sha256": "209b9895b12288c81158a3fc5dee07f5c8ce7ee7016f16a14cc80573dac6a292"},
+    {"path": "tests/python/test_online_channel.py", "sha256": "1d398c750959ab59efe4e8c02b0285081e52a0a2c9fc687be4fed22da7838291"},
+    {"path": "tool/rtd_p1_p2_freeze.py", "sha256": "df641a3b808e5fdb53bb130a3d90252f404f927f1dc6e08fae62c5f706f8693f"},
+    {"path": "tool/rtd_p6_frozen_input_audit.py", "sha256": "6c16e558be62e7b1c7988c548f2538fecbc740d4cb9c7cc6e9271de6992e3752"},
+    {"path": "tests/python/test_rtd_p6_frozen_input_audit.py", "sha256": "926e34fb7cee85ecc1f297488175a6c352d44faac805d02229f4ae0e5e274e9a"}
+  ],
+  "truth_boundary": "P5 Observer/OAR/CVR and retained raw/hash/seal evidence only; D6/parser/diagnoser/Agent/screenshot excluded as Observer truth."
+}

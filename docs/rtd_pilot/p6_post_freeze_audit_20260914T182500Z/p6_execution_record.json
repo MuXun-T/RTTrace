@@ -1,0 +1,67 @@
+{
+  "append_only": true,
+  "audit_record_id": "record:p6-frozen-input-audit-20260914T181500Z",
+  "created_at": "2026-09-14T10:58:29Z",
+  "hardware_action": false,
+  "historical_evidence_modified": false,
+  "identity": {
+    "capture_ids_unique": true
+  },
+  "lineage": {
+    "prior_records": [
+      "record:p6-frozen-input-inventory-20260914T181500Z",
+      "record:p6-frozen-input-audit-20260914T181500Z"
+    ]
+  },
+  "p5_commit": "a6758f1068b99d921cdc0c5e02df82605ab3345f",
+  "p5_tree": "4fc20e150562b5a5e9ae461b9c5c8b6be6b30f78",
+  "phase": "P6",
+  "record_id": "record:p6-execution-20260914T181500Z",
+  "record_type": "P6_EXECUTION_RECORD",
+  "schema": "rtd-p6-execution-record-v1",
+  "scope": "synthetic/report-only closeout; no new P6 capture or truth generation",
+  "source_refs": [
+    {
+      "path": "/media/zzq/\u65b0\u52a0\u5377/patent/realization/docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/full_p5_capture_evidence_manifest.json",
+      "role": "P5 frozen input",
+      "sha256": "f4f315bb6350b3312b64052c989a60e034a19e1bd27e526acb40295e92a975c7"
+    },
+    {
+      "path": "/media/zzq/\u65b0\u52a0\u5377/patent/realization/docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/p5_7_final_audit.json",
+      "role": "P5 frozen input",
+      "sha256": "ffa5eb8cd1cf7240ed63edd3e753f7e790f9d999e69c85999ab706664d77b588"
+    },
+    {
+      "path": "/media/zzq/\u65b0\u52a0\u5377/patent/realization/docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/identity_hash_cross_case_audit.json",
+      "role": "P5 frozen input",
+      "sha256": "dd40c740d3f420d7d3e073142ce991b5a33fa96574bc8dfec8306c316f5b5578"
+    },
+    {
+      "path": "/media/zzq/\u65b0\u52a0\u5377/patent/realization/docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/lineage_episode_inventory.json",
+      "role": "P5 frozen input",
+      "sha256": "fc4d7b9fb0709a43b0c2a42421fd4be366646a87950802865766f7b093322048"
+    },
+    {
+      "path": "/media/zzq/\u65b0\u52a0\u5377/patent/realization/docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/p5_freeze_record_20260914T181500Z.json",
+      "role": "P5 frozen input",
+      "sha256": "5450db9e58bc8ef89d3b1f6297c9aaa746fa3af05090ca0cbc1448c8776f639a"
+    },
+    {
+      "path": "/media/zzq/\u65b0\u52a0\u5377/patent/realization/docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/p5_final_freeze_candidate_record.json",
+      "role": "P5 frozen input",
+      "sha256": "7bb9af9a26c32de229cb8a879568714a042df9b21639fe7dc66ffd5206e6b706"
+    },
+    {
+      "path": "/media/zzq/\u65b0\u52a0\u5377/patent/realization/docs/rtd_pilot/p6_post_freeze_audit_20260914T182500Z/p6_frozen_input_inventory.json",
+      "role": "P6 append-only record",
+      "sha256": "3715fed34c26f760940c104a50e7ce7bd95b14483ee434f7900bcd4cf1dbd526"
+    },
+    {
+      "path": "/media/zzq/\u65b0\u52a0\u5377/patent/realization/docs/rtd_pilot/p6_post_freeze_audit_20260914T182500Z/p6_integrity_audit.json",
+      "role": "P6 append-only record",
+      "sha256": "e83671174064e0b3d17db65deffad9705bbd4c28c954bdbf45360db2f9cb5a7b"
+    }
+  ],
+  "status": "COMPLETE",
+  "truth_boundary": "P5 Observer/OAR/CVR and retained raw/hash/seal evidence only; D6/parser/diagnoser/Agent/screenshot excluded as Observer truth."
+}
