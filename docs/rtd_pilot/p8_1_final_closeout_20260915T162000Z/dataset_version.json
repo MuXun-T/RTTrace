@@ -1,0 +1,86 @@
+{
+  "append_only": true,
+  "cohorts": {
+    "primary": {
+      "captures": 63,
+      "cases": 21,
+      "episodes": 63,
+      "source": "P5 admitted by P7"
+    },
+    "supplement": {
+      "captures": 6,
+      "cases": 2,
+      "pooled": false,
+      "reported_separately": true,
+      "source": "P8 reproducibility"
+    }
+  },
+  "created_at": "2026-09-15T11:24:48.345899Z",
+  "dataset_version": "rtd-pilot-p8.1-p5-primary-v1",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "captures": 63,
+    "control_cases": 9,
+    "episodes": 63,
+    "positive_cases": 12,
+    "primary_cases": 21
+  },
+  "lineage": {
+    "parent_record_id": "record:p7-admission-p7_execution_20260914T150718123749304Z"
+  },
+  "parent_record_id": "record:p7-admission-p7_execution_20260914T150718123749304Z",
+  "phase": "P8.1",
+  "record_id": "record:p8.1-dataset-version-20260915T162000Z",
+  "record_type": "DATASET-VERSION",
+  "schema": "rtd-p8.1-dataset-version-v1",
+  "schema_version": "rtd-p8.1-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/p5_freeze_record_20260914T181500Z.json",
+      "role": "P5 freeze",
+      "sha256": "5450db9e58bc8ef89d3b1f6297c9aaa746fa3af05090ca0cbc1448c8776f639a"
+    },
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/full_p5_capture_evidence_manifest.json",
+      "role": "P5 dataset",
+      "sha256": "f4f315bb6350b3312b64052c989a60e034a19e1bd27e526acb40295e92a975c7"
+    },
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/identity_hash_cross_case_audit.json",
+      "role": "P5 identity audit",
+      "sha256": "dd40c740d3f420d7d3e073142ce991b5a33fa96574bc8dfec8306c316f5b5578"
+    },
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/lineage_episode_inventory.json",
+      "role": "P5 episode inventory",
+      "sha256": "fc4d7b9fb0709a43b0c2a42421fd4be366646a87950802865766f7b093322048"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_admission_record.json",
+      "role": "P7 admission",
+      "sha256": "6dac369676f32b603a4a3d6e507c27e5f91aafac54ab2204e023b1cf3bf92760"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_evaluation_record.json",
+      "role": "P7 frozen evaluation",
+      "sha256": "edffd9bf6f6e60465e9ff7e646c292e3a0f312541205b9bb555154de5400f561"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_split_declaration.json",
+      "role": "P7 case split",
+      "sha256": "2e7f96c73fe33e250ac67df916d1f300a308d072110fb166e8db4ff017715e55"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_final_regression_20260915T131800Z/p8_final_regression.json",
+      "role": "P8 final regression",
+      "sha256": "f73fc789777d4f7596808e01a2709ca1e08e18d9367014ea40c5e0bbfaf6de80"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_1_offline_outputs_20260915T154000Z/sha256_manifest.json",
+      "role": "offline output seal",
+      "sha256": "bec0b4e4fe5c3f4894f0726cc01b6d9b88fe06185f5c5091d149d93b2dc4ae83"
+    }
+  ],
+  "truth_boundary": "P5 admitted Observer/OAR/CVR only; join occurs only inside scorer; method outputs and this package are non-truth."
+}

@@ -5,7 +5,7 @@ import argparse, hashlib, json, os, subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT=Path(__file__).resolve().parents[1]; STAMP="20260915T161000Z"
+ROOT=Path(__file__).resolve().parents[1]; STAMP="20260915T163000Z"
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def put(p,o):
  fd=os.open(p,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)

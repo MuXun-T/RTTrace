@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the append-only P8.1 publication closeout from frozen outputs."""
 from __future__ import annotations
-import argparse, csv, hashlib, json, os, platform, subprocess, sys
+import argparse, csv, hashlib, json, os, platform, random, subprocess, sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -10,7 +10,7 @@ P5 = ROOT / "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candid
 P7 = ROOT / "docs/rtd_pilot/p7_execution_20260914T150718123749304Z"
 P8 = ROOT / "docs/rtd_pilot/p8_final_regression_20260915T131800Z/p8_final_regression.json"
 METHOD = ROOT / "docs/rtd_pilot/p8_1_offline_outputs_20260915T154000Z"
-STAMP = "20260915T160000Z"
+STAMP = "20260915T162000Z"
 
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 def rel(path): return path.relative_to(ROOT).as_posix()
@@ -25,6 +25,20 @@ def base(kind, parent):
             "record_id":f"record:p8.1-{kind}-{STAMP}","created_at":datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),
             "append_only":True,"phase":"P8.1","hardware_action":False,"episode":None,"parent_record_id":parent,
             "lineage":{"parent_record_id":parent}}
+def bootstrap_ci(tp,tn,fp,fn,metric):
+    population=[(1,1)]*tp+[(0,0)]*tn+[(1,0)]*fp+[(0,1)]*fn
+    if not population:return None
+    rng=random.Random(8101); values=[]
+    for _ in range(10000):
+        sample=[rng.choice(population) for _ in population]
+        stp=sum(p and t for p,t in sample); stn=sum(not p and not t for p,t in sample)
+        sfp=sum(p and not t for p,t in sample); sfn=sum(not p and t for p,t in sample)
+        den={'precision':stp+sfp,'npv':stn+sfn,'f1':2*stp+sfp+sfn}.get(metric)
+        value=((stp/(stp+sfn)+stn/(stn+sfp))/2 if metric=='balanced_accuracy' and (stp+sfn)*(stn+sfp) else
+               (stp/den if metric=='precision' and den else stn/den if metric=='npv' and den else 2*stp/den if metric=='f1' and den else None))
+        if value is not None:values.append(value)
+    if not values:return None
+    values.sort();return [round(values[int(.025*(len(values)-1))],6),round(values[int(.975*(len(values)-1))],6)]
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--output",type=Path,required=True); args=ap.parse_args(); out=args.output.resolve()
     if out.exists(): raise SystemExit("output exists")
@@ -76,10 +90,11 @@ def main():
         row["precision"]=None if tp+fp==0 else round(tp/(tp+fp),6); row["npv"]=None if tn+fn==0 else round(tn/(tn+fn),6)
         row["f1"]=None if 2*tp+fp+fn==0 else round(2*tp/(2*tp+fp+fn),6)
         row["balanced_accuracy"]=None if row["sensitivity"] is None or row["specificity"] is None else round((row["sensitivity"]+row["specificity"])/2,6)
+        for metric in ("precision","npv","f1","balanced_accuracy"):row[metric+"_ci95"]=bootstrap_ci(tp,tn,fp,fn,metric)
         row["exclusions"]=0
     with (out/"results.csv").open("x",newline="") as f:
         w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator="\n"); w.writeheader(); w.writerows(rows)
-    put(out/"results.json",{**base("results",audit["record_id"]),"estimand":"case-level manifestation classification; capture repeats aggregated by fixed two-of-three vote","ci":"95% Wilson intervals at registry-case level","results":rows,"source_refs":[{"path":rel(METHOD/"evaluation.json"),"sha256":sha(METHOD/"evaluation.json"),"role":"sealed aggregate evaluation"}]})
+    put(out/"results.json",{**base("results",audit["record_id"]),"estimand":"case-level manifestation classification; capture repeats aggregated by fixed two-of-three vote","ci":"95% Wilson for binary proportions; 10000-draw fixed-seed registry-case bootstrap for precision, NPV, F1 and balanced accuracy","bootstrap_seed":8101,"results":rows,"source_refs":[{"path":rel(METHOD/"evaluation.json"),"sha256":sha(METHOD/"evaluation.json"),"role":"sealed aggregate evaluation"}]})
     figdata={"labels":[r["scope"] for r in rows],"accuracy":[r["accuracy"] for r in rows],"n_case":[r["n_case"] for r in rows]}
     put(out/"figure_accuracy_source.json",figdata)
     bars="".join(f'<rect x="{70+i*80}" y="{260-200*v:.1f}" width="48" height="{200*v:.1f}" fill="#276749"/><text x="{94+i*80}" y="280" text-anchor="middle" font-size="12">{label}</text>' for i,(label,v) in enumerate(zip(figdata["labels"],figdata["accuracy"])))
