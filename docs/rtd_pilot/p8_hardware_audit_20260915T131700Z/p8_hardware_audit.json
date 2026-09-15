@@ -1,0 +1,132 @@
+{
+  "append_only": true,
+  "captures": [
+    {
+      "build_id": "p8-baseline-a01",
+      "capture_id": "capture:P8-F1-C-H-BASELINE-001",
+      "case_id": "case:P8-F1-C-H-BASELINE",
+      "cvr_sha256": "f4c4a4988b90284c873f06b4eba707e5debb325eb56a5ee7dd55a265d6e16b74",
+      "firmware_sha256": "da05b5ed91b1cfacca17738f68a218dbed0788f580bdcefaadcc3c64edd0f4a2",
+      "oar_sha256": "59dbe8e44a80f2c03a912804c352ae01cf1d64fa4541c3daaf5cbf67fe40d236",
+      "observer": "not_manifested",
+      "session_id": "session:P8-F1-C-H-BASELINE-001"
+    },
+    {
+      "build_id": "p8-baseline-a02",
+      "capture_id": "capture:P8-F1-C-H-BASELINE-002",
+      "case_id": "case:P8-F1-C-H-BASELINE",
+      "cvr_sha256": "2b8bbaca1653d3e9269f82f56978ca6b5dc5bebef860996dd6bd9bc5a3860343",
+      "firmware_sha256": "5a48e92ac42063ea95d90ad19c59231a10abbf8499f8102d1585061585593f0a",
+      "oar_sha256": "4f8754226a571d405a305532ac8eb6f7a59844b1915f5cb3c5901ead18b1c4bc",
+      "observer": "not_manifested",
+      "session_id": "session:P8-F1-C-H-BASELINE-002"
+    },
+    {
+      "build_id": "p8-baseline-a03",
+      "capture_id": "capture:P8-F1-C-H-BASELINE-003",
+      "case_id": "case:P8-F1-C-H-BASELINE",
+      "cvr_sha256": "0e79d4c33c9f64e27290fb53cc2f9aac1852cbd2f62d87b7fa3ca4ee244ec2db",
+      "firmware_sha256": "b9eeb33f300ae63df3e8459d12dff54dd2614d85c294a38d86a9a6b0f86ff1fc",
+      "oar_sha256": "6a671b5f8a7aa657d09f49fd8e7eab4b71e540e8ef0b4c1207b87d8ebfba3ff2",
+      "observer": "not_manifested",
+      "session_id": "session:P8-F1-C-H-BASELINE-003"
+    },
+    {
+      "build_id": "p8-repro-a01",
+      "capture_id": "capture:P8-F1-P03-REPRO-001",
+      "case_id": "case:P8-F1-P03-REPRO",
+      "cvr_sha256": "e195785d2db351faf47f5c9f5689f9f4155575d05de4040e1e271458758c767e",
+      "firmware_sha256": "ab4ac7093fba42027fbed57afd3f2821449484fe08f18dd98b847a6c01cd009e",
+      "oar_sha256": "6d8289e338fa757509dc1f3bbdb857a627394bf43b7a0a43ebcb069fc2aaaafe",
+      "observer": "manifested",
+      "session_id": "session:P8-F1-P03-REPRO-001"
+    },
+    {
+      "build_id": "p8-repro-a02",
+      "capture_id": "capture:P8-F1-P03-REPRO-002",
+      "case_id": "case:P8-F1-P03-REPRO",
+      "cvr_sha256": "4e9964681e87bedf2b6852d7dcfbfc0dc2f2bbde5364f1205c74f2ec4df24b95",
+      "firmware_sha256": "c60c7b38d02caff4e5ed094b138d7315e276015910576114e2e85cb8608a2a4c",
+      "oar_sha256": "9c495e8cd0a13f64a63792ed818419d7faafd12705c0cc50bc5aa8018c0c69e9",
+      "observer": "manifested",
+      "session_id": "session:P8-F1-P03-REPRO-002"
+    },
+    {
+      "build_id": "p8-repro-a03",
+      "capture_id": "capture:P8-F1-P03-REPRO-003",
+      "case_id": "case:P8-F1-P03-REPRO",
+      "cvr_sha256": "86e9ea2eeaf939fa7ca8a11627e2ae5ee34178758b0c70888a8484b897b82a43",
+      "firmware_sha256": "9698e2a287a0bf26760693c2609b2a3734ee0c2e0c2e21391b98915964377327",
+      "oar_sha256": "f9d0e0995a345e4cf84b542c8d2c40ed4fa38f1dca84ac001c6543ed519bef2e",
+      "observer": "manifested",
+      "session_id": "session:P8-F1-P03-REPRO-003"
+    }
+  ],
+  "checks": {
+    "baseline_3_of_3": true,
+    "cross_case": true,
+    "identity_unique": true,
+    "observer_truth_boundary": true,
+    "p7_unmodified": true,
+    "positive_3_of_3": true,
+    "source_hash": true,
+    "split": true,
+    "stale_binding": true,
+    "valid_cvr": true
+  },
+  "created_at": "2026-09-15T05:46:36.609566Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "capture_count": 6,
+    "p8_only": true
+  },
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p8-hardware-authorization-20260915T003000Z"
+  },
+  "parent_record_id": "record:p8-hardware-authorization-20260915T003000Z",
+  "phase": "P8",
+  "record_id": "record:p8-hardware-audit-20260915T054636.609566Z",
+  "record_type": "P8_HARDWARE_AUDIT",
+  "schema": "rtd-p8-hardware-audit-v1",
+  "source_refs": [
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/context.json",
+      "role": "P8 capture context",
+      "sha256": "901355ba3538096de9a1eb4edd0899345aa97442e202b74acb633c1b32f04c7e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/context.json",
+      "role": "P8 capture context",
+      "sha256": "c8d77905832d6065cfccdd8e87b4275952e7e39b1245f601cc28d16e5228a7de"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/context.json",
+      "role": "P8 capture context",
+      "sha256": "5bdb0df881ef2fd631c9ad5faa5dc34a13e579fdc124b84decb061370c8a5d5e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/context.json",
+      "role": "P8 capture context",
+      "sha256": "cc1ca72490071e2e7eea0ee96abfbc467be3303a10c3c2e28c7d488a662bf35e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/context.json",
+      "role": "P8 capture context",
+      "sha256": "a26fc8bac65aef0469b21a3a80a243b103fc2b3670fe4415b3567c6e95f5a0ac"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/context.json",
+      "role": "P8 capture context",
+      "sha256": "08a3b27d5e71611ad1ad5450781efe9127baafd69c76233cbabccf099b104eeb"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_freeze_record_20260914T160000Z.json",
+      "role": "P7 frozen baseline",
+      "sha256": "c51e78bbc660826f89686917871f167848825a06a51227f28690be2f2def3f5b"
+    }
+  ],
+  "status": "PASS",
+  "truth_boundary": "Only retained DSView CSV and its OAR are Observer truth; this audit is derived."
+}

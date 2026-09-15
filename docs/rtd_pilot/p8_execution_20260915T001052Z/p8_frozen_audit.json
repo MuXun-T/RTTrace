@@ -1,0 +1,71 @@
+{
+  "append_only": true,
+  "checks": {
+    "hardware": false,
+    "hash": true,
+    "p7_commit": true,
+    "p7_tree": true,
+    "protected_inputs_read_only": true
+  },
+  "created_at": "2026-09-15T00:10:52.813742Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "p7_commit": "e07109cd284d3bbefa1f96e6d31f7d5ec86ce0ce",
+    "p7_tree": "48d5787d99e19730e11b4a0eed853001026a4bb3"
+  },
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p7-freeze-20260914T160000Z"
+  },
+  "parent_record_id": "record:p7-freeze-20260914T160000Z",
+  "phase": "P8",
+  "record_id": "record:p8-audit-20260915T001052813768Z",
+  "record_type": "P8_FROZEN_AUDIT",
+  "schema": "rtd-p8-frozen-audit-v1",
+  "schema_version": "rtd-p8-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_admission_record.json",
+      "role": "canonical P7 frozen input",
+      "sha256": "6dac369676f32b603a4a3d6e507c27e5f91aafac54ab2204e023b1cf3bf92760"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_evaluation_record.json",
+      "role": "canonical P7 frozen input",
+      "sha256": "edffd9bf6f6e60465e9ff7e646c292e3a0f312541205b9bb555154de5400f561"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_split_declaration.json",
+      "role": "canonical P7 frozen input",
+      "sha256": "2e7f96c73fe33e250ac67df916d1f300a308d072110fb166e8db4ff017715e55"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_correction_record.json",
+      "role": "canonical P7 frozen input",
+      "sha256": "db1719f5f3055fd79115f7f4823c221440bcdf1413f18485a296ef3c89ad33bb"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_manifest_correction_20260914T153000Z/p7_manifest_correction.json",
+      "role": "canonical P7 frozen input",
+      "sha256": "364b5cd7e4da27bcb7a13083a55f77b95cbcaf53f3a010fae02ad5d16ad346a5"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_freeze_record_20260914T160000Z.json",
+      "role": "canonical P7 frozen input",
+      "sha256": "c51e78bbc660826f89686917871f167848825a06a51227f28690be2f2def3f5b"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_plan_20260914T140605Z.md",
+      "role": "canonical P7 frozen input",
+      "sha256": "332540e414b20501da1aafcc55547c19f8d87da36d6d1af53edab8f19c6c595d"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_plan_20260914T123520Z.md",
+      "role": "canonical P7 frozen input",
+      "sha256": "d627551ab3361486b1d08fc5a5a938cc0bc04786b66e6d66777081de824bb7b0"
+    }
+  ],
+  "status": "PASS",
+  "truth_boundary": "P5 Observer/OAR/CVR remain Observer truth; P7/P8 derived outputs are non-truth."
+}

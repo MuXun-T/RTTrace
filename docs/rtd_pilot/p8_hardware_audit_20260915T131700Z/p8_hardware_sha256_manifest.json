@@ -1,0 +1,1193 @@
+{
+  "append_only": true,
+  "created_at": "2026-09-15T05:46:36.609566Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "capture_count": 6
+  },
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p8-hardware-audit-20260915T054636.609566Z"
+  },
+  "parent_record_id": "record:p8-hardware-audit-20260915T054636.609566Z",
+  "phase": "P8",
+  "record_id": "record:p8-hardware-manifest-20260915T054636.609566Z",
+  "record_type": "P8_HARDWARE_SHA256_MANIFEST",
+  "records": [
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/context.json",
+      "sha256": "901355ba3538096de9a1eb4edd0899345aa97442e202b74acb633c1b32f04c7e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/cvr.json",
+      "sha256": "f4c4a4988b90284c873f06b4eba707e5debb325eb56a5ee7dd55a265d6e16b74"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/flash_execution_record.json",
+      "sha256": "39e08b2dbd806b1a2c77ffefb19ef6abacd013d09099d512e25fdde53d0d5402"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/gate_authority.txt",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/gate_receipt.json",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/oar.json",
+      "sha256": "59dbe8e44a80f2c03a912804c352ae01cf1d64fa4541c3daaf5cbf67fe40d236"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/swd_gate.ready",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/uart_raw.bin",
+      "sha256": "609cbc8ab1ca9474306e2cdf90846564afb8d60b4adf3cc2cc54ff467f3aca23"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/uart_reader.ready",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/uart_reader.stop",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/flash_metadata.json",
+      "sha256": "665e81f4c37452b7ed3f5b7239fb20d7742d46aae0d6f38f841417729212b977"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/swd_gate.pid",
+      "sha256": "e5ce9498582d33092c5b9c9b057e45ac7fd475a303253c7ff84298cbb7312b7e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/swd_gate.status",
+      "sha256": "3912d4abc8f8b23dc83c243de435c65e35cc3985824d0e94cd28a05ab2b529ab"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/swd_gate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/swd_gate.stdout.log",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/uart_reader.pid",
+      "sha256": "3e7681a06374c7e705dc2bc72be0cedb6a02226b5b7c4b23c46a100e4bfa2eb7"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/uart_reader.status",
+      "sha256": "60e4b7b773b3c05b16fadf093f72137282e84c0f65e73ad28198c6110e203606"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/uart_reader.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/uart_reader.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/observer/raw_observer.csv",
+      "sha256": "3e24d2c0f4f1b1af8507c637e7083394c9612a73583a1ddff1ee68fa34d16ddf"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/observer/raw_observer.dsl",
+      "sha256": "43263a909aa1d3a4d78a39c8ae3cc4abb09a89e4ab2e506f9d8cd22edd095921"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/context.json",
+      "sha256": "c8d77905832d6065cfccdd8e87b4275952e7e39b1245f601cc28d16e5228a7de"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/cvr.json",
+      "sha256": "2b8bbaca1653d3e9269f82f56978ca6b5dc5bebef860996dd6bd9bc5a3860343"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/flash_execution_record.json",
+      "sha256": "2c18f7110b4b114a2f1381156da3ee77cad00ce3e89c2d0b4403a9f009e3b009"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/gate_authority.txt",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/gate_receipt.json",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/oar.json",
+      "sha256": "4f8754226a571d405a305532ac8eb6f7a59844b1915f5cb3c5901ead18b1c4bc"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/swd_gate.ready",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/uart_raw.bin",
+      "sha256": "2cfb595b13257f53eaa9eaf3a5b1bb41c05a2a5fcacad940cdafbc5e7aff99d0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/uart_reader.ready",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/uart_reader.stop",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/flash_metadata.json",
+      "sha256": "cf103a65fa8fb4208da8b62f6057ac42dd0b732b47ab4ea6ace1c0bd82f6c4f8"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/swd_gate.pid",
+      "sha256": "6b2d1fa08db61ccd58adbab1ad48c3b7f576150d96a267080482d1e846aa9f0d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/swd_gate.status",
+      "sha256": "20daac572e4e42adfab0e6c55a02d1234d38fd820661a8290cd4cc8b5fe2ad2d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/swd_gate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/swd_gate.stdout.log",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/uart_reader.pid",
+      "sha256": "67c082fd3e7fd3febe45cb7da5b04d90cf998179b1cc0f24c621ab9f2b55eda0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/uart_reader.status",
+      "sha256": "f724f6048de22a273a4d6509a0d013733b99dbaadfb127194e6bc28afb750968"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/uart_reader.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/uart_reader.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/observer/raw_observer.csv",
+      "sha256": "7893b45b48c67ca27d7c328aa4ddfdfca803b7a81318e80bee3e3eb4ff3d39ee"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/observer/raw_observer.dsl",
+      "sha256": "d45093922087c1e8ecf42d513ee11e0b9d40e07718b9e76ee21519e3c4a432b5"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/context.json",
+      "sha256": "5bdb0df881ef2fd631c9ad5faa5dc34a13e579fdc124b84decb061370c8a5d5e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/cvr.json",
+      "sha256": "0e79d4c33c9f64e27290fb53cc2f9aac1852cbd2f62d87b7fa3ca4ee244ec2db"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/flash_execution_record.json",
+      "sha256": "ff993bfd4db648c299c4c8f47d49de77c01225749f92b4d931a5d05262405fa3"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/gate_authority.txt",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/gate_receipt.json",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/oar.json",
+      "sha256": "6a671b5f8a7aa657d09f49fd8e7eab4b71e540e8ef0b4c1207b87d8ebfba3ff2"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/swd_gate.ready",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/uart_raw.bin",
+      "sha256": "aeed60a8877f5a0eb9c3270a94e07464372d476b70795b3b1f4503923ba094d9"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/uart_reader.ready",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/uart_reader.stop",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/flash_metadata.json",
+      "sha256": "7e131af7c061a0fc1d1095bb260fc5e8072d2fae0130ed3284f1fe41eaa25d4e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/swd_gate.pid",
+      "sha256": "ee3a704b78e30ef64b43a390f7136af6bbfb24e78468de90574aedf261132116"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/swd_gate.status",
+      "sha256": "8c8ed515f57e42b4457fb5c3f1efce0dde9080f787b27302cbd44fea1169e787"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/swd_gate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/swd_gate.stdout.log",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/uart_reader.pid",
+      "sha256": "f3ab6033acf8f767da891e868e7b18a5aff27ce1dbb2d3cb1eb1ebcd8131674d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/uart_reader.status",
+      "sha256": "b2d75bcca68bf429ed797a121e68a902e0da076074f58a2f94e6052b7b163dea"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/uart_reader.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/uart_reader.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/observer/raw_observer.csv",
+      "sha256": "020397e0343a154f5bdd99ae0ee845f530e54a7e33e77ed67708125fe9f3d49b"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/observer/raw_observer.dsl",
+      "sha256": "66c00ff9d4a7aec7fced0b90d54d6251675faea9838fa530e87088fda7bec6fd"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/context.json",
+      "sha256": "cc1ca72490071e2e7eea0ee96abfbc467be3303a10c3c2e28c7d488a662bf35e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/cvr.json",
+      "sha256": "e195785d2db351faf47f5c9f5689f9f4155575d05de4040e1e271458758c767e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/flash_execution_record.json",
+      "sha256": "bf62d27f7af338dadcbdfbaa4cfc1b91007664023028f853c0f5212c5685a58a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/gate_authority.txt",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/gate_receipt.json",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/oar.json",
+      "sha256": "6d8289e338fa757509dc1f3bbdb857a627394bf43b7a0a43ebcb069fc2aaaafe"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/swd_gate.ready",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/uart_raw.bin",
+      "sha256": "8c516ccbdad935b96faeb4ce6ed45d04f5ab949181d7131a7488ff443a1613e9"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/uart_reader.ready",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/uart_reader.stop",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/flash_metadata.json",
+      "sha256": "382266632bf93aaef5db1024a15a75bdac0436111e47f00ff42473ff9990619d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/swd_gate.pid",
+      "sha256": "b093103156683662712b59b7a505cd4375ed4eedc1ced066a35b7e7f3ad74d57"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/swd_gate.status",
+      "sha256": "8728e429b4fabfead23f3a7781a6186de13b0d120b79b391af33d963c413b596"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/swd_gate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/swd_gate.stdout.log",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/uart_reader.pid",
+      "sha256": "117ccffa57c786e4229bcb13e64479ea8521a180e5009ea27acf68833b0dfb1f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/uart_reader.status",
+      "sha256": "b1911d379b3f94414b682cc0da9d710d4cef0d6b9410dc6c761bdb84e9c931b2"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/uart_reader.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/uart_reader.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/observer/raw_observer.csv",
+      "sha256": "125f4c25b0fa563f5f2e36e03fe17bcdfe9cef716de58d0927bc6db475fdcc29"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/observer/raw_observer.dsl",
+      "sha256": "3abafaff66ecf59fef9ba423cbfda4ac7da5e6676c413559cd9c658267589e09"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/context.json",
+      "sha256": "a26fc8bac65aef0469b21a3a80a243b103fc2b3670fe4415b3567c6e95f5a0ac"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/cvr.json",
+      "sha256": "4e9964681e87bedf2b6852d7dcfbfc0dc2f2bbde5364f1205c74f2ec4df24b95"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/flash_execution_record.json",
+      "sha256": "8f240d7bdd9e90fa0f0e659dcdf9ed87e52116a819d04a85e350c208a9a901f5"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/gate_authority.txt",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/gate_receipt.json",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/oar.json",
+      "sha256": "9c495e8cd0a13f64a63792ed818419d7faafd12705c0cc50bc5aa8018c0c69e9"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/swd_gate.ready",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/uart_raw.bin",
+      "sha256": "da02664e5a0d8a8549cbcb46f2dcd535baaa0a5f1cafa51aef090b01627f93e0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/uart_reader.ready",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/uart_reader.stop",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/flash_metadata.json",
+      "sha256": "bca0d71c4e6bfe8aa9c9d252a78502119b6485bff1f2a40164d6993f5da22107"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/swd_gate.pid",
+      "sha256": "2d438470d3908273d223763c9c427a55600a0006e8b7f411f5711ce79e046586"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/swd_gate.status",
+      "sha256": "e916c05208bdbf91803193501bfc5264852713e437f6b07126d801527ebe7587"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/swd_gate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/swd_gate.stdout.log",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/uart_reader.pid",
+      "sha256": "adc1dbdca6dc2bd4c1f8135e95150bdc285d9a01506e6a1ca9692da10ee7b53e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/uart_reader.status",
+      "sha256": "c214ebf109c957fcd7705748fd8dfab4f356c9aedfd96222ae26ae7a6d8a97fe"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/uart_reader.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/uart_reader.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/observer/raw_observer.csv",
+      "sha256": "09c38273d4492fc75c20bec8cdb1fb52a884c1116a7216dfa315bded03056ad3"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/observer/raw_observer.dsl",
+      "sha256": "4f214800ffda443d9792ceb3e27dcadb9c04390b4923589b8cecbf35764227a1"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/context.json",
+      "sha256": "08a3b27d5e71611ad1ad5450781efe9127baafd69c76233cbabccf099b104eeb"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/cvr.json",
+      "sha256": "86e9ea2eeaf939fa7ca8a11627e2ae5ee34178758b0c70888a8484b897b82a43"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/flash_execution_record.json",
+      "sha256": "08cce9798019e2ab87b3187e9e1510f2b056c67cb900d819d0a2517c18786337"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/gate_authority.txt",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/gate_receipt.json",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/oar.json",
+      "sha256": "f9d0e0995a345e4cf84b542c8d2c40ed4fa38f1dca84ac001c6543ed519bef2e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/swd_gate.ready",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/uart_raw.bin",
+      "sha256": "020ad346237a8241e769669280f6eecb647c346325a860e3a4497cd5eae2ef48"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/uart_reader.ready",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/uart_reader.stop",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/flash_metadata.json",
+      "sha256": "14ba6bc66e1aa44acbd9d8f80d72b8edc569002e3b1c706bb739b1dc354a81c9"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/swd_gate.pid",
+      "sha256": "39c2035117c0d5326529c2215b22585c25e529c2f03b279c121060aa982f0531"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/swd_gate.status",
+      "sha256": "99802b106f1562f38838345925b7009d862a7cf63300622a44ace5c6c6afa754"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/swd_gate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/swd_gate.stdout.log",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/uart_reader.pid",
+      "sha256": "719b5d578c8ce2b56292466a9cb37d988a9c2778b0ecb484df69e21f0be5fb90"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/uart_reader.status",
+      "sha256": "83246827ffab8603bf9c58deb79ecdb38e85fb8827bfa4444049d7d8d0fb2d4d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/uart_reader.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/uart_reader.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/observer/raw_observer.csv",
+      "sha256": "14706f5eb8542b87402b9600752aa4c080b961f17a306005869d071ae923dc5e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/observer/raw_observer.dsl",
+      "sha256": "76a5dc9712c84e3a500a0756a4f1e23b69de0033084590221ea9084da0a8af89"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/p8_cvr_correction_20260915T051000Z.json",
+      "sha256": "fa3323e5f811bce5ebd9305d5e94c3816e6584362ca532d26ccd39b7b9c5f9b0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/p8_cvr_source_hash_correction_20260915T053000Z.json",
+      "sha256": "5808a5aec63251baeb529c9d4ced9449a89f996233e388a37d9a3c01b19ebad1"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/p8_f1_threshold_binding_20260915T040000Z.json",
+      "sha256": "0143715fbbbbc2a13865ef9b191b6e439f694c48e3734a17ef179b3fd6b41936"
+    },
+    {
+      "path": "p8_hardware_audit.json",
+      "sha256": "236ff6bf653c3d0ffc4cca28732a0279dbd58fcf21a158185894d0957a39df16"
+    }
+  ],
+  "schema": "rtd-p8-hardware-manifest-v1",
+  "source_refs": [
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/context.json",
+      "role": "P8 hardware artifact",
+      "sha256": "901355ba3538096de9a1eb4edd0899345aa97442e202b74acb633c1b32f04c7e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/cvr.json",
+      "role": "P8 hardware artifact",
+      "sha256": "f4c4a4988b90284c873f06b4eba707e5debb325eb56a5ee7dd55a265d6e16b74"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/flash_execution_record.json",
+      "role": "P8 hardware artifact",
+      "sha256": "39e08b2dbd806b1a2c77ffefb19ef6abacd013d09099d512e25fdde53d0d5402"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/gate_authority.txt",
+      "role": "P8 hardware artifact",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/gate_receipt.json",
+      "role": "P8 hardware artifact",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/oar.json",
+      "role": "P8 hardware artifact",
+      "sha256": "59dbe8e44a80f2c03a912804c352ae01cf1d64fa4541c3daaf5cbf67fe40d236"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/swd_gate.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/uart_raw.bin",
+      "role": "P8 hardware artifact",
+      "sha256": "609cbc8ab1ca9474306e2cdf90846564afb8d60b4adf3cc2cc54ff467f3aca23"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/uart_reader.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/evidence/uart_reader.stop",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/flash_metadata.json",
+      "role": "P8 hardware artifact",
+      "sha256": "665e81f4c37452b7ed3f5b7239fb20d7742d46aae0d6f38f841417729212b977"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/swd_gate.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "e5ce9498582d33092c5b9c9b057e45ac7fd475a303253c7ff84298cbb7312b7e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/swd_gate.status",
+      "role": "P8 hardware artifact",
+      "sha256": "3912d4abc8f8b23dc83c243de435c65e35cc3985824d0e94cd28a05ab2b529ab"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/swd_gate.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/swd_gate.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/uart_reader.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "3e7681a06374c7e705dc2bc72be0cedb6a02226b5b7c4b23c46a100e4bfa2eb7"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/uart_reader.status",
+      "role": "P8 hardware artifact",
+      "sha256": "60e4b7b773b3c05b16fadf093f72137282e84c0f65e73ad28198c6110e203606"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/uart_reader.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/logs/uart_reader.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/observer/raw_observer.csv",
+      "role": "P8 hardware artifact",
+      "sha256": "3e24d2c0f4f1b1af8507c637e7083394c9612a73583a1ddff1ee68fa34d16ddf"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-001/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-001/observer/raw_observer.dsl",
+      "role": "P8 hardware artifact",
+      "sha256": "43263a909aa1d3a4d78a39c8ae3cc4abb09a89e4ab2e506f9d8cd22edd095921"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/context.json",
+      "role": "P8 hardware artifact",
+      "sha256": "c8d77905832d6065cfccdd8e87b4275952e7e39b1245f601cc28d16e5228a7de"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/cvr.json",
+      "role": "P8 hardware artifact",
+      "sha256": "2b8bbaca1653d3e9269f82f56978ca6b5dc5bebef860996dd6bd9bc5a3860343"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/flash_execution_record.json",
+      "role": "P8 hardware artifact",
+      "sha256": "2c18f7110b4b114a2f1381156da3ee77cad00ce3e89c2d0b4403a9f009e3b009"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/gate_authority.txt",
+      "role": "P8 hardware artifact",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/gate_receipt.json",
+      "role": "P8 hardware artifact",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/oar.json",
+      "role": "P8 hardware artifact",
+      "sha256": "4f8754226a571d405a305532ac8eb6f7a59844b1915f5cb3c5901ead18b1c4bc"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/swd_gate.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/uart_raw.bin",
+      "role": "P8 hardware artifact",
+      "sha256": "2cfb595b13257f53eaa9eaf3a5b1bb41c05a2a5fcacad940cdafbc5e7aff99d0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/uart_reader.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/evidence/uart_reader.stop",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/flash_metadata.json",
+      "role": "P8 hardware artifact",
+      "sha256": "cf103a65fa8fb4208da8b62f6057ac42dd0b732b47ab4ea6ace1c0bd82f6c4f8"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/swd_gate.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "6b2d1fa08db61ccd58adbab1ad48c3b7f576150d96a267080482d1e846aa9f0d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/swd_gate.status",
+      "role": "P8 hardware artifact",
+      "sha256": "20daac572e4e42adfab0e6c55a02d1234d38fd820661a8290cd4cc8b5fe2ad2d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/swd_gate.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/swd_gate.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/uart_reader.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "67c082fd3e7fd3febe45cb7da5b04d90cf998179b1cc0f24c621ab9f2b55eda0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/uart_reader.status",
+      "role": "P8 hardware artifact",
+      "sha256": "f724f6048de22a273a4d6509a0d013733b99dbaadfb127194e6bc28afb750968"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/uart_reader.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/logs/uart_reader.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/observer/raw_observer.csv",
+      "role": "P8 hardware artifact",
+      "sha256": "7893b45b48c67ca27d7c328aa4ddfdfca803b7a81318e80bee3e3eb4ff3d39ee"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-002/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-002/observer/raw_observer.dsl",
+      "role": "P8 hardware artifact",
+      "sha256": "d45093922087c1e8ecf42d513ee11e0b9d40e07718b9e76ee21519e3c4a432b5"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/context.json",
+      "role": "P8 hardware artifact",
+      "sha256": "5bdb0df881ef2fd631c9ad5faa5dc34a13e579fdc124b84decb061370c8a5d5e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/cvr.json",
+      "role": "P8 hardware artifact",
+      "sha256": "0e79d4c33c9f64e27290fb53cc2f9aac1852cbd2f62d87b7fa3ca4ee244ec2db"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/flash_execution_record.json",
+      "role": "P8 hardware artifact",
+      "sha256": "ff993bfd4db648c299c4c8f47d49de77c01225749f92b4d931a5d05262405fa3"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/gate_authority.txt",
+      "role": "P8 hardware artifact",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/gate_receipt.json",
+      "role": "P8 hardware artifact",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/oar.json",
+      "role": "P8 hardware artifact",
+      "sha256": "6a671b5f8a7aa657d09f49fd8e7eab4b71e540e8ef0b4c1207b87d8ebfba3ff2"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/swd_gate.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/uart_raw.bin",
+      "role": "P8 hardware artifact",
+      "sha256": "aeed60a8877f5a0eb9c3270a94e07464372d476b70795b3b1f4503923ba094d9"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/uart_reader.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/evidence/uart_reader.stop",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/flash_metadata.json",
+      "role": "P8 hardware artifact",
+      "sha256": "7e131af7c061a0fc1d1095bb260fc5e8072d2fae0130ed3284f1fe41eaa25d4e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/swd_gate.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "ee3a704b78e30ef64b43a390f7136af6bbfb24e78468de90574aedf261132116"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/swd_gate.status",
+      "role": "P8 hardware artifact",
+      "sha256": "8c8ed515f57e42b4457fb5c3f1efce0dde9080f787b27302cbd44fea1169e787"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/swd_gate.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/swd_gate.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/uart_reader.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "f3ab6033acf8f767da891e868e7b18a5aff27ce1dbb2d3cb1eb1ebcd8131674d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/uart_reader.status",
+      "role": "P8 hardware artifact",
+      "sha256": "b2d75bcca68bf429ed797a121e68a902e0da076074f58a2f94e6052b7b163dea"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/uart_reader.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/logs/uart_reader.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/observer/raw_observer.csv",
+      "role": "P8 hardware artifact",
+      "sha256": "020397e0343a154f5bdd99ae0ee845f530e54a7e33e77ed67708125fe9f3d49b"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-c-h-baseline-003/case__P8-F1-C-H-BASELINE/capture__p8-f1-c-h-baseline-003/observer/raw_observer.dsl",
+      "role": "P8 hardware artifact",
+      "sha256": "66c00ff9d4a7aec7fced0b90d54d6251675faea9838fa530e87088fda7bec6fd"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/context.json",
+      "role": "P8 hardware artifact",
+      "sha256": "cc1ca72490071e2e7eea0ee96abfbc467be3303a10c3c2e28c7d488a662bf35e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/cvr.json",
+      "role": "P8 hardware artifact",
+      "sha256": "e195785d2db351faf47f5c9f5689f9f4155575d05de4040e1e271458758c767e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/flash_execution_record.json",
+      "role": "P8 hardware artifact",
+      "sha256": "bf62d27f7af338dadcbdfbaa4cfc1b91007664023028f853c0f5212c5685a58a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/gate_authority.txt",
+      "role": "P8 hardware artifact",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/gate_receipt.json",
+      "role": "P8 hardware artifact",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/oar.json",
+      "role": "P8 hardware artifact",
+      "sha256": "6d8289e338fa757509dc1f3bbdb857a627394bf43b7a0a43ebcb069fc2aaaafe"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/swd_gate.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/uart_raw.bin",
+      "role": "P8 hardware artifact",
+      "sha256": "8c516ccbdad935b96faeb4ce6ed45d04f5ab949181d7131a7488ff443a1613e9"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/uart_reader.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/evidence/uart_reader.stop",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/flash_metadata.json",
+      "role": "P8 hardware artifact",
+      "sha256": "382266632bf93aaef5db1024a15a75bdac0436111e47f00ff42473ff9990619d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/swd_gate.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "b093103156683662712b59b7a505cd4375ed4eedc1ced066a35b7e7f3ad74d57"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/swd_gate.status",
+      "role": "P8 hardware artifact",
+      "sha256": "8728e429b4fabfead23f3a7781a6186de13b0d120b79b391af33d963c413b596"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/swd_gate.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/swd_gate.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/uart_reader.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "117ccffa57c786e4229bcb13e64479ea8521a180e5009ea27acf68833b0dfb1f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/uart_reader.status",
+      "role": "P8 hardware artifact",
+      "sha256": "b1911d379b3f94414b682cc0da9d710d4cef0d6b9410dc6c761bdb84e9c931b2"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/uart_reader.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/logs/uart_reader.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/observer/raw_observer.csv",
+      "role": "P8 hardware artifact",
+      "sha256": "125f4c25b0fa563f5f2e36e03fe17bcdfe9cef716de58d0927bc6db475fdcc29"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-001/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-001/observer/raw_observer.dsl",
+      "role": "P8 hardware artifact",
+      "sha256": "3abafaff66ecf59fef9ba423cbfda4ac7da5e6676c413559cd9c658267589e09"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/context.json",
+      "role": "P8 hardware artifact",
+      "sha256": "a26fc8bac65aef0469b21a3a80a243b103fc2b3670fe4415b3567c6e95f5a0ac"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/cvr.json",
+      "role": "P8 hardware artifact",
+      "sha256": "4e9964681e87bedf2b6852d7dcfbfc0dc2f2bbde5364f1205c74f2ec4df24b95"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/flash_execution_record.json",
+      "role": "P8 hardware artifact",
+      "sha256": "8f240d7bdd9e90fa0f0e659dcdf9ed87e52116a819d04a85e350c208a9a901f5"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/gate_authority.txt",
+      "role": "P8 hardware artifact",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/gate_receipt.json",
+      "role": "P8 hardware artifact",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/oar.json",
+      "role": "P8 hardware artifact",
+      "sha256": "9c495e8cd0a13f64a63792ed818419d7faafd12705c0cc50bc5aa8018c0c69e9"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/swd_gate.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/uart_raw.bin",
+      "role": "P8 hardware artifact",
+      "sha256": "da02664e5a0d8a8549cbcb46f2dcd535baaa0a5f1cafa51aef090b01627f93e0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/uart_reader.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/evidence/uart_reader.stop",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/flash_metadata.json",
+      "role": "P8 hardware artifact",
+      "sha256": "bca0d71c4e6bfe8aa9c9d252a78502119b6485bff1f2a40164d6993f5da22107"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/swd_gate.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "2d438470d3908273d223763c9c427a55600a0006e8b7f411f5711ce79e046586"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/swd_gate.status",
+      "role": "P8 hardware artifact",
+      "sha256": "e916c05208bdbf91803193501bfc5264852713e437f6b07126d801527ebe7587"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/swd_gate.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/swd_gate.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/uart_reader.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "adc1dbdca6dc2bd4c1f8135e95150bdc285d9a01506e6a1ca9692da10ee7b53e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/uart_reader.status",
+      "role": "P8 hardware artifact",
+      "sha256": "c214ebf109c957fcd7705748fd8dfab4f356c9aedfd96222ae26ae7a6d8a97fe"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/uart_reader.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/logs/uart_reader.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/observer/raw_observer.csv",
+      "role": "P8 hardware artifact",
+      "sha256": "09c38273d4492fc75c20bec8cdb1fb52a884c1116a7216dfa315bded03056ad3"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-002/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-002/observer/raw_observer.dsl",
+      "role": "P8 hardware artifact",
+      "sha256": "4f214800ffda443d9792ceb3e27dcadb9c04390b4923589b8cecbf35764227a1"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/context.json",
+      "role": "P8 hardware artifact",
+      "sha256": "08a3b27d5e71611ad1ad5450781efe9127baafd69c76233cbabccf099b104eeb"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/cvr.json",
+      "role": "P8 hardware artifact",
+      "sha256": "86e9ea2eeaf939fa7ca8a11627e2ae5ee34178758b0c70888a8484b897b82a43"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/flash_execution_record.json",
+      "role": "P8 hardware artifact",
+      "sha256": "08cce9798019e2ab87b3187e9e1510f2b056c67cb900d819d0a2517c18786337"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/gate_authority.txt",
+      "role": "P8 hardware artifact",
+      "sha256": "137a727e37a0ee8b79ef7989709c0d301e29238ff19989fc1c61d07f5f883d6e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/gate_receipt.json",
+      "role": "P8 hardware artifact",
+      "sha256": "b63179e17282725f2579f694455904705b1c18f0cd91232aceb57e405a9a668a"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/oar.json",
+      "role": "P8 hardware artifact",
+      "sha256": "f9d0e0995a345e4cf84b542c8d2c40ed4fa38f1dca84ac001c6543ed519bef2e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/swd_gate.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/uart_raw.bin",
+      "role": "P8 hardware artifact",
+      "sha256": "020ad346237a8241e769669280f6eecb647c346325a860e3a4497cd5eae2ef48"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/uart_reader.ready",
+      "role": "P8 hardware artifact",
+      "sha256": "7c85dcf050a2711bdb561e636caeebad8231aaa099873ddf7654e24e3546fd3f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/evidence/uart_reader.stop",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/flash_metadata.json",
+      "role": "P8 hardware artifact",
+      "sha256": "14ba6bc66e1aa44acbd9d8f80d72b8edc569002e3b1c706bb739b1dc354a81c9"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/swd_gate.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "39c2035117c0d5326529c2215b22585c25e529c2f03b279c121060aa982f0531"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/swd_gate.status",
+      "role": "P8 hardware artifact",
+      "sha256": "99802b106f1562f38838345925b7009d862a7cf63300622a44ace5c6c6afa754"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/swd_gate.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/swd_gate.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "f3e000fb83557c31046fa714aa22422ae09b10cbc37f4af2e5c4889260b7662f"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/uart_reader.pid",
+      "role": "P8 hardware artifact",
+      "sha256": "719b5d578c8ce2b56292466a9cb37d988a9c2778b0ecb484df69e21f0be5fb90"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/uart_reader.status",
+      "role": "P8 hardware artifact",
+      "sha256": "83246827ffab8603bf9c58deb79ecdb38e85fb8827bfa4444049d7d8d0fb2d4d"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/uart_reader.stderr.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/logs/uart_reader.stdout.log",
+      "role": "P8 hardware artifact",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/observer/raw_observer.csv",
+      "role": "P8 hardware artifact",
+      "sha256": "14706f5eb8542b87402b9600752aa4c080b961f17a306005869d071ae923dc5e"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/board__p8-atk-dnf103-v2/session__p8-f1-p03-repro-003/case__P8-F1-P03-REPRO/capture__p8-f1-p03-repro-003/observer/raw_observer.dsl",
+      "role": "P8 hardware artifact",
+      "sha256": "76a5dc9712c84e3a500a0756a4f1e23b69de0033084590221ea9084da0a8af89"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/p8_cvr_correction_20260915T051000Z.json",
+      "role": "P8 hardware artifact",
+      "sha256": "fa3323e5f811bce5ebd9305d5e94c3816e6584362ca532d26ccd39b7b9c5f9b0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/p8_cvr_source_hash_correction_20260915T053000Z.json",
+      "role": "P8 hardware artifact",
+      "sha256": "5808a5aec63251baeb529c9d4ced9449a89f996233e388a37d9a3c01b19ebad1"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/p8_f1_threshold_binding_20260915T040000Z.json",
+      "role": "P8 hardware artifact",
+      "sha256": "0143715fbbbbc2a13865ef9b191b6e439f694c48e3734a17ef179b3fd6b41936"
+    },
+    {
+      "path": "p8_hardware_audit.json",
+      "role": "P8 hardware artifact",
+      "sha256": "236ff6bf653c3d0ffc4cca28732a0279dbd58fcf21a158185894d0957a39df16"
+    }
+  ],
+  "status": "SEALED_APPEND_ONLY"
+}

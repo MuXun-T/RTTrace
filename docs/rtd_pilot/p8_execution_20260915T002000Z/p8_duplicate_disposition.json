@@ -1,0 +1,22 @@
+{
+  "schema": "rtd-p8-disposition-v1",
+  "record_type": "P8_DUPLICATE_DISPOSITION",
+  "record_id": "record:p8-duplicate-disposition-20260915T002000Z",
+  "phase": "P8",
+  "created_at": "2026-09-15T00:20:00Z",
+  "append_only": true,
+  "hardware_action": false,
+  "status": "RETAINED_HISTORY",
+  "identity": {"p7_commit": "e07109cd284d3bbefa1f96e6d31f7d5ec86ce0ce", "p7_tree": "48d5787d99e19730e11b4a0eed853001026a4bb3"},
+  "episode": null,
+  "parent_record_id": "record:p8-closeout-20260915T001052813768Z",
+  "lineage": {"parent_record_id": "record:p8-closeout-20260915T001052813768Z", "episode": null},
+  "correction_of": "record:p8-manifest-20260915T001119038087Z",
+  "supersedes": "record:p8-manifest-20260915T001119038087Z",
+  "source_refs": [
+    {"path": "docs/rtd_pilot/p8_execution_20260914T164714644907371Z/p8_sha256_manifest.json", "sha256": "0fb04cf0c551a81a8b330b88688a278aae439ba06830f5c1ca44f0bc6d7b89cc", "role": "superseded partial P8 manifest"},
+    {"path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_sha256_manifest.json", "sha256": "3efcc959387056c3f17202391e790404ceb79091e0c2d83f9852e8cc4b50a402", "role": "canonical P8 manifest"},
+    {"path": "docs/rtd_pilot/p8_execution_20260915T001119Z/p8_sha256_manifest.json", "sha256": "cc1dc3b4c9fa964186f60269b5828d77ddb92ca612581e0b795407f9cb981d45", "role": "duplicate P8 manifest"}
+  ],
+  "disposition": "The partial and duplicate runs are retained as superseded history; the 001052 run is canonical. No evidence bytes were overwritten."
+}

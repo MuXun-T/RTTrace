@@ -1,0 +1,62 @@
+{
+  "append_only": true,
+  "created_at": "2026-09-15T00:10:52.813742Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "p7_commit": "e07109cd284d3bbefa1f96e6d31f7d5ec86ce0ce",
+    "p7_tree": "48d5787d99e19730e11b4a0eed853001026a4bb3"
+  },
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p8-closeout-20260915T001052813768Z"
+  },
+  "parent_record_id": "record:p7-freeze-20260914T160000Z",
+  "phase": "P8",
+  "record_id": "record:p8-manifest-20260915T001052813768Z",
+  "record_type": "P8_SHA256_MANIFEST",
+  "records": [
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_frozen_audit.json",
+      "sha256": "823c58a19082daf9588da2d19460faf92c9fb33881f5e0e8734add8a4f698ca6"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_hardware_blocked.json",
+      "sha256": "1c206ddea84d1208b4e1b4db7f5d3f39efe8b27df3b961c5f5821f6a84c64853"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_regression.json",
+      "sha256": "147f87bca5eff79c9d471bd478ee0bc60a31e1915c93dcf7bb3f88f0187cca0f"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_closeout.json",
+      "sha256": "2cab399373468ee64057662ab2fd09395dfbabcae51be78193b3f4bd4e85cb04"
+    }
+  ],
+  "schema": "rtd-p8-sha256-manifest-v1",
+  "schema_version": "rtd-p8-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_frozen_audit.json",
+      "role": "P8 record",
+      "sha256": "823c58a19082daf9588da2d19460faf92c9fb33881f5e0e8734add8a4f698ca6"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_hardware_blocked.json",
+      "role": "P8 record",
+      "sha256": "1c206ddea84d1208b4e1b4db7f5d3f39efe8b27df3b961c5f5821f6a84c64853"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_regression.json",
+      "role": "P8 record",
+      "sha256": "147f87bca5eff79c9d471bd478ee0bc60a31e1915c93dcf7bb3f88f0187cca0f"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_closeout.json",
+      "role": "P8 record",
+      "sha256": "2cab399373468ee64057662ab2fd09395dfbabcae51be78193b3f4bd4e85cb04"
+    }
+  ],
+  "status": "SEALED_APPEND_ONLY",
+  "truth_boundary": "P5 Observer/OAR/CVR remain Observer truth; P7/P8 derived outputs are non-truth."
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "rtd-p8-sha256-manifest-v1",
+  "record_type": "P8_SHA256_MANIFEST",
+  "record_id": "record:p8-disposition-manifest-20260915T002000Z",
+  "phase": "P8",
+  "created_at": "2026-09-15T00:20:00Z",
+  "append_only": true,
+  "hardware_action": false,
+  "status": "SEALED_APPEND_ONLY",
+  "identity": {"p7_commit": "e07109cd284d3bbefa1f96e6d31f7d5ec86ce0ce", "p7_tree": "48d5787d99e19730e11b4a0eed853001026a4bb3"},
+  "episode": null,
+  "parent_record_id": "record:p8-duplicate-disposition-20260915T002000Z",
+  "lineage": {"parent_record_id": "record:p8-duplicate-disposition-20260915T002000Z", "episode": null},
+  "source_refs": [{"path": "docs/rtd_pilot/p8_execution_20260915T002000Z/p8_duplicate_disposition.json", "sha256": "8539ee7895a782c3d452aea2894d03562217bdde04814c392e8ceec486f978c5", "role": "P8 disposition record"}],
+  "records": [{"path": "docs/rtd_pilot/p8_execution_20260915T002000Z/p8_duplicate_disposition.json", "sha256": "8539ee7895a782c3d452aea2894d03562217bdde04814c392e8ceec486f978c5"}]
+}

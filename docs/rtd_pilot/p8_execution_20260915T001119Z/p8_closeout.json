@@ -1,0 +1,31 @@
+{
+  "append_only": true,
+  "created_at": "2026-09-15T00:11:19.038064Z",
+  "episode": null,
+  "hardware_action": false,
+  "hardware_status": "BLOCKED",
+  "identity": {
+    "p7_commit": "e07109cd284d3bbefa1f96e6d31f7d5ec86ce0ce",
+    "p7_tree": "48d5787d99e19730e11b4a0eed853001026a4bb3"
+  },
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p8-regression-20260915T001119038087Z"
+  },
+  "observer_truth": false,
+  "parent_record_id": "record:p8-regression-20260915T001119038087Z",
+  "phase": "P8",
+  "record_id": "record:p8-closeout-20260915T001119038087Z",
+  "record_type": "P8_CLOSEOUT",
+  "schema": "rtd-p8-closeout-v1",
+  "schema_version": "rtd-p8-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001119Z/p8_regression.json",
+      "role": "P8 regression",
+      "sha256": "6b744bffd727609815e3477a558b90c703e0152cc7107f9e7dd1cd8466499082"
+    }
+  ],
+  "status": "NON_HARDWARE_COMPLETE",
+  "truth_boundary": "P5 Observer/OAR/CVR remain Observer truth; P7/P8 derived outputs are non-truth."
+}

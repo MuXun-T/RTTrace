@@ -1,0 +1,45 @@
+{
+  "append_only": true,
+  "checks": {
+    "cross_case": true,
+    "duplicate": true,
+    "hash": true,
+    "lineage": true,
+    "no_overwrite": true,
+    "schema": true,
+    "split": true,
+    "stale_binding": true
+  },
+  "created_at": "2026-09-15T00:11:19.038064Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "p7_commit": "e07109cd284d3bbefa1f96e6d31f7d5ec86ce0ce",
+    "p7_tree": "48d5787d99e19730e11b4a0eed853001026a4bb3"
+  },
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p8-hardware-blocked-20260915T001119038087Z"
+  },
+  "observer_truth": false,
+  "parent_record_id": "record:p8-hardware-blocked-20260915T001119038087Z",
+  "phase": "P8",
+  "record_id": "record:p8-regression-20260915T001119038087Z",
+  "record_type": "P8_REGRESSION",
+  "schema": "rtd-p8-regression-v1",
+  "schema_version": "rtd-p8-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001119Z/p8_frozen_audit.json",
+      "role": "P8 audit",
+      "sha256": "8d8c69bd861b014dfcd2eed85c6f3e315ada3640e3692925c1d39e4623314a70"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001119Z/p8_hardware_blocked.json",
+      "role": "P8 hardware status",
+      "sha256": "807b5f175fb6efb47d15acdd8b351df358160be68883056ce2ef846793aafd07"
+    }
+  ],
+  "status": "PASS",
+  "truth_boundary": "P5 Observer/OAR/CVR remain Observer truth; P7/P8 derived outputs are non-truth."
+}

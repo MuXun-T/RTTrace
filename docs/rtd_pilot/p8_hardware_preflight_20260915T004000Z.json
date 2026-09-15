@@ -1,0 +1,38 @@
+{
+  "schema": "rtd-p8-hardware-preflight-v1",
+  "record_type": "P8_HARDWARE_PREFLIGHT",
+  "record_id": "record:p8-hardware-preflight-20260915T004000Z",
+  "phase": "P8",
+  "created_at": "2026-09-15T00:40:00Z",
+  "append_only": true,
+  "hardware_action": false,
+  "status": "READY_FOR_DSVIEW_ARM_CONFIRMATION",
+  "identity": {"board": "Alientek ATK-DNF103 V2 / STM32F103ZET6", "probe_uid": "0001A0000001", "apsel": 0, "p8_only": true},
+  "episode": null,
+  "parent_record_id": "record:p8-hardware-authorization-20260915T003000Z",
+  "lineage": {"parent_record_id": "record:p8-hardware-authorization-20260915T003000Z", "episode": null},
+  "source_refs": [
+    {"path": "docs/rtd_pilot/p8_hardware_authorization_20260915T003000Z.json", "sha256": "60c02eee1ed3adb9f2b5232c810ef927470d1b67c87ceec823974bbaa30e6904", "role": "P8 hardware authorization"},
+    {"path": "hardware/rtd_pilot/p5_firmware/20260913_f1_control_warmup_fix/source_v3/src/main.c", "sha256": "20b99f6b61f24196ef5ba391bf88b98527a41b3a26ec579aab42afaf81da29a0", "role": "authorized source"},
+    {"path": "hardware/rtd_pilot/p5_firmware/20260830_v13_independent_truth_markers/observer_marker_profile_v13.json", "sha256": "519360a461591c15505259e240a308d683223d65530a55b9e235a2031bb1d723", "role": "independent Observer profile"}
+  ],
+  "checks": {
+    "source_v3_present": true,
+    "p8_unique_build_dirs": true,
+    "six_builds_successful": true,
+    "p8_identity_prefixes": true,
+    "p5_prefixed_binary_selected": false,
+    "frozen_profile_and_threshold_bound": true,
+    "dsview_mapping": {"CH0": "PC2", "CH1": "PC3", "CH2": "PC4", "CH3": "PC5", "CH4": "PC6", "CH5": "PC7", "CH6": "PB5", "CH7": "PB0"},
+    "dsview_config": {"channels": 8, "sample_rate_hz": 20000000, "duration_s": 5, "trigger": "CH0 rising", "threshold_v": 1.65},
+    "operator_wiring_confirmation": "REQUIRED_BEFORE_ARM"
+  },
+  "artifacts": {
+    "repro-a01": {"elf_sha256": "b9b4a98e534abb87f36bd75c1d232899094f8884f3aeb2baf9bd8d269643e745", "bin_sha256": "ab4ac7093fba42027fbed57afd3f2821449484fe08f18dd98b847a6c01cd009e", "config_sha256": "2bf4d8a26cd72e3349cd984274408682b827121568d4a90451f620668ec4bf10"},
+    "repro-a02": {"elf_sha256": "47bf621e5d81735c6e8154fc1f1be0c6ed7baa16a1a029fdd33df4e436dee1e7", "bin_sha256": "c60c7b38d02caff4e5ed094b138d7315e276015910576114e2e85cb8608a2a4c", "config_sha256": "8a238166ae7eb3b9e66ec49bcff59c0ae7ea04a761032b77e88f845dc28cf00b"},
+    "repro-a03": {"elf_sha256": "34c392b8874f036d60627ab93f28b13e85486e95451a77d8ea40ce184713dc0d", "bin_sha256": "9698e2a287a0bf26760693c2609b2a3734ee0c2e0c2e21391b98915964377327", "config_sha256": "527692d2c827949ed2f33f783ab21851a57200d4d5c1599dcda8a118ba8f11a5"},
+    "baseline-a01": {"elf_sha256": "fab6ea94d1764ad96ae3a0477306d7ff152532c069b31c8f27b4042fa80f3bd1", "bin_sha256": "da05b5ed91b1cfacca17738f68a218dbed0788f580bdcefaadcc3c64edd0f4a2", "config_sha256": "7c6d5c3bbbe542ee666e91d6a5206151808c6bc2227996cbcdf0ca57014e1c92"},
+    "baseline-a02": {"elf_sha256": "d1f24db42f9663c54cec67b9204efccbbea375ca8b83f52eca001aae1e2576bf", "bin_sha256": "5a48e92ac42063ea95d90ad19c59231a10abbf8499f8102d1585061585593f0a", "config_sha256": "28c46087b46d0e5ab7fe16d1a8ed28a611a7f45a13c0bcf3fe9d2a8296b41e32"},
+    "baseline-a03": {"elf_sha256": "84ca3dc3081815e127f9c6fbaeb354de119963c6569fee03f41fb5c9c4f0043e", "bin_sha256": "b9eeb33f300ae63df3e8459d12dff54dd2614d85c294a38d86a9a6b0f86ff1fc", "config_sha256": "b6b1de2d6aa664a85cc4a5597c08518c41b6f16fba600064621101ff6f91ac94"}
+  }
+}

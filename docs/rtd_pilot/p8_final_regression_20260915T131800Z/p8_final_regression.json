@@ -1,0 +1,54 @@
+{
+  "schema": "rtd-p8-final-regression-v1",
+  "schema_version": "rtd-p8-v1",
+  "record_id": "record:p8-final-regression-20260915T131800Z",
+  "record_type": "P8_FINAL_REGRESSION",
+  "phase": "P8",
+  "created_at": "2026-09-15T13:18:00Z",
+  "append_only": true,
+  "status": "PASS",
+  "hardware_action": false,
+  "identity": {
+    "p7_commit": "e07109cd284d3bbefa1f96e6d31f7d5ec86ce0ce",
+    "p7_tree": "48d5787d99e19730e11b4a0eed853001026a4bb3"
+  },
+  "episode": null,
+  "parent_record_id": "record:p8-hardware-closeout-20260915T053500Z",
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p8-hardware-closeout-20260915T053500Z"
+  },
+  "checks": {
+    "python_full_regression": "1088 passed, 1197 subtests passed",
+    "p8_focused_regression": "3 passed",
+    "cmake_build": true,
+    "ctest": "2 of 2 passed",
+    "p8_hardware_audit": true,
+    "git_diff_check": true,
+    "p5_p6_p7_protected_paths_unchanged": true
+  },
+  "observer_truth": false,
+  "truth_boundary": "This is a derived regression record. It is not Observer truth and does not modify, count, or reinterpret P5 Observer/OAR/CVR or P7 frozen derived outputs.",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p8_hardware_closeout_20260915T053500Z/p8_hardware_closeout.json",
+      "role": "P8 hardware completion state",
+      "sha256": "31850e5b18c4510c36b3995204e02d6d67b174344d2e3d51f909459b9a02c309"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_hardware_audit_20260915T131700Z/p8_hardware_audit.json",
+      "role": "final P8 hardware audit",
+      "sha256": "236ff6bf653c3d0ffc4cca28732a0279dbd58fcf21a158185894d0957a39df16"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_hardware_audit_20260915T131700Z/p8_hardware_sha256_manifest.json",
+      "role": "final P8 hardware hash manifest",
+      "sha256": "7939360d961ce3c57932f8d8b8e406606a2918a92cf0d68c90273788a552b605"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001119Z/p8_regression.json",
+      "role": "P8 non-hardware regression baseline",
+      "sha256": "6b744bffd727609815e3477a558b90c703e0152cc7107f9e7dd1cd8466499082"
+    }
+  ]
+}

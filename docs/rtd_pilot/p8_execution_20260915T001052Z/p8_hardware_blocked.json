@@ -1,0 +1,34 @@
+{
+  "append_only": true,
+  "blockers": [
+    "No explicit authorization or device scope for hardware operations"
+  ],
+  "conclusion": "No hardware command was executed; offline work may continue.",
+  "created_at": "2026-09-15T00:10:52.813742Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "p7_commit": "e07109cd284d3bbefa1f96e6d31f7d5ec86ce0ce",
+    "p7_tree": "48d5787d99e19730e11b4a0eed853001026a4bb3"
+  },
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p8-audit-20260915T001052813768Z"
+  },
+  "observer_truth": false,
+  "parent_record_id": "record:p7-freeze-20260914T160000Z",
+  "phase": "P8",
+  "record_id": "record:p8-hardware-blocked-20260915T001052813768Z",
+  "record_type": "P8_HARDWARE_STATUS",
+  "schema": "rtd-p8-hardware-status-v1",
+  "schema_version": "rtd-p8-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p8_execution_20260915T001052Z/p8_frozen_audit.json",
+      "role": "P8 audit",
+      "sha256": "823c58a19082daf9588da2d19460faf92c9fb33881f5e0e8734add8a4f698ca6"
+    }
+  ],
+  "status": "BLOCKED",
+  "truth_boundary": "P5 Observer/OAR/CVR remain Observer truth; P7/P8 derived outputs are non-truth."
+}

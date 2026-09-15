@@ -1,0 +1,84 @@
+{
+  "schema": "rtd-p8-hardware-closeout-v1",
+  "schema_version": "rtd-p8-v1",
+  "record_id": "record:p8-hardware-closeout-20260915T053500Z",
+  "record_type": "P8_HARDWARE_CLOSEOUT",
+  "phase": "P8",
+  "created_at": "2026-09-15T05:35:00Z",
+  "append_only": true,
+  "status": "P8_HARDWARE_COMPLETE",
+  "hardware_action": true,
+  "identity": {
+    "board_id": "board:p8-atk-dnf103-v2",
+    "probe_uid": "0001A0000001",
+    "apsel": 0,
+    "case_ids": [
+      "case:P8-F1-P03-REPRO",
+      "case:P8-F1-C-H-BASELINE"
+    ]
+  },
+  "episode": null,
+  "parent_record_id": "record:p8-hardware-authorization-20260915T003000Z",
+  "lineage": {
+    "episode": null,
+    "parent_record_id": "record:p8-hardware-authorization-20260915T003000Z",
+    "supersedes": [
+      "record:p8-hardware-blocked-20260915T001119038087Z",
+      "record:p8-closeout-20260915T001119038087Z"
+    ]
+  },
+  "supersedes": [
+    "record:p8-hardware-blocked-20260915T001119038087Z",
+    "record:p8-closeout-20260915T001119038087Z"
+  ],
+  "observer_truth": false,
+  "truth_boundary": "Retained P8 DSView CSV files and their OARs are the P8 independent Observer evidence. This closeout, CVRs, UART, SWD, flash, audit, and derived records are not Observer truth. P5 Observer/OAR/CVR and P7 frozen outputs remain read-only and are not altered or counted by P8.",
+  "results": {
+    "case:P8-F1-P03-REPRO": {
+      "expected_observer_status": "manifested",
+      "valid_cvr_count": 3,
+      "observer_statuses": ["manifested", "manifested", "manifested"]
+    },
+    "case:P8-F1-C-H-BASELINE": {
+      "expected_observer_status": "not_manifested",
+      "valid_cvr_count": 3,
+      "observer_statuses": ["not_manifested", "not_manifested", "not_manifested"]
+    }
+  },
+  "correction_history": [
+    "record:p8-cvr-correction-20260915T051000Z",
+    "record:p8-cvr-source-hash-correction-20260915T053000Z"
+  ],
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p8_hardware_authorization_20260915T003000Z.json",
+      "role": "explicit P8 hardware authorization",
+      "sha256": "60c02eee1ed3adb9f2b5232c810ef927470d1b67c87ceec823974bbaa30e6904"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_hardware_preflight_20260915T004000Z.json",
+      "role": "P8-only preflight and build binding",
+      "sha256": "076cde18199050e651da4042d2de9a787ed7a8b3a9c8f5bdcd39c1b6cba644f1"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_hardware_audit_20260915T053100Z/p8_hardware_audit.json",
+      "role": "six-capture P8 hardware audit",
+      "sha256": "951df4fdf96d1361654933ed38359dcd0a9227c5cd5b08a67f90dd0d79277b04"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_hardware_audit_20260915T053100Z/p8_hardware_sha256_manifest.json",
+      "role": "P8 hardware source-hash manifest",
+      "sha256": "c7f4a6bc76c2d2f205c255fde80376a826e60139ac73d6aa6f4306e75f442960"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/p8_cvr_correction_20260915T051000Z.json",
+      "role": "retained append-only CVR correction",
+      "sha256": "fa3323e5f811bce5ebd9305d5e94c3816e6584362ca532d26ccd39b7b9c5f9b0"
+    },
+    {
+      "path": "p8_data/rtd_pilot_p8_20260915/p8_cvr_source_hash_correction_20260915T053000Z.json",
+      "role": "retained append-only CVR source-hash correction",
+      "sha256": "5808a5aec63251baeb529c9d4ced9449a89f996233e388a37d9a3c01b19ebad1"
+    }
+  ]
+}
