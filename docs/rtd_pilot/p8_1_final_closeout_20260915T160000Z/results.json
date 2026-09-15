@@ -1,0 +1,206 @@
+{
+  "append_only": true,
+  "ci": "95% Wilson intervals at registry-case level",
+  "created_at": "2026-09-15T11:10:58.772178Z",
+  "episode": null,
+  "estimand": "case-level manifestation classification; capture repeats aggregated by fixed two-of-three vote",
+  "hardware_action": false,
+  "lineage": {
+    "parent_record_id": "record:p8.1-split-mask-fairness-leakage-audit-20260915T160000Z"
+  },
+  "parent_record_id": "record:p8.1-split-mask-fairness-leakage-audit-20260915T160000Z",
+  "phase": "P8.1",
+  "record_id": "record:p8.1-results-20260915T160000Z",
+  "record_type": "RESULTS",
+  "results": [
+    {
+      "accuracy": 0.714286,
+      "accuracy_ci95": [
+        0.500436,
+        0.861861
+      ],
+      "balanced_accuracy": 0.666667,
+      "exclusions": 0,
+      "f1": 0.8,
+      "fn": 0,
+      "fp": 6,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 63,
+      "n_case": 21,
+      "npv": 1.0,
+      "precision": 0.666667,
+      "scope": "primary",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.757506,
+        1.0
+      ],
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.120584,
+        0.645798
+      ],
+      "tn": 3,
+      "tp": 12,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 1.0,
+      "accuracy_ci95": [
+        0.757506,
+        1.0
+      ],
+      "balanced_accuracy": null,
+      "exclusions": 0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 36,
+      "n_case": 12,
+      "npv": null,
+      "precision": 1.0,
+      "scope": "positive",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.757506,
+        1.0
+      ],
+      "specificity": null,
+      "specificity_ci95": null,
+      "tn": 0,
+      "tp": 12,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 0.333333,
+      "accuracy_ci95": [
+        0.120584,
+        0.645798
+      ],
+      "balanced_accuracy": null,
+      "exclusions": 0,
+      "f1": 0.0,
+      "fn": 0,
+      "fp": 6,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 27,
+      "n_case": 9,
+      "npv": 1.0,
+      "precision": 0.0,
+      "scope": "control",
+      "sensitivity": null,
+      "sensitivity_ci95": null,
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.120584,
+        0.645798
+      ],
+      "tn": 3,
+      "tp": 0,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 0.714286,
+      "accuracy_ci95": [
+        0.358934,
+        0.917781
+      ],
+      "balanced_accuracy": 0.666667,
+      "exclusions": 0,
+      "f1": 0.8,
+      "fn": 0,
+      "fp": 2,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 21,
+      "n_case": 7,
+      "npv": 1.0,
+      "precision": 0.666667,
+      "scope": "F1",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.510109,
+        1.0
+      ],
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.061492,
+        0.79234
+      ],
+      "tn": 1,
+      "tp": 4,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 0.714286,
+      "accuracy_ci95": [
+        0.358934,
+        0.917781
+      ],
+      "balanced_accuracy": 0.666667,
+      "exclusions": 0,
+      "f1": 0.8,
+      "fn": 0,
+      "fp": 2,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 21,
+      "n_case": 7,
+      "npv": 1.0,
+      "precision": 0.666667,
+      "scope": "F2",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.510109,
+        1.0
+      ],
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.061492,
+        0.79234
+      ],
+      "tn": 1,
+      "tp": 4,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 0.714286,
+      "accuracy_ci95": [
+        0.358934,
+        0.917781
+      ],
+      "balanced_accuracy": 0.666667,
+      "exclusions": 0,
+      "f1": 0.8,
+      "fn": 0,
+      "fp": 2,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 21,
+      "n_case": 7,
+      "npv": 1.0,
+      "precision": 0.666667,
+      "scope": "F3",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.510109,
+        1.0
+      ],
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.061492,
+        0.79234
+      ],
+      "tn": 1,
+      "tp": 4,
+      "unit": "registry_case; three captures majority vote"
+    }
+  ],
+  "schema": "rtd-p8.1-results-v1",
+  "schema_version": "rtd-p8.1-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p8_1_offline_outputs_20260915T154000Z/evaluation.json",
+      "role": "sealed aggregate evaluation",
+      "sha256": "a989a6e28464ef01135f09935f116fd753e0287e3841b40bc474be91a34b06bc"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "append_only": true,
+  "created_at": "2026-09-15T11:23:16.390279Z",
+  "episode": null,
+  "hardware_action": false,
+  "lineage": {
+    "parent_record_id": "record:p8.1-final-closeout-20260915T161000Z"
+  },
+  "parent_record_id": "record:p8.1-final-closeout-20260915T161000Z",
+  "phase": "P8.1",
+  "record_id": "record:p8.1-final-manifest-20260915T161000Z",
+  "record_type": "P8_1_FINAL_SHA256_MANIFEST",
+  "records": [
+    {
+      "path": "analysis_environment.json",
+      "sha256": "1edbf3df8e5439dbde78d8ebb7b101f09d78acf33bbe68e66c7cff3ceae189bf",
+      "size": 829
+    },
+    {
+      "path": "baseline_ablation_status.json",
+      "sha256": "a7cb2136b10cbeaaf25ee1a3c126f43a427afd9f7cff880ed524a718b15ad7e4",
+      "size": 1278
+    },
+    {
+      "path": "case_capture_episode_inventory.json",
+      "sha256": "ba27be977eb9012015f4f356c4aace54c8603ea35bdb70c4374e90791bdb3ff3",
+      "size": 60521
+    },
+    {
+      "path": "dataset_version.json",
+      "sha256": "4fa3c10514c68b8a5cc75259c040f1fe4edfa70b641fa6b2cbf3283b9537d81b",
+      "size": 3361
+    },
+    {
+      "path": "figure_accuracy.svg",
+      "sha256": "6c3823adaaaf55599cf203f2d4b6f5cc5a7f2d532b7f93b7494702044f8b7707",
+      "size": 1127
+    },
+    {
+      "path": "figure_accuracy_source.json",
+      "sha256": "ad73a1b6d61002800d4d5f85334820ab51a537781c80f67cf039176c43dc508f",
+      "size": 258
+    },
+    {
+      "path": "final_closeout.json",
+      "sha256": "2c11bd6b781cce52e502a1eace2449d10d1cef71abc7d6e52b35274e8f735c0e",
+      "size": 1639
+    },
+    {
+      "path": "frozen_input_inventory.json",
+      "sha256": "bd6a71bacf6595c4c3d53f0674ffec4b0dee63fdac90ac699acec3fb7234520f",
+      "size": 19837
+    },
+    {
+      "path": "regression.json",
+      "sha256": "dae3f5509b2e8e50f3f8d7fe3d0914cb9296398dfa419e01054fd7303e1a7f5b",
+      "size": 1203
+    },
+    {
+      "path": "results.csv",
+      "sha256": "1d61b156877cdaa9a5d73d970b222cc7b18ea727b06634c6a0b4730163a6948a",
+      "size": 1189
+    },
+    {
+      "path": "results.json",
+      "sha256": "a7fe7ee08cc9258781fa5f6ace80c0a3ec2d73a76d50de10844ab7ac1f0b1309",
+      "size": 4815
+    },
+    {
+      "path": "split_mask_fairness_leakage_audit.json",
+      "sha256": "4150352223c912a63ed9a6ebdd815504f8c7bb8eb44f1fcca93caf62da77d0f9",
+      "size": 3856
+    }
+  ],
+  "schema": "rtd-p8.1-final-sha256-manifest-v1",
+  "schema_version": "rtd-p8.1-v1",
+  "source_refs": [
+    {
+      "path": "tool/rtd_p8_1_finalize.py",
+      "role": "package builder",
+      "sha256": "b5fc0277268b64baf8e4121f5db7c10a3daafad1e0311805b94829a4eff1ba49"
+    },
+    {
+      "path": "tool/rtd_p8_1_seal.py",
+      "role": "seal auditor",
+      "sha256": "5447990a0874a2aa836972c18a36561b288ae71dd822793f6394929cf46142cb"
+    }
+  ],
+  "status": "SEALED_APPEND_ONLY"
+}

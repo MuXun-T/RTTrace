@@ -1,0 +1,94 @@
+{
+  "append_only": true,
+  "checks": {
+    "absolute_paths_in_package": false,
+    "case_exclusive": true,
+    "cross_case": 0,
+    "duplicate_capture_ids": 0,
+    "duplicate_output_ids": 0,
+    "each_case_three_captures": true,
+    "failed": 0,
+    "hardware_operations": 0,
+    "holdout_truth_used_for_method_or_parameter_selection": false,
+    "invalid": 0,
+    "non_manifested_outputs": 0,
+    "split_errors": 0,
+    "stale_binding": 0,
+    "truth_join_isolated": true
+  },
+  "created_at": "2026-09-15T11:10:58.749591Z",
+  "episode": null,
+  "fairness": {
+    "all_cases_retained": true,
+    "capture_denominator": 63,
+    "case_denominator": 21,
+    "negative_results_retained": true
+  },
+  "hardware_action": false,
+  "identity": {
+    "captures": 63,
+    "cases": 21,
+    "outputs": 63
+  },
+  "lineage": {
+    "parent_record_id": "record:p8.1-frozen-input-inventory-20260915T160000Z"
+  },
+  "mask": {
+    "reason": "no separately frozen analysis mask; no case was masked or excluded",
+    "status": "unavailable"
+  },
+  "parent_record_id": "record:p8.1-frozen-input-inventory-20260915T160000Z",
+  "phase": "P8.1",
+  "record_id": "record:p8.1-split-mask-fairness-leakage-audit-20260915T160000Z",
+  "record_type": "SPLIT-MASK-FAIRNESS-LEAKAGE-AUDIT",
+  "schema": "rtd-p8.1-split-mask-fairness-leakage-audit-v1",
+  "schema_version": "rtd-p8.1-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/p5_freeze_record_20260914T181500Z.json",
+      "role": "P5 freeze",
+      "sha256": "5450db9e58bc8ef89d3b1f6297c9aaa746fa3af05090ca0cbc1448c8776f639a"
+    },
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/full_p5_capture_evidence_manifest.json",
+      "role": "P5 dataset",
+      "sha256": "f4f315bb6350b3312b64052c989a60e034a19e1bd27e526acb40295e92a975c7"
+    },
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/identity_hash_cross_case_audit.json",
+      "role": "P5 identity audit",
+      "sha256": "dd40c740d3f420d7d3e073142ce991b5a33fa96574bc8dfec8306c316f5b5578"
+    },
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/lineage_episode_inventory.json",
+      "role": "P5 episode inventory",
+      "sha256": "fc4d7b9fb0709a43b0c2a42421fd4be366646a87950802865766f7b093322048"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_admission_record.json",
+      "role": "P7 admission",
+      "sha256": "6dac369676f32b603a4a3d6e507c27e5f91aafac54ab2204e023b1cf3bf92760"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_evaluation_record.json",
+      "role": "P7 frozen evaluation",
+      "sha256": "edffd9bf6f6e60465e9ff7e646c292e3a0f312541205b9bb555154de5400f561"
+    },
+    {
+      "path": "docs/rtd_pilot/p7_execution_20260914T150718123749304Z/p7_split_declaration.json",
+      "role": "P7 case split",
+      "sha256": "2e7f96c73fe33e250ac67df916d1f300a308d072110fb166e8db4ff017715e55"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_final_regression_20260915T131800Z/p8_final_regression.json",
+      "role": "P8 final regression",
+      "sha256": "f73fc789777d4f7596808e01a2709ca1e08e18d9367014ea40c5e0bbfaf6de80"
+    },
+    {
+      "path": "docs/rtd_pilot/p8_1_offline_outputs_20260915T154000Z/sha256_manifest.json",
+      "role": "offline output seal",
+      "sha256": "bec0b4e4fe5c3f4894f0726cc01b6d9b88fe06185f5c5091d149d93b2dc4ae83"
+    }
+  ],
+  "truth_access_disclosure": "P5 manifestation was accessed in prior authorized inventory/scoring work. The fixed event rule is bound to the pre-existing UART event contract and authorization, not selected or tuned with truth. Results are descriptive for this frozen rule."
+}

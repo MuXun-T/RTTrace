@@ -1,0 +1,7 @@
+accuracy,accuracy_ci95,fn,fp,invalid_failed_non_manifested_outputs,n_capture,n_case,scope,sensitivity,sensitivity_ci95,specificity,specificity_ci95,tn,tp,unit,precision,npv,f1,balanced_accuracy,exclusions
+0.714286,"[0.500436, 0.861861]",0,6,0,63,21,primary,1.0,"[0.757506, 1.0]",0.333333,"[0.120584, 0.645798]",3,12,registry_case; three captures majority vote,0.666667,1.0,0.8,0.666667,0
+1.0,"[0.757506, 1.0]",0,0,0,36,12,positive,1.0,"[0.757506, 1.0]",,,0,12,registry_case; three captures majority vote,1.0,,1.0,,0
+0.333333,"[0.120584, 0.645798]",0,6,0,27,9,control,,,0.333333,"[0.120584, 0.645798]",3,0,registry_case; three captures majority vote,0.0,1.0,0.0,,0
+0.714286,"[0.358934, 0.917781]",0,2,0,21,7,F1,1.0,"[0.510109, 1.0]",0.333333,"[0.061492, 0.79234]",1,4,registry_case; three captures majority vote,0.666667,1.0,0.8,0.666667,0
+0.714286,"[0.358934, 0.917781]",0,2,0,21,7,F2,1.0,"[0.510109, 1.0]",0.333333,"[0.061492, 0.79234]",1,4,registry_case; three captures majority vote,0.666667,1.0,0.8,0.666667,0
+0.714286,"[0.358934, 0.917781]",0,2,0,21,7,F3,1.0,"[0.510109, 1.0]",0.333333,"[0.061492, 0.79234]",1,4,registry_case; three captures majority vote,0.666667,1.0,0.8,0.666667,0
