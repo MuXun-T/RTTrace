@@ -1,0 +1,7 @@
+scope,n_case,n_capture,tp,tn,fp,fn,sensitivity,sensitivity_ci95,specificity,specificity_ci95,accuracy,accuracy_ci95,unit,invalid_failed_non_manifested_outputs
+primary,21,63,12,3,6,0,1.0,"[0.757506, 1.0]",0.333333,"[0.120584, 0.645798]",0.714286,"[0.500436, 0.861861]",registry_case; three captures majority vote,0
+positive,12,36,12,0,0,0,1.0,"[0.757506, 1.0]",,,1.0,"[0.757506, 1.0]",registry_case; three captures majority vote,0
+control,9,27,0,3,6,0,,,0.333333,"[0.120584, 0.645798]",0.333333,"[0.120584, 0.645798]",registry_case; three captures majority vote,0
+F1,7,21,4,1,2,0,1.0,"[0.510109, 1.0]",0.333333,"[0.061492, 0.79234]",0.714286,"[0.358934, 0.917781]",registry_case; three captures majority vote,0
+F2,7,21,4,1,2,0,1.0,"[0.510109, 1.0]",0.333333,"[0.061492, 0.79234]",0.714286,"[0.358934, 0.917781]",registry_case; three captures majority vote,0
+F3,7,21,4,1,2,0,1.0,"[0.510109, 1.0]",0.333333,"[0.061492, 0.79234]",0.714286,"[0.358934, 0.917781]",registry_case; three captures majority vote,0

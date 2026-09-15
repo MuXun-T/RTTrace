@@ -1,0 +1,20 @@
+{
+  "append_only": true,
+  "hardware_action": false,
+  "identity": {
+    "captures": 63,
+    "cases": 21,
+    "outputs": 63
+  },
+  "parent_record_id": "record:p8.1-evaluation-offline-20260915T150000Z",
+  "record_id": "record:p8.1-offline-closeout-20260915T150000Z",
+  "record_type": "P8_1_OFFLINE_CLOSEOUT",
+  "schema": "rtd-p8.1-offline-closeout-v1",
+  "status": "PASS",
+  "supplement": {
+    "captures": 6,
+    "cases": 2,
+    "pooled": false
+  },
+  "truth_boundary": "P5 truth was joined only by the scorer; no P5/P7 input was modified."
+}

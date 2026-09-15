@@ -1,0 +1,200 @@
+{
+  "append_only": true,
+  "checks": {
+    "case_count": true,
+    "hardware_operation": false,
+    "holdout_used_for_tuning": false,
+    "outputs": true,
+    "raw_hash": true,
+    "truth_join_one_to_one": true
+  },
+  "created_at": "2026-09-15T10:00:46.022752Z",
+  "episode": null,
+  "hardware_action": false,
+  "identity": {
+    "captures": 63,
+    "case_rule": "two-of-three majority",
+    "cases": 21,
+    "ci": "95% Wilson at registry-case level",
+    "outputs": 63
+  },
+  "lineage": {
+    "parent_record_id": "record:p5-freeze-20260914T181500Z"
+  },
+  "parent_record_id": "record:p5-freeze-20260914T181500Z",
+  "phase": "P8.1",
+  "record_id": "record:p8.1-evaluation-offline-20260915T150000Z",
+  "record_type": "P8_1_EVALUATION",
+  "results": [
+    {
+      "accuracy": 0.714286,
+      "accuracy_ci95": [
+        0.500436,
+        0.861861
+      ],
+      "fn": 0,
+      "fp": 6,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 63,
+      "n_case": 21,
+      "scope": "primary",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.757506,
+        1.0
+      ],
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.120584,
+        0.645798
+      ],
+      "tn": 3,
+      "tp": 12,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 1.0,
+      "accuracy_ci95": [
+        0.757506,
+        1.0
+      ],
+      "fn": 0,
+      "fp": 0,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 36,
+      "n_case": 12,
+      "scope": "positive",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.757506,
+        1.0
+      ],
+      "specificity": null,
+      "specificity_ci95": null,
+      "tn": 0,
+      "tp": 12,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 0.333333,
+      "accuracy_ci95": [
+        0.120584,
+        0.645798
+      ],
+      "fn": 0,
+      "fp": 6,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 27,
+      "n_case": 9,
+      "scope": "control",
+      "sensitivity": null,
+      "sensitivity_ci95": null,
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.120584,
+        0.645798
+      ],
+      "tn": 3,
+      "tp": 0,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 0.714286,
+      "accuracy_ci95": [
+        0.358934,
+        0.917781
+      ],
+      "fn": 0,
+      "fp": 2,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 21,
+      "n_case": 7,
+      "scope": "F1",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.510109,
+        1.0
+      ],
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.061492,
+        0.79234
+      ],
+      "tn": 1,
+      "tp": 4,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 0.714286,
+      "accuracy_ci95": [
+        0.358934,
+        0.917781
+      ],
+      "fn": 0,
+      "fp": 2,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 21,
+      "n_case": 7,
+      "scope": "F2",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.510109,
+        1.0
+      ],
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.061492,
+        0.79234
+      ],
+      "tn": 1,
+      "tp": 4,
+      "unit": "registry_case; three captures majority vote"
+    },
+    {
+      "accuracy": 0.714286,
+      "accuracy_ci95": [
+        0.358934,
+        0.917781
+      ],
+      "fn": 0,
+      "fp": 2,
+      "invalid_failed_non_manifested_outputs": 0,
+      "n_capture": 21,
+      "n_case": 7,
+      "scope": "F3",
+      "sensitivity": 1.0,
+      "sensitivity_ci95": [
+        0.510109,
+        1.0
+      ],
+      "specificity": 0.333333,
+      "specificity_ci95": [
+        0.061492,
+        0.79234
+      ],
+      "tn": 1,
+      "tp": 4,
+      "unit": "registry_case; three captures majority vote"
+    }
+  ],
+  "schema": "rtd-p8.1-case-clustered-evaluation-v1",
+  "source_refs": [
+    {
+      "path": "docs/rtd_pilot/p5_execution_20260828_tools_ready/p5_7_freeze_candidate_20260914T181000Z/full_p5_capture_evidence_manifest.json",
+      "role": "P5 frozen capture/truth join in scorer",
+      "sha256": "f4f315bb6350b3312b64052c989a60e034a19e1bd27e526acb40295e92a975c7"
+    },
+    {
+      "path": "tool/rtd_p8_1_offline_evaluate.py",
+      "role": "fixed method/scorer",
+      "sha256": "b8cecbfd46d2d053604e9b545db6c6c07985e96a9785ee167d81dbde9238949f"
+    }
+  ],
+  "supplement": {
+    "captures": 6,
+    "cases": 2,
+    "pooled": false,
+    "status": "not_scored"
+  },
+  "truth_boundary": "P5 admitted manifestation is read only in this scorer after output freeze; outputs are not truth; no truth is exported per capture."
+}

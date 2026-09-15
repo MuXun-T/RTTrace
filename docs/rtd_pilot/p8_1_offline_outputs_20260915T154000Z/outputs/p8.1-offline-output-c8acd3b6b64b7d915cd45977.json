@@ -1,0 +1,49 @@
+{
+  "append_only": true,
+  "created_at": "2026-09-15T10:00:46.022752Z",
+  "episode": "derived:CaptureEpisode:p5-f1-c-w-20260914-a03",
+  "evaluation_split": "development",
+  "hardware_action": false,
+  "identity": {
+    "capture_id": "capture:p5-f1-c-w-20260914-a03",
+    "fixed_parameters_sha256": "38b574637a60c01c543c3a7dcb042702c6488a7d560f93d5c4b1d6887d67b457",
+    "input_sha256": "dfb7144dce3ca33b1fd0f4acf5c14b4dfa682388bb1cb9640b719b4650ec00dd",
+    "method": "uart-event-set-v1",
+    "registry_case_id": "F1-C-W"
+  },
+  "lineage": {
+    "episode_record_id": "derived:CaptureEpisode:p5-f1-c-w-20260914-a03",
+    "parent_record_id": "record:p5-freeze-20260914T181500Z"
+  },
+  "observer_truth": false,
+  "output": {
+    "observed_event_kinds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "predicted_family": "F1",
+    "predicted_manifested": true
+  },
+  "parent_record_id": "record:p5-freeze-20260914T181500Z",
+  "phase": "P8.1",
+  "record_id": "record:p8.1-offline-output-c8acd3b6b64b7d915cd45977",
+  "record_type": "P8_1_OFFLINE_METHOD_OUTPUT",
+  "schema": "rtd-p8.1-offline-method-output-v1",
+  "source_refs": [
+    {
+      "path": "p5_raw_hash:dfb7144dce3ca33b1fd0f4acf5c14b4dfa682388bb1cb9640b719b4650ec00dd",
+      "role": "frozen raw UART",
+      "sha256": "dfb7144dce3ca33b1fd0f4acf5c14b4dfa682388bb1cb9640b719b4650ec00dd"
+    }
+  ],
+  "status": "VALID",
+  "truth_boundary": "derived prediction from raw UART only; not Observer truth"
+}
